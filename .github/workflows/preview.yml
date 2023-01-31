@@ -1,0 +1,11 @@
+name: GitHub Actions Basic Workflow
+on:
+  push:
+    branches-ignore:
+      - main
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn install --frozen-lockfile
