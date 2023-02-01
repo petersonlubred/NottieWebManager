@@ -25,28 +25,33 @@ const media: Media = {
 const fontSizes = {
   s: '12px',
   m: '14px',
-  h: '24px',
+  l: '16px',
+  xl: '18px',
+  xxl: '20px',
+  xxxl: '22px',
+  xxxxl: '28px',
 };
 
 const fontFamilies = {
-  default: 'Source Sans Pro, sans-serif',
-  heading: 'sans-serif',
+  heading: 'Source Sans Pro, sans-serif',
+  default: 'IBM Plex Sans, sans-serif',
 };
 
 const theme = {
   colors: {
-    lightPrimary10: '#7976B6',
+    lightPrimary10: '#F4B400',
     lightPrimary20: '#9492C4',
     lightPrimary30: '#AEADD3',
     lightPrimary40: '#C9C8E2',
     lightPrimary50: '#C9C8E2',
-    primary: '#5E5BA7',
-    darkPrimary10: '#4E4C8B',
-    darkPrimary20: '#3F3D6F',
-    darkPrimary30: '#2F2E54',
-    darkPrimary40: '#1F1E38',
+    primary: '#525252',
+    darkPrimary: '#161616',
+    darkPrimary10: '#262626;',
+    darkPrimary20: '#525252',
+    darkPrimary30: '#6F6F6F',
+    Label: '#C6C6C6',
     darkPrimary50: '#131221',
-    normalText: '##131221',
+    normalText: '#F2B301',
     titleText: '#131221',
     bodyText: '#525171',
     helperText: '#706F77',
@@ -54,6 +59,7 @@ const theme = {
     secondaryBg: '#FFFFFF',
     white: '#FFF',
     black: '#000',
+    button: '#F4B400',
   },
   gradients: {
     default: '-webkit-linear-gradient(0deg, #3671FF 34.03%, #625DF4 99.78%)',
