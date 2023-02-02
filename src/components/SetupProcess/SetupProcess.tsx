@@ -14,8 +14,8 @@ type IProps = {
   handleSetStep: () => void;
 };
 
-const SetupProcess = ({ handleSetStep }:IProps) => {
-  const [processStep, setProcessStep] = React.useState<number>(1);
+const SetupProcess = ({ handleSetStep }: IProps) => {
+  const [processStep] = React.useState<number>(1);
 
   return (
     <Setupcontainer>
