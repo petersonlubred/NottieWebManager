@@ -8,10 +8,11 @@ import Signin from '@/components/SignIn';
 import { useState } from 'react';
 import SetDatabaseForm from '@/components/SetDatabaseForm/SetDatabaseForm';
 import SetupProcess from '@/components/SetupProcess/SetupProcess';
+import SetUpSuccess from '@/components/SetupSuccess/SetUpSuccess';
 
 const Home: NextPage = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(3);
 
   const toggleLogin = () => {
     setIsLogin(false);
@@ -34,9 +35,11 @@ const Home: NextPage = () => {
           <Signin handleSetStep={handleSetStep} />
         ) : step == 1 ? (
           <SetDatabaseForm handleSetStep={handleSetStep} />
-        ) : (
-          step === 2 && <SetupProcess />
-        )}
+        ) : 
+          step === 2 ? <SetupProcess handleSetStep={handleSetStep} />
+        :  step === 3 && <SetUpSuccess handleSetStep={handleSetStep} />
+          
+        }
       </Main>
     </Body>
   );
