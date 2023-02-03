@@ -1,4 +1,4 @@
-import { IinitialSiginin } from './../index';
+import { IinitialSiginin, IinitialUserLogin } from './../index';
 import { IinitialDatabase } from '..';
 
 export const initialSigninValue: IinitialSiginin = {
@@ -16,3 +16,10 @@ export const initialDatabaseValue: IinitialDatabase = {
   username: '',
   password: '',
 };
+
+export const initialUserLoginValue: IinitialUserLogin={
+  firstname:'',
+  lastname:'',
+  password:'',
+  confirmPassword:''
+}

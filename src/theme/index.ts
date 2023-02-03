@@ -44,11 +44,17 @@ const theme = {
     lightPrimary30: '#AEADD3',
     lightPrimary40: '#C9C8E2',
     lightPrimary50: '#C9C8E2',
+    lightPrimary60:'#F4F4F4',
+    
     primary: '#525252',
     darkPrimary: '#161616',
     darkPrimary10: '#262626;',
     darkPrimary20: '#525252',
     darkPrimary30: '#6F6F6F',
+    darkPrimary40: '#0D0D0D',
+    
+    yellowPrimary: '#f4b400',
+    
     Label: '#C6C6C6',
     darkPrimary50: '#131221',
     normalText: '#F2B301',
