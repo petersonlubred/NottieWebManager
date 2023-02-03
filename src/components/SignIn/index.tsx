@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FormGroup, TextInput, Button, PasswordInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';

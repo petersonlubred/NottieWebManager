@@ -138,7 +138,6 @@ const SetDatabaseForm = ({ handleSetStep }: IProps) => {
                   )}
                 </Field>
               </FormContainer>
-
               <FormContainer>
                 <Field name="username">
                   {({ field }: any) => (

@@ -35,11 +35,11 @@ const Home: NextPage = () => {
           <Signin handleSetStep={handleSetStep} />
         ) : step == 1 ? (
           <SetDatabaseForm handleSetStep={handleSetStep} />
-        ) : 
-          step === 2 ? <SetupProcess handleSetStep={handleSetStep} />
-        :  step === 3 && <SetUpSuccess handleSetStep={handleSetStep} />
-          
-        }
+        ) : step === 2 ? (
+          <SetupProcess handleSetStep={handleSetStep} />
+        ) : (
+          step === 3 && <SetUpSuccess handleSetStep={handleSetStep} />
+        )}
       </Main>
     </Body>
   );
