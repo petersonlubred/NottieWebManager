@@ -1,22 +1,26 @@
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from '../shared/globals';
-import { GlobalTheme } from '@carbon/react';
 import theme from '../theme';
 import './index.scss';
-import useDarkMode from '@/hooks/useDarkMode';
+import { Provider } from 'react-redux';
+import { wrapper } from '../redux/store';
+import { FC } from 'react';
+// import { PersistGate } from 'redux-persist/integration/react';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  const [themeMode] = useDarkMode();
+const MyApp: FC<AppProps> = ({ Component, ...rest }: AppProps) => {
+  const { store, props } = wrapper.useWrappedStore(rest);
+  const { pageProps } = props;
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalTheme theme={'g100'}>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <Component {...pageProps} theme={themeMode} />
-      </GlobalTheme>
-    </ThemeProvider>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
+        <Component {...pageProps} /> {/* </PersistGate> */}
+      </ThemeProvider>
+    </Provider>
   );
-}
+};
 
 export default MyApp;
