@@ -29,7 +29,7 @@ const Home: NextPage = () => {
       <Main>
         <NavbarSection>
           <Logo />
-          {isLogin && <SetDatabase toggleLogin={toggleLogin} />}
+          {isLogin && step === 1 && <SetDatabase toggleLogin={toggleLogin} />}
         </NavbarSection>
         {step === 0 ? (
           <Signin handleSetStep={handleSetStep} />
