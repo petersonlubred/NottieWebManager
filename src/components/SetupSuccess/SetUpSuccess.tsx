@@ -67,17 +67,16 @@ const SuccessContain = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 6.5rem;
   margin-bottom: 1rem;
   width: 100%;
   min-height: calc(100vh - ${px(64)});
-  color: white;
+  color: ${({theme})=> theme.colors.white};
 `;
 
 const SuccessDetails = styled.div`
   width: 429px;
   min-height: 314px;
-  background-color: #0d0d0d;
+  background-color:${({theme})=> theme.colors.darkPrimary40};
 
   font-family: 'IBM Plex Sans';
   font-style: normal;
@@ -87,7 +86,7 @@ const SuccessDetails = styled.div`
     font-size: 24px;
     line-height: 31px;
     padding: 0.5rem;
-    color: #f4f4f4;
+    color: ${({theme})=> theme.colors.lightPrimary60};
     text-align: left;
     margin-bottom: 0.5rem;
     flex: none;
@@ -101,7 +100,7 @@ const SuccessDetails = styled.div`
     margin-bottom: 0.6rem;
     padding: 0.5rem;
 
-    color: #c6c6c6;
+    color: ${({theme})=> theme.colors.Label};
     text-align: left;
 
     flex: none;
@@ -111,14 +110,12 @@ const SuccessDetails = styled.div`
 
   .inner_div{
     display: flex;
-    /* justify-content: space-between; */
     align-items: center;
     padding: 1rem;
     width: 100%;
 
     .left{
       margin-left: 6rem;
-      /* border:1px solid red; */
     }
 
     .textHead p {
@@ -128,7 +125,7 @@ const SuccessDetails = styled.div`
       padding: 0.5rem;
       text-transform: uppercase;
 
-      color: #6f6f6f;
+      color: ${({theme})=> theme.colors.darkPrimary30};
       text-align: left;
 
       flex: none;
@@ -141,7 +138,7 @@ const SuccessDetails = styled.div`
       line-height: 21px;
       padding: 0.5rem;
 
-      color: #f4f4f4;
+      color: ${({theme})=> theme.colors.lightPrimary60};
       text-transform: lowercase;
 
       flex: none;
@@ -154,7 +151,7 @@ const SuccessDetails = styled.div`
       line-height: 21px;
       padding: 0.5rem;
 
-      color: #f4f4f4;
+      color: ${({theme})=> theme.colors.lightPrimary60};
       text-transform: uppercase;
 
       flex: none;
@@ -173,12 +170,12 @@ const InnerBtnDiv = styled.div`
 
   .btn {
     width: 50%;
-    background-color: #6f6f6f;
+    background-color: ${({theme})=> theme.colors.darkPrimary30};
   }
 
   .btn2 {
     width: 50%;
-    background-color: #f4b400;
-    color: black;
+    background-color: ${({theme})=> theme.colors.yellowPrimary};
+    color: ${({theme})=> theme.colors.black};
   }
 `;

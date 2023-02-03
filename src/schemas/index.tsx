@@ -19,3 +19,14 @@ export const databaseSchema = Yup.object({
     .min(8, 'Password must be at least 8 characters')
     .required('Password is required'),
 });
+
+export const userLoginSchema = Yup.object({
+  firstname: Yup.string().required('first name is required'),
+  lastname: Yup.string().required('last name is required'),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is required'),
+  confirmPassword: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is required'),
+});
