@@ -243,7 +243,6 @@ const Paragraph = styled.p`
   width: ${px(312)};
   height: ${px(23)};
 
-  /* border: 1px solid red; */
   margin-left: -7rem;
   margin-top: ${px(32)};
   font-size: ${({ theme }) => theme.fontSizes.l};
@@ -280,7 +279,7 @@ const CurvedBox = styled.div`
   font-weight: 400;
 
   background-color: ${({ theme }) => theme.colors.lightPrimary60};
-  padding: ${px(4)};
-  border-radius: 12%;
+  padding: ${px(6)};
+  border-radius: 24px;
   cursor: pointer;
 `;
