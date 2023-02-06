@@ -1,18 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormGroup, TextInput, Button, PasswordInput } from '@carbon/react';
+import { FormGroup, TextInput, PasswordInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
-import { px, rem } from '@/utils';
+import { px } from '@/utils';
 import { userLoginSchema } from '@/schemas';
 import { initialUserLoginValue } from '@/interfaces/dtos';
+import Button from '../Button';
 
 type IProps = {
   handleSetStep: () => void;
-};
-
-const getField = (obj: any) => {
-  console.log(obj);
 };
 
 const SetupNewUserLoginForm = ({ handleSetStep }: IProps) => {
@@ -110,15 +107,13 @@ const SetupNewUserLoginForm = ({ handleSetStep }: IProps) => {
                   <CurvedBox>Customer support</CurvedBox>
                 </RoleContainer>
               </ContentContainer>
-
               <Button
                 renderIcon={(props: any) => <ArrowRight size={24} {...props} />}
-                iconDescription="Arrow-right"
                 disabled={isSubmitting || !isValid || !values?.password}
-                onClick={handleSetStep}
-              >
-                Continue{' '}
-              </Button>
+                handleClick={handleSetStep}
+                buttonLabel="Continue"
+                fullWidth
+              />
             </FormGroup>
           </Form>
         )}
@@ -142,27 +137,6 @@ const SignInContainer = styled.div`
 
   form {
     width: ${px(428)};
-    fieldset {
-      > button {
-        max-width: 30rem;
-        width: 100%;
-        margin-top: ${px(12)};
-        background-color: ${({ theme }) => theme.colors.button};
-        color: ${({ theme }) => theme.colors.black};
-      }
-
-      > button:hover {
-        background-color: ${({ theme }) => theme.colors.normalText};
-      }
-
-      div:nth-child(2) {
-        button {
-          svg {
-            fill: white !important;
-          }
-        }
-      }
-    }
   }
 `;
 
@@ -194,31 +168,28 @@ const FormContainer = styled.div`
   > div {
     width: 100%;
   }
-
   label {
-    color: ${({ theme }) => theme.colors.Label};
+    color: ${({ theme }) => theme.colors.lightText};
   }
-  input,
-  select {
+  input {
     height: ${px(48)};
     width: 100%;
     border: none;
-    background-color: ${({ theme }) => theme.colors.darkPrimary10};
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
     color: ${({ theme }) => theme.colors.white};
     ::placeholder {
       color: ${({ theme }) => theme.colors.darkPrimary20};
     }
-  }
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+    }
+    &:focus {
+      color: ${({ theme }) => theme.colors.white};
+    }
 
-  select:hover {
-    background-color: ${({ theme }) => theme.colors.darkPrimary10};
-  }
-  select:focus {
-    color: ${({ theme }) => theme.colors.white};
-  }
-
-  select + svg {
-    fill: ${({ theme }) => theme.colors.white};
+    & + svg {
+      fill: ${({ theme }) => theme.colors.white};
+    }
   }
 `;
 
@@ -265,11 +236,12 @@ const ContentContainer = styled.div`
 const RoleContainer = styled.div`
   display: flex;
   gap: ${px(10)};
+  margin-bottom: ${px(24)};
 `;
 
 const Label = styled.p`
   font-family: ${({ theme }) => theme.fontFamilies.default};
-  color: ${({ theme }) => theme.colors.Label};
+  color: ${({ theme }) => theme.colors.lightText};
   font-size: ${px(12)};
   padding-bottom: ${px(4)};
 `;
@@ -277,9 +249,14 @@ const Label = styled.p`
 const CurvedBox = styled.div`
   font-family: ${({ theme }) => theme.fontFamilies.default};
   font-weight: 400;
-
-  background-color: ${({ theme }) => theme.colors.lightPrimary60};
-  padding: ${px(6)};
+  background-color: ${({ theme }) => theme.colors.lightBackground};
+  color: ${({ theme }) => theme.colors.lightBackgroundtext};
+  padding: ${px(5)} ${px(8)};
   border-radius: 24px;
   cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.bgHover};
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;

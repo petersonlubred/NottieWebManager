@@ -3,16 +3,20 @@ import NavbarRoute from '@/components/NavbarRoute';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
 import { px } from '@/utils';
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-const Layout = ({ children }: PropsWithChildren) => {
+interface Iprops {
+  routename: string;
+  children: React.ReactNode;
+}
+const Layout = ({ children, routename }: Iprops) => {
   return (
     <LayoutContainer>
       <Navbar />
-      <NavbarRoute routename="User Management" />
+      <NavbarRoute routename={routename} />
       <PageHeader />
-      <LayoutChildren> {children}</LayoutChildren>
+      <LayoutChildren>{children}</LayoutChildren>
       <PageFooter />
     </LayoutContainer>
   );

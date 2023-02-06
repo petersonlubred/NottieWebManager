@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 
 const Provider = ({ children }: PropsWithChildren) => {
   const { mode } = useSelector((state: RootState) => state.sharedReducer);
-  const Theme = mode == 'dark' ? theme : lightTheme;
+  const Theme = mode === 'dark' ? theme : lightTheme;
 
   const [mounted, setMounted] = React.useState(false);
 
