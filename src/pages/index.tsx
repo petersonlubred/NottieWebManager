@@ -9,6 +9,7 @@ import { useState } from 'react';
 import SetDatabaseForm from '@/components/SetDatabaseForm/SetDatabaseForm';
 import SetupProcess from '@/components/SetupProcess/SetupProcess';
 import SetUpSuccess from '@/components/SetupSuccess/SetUpSuccess';
+import SetupNewUserLoginForm from '@/components/NewUserLoginForm';
 
 const Home: NextPage = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -36,7 +37,7 @@ const Home: NextPage = () => {
         {step === 0 ? (
           <Signin handleSetStep={handleSetStep} />
         ) : step == 1 ? (
-          <SetDatabaseForm handleSetStep={handleSetStep} />
+          <SetupNewUserLoginForm handleSetStep={handleSetStep} />
         ) : step === 2 ? (
           <SetupProcess handleSetStep={handleSetStep} />
         ) : (

@@ -106,6 +106,9 @@ const SignInContainer = styled.div`
       }
     }
   }
+  label {
+    color: ${({ theme }) => theme.colors.lightText};
+  }
   input {
     height: ${px(48)};
     width: 100%;

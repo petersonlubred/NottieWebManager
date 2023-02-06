@@ -104,7 +104,7 @@ const Accounts = () => {
     },
   ];
   return (
-    <Layout>
+    <Layout routename="User Management">
       <PageSubHeader buttonLabel="Create new user" />
       <DataTable rows={rows} headers={headers}>
         {({ rows, headers, getHeaderProps, getTableProps }: any) => (

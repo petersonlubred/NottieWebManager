@@ -41,6 +41,8 @@ const theme = {
   colors: {
     bgPrimary: '#161616',
     bgPrimaryLight: '#262626',
+    lightBackground: '#F4F4F4',
+    lightBackgroundtext: '#8D8D8D',
     darkPrimary20: '#525252',
     bgHover: '#6F6F6F',
     darkPrimary50: '#393939',
@@ -59,6 +61,8 @@ export const lightTheme = {
   colors: {
     bgPrimary: '#ffffff',
     bgPrimaryLight: '#f4f4f4',
+    lightBackground: '#161616',
+    lightBackgroundtext: 'white',
     darkPrimary20: '#525252',
     bgHover: '#e8e8e8',
     darkPrimary50: '#f4f4f4',
