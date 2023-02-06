@@ -102,5 +102,5 @@ const SectionListDescription = styled.div<ListItemProps>`
       ? theme.colors.normalText
       : Id === step + 1
       ? theme.colors.white
-      : theme.colors.darkPrimary30};
+      : theme.colors.bgHover};
 `;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import storageSession from 'redux-persist/lib/storage/session';
+import storageSession from 'redux-persist/lib/storage/session';
 
 const initialState = {
   user: {
@@ -11,8 +11,8 @@ const initialState = {
 };
 
 export const persistConfig = {
-  // storage: storageSession,
-  key: 'root',
+  storage: storageSession,
+  key: 'theme',
 };
 const authSlice = createSlice({
   name: 'auth',

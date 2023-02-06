@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormGroup, TextInput, Button, PasswordInput } from '@carbon/react';
+import { FormGroup, TextInput, PasswordInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
 import { signinSchema } from '@/schemas';
 import { initialSigninValue } from '@/interfaces/dtos';
+import Button from '../Button';
 
 type IProps = {
   handleSetStep: () => void;
@@ -65,24 +66,24 @@ const Signin = ({ handleSetStep }: IProps) => {
               </PasswordContainer>
               <Button
                 renderIcon={(props: any) => <ArrowRight size={24} {...props} />}
-                iconDescription="Arrow-right"
                 disabled={
                   isSubmitting ||
                   !isValid ||
                   !values?.email ||
                   !values?.password
                 }
-                onClick={handleSetStep}
-              >
-                Login
-              </Button>
+                fullWidth
+                handleClick={handleSetStep}
+                buttonLabel={'Login'}
+              />
             </FormGroup>
+            <Paragraph>
+              Need help? Reach out at{' '}
+              <ContactValue>support@nottie.co</ContactValue>
+            </Paragraph>
           </Form>
         )}
       </Formik>
-      <Paragraph>
-        Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
-      </Paragraph>
     </SignInContainer>
   );
 };
@@ -99,30 +100,9 @@ const SignInContainer = styled.div`
 
   form {
     width: ${px(354)};
-
     fieldset {
       > div {
         margin-bottom: ${px(32)};
-      }
-
-      > button {
-        max-width: 30rem;
-        width: 100%;
-        margin-top: ${px(12)};
-        background-color: ${({ theme }) => theme.colors.button};
-        color: ${({ theme }) => theme.colors.black};
-      }
-
-      > button:hover {
-        background-color: ${({ theme }) => theme.colors.normalText};
-      }
-
-      div:nth-child(2) {
-        button {
-          svg {
-            fill: white !important;
-          }
-        }
       }
     }
   }
@@ -130,9 +110,8 @@ const SignInContainer = styled.div`
     height: ${px(48)};
     width: 100%;
     border: none;
-    background-color: ${({ theme }) => theme.colors.darkPrimary10};
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
     color: ${({ theme }) => theme.colors.white};
-
     ::placeholder {
       color: ${({ theme }) => theme.colors.darkPrimary20};
     }
@@ -156,7 +135,6 @@ const Paragraph = styled.p`
   margin: 0;
   margin-top: ${px(32)};
   font-size: ${({ theme }) => theme.fontSizes.l};
-  text-align: center;
   & > span {
     display: inline-block;
   }
@@ -170,6 +148,7 @@ const ContactValue = styled.span`
 
 const PasswordContainer = styled.div`
   position: relative;
+  padding-bottom: ${px(12)};
 `;
 
 const ResetPasswordValue = styled.span`

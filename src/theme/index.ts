@@ -39,46 +39,40 @@ const fontFamilies = {
 
 const theme = {
   colors: {
-    lightPrimary10: '#F4B400',
-    lightPrimary20: '#9492C4',
-    lightPrimary30: '#AEADD3',
-    lightPrimary40: '#C9C8E2',
-    lightPrimary50: '#C9C8E2',
-    lightPrimary60:'#F4F4F4',
-    
-    primary: '#525252',
-    darkPrimary: '#161616',
-    darkPrimary10: '#262626;',
+    bgPrimary: '#161616',
+    bgPrimaryLight: '#262626',
     darkPrimary20: '#525252',
-    darkPrimary30: '#6F6F6F',
-    darkPrimary40: '#0D0D0D',
-    
-    yellowPrimary: '#f4b400',
-    
-    Label: '#C6C6C6',
-    darkPrimary50: '#131221',
+    bgHover: '#6F6F6F',
+    darkPrimary50: '#393939',
     normalText: '#F2B301',
-    titleText: '#131221',
-    bodyText: '#525171',
-    helperText: '#706F77',
-    mainBg: '#F8F8FB',
-    secondaryBg: '#FFFFFF',
+    lightText: '#c6c6c6',
     white: '#FFF',
     black: '#000',
     button: '#F4B400',
-  },
-  gradients: {
-    default: '-webkit-linear-gradient(0deg, #3671FF 34.03%, #625DF4 99.78%)',
-    text: '-webkit-linear-gradient(0deg, #625DF4 42.74%, #00CBFF 100%)',
-    text2:
-      '-webkit-linear-gradient(0deg, #3671FF 42.74%, #625DF4 71.11%, #00CBFF 100%)',
   },
   media,
   fontFamilies,
   fontSizes,
 };
 
-export type ThemeType = typeof theme;
+export const lightTheme = {
+  colors: {
+    bgPrimary: '#ffffff',
+    bgPrimaryLight: '#f4f4f4',
+    darkPrimary20: '#525252',
+    bgHover: '#e8e8e8',
+    darkPrimary50: '#f4f4f4',
+    normalText: '#F2B301',
+    lightText: '#8d8d8d',
+    white: '#000',
+    black: '#FFF',
+    button: '#F4B400',
+  },
+  media,
+  fontFamilies,
+  fontSizes,
+};
+export type ThemeType = typeof theme & typeof lightTheme;
 
 declare module 'styled-components' {
   export interface DefaultTheme extends ThemeType {}
