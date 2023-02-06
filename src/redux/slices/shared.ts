@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
 
 const initialState = {
-  mode: 'light',
+  mode: 'dark',
 };
 
 const sharedSlice = createSlice({
@@ -10,6 +9,7 @@ const sharedSlice = createSlice({
   initialState,
   reducers: {
     setMode: (state, { payload }) => {
+      localStorage.setItem('theme', payload);
       state.mode = payload;
     },
   },

@@ -184,12 +184,13 @@ const SetDatabaseForm = ({ handleSetStep }: IProps) => {
                 Connect to database{' '}
               </Button>
             </FormGroup>
+            <Paragraph>
+              Need help? Reach out at{' '}
+              <ContactValue>support@nottie.co</ContactValue>
+            </Paragraph>
           </Form>
         )}
       </Formik>
-      <Paragraph>
-        Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
-      </Paragraph>
     </SignInContainer>
   );
 };
@@ -257,7 +258,7 @@ const FormContainer = styled.div`
     height: ${px(48)};
     width: 100%;
     border: none;
-    background-color: ${({ theme }) => theme.colors.darkPrimary10};
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
     color: ${({ theme }) => theme.colors.white};
     ::placeholder {
       color: ${({ theme }) => theme.colors.darkPrimary20};
@@ -265,7 +266,7 @@ const FormContainer = styled.div`
   }
 
   select:hover {
-    background-color: ${({ theme }) => theme.colors.darkPrimary10};
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
   }
   select:focus {
     color: ${({ theme }) => theme.colors.white};

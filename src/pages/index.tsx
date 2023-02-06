@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import styled from 'styled-components';
-import Seo from '../components/seo';
+import Seo from '../providers/seo';
 import { px } from '../utils/px/px';
 import Logo from '@/components/Logo';
 import SetDatabase from '@/components/SetDatabase';
@@ -12,7 +12,7 @@ import SetUpSuccess from '@/components/SetupSuccess/SetUpSuccess';
 
 const Home: NextPage = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
 
   const toggleLogin = () => {
     setIsLogin(false);
@@ -28,8 +28,10 @@ const Home: NextPage = () => {
       <Seo title="Home" />
       <Main>
         <NavbarSection>
-          <Logo />
-          {isLogin && step === 1 && <SetDatabase toggleLogin={toggleLogin} />}
+          <LogoContainer>
+            <Logo />
+          </LogoContainer>
+          {isLogin && step === 0 && <SetDatabase toggleLogin={toggleLogin} />}
         </NavbarSection>
         {step === 0 ? (
           <Signin handleSetStep={handleSetStep} />
@@ -49,7 +51,7 @@ const Home: NextPage = () => {
 const Body = styled.div``;
 const Main = styled.main`
   /* overflow: hidden; */
-  background-color: ${({ theme }) => theme.colors.darkPrimary};
+  background-color: ${({ theme }) => theme.colors.bgPrimary};
   min-height: 100vh;
   ${({ theme }) => theme.media.md} {
     min-height: ${px(650)};
@@ -57,6 +59,11 @@ const Main = styled.main`
   ${({ theme }) => theme.media.lg} {
     min-height: ${px(800)};
   }
+`;
+
+const LogoContainer = styled.div`
+  margin-top: ${px(34)};
+  cursor: pointer;
 `;
 
 const NavbarSection = styled.div`

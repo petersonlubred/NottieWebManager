@@ -1,5 +1,5 @@
 import { px } from '@/utils';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { IbmCloudDedicatedHost } from '@carbon/react/icons';
 
@@ -28,7 +28,7 @@ const SetDatabaseBox = styled.div`
     height: ${px(48)}};
     cursor: pointer;
     padding: ${px(16)};
-    background-color: ${({ theme }) => theme.colors.darkPrimary30};
+    background-color: ${({ theme }) => theme.colors.bgHover};
 `;
 
 const SetDatabaseText = styled.p`
