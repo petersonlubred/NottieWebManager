@@ -253,17 +253,6 @@ const FormContainer = styled.div`
   label {
     color: ${({ theme }) => theme.colors.white};
   }
-  input,
-  select {
-    height: ${px(48)};
-    width: 100%;
-    border: none;
-    background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-    color: ${({ theme }) => theme.colors.white};
-    ::placeholder {
-      color: ${({ theme }) => theme.colors.darkPrimary20};
-    }
-  }
 
   select:hover {
     background-color: ${({ theme }) => theme.colors.bgPrimaryLight};

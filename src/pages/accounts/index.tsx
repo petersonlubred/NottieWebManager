@@ -1,4 +1,4 @@
-import PageSubHeader from '@/components/PageSubHeader';
+import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Layout from '@/HOC/Layout';
 import React from 'react';
 import {
@@ -14,6 +14,11 @@ import {
 import { TrashCan, Password, Edit } from '@carbon/react/icons';
 import styled from 'styled-components';
 import { px } from '@/utils';
+import { isEmpty } from 'lodash';
+import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
+import ModalContent from '@/components/accounts/ModalContent';
+import Modal from '@/components/shared/Modal';
+import Empty from '@/components/shared/Empty';
 
 type AccessDotProps = {
   active: boolean;
@@ -31,48 +36,48 @@ const AccessStatus = ({ active }: AccessDotProps) => {
 const ActionIcons = () => {
   return (
     <NavSectionTwo>
-      <NavIconItem>
-        <TrashCan size={20} />
-      </NavIconItem>
-      <NavIconItem>
-        <Password size={20} />
-      </NavIconItem>
-      <NavIconItem>
-        <Edit size={20} />
-      </NavIconItem>
+      <Modal
+        buttonTriggerText={''}
+        buttonIcon={(props: any) => <TrashCan size={20} {...props} />}
+        heading="Confirm delete"
+        buttonLabel="Delete"
+        secondaryButtonText="Cancel"
+        danger={true}
+      >
+        <SimpleModalcontent content="This user will be sent a temporay password to their email address." />
+      </Modal>
+      <Modal
+        buttonTriggerText={''}
+        buttonIcon={(props: any) => <Password size={20} {...props} />}
+        heading="Confirm password reset"
+        buttonLabel="Reset Password"
+        secondaryButtonText="Cancel"
+      >
+        <SimpleModalcontent content="Are you sure you want to delete this account?." />
+      </Modal>
+
+      <Modal
+        buttonTriggerText={''}
+        buttonIcon={(props: any) => <Edit size={20} {...props} />}
+        heading="Edit User"
+        buttonLabel="Save changes"
+      >
+        <ModalContent isEdit />
+      </Modal>
     </NavSectionTwo>
   );
 };
 
 const Accounts = () => {
-  const rows = [
-    {
-      id: 'a',
-      item_key: <Checkbox id="checked" labelText="" />,
-      first_name: 'Load balancer 1',
-      last_name: 'Load Balancer 2',
-      email: 'a@gmai.com',
-      access_status: <AccessStatus active={true} />,
-      role: 'Admin',
-      authentication_type: 'Classic',
-      others: <ActionIcons />,
-    },
-    {
-      id: 'b',
-      item_key: <Checkbox id="checked" labelText="" />,
-      first_name: 'Load balancer 1',
-      last_name: 'Load Balancer 2',
-      email: 'a@gmai.com',
-      access_status: <AccessStatus active={true} />,
-      role: 'Admin',
-      authentication_type: 'Classic',
-      others: <ActionIcons />,
-    },
-  ];
+  const [indeterminate, setIndeterminate] = React.useState(false);
+  const data: any[] = [];
+
   const headers = [
     {
       key: 'item_key',
-      header: <Checkbox id="checked" labelText="" />,
+      header: (
+        <Checkbox id="checked-1" labelText="" indeterminate={indeterminate} />
+      ),
     },
     {
       key: 'first_name',
@@ -103,6 +108,31 @@ const Accounts = () => {
       header: '',
     },
   ];
+  const rows = [
+    {
+      id: 'a',
+      item_key: <Checkbox id="checked-2" labelText="" />,
+      first_name: 'Load balancer 1',
+      last_name: 'Load Balancer 2',
+      email: 'a@gmai.com',
+      access_status: <AccessStatus active={true} />,
+      role: 'Admin',
+      authentication_type: 'Classic',
+      others: <ActionIcons />,
+    },
+    {
+      id: 'b',
+      item_key: <Checkbox id="checked-3" labelText="" />,
+      first_name: 'Load balancer 1',
+      last_name: 'Load Balancer 2',
+      email: 'a@gmai.com',
+      access_status: <AccessStatus active={false} />,
+      role: 'Admin',
+      authentication_type: 'Classic',
+      others: <ActionIcons />,
+    },
+  ];
+
   return (
     <Layout routename="User Management">
       <PageSubHeader buttonLabel="Create new user" />
@@ -118,18 +148,23 @@ const Accounts = () => {
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>
-              {rows.map((row: any) => (
-                <TableRow key={row.id}>
-                  {row.cells.map((cell: any) => (
-                    <TableCell key={cell.id}>{cell.value}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
+            {isEmpty(data) && (
+              <TableBody>
+                {rows.map((row: any) => (
+                  <TableRow key={row.id}>
+                    {row.cells.map((cell: any) => (
+                      <TableCell key={cell.id}>{cell.value}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
           </Table>
         )}
       </DataTable>
+      {!isEmpty(data) && (
+        <Empty title="No users yet" text="You should create roles first." />
+      )}
     </Layout>
   );
 };
@@ -158,12 +193,14 @@ const NavSectionTwo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
 
-const NavIconItem = styled.div`
-  padding: ${px(16)};
-  &:hover {
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.bgHover};
+  .btn-primary {
+    background-color: transparent !important;
+    color: ${(props) => props.theme.colors.white} !important;
+    padding: calc(0.875rem - 3px) 36px calc(0.875rem - 3px) 15px !important;
+
+    &:hover {
+      background-color: ${(props) => props.theme.colors.bgHover} !important;
+    }
   }
 `;

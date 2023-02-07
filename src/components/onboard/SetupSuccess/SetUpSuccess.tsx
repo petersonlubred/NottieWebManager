@@ -7,7 +7,7 @@ type IProps = {
   handleSetStep: () => void;
 };
 
-const SetUpSuccess = ({handleSetStep}:IProps) => {
+const SetUpSuccess = ({ handleSetStep }: IProps) => {
   return (
     <SuccessContain>
       <div>
@@ -26,8 +26,8 @@ const SetUpSuccess = ({handleSetStep}:IProps) => {
             other accounts.
           </p>
         </div>
-        
-        <div className='inner_div'>
+
+        <div className="inner_div">
           <div>
             <div className="textHead">
               <p>username</p>
@@ -36,7 +36,7 @@ const SetUpSuccess = ({handleSetStep}:IProps) => {
               <p>admin001</p>
             </div>
           </div>
-          <div className='left'>
+          <div className="left">
             <div className="textHead">
               <p>password</p>
             </div>
@@ -50,11 +50,15 @@ const SetUpSuccess = ({handleSetStep}:IProps) => {
           <Button className="btn" renderIcon={Copy} size="xl">
             Copy details
           </Button>
-          <Button className="btn2" renderIcon={ArrowRight} size="xl" onClick={handleSetStep}>
+          <Button
+            className="btn2"
+            renderIcon={ArrowRight}
+            size="xl"
+            onClick={handleSetStep}
+          >
             Get started
           </Button>
         </InnerBtnDiv>
-
       </SuccessDetails>
     </SuccessContain>
   );
@@ -70,13 +74,13 @@ const SuccessContain = styled.div`
   margin-bottom: 1rem;
   width: 100%;
   min-height: calc(100vh - ${px(64)});
-  color: ${({theme})=> theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 const SuccessDetails = styled.div`
   width: 429px;
   min-height: 314px;
-  background-color:${({theme})=> theme.colors.darkPrimary40};
+  background-color: ${({ theme }) => theme.colors.deepBlack};
 
   font-family: 'IBM Plex Sans';
   font-style: normal;
@@ -85,8 +89,8 @@ const SuccessDetails = styled.div`
   .para p {
     font-size: 24px;
     line-height: 31px;
-    padding: 0.5rem;
-    color: ${({theme})=> theme.colors.lightPrimary60};
+    padding: 0.8rem;
+    color: ${({ theme }) => theme.colors.white};
     text-align: left;
     margin-bottom: 0.5rem;
     flex: none;
@@ -100,7 +104,7 @@ const SuccessDetails = styled.div`
     margin-bottom: 0.6rem;
     padding: 0.5rem;
 
-    color: ${({theme})=> theme.colors.Label};
+    color: ${({ theme }) => theme.colors.lightText};
     text-align: left;
 
     flex: none;
@@ -108,13 +112,13 @@ const SuccessDetails = styled.div`
     flex-grow: 0;
   }
 
-  .inner_div{
+  .inner_div {
     display: flex;
     align-items: center;
     padding: 1rem;
     width: 100%;
 
-    .left{
+    .left {
       margin-left: 6rem;
     }
 
@@ -125,7 +129,7 @@ const SuccessDetails = styled.div`
       padding: 0.5rem;
       text-transform: uppercase;
 
-      color: ${({theme})=> theme.colors.darkPrimary30};
+      color: ${({ theme }) => theme.colors.bgHover};
       text-align: left;
 
       flex: none;
@@ -138,7 +142,7 @@ const SuccessDetails = styled.div`
       line-height: 21px;
       padding: 0.5rem;
 
-      color: ${({theme})=> theme.colors.lightPrimary60};
+      color: ${({ theme }) => theme.colors.white};
       text-transform: lowercase;
 
       flex: none;
@@ -151,7 +155,7 @@ const SuccessDetails = styled.div`
       line-height: 21px;
       padding: 0.5rem;
 
-      color: ${({theme})=> theme.colors.lightPrimary60};
+      color: ${({ theme }) => theme.colors.white};
       text-transform: uppercase;
 
       flex: none;
@@ -161,7 +165,6 @@ const SuccessDetails = styled.div`
   }
 `;
 
-
 const InnerBtnDiv = styled.div`
   display: flex;
   align-items: center;
@@ -170,12 +173,12 @@ const InnerBtnDiv = styled.div`
 
   .btn {
     width: 50%;
-    background-color: ${({theme})=> theme.colors.darkPrimary30};
+    background-color: ${({ theme }) => theme.colors.bgHover};
+    color: ${({ theme }) => theme.colors.white};
   }
 
   .btn2 {
     width: 50%;
-    background-color: ${({theme})=> theme.colors.yellowPrimary};
-    color: ${({theme})=> theme.colors.black};
+    color: ${({ theme }) => theme.colors.black};
   }
 `;
