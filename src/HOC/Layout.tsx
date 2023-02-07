@@ -1,7 +1,7 @@
-import Navbar from '@/components/Navbar';
-import NavbarRoute from '@/components/NavbarRoute';
-import PageFooter from '@/components/PageFooter';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/accounts/PageHeader';
+import Navbar from '@/components/shared/Navbar';
+import NavbarRoute from '@/components/shared/NavbarRoute';
+import PageFooter from '@/components/shared/PageFooter';
 import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
@@ -49,10 +49,6 @@ const LayoutChildren = styled.div`
       color: ${({ theme }) => theme.colors.white};
       border-top: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
       border-bottom: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
-    }
-
-    .cds--checkbox-label::before {
-      border: 1px solid ${({ theme }) => theme.colors.white};
     }
 
     tr:hover td {

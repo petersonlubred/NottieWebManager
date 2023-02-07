@@ -39,10 +39,11 @@ const fontFamilies = {
 
 const theme = {
   colors: {
+    deepBlack: ' #0D0D0D',
     bgPrimary: '#161616',
     bgPrimaryLight: '#262626',
     lightBackground: '#F4F4F4',
-    lightBackgroundtext: '#8D8D8D',
+    lightBackgroundtext: '#161616',
     darkPrimary20: '#525252',
     bgHover: '#6F6F6F',
     darkPrimary50: '#393939',
@@ -51,6 +52,7 @@ const theme = {
     white: '#FFF',
     black: '#000',
     button: '#F4B400',
+    danger: '#DA1E28',
   },
   media,
   fontFamilies,
@@ -59,6 +61,7 @@ const theme = {
 
 export const lightTheme = {
   colors: {
+    deepBlack: '#fff',
     bgPrimary: '#ffffff',
     bgPrimaryLight: '#f4f4f4',
     lightBackground: '#161616',
@@ -71,6 +74,7 @@ export const lightTheme = {
     white: '#000',
     black: '#FFF',
     button: '#F4B400',
+    danger: '#DA1E28',
   },
   media,
   fontFamilies,

@@ -6,7 +6,7 @@ import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
 import { userLoginSchema } from '@/schemas';
 import { initialUserLoginValue } from '@/interfaces/dtos';
-import Button from '../Button';
+import Button from '../../shared/Button';
 
 type IProps = {
   handleSetStep: () => void;
@@ -159,7 +159,7 @@ const HeaderTitle = styled.h1`
   flex-grow: 0;
 `;
 
-const FormContainer = styled.div`
+export const FormContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: ${px(16)};
@@ -256,7 +256,7 @@ const CurvedBox = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.bgHover};
-    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.button};
+    color: #161616;
   }
 `;

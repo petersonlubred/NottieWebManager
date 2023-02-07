@@ -22,7 +22,6 @@ const PageFooter = () => {
 
 export default PageFooter;
 
-//fixed footer to the bottom
 const FooterContainer = styled.div`
   position: fixed;
   bottom: 0;
@@ -45,8 +44,8 @@ const FooterContainer = styled.div`
       }
 
       select {
-        color: ${({ theme }) => theme.colors.white};
-        background-color: ${({ theme }) => theme.colors.bgPrimary};
+        color: ${({ theme }) => theme.colors.white} !important;
+        background-color: ${({ theme }) => theme.colors.bgPrimary} !important;
         border: none !important;
         &:focus,
         &:active,

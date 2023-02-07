@@ -1,19 +1,18 @@
+import SetupNewUserLoginForm from '@/components/onboard/NewUserLoginForm';
+import SetDatabase from '@/components/onboard/SetDatabase';
+import SetupProcess from '@/components/onboard/SetupProcess/SetupProcess';
+import SetUpSuccess from '@/components/onboard/SetupSuccess/SetUpSuccess';
+import Signin from '@/components/onboard/SignIn';
+import Logo from '@/components/shared/Logo';
 import type { NextPage } from 'next';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Seo from '../providers/seo';
 import { px } from '../utils/px/px';
-import Logo from '@/components/Logo';
-import SetDatabase from '@/components/SetDatabase';
-import Signin from '@/components/SignIn';
-import { useState } from 'react';
-import SetDatabaseForm from '@/components/SetDatabaseForm/SetDatabaseForm';
-import SetupProcess from '@/components/SetupProcess/SetupProcess';
-import SetUpSuccess from '@/components/SetupSuccess/SetUpSuccess';
-import SetupNewUserLoginForm from '@/components/NewUserLoginForm';
 
 const Home: NextPage = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(3);
 
   const toggleLogin = () => {
     setIsLogin(false);

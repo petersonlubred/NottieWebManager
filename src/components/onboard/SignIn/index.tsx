@@ -4,9 +4,9 @@ import { FormGroup, TextInput, PasswordInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
-import { signinSchema } from '@/schemas';
 import { initialSigninValue } from '@/interfaces/dtos';
-import Button from '../Button';
+import { signinSchema } from '@/schemas';
+import Button from '@/components/shared/Button';
 
 type IProps = {
   handleSetStep: () => void;
