@@ -9,13 +9,26 @@ import styled from 'styled-components';
 interface Iprops {
   routename: string;
   children: React.ReactNode;
+  navItem?: string[];
+  selected?: number;
+  handleSetIndex?: Function;
 }
-const Layout = ({ children, routename }: Iprops) => {
+const Layout = ({
+  children,
+  routename,
+  navItem,
+  selected,
+  handleSetIndex,
+}: Iprops) => {
   return (
     <LayoutContainer>
       <Navbar />
       <NavbarRoute routename={routename} />
-      <PageHeader />
+      <PageHeader
+        navItem={navItem}
+        selected={selected}
+        handleSetIndex={handleSetIndex}
+      />
       <LayoutChildren>{children}</LayoutChildren>
       <PageFooter />
     </LayoutContainer>

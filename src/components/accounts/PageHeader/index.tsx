@@ -2,11 +2,13 @@ import { px } from '@/utils';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const navItem = ['User accounts', 'Roles & privileges'];
+interface Iprops {
+  navItem?: string[];
+  selected?: number;
+  handleSetIndex?: Function;
+}
 
-const PageHeader = () => {
-  const [selected, setSelected] = useState(0);
-
+const PageHeader = ({ navItem, selected, handleSetIndex }: Iprops) => {
   return (
     <HeaderContainer>
       <HeaderTitle>User Management</HeaderTitle>
@@ -18,7 +20,7 @@ const PageHeader = () => {
           <HeaderNavItem
             key={index}
             selected={selected === index}
-            onClick={() => setSelected(index)}
+            onClick={() => handleSetIndex && handleSetIndex(index)}
           >
             {item}
           </HeaderNavItem>
