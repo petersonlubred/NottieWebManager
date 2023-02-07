@@ -25,7 +25,7 @@ export const rolesheader = [
   },
 ];
 
-export const rolesRows = [
+export const rows = [
   {
     id: 'a',
     item_key: <Checkbox id="checked-2" labelText="" />,
@@ -85,27 +85,21 @@ export const headers = [
   },
 ];
 
-export const rows = [
+export const rolesRows = [
   {
     id: 'a',
     item_key: <Checkbox id="checked-2" labelText="" />,
-    first_name: 'Load balancer 1',
-    last_name: 'Load Balancer 2',
-    email: 'a@gmai.com',
-    access_status: <AccessStatus active={true} />,
-    role: 'Admin',
-    authentication_type: 'Classic',
+    role_name: 'Load balancer 1',
+    description: 'Load Balancer 2',
+    number: '1',
     others: <ActionIcons />,
   },
   {
     id: 'b',
     item_key: <Checkbox id="checked-3" labelText="" />,
-    first_name: 'Load balancer 1',
-    last_name: 'Load Balancer 2',
-    email: 'a@gmai.com',
-    access_status: <AccessStatus active={false} />,
-    role: 'Admin',
-    authentication_type: 'Classic',
+    role_name: 'Load balancer 1',
+    description: 'Load Balancer 2',
+    number: '2',
     others: <ActionIcons />,
   },
 ];

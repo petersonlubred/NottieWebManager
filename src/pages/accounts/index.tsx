@@ -1,6 +1,6 @@
 import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Layout from '@/HOC/Layout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DataTable,
   Table,
@@ -12,14 +12,27 @@ import {
 } from '@carbon/react';
 import { isEmpty } from 'lodash';
 import Empty from '@/components/shared/Empty';
-import { headers, rows } from '@/utils/dtos';
+import { headers, rolesheader, rolesRows, rows } from '@/utils/dtos';
 
 const Accounts = () => {
   const data: any[] = [];
   const [selected, setSelected] = useState(0);
+  const [Headers, setHeaders] = useState<any[]>(headers);
+  const [Rows, setRows] = useState<any[]>(rows);
+
   const handleSetIndex = (index: number) => {
     setSelected(index);
   };
+
+  useEffect(() => {
+    if (selected === 1) {
+      setHeaders(rolesheader);
+      setRows(rolesRows);
+    } else {
+      setHeaders(headers);
+      setRows(rows);
+    }
+  }, [selected]);
 
   return (
     <Layout
@@ -29,7 +42,7 @@ const Accounts = () => {
       handleSetIndex={handleSetIndex}
     >
       <PageSubHeader buttonLabel="Create new user" />
-      <DataTable rows={rows} headers={headers}>
+      <DataTable rows={Rows} headers={Headers}>
         {({ rows, headers, getHeaderProps, getTableProps }: any) => (
           <Table {...getTableProps()}>
             <TableHead>
