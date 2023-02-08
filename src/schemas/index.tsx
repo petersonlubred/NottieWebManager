@@ -34,3 +34,8 @@ export const userLoginSchema = Yup.object({
 export const EmailSchema = Yup.object({
   email: Yup.string().email('Invalid email').required('Email is required'),
 });
+
+export const RolesAndPrivilagesSchema = Yup.object({
+  roleName:Yup.string().required('role name is required'),
+  roleDescription:Yup.string().required('role description is required')
+})
