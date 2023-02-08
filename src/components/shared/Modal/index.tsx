@@ -12,6 +12,7 @@ interface Iprops {
   secondaryButtonText?: string;
   open?: boolean;
   danger?: boolean;
+  extent:string;
 }
 
 const Modal = ({
@@ -23,6 +24,7 @@ const Modal = ({
   secondaryButtonText = 'Close',
   open,
   danger,
+  extent
 }: Iprops) => {
   return (
     <ModalContainer
@@ -30,7 +32,7 @@ const Modal = ({
       buttonTriggerText={buttonTriggerText}
       renderTriggerButtonIcon={buttonIcon}
       modalHeading={heading}
-      size="sm"
+      size={extent}
       primaryButtonText={buttonLabel}
       secondaryButtonText={secondaryButtonText}
       open={open}

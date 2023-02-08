@@ -14,6 +14,7 @@ const ActionIcons = () => {
         buttonLabel="Delete"
         secondaryButtonText="Cancel"
         danger={true}
+        extent="sm"
       >
         <SimpleModalcontent content="This user will be sent a temporay password to their email address." />
       </Modal>
@@ -23,6 +24,7 @@ const ActionIcons = () => {
         heading="Confirm password reset"
         buttonLabel="Reset Password"
         secondaryButtonText="Cancel"
+        extent="sm"
       >
         <SimpleModalcontent content="Are you sure you want to delete this account?." />
       </Modal>
@@ -32,6 +34,7 @@ const ActionIcons = () => {
         buttonIcon={(props: any) => <Edit size={20} {...props} />}
         heading="Edit User"
         buttonLabel="Save changes"
+        extent="sm"
       >
         <ModalContent isEdit />
       </Modal>
