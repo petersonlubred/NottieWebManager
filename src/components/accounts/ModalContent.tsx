@@ -10,7 +10,7 @@ import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 import { FormContainer } from '../onboard/NewUserLoginForm';
 
 interface Iprops {
-  isEdit: boolean;
+  isEdit?: boolean;
 }
 
 const ModalContent = ({ isEdit }: Iprops) => {

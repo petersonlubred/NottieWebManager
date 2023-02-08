@@ -4,7 +4,6 @@ import styled from 'styled-components';
 export const PageSubHeaderContainer = styled.div`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.bgPrimary};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
 `;
 
 export const Paragraph = styled.p`
