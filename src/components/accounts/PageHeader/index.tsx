@@ -1,9 +1,9 @@
 import { px } from '@/utils';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface Iprops {
-  navItem?: string[];
+  navItem?: { title: string }[];
   selected?: number;
   handleSetIndex?: Function;
   title?: string;
@@ -28,7 +28,7 @@ const PageHeader = ({
             selected={selected === index}
             onClick={() => handleSetIndex && handleSetIndex(index)}
           >
-            {item}
+            {item?.title}
           </HeaderNavItem>
         ))}
       </HeaderNav>

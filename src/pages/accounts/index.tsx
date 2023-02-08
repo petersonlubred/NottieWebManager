@@ -26,11 +26,19 @@ import ActionIcons from '@/components/accounts/ActionIcons';
 import { AccessStatus } from '@/components/accounts/AccessStatus';
 import IconAndText from '@/components/accounts/IconAndText';
 import Button from '@/components/shared/Button';
+import Modal from '@/components/shared/Modal';
+import ModalContent from '@/components/accounts/ModalContent';
 
 const Accounts = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const navItems = [
+    { title: 'User accounts' },
+    { title: 'Roles & privileges' },
+  ];
 
   const usersheader = useMemo(() => {
     return [
@@ -129,16 +137,30 @@ const Accounts = () => {
     }
   }, [roleData, rolesheader, selected, userData, usersheader]);
 
+  const toggleModal = () => {
+    setOpen(!open);
+  };
+
   return (
     <Layout
       routename="User Management"
-      navItem={['User accounts', 'Roles & privileges']}
+      navItem={navItems}
       selected={selected}
       handleSetIndex={handleSetIndex}
       title={'User Management'}
       subtitle={'Create and manage users and permissions'}
     >
-      <PageSubHeader buttonLabel="Create new user" />
+      <Modal
+        buttonTriggerText={''}
+        buttonIcon={(props: any) => <Add size={24} {...props} />}
+        heading="Create New User"
+        buttonLabel="Invite user"
+        open={open}
+        toggleModal={toggleModal}
+      >
+        <ModalContent />
+      </Modal>
+      <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
         {({
           rows,
@@ -154,7 +176,6 @@ const Accounts = () => {
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
-                {' '}
                 <TableBatchAction
                   renderIcon={Password}
                   iconDescription="Download the selected rows"
@@ -174,7 +195,7 @@ const Accounts = () => {
                 <TableToolbarSearch onChange={() => console.log('123')} />
                 <Button
                   renderIcon={(props: any) => <Add size={20} {...props} />}
-                  handleClick={() => console.log('123')}
+                  handleClick={toggleModal}
                   buttonLabel="Create new user"
                 />
               </TableToolbarContent>

@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { ModalWrapper } from '@carbon/react';
+import {  Modal as M } from '@carbon/react';
 import styled from 'styled-components';
 
 interface Iprops {
@@ -13,6 +13,7 @@ interface Iprops {
   open?: boolean;
   danger?: boolean;
   extent:string;
+  toggleModal?: () => void;
 }
 
 const Modal = ({
@@ -25,6 +26,7 @@ const Modal = ({
   open,
   danger,
   extent
+  toggleModal,
 }: Iprops) => {
   return (
     <ModalContainer
@@ -37,6 +39,7 @@ const Modal = ({
       secondaryButtonText={secondaryButtonText}
       open={open}
       danger={danger}
+      onRequestClose={toggleModal}
     >
       {children}
     </ModalContainer>
@@ -47,7 +50,7 @@ export default Modal;
 
 type ModalProps = { danger?: boolean };
 
-export const ModalContainer = styled(ModalWrapper)<ModalProps>`
+export const ModalContainer = styled(M)<ModalProps>`
   & > div {
     background-color: ${({ theme }) => theme.colors.bgPrimary};
     border-top: 1px solid ${({ theme }) => theme.colors.bgPrimaryLight};
