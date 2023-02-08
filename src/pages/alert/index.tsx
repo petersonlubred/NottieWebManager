@@ -27,7 +27,7 @@ import { AccessStatus } from '@/components/accounts/AccessStatus';
 import IconAndText from '@/components/accounts/IconAndText';
 import Button from '@/components/shared/Button';
 
-const Accounts = () => {
+const Alert = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
@@ -131,12 +131,22 @@ const Accounts = () => {
 
   return (
     <Layout
-      routename="User Management"
-      navItem={['User accounts', 'Roles & privileges']}
+      routename="Alerts and Notification"
+      navItem={[
+        'Transaction Inflow',
+        'Transaction SMS',
+        'Transaction Email',
+        'Non-Transaction',
+        'Non-Transaction SMS',
+        'Non-Transaction Email',
+        'OTP',
+        'OTP-SMS',
+        'OTP-Email',
+      ]}
       selected={selected}
       handleSetIndex={handleSetIndex}
-      title={'User Management'}
-      subtitle={'Create and manage users and permissions'}
+      title={'Alerts and Notification'}
+      subtitle={'View all types of notification and alert activities'}
     >
       <PageSubHeader buttonLabel="Create new user" />
       <DataTable rows={Rows} headers={Headers}>
@@ -213,4 +223,4 @@ const Accounts = () => {
   );
 };
 
-export default Accounts;
+export default Alert;

@@ -7,18 +7,22 @@ import { Light, LightFilled, Notification, User } from '@carbon/react/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setMode } from '@/redux/slices/shared';
+import { NextRouter, useRouter } from 'next/router';
 
 const Navbaritem = [
-  'Dashboard',
-  'Alerts and Notification',
-  'System Configuration',
-  'User Management',
-  'Profile Subscription',
+  { title: 'Dashboard', route: 'dashboard' },
+  { title: 'Alerts and Notification', route: 'alert' },
+  { title: 'System Configuration', route: 'system-config' },
+  { title: 'User Management', route: 'accounts' },
+  { title: 'Profile Subscription', route: 'profile' },
 ];
 
 const Navbar = () => {
   const { mode } = useSelector((state: RootState) => state.sharedReducer);
+  const router: NextRouter = useRouter();
   const dispatch = useDispatch();
+  // get the current route
+  const currentRoute = router.pathname.split('/')[1];
 
   return (
     <NavbarContainer>
@@ -42,10 +46,17 @@ const Navbar = () => {
                     label: 'Option 2',
                   },
                 ]}
-                label={item}
+                label={item?.title}
               />
             ) : (
-              <NavbarItem>{item}</NavbarItem>
+              <NavbarItem
+                active={currentRoute === item?.route}
+                onClick={() => {
+                  router.push(`/${item?.route}`);
+                }}
+              >
+                {item?.title}
+              </NavbarItem>
             )}
           </NavList>
         ))}
@@ -119,7 +130,10 @@ const NavList = styled.div`
   }
 `;
 
-const NavbarItem = styled.div`
+type NavbarItemProps = { active?: boolean };
+
+const NavbarItem = styled.div<NavbarItemProps>`
+  background-color: ${({ theme, active }) => active && theme.colors.bgHover};
   padding: ${px(16)};
   &:hover {
     background-color: ${({ theme }) => theme.colors.bgHover};

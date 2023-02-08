@@ -12,6 +12,8 @@ interface Iprops {
   navItem?: string[];
   selected?: number;
   handleSetIndex?: Function;
+  title?: string;
+  subtitle?: string;
 }
 const Layout = ({
   children,
@@ -19,6 +21,8 @@ const Layout = ({
   navItem,
   selected,
   handleSetIndex,
+  title,
+  subtitle,
 }: Iprops) => {
   return (
     <LayoutContainer>
@@ -28,6 +32,8 @@ const Layout = ({
         navItem={navItem}
         selected={selected}
         handleSetIndex={handleSetIndex}
+        title={title}
+        subtitle={subtitle}
       />
       <LayoutChildren>{children}</LayoutChildren>
       <PageFooter />
