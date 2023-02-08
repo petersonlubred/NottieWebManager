@@ -6,15 +6,21 @@ interface Iprops {
   navItem?: string[];
   selected?: number;
   handleSetIndex?: Function;
+  title?: string;
+  subtitle?: string;
 }
 
-const PageHeader = ({ navItem, selected, handleSetIndex }: Iprops) => {
+const PageHeader = ({
+  navItem,
+  selected,
+  handleSetIndex,
+  title,
+  subtitle,
+}: Iprops) => {
   return (
     <HeaderContainer>
-      <HeaderTitle>User Management</HeaderTitle>
-      <HeaderDescription>
-        Create and manage users and permissions.
-      </HeaderDescription>
+      <HeaderTitle>{title}</HeaderTitle>
+      <HeaderDescription>{subtitle}.</HeaderDescription>
       <HeaderNav>
         {navItem?.map((item, index) => (
           <HeaderNavItem
