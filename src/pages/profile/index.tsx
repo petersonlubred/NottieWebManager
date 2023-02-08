@@ -16,16 +16,22 @@ import {
   TableBatchActions,
   TableBatchAction,
 } from '@carbon/react';
-import { TrashCan } from '@carbon/react/icons';
+import { TrashCan, Add, Password, Upload } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import Empty from '@/components/shared/Empty';
+import Button from '@/components/shared/Button';
 import useHeaders from '@/hooks/useHeaders';
-import TableNabItem from '@/components/alert/TableNavItems';
+import TableNavItem from '@/components/alert/TableNavItems';
+import Modal from '@/components/shared/Modal';
+import ModalContent from '@/components/subscription/ProfileModalContent';
 
-const Alert = () => {
+const Accounts = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const { profileheader, alertexceptionheader, alertexcludeheader } =
+    useHeaders();
   const [filterItems, setFilterItems] = useState<
     { key: string; label: string; value: string }[]
   >([
@@ -41,44 +47,24 @@ const Alert = () => {
     },
   ]);
 
-  const {
-    inflowheader,
-    smsheader,
-    emailheader,
-    nontransactionheader,
-
-    otpheader,
-  } = useHeaders();
-
   const navItems = useMemo(() => {
     return [
-      { title: 'Transaction Inflow' },
-      { title: 'Transaction SMS' },
-      { title: 'Transaction Email' },
-      { title: 'Non-Transaction' },
-      { title: 'Non-Transaction SMS' },
-      { title: 'Non-Transaction Email' },
-      { title: 'OTP' },
-      { title: 'OTP-SMS' },
-      { title: 'OTP-Email' },
+      { title: 'Transaction Alert Profile' },
+      { title: 'Transaction Alert Exception' },
+      { title: 'Transaction Alert Exclude' },
+      { title: 'Subscription' },
     ];
   }, []);
 
   const handleSetIndex = (index: number) => {
     setSelected(index);
   };
-
   useEffect(() => {
     const headers = [
-      inflowheader,
-      smsheader,
-      emailheader,
-      nontransactionheader,
-      smsheader,
-      emailheader,
-      otpheader,
-      smsheader,
-      emailheader,
+      profileheader,
+      alertexceptionheader,
+      alertexcludeheader,
+      alertexceptionheader,
     ];
     headers?.forEach((header, index) => {
       if (index === selected) {
@@ -119,31 +105,61 @@ const Alert = () => {
           value: '',
         },
         {
+          key: 'email',
+          label: 'Email',
+          value: '',
+        },
+        {
           key: 'account_no',
           label: 'Account Number',
+          value: '',
+        },
+        {
+          key: 'mobile_no',
+          label: 'Mobile No',
           value: '',
         },
       ]);
     }
   }, [
-    emailheader,
-    inflowheader,
+    alertexceptionheader,
+    alertexcludeheader,
     navItems,
-    nontransactionheader,
-    otpheader,
+    profileheader,
     selected,
-    smsheader,
   ]);
+
+  const toggleModal = () => {
+    setOpen(!open);
+  };
 
   return (
     <Layout
-      routename="Alerts and Notification"
+      routename="Profile & Subscriptions"
       navItem={navItems}
       selected={selected}
       handleSetIndex={handleSetIndex}
-      title={'Alerts and Notification'}
-      subtitle={'View all types of notification and alert activities'}
+      title={'Profile & Subscriptions'}
+      subtitle={'Create and manage profile and permissions and subscription'}
     >
+      <Modal
+        buttonTriggerText={''}
+        buttonIcon={(props: any) => <Add size={24} {...props} />}
+        heading={`Create ${selected === 3 ? 'New' : 'Alert'} ${
+          navItems[selected]?.title.split(' ')[
+            navItems[selected]?.title.split(' ').length - 1
+          ]
+        }`}
+        buttonLabel={`Create ${
+          navItems[selected]?.title.split(' ')[
+            navItems[selected]?.title.split(' ').length - 1
+          ]
+        }`}
+        open={open}
+        toggleModal={toggleModal}
+      >
+        <ModalContent />
+      </Modal>
       <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
         {({
@@ -161,15 +177,41 @@ const Alert = () => {
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
                 <TableBatchAction
+                  renderIcon={Password}
+                  iconDescription="Download the selected rows"
+                  // onClick={console.log(selectedRows)}
+                >
+                  Reset Password
+                </TableBatchAction>
+                <TableBatchAction
                   renderIcon={TrashCan}
                   iconDescription="Delete the selected rows"
-                  onClick={console.log(selectedRows)}
+                  // onClick={console.log(selectedRows)}
                 >
                   Delete
                 </TableBatchAction>
               </TableBatchActions>
               <TableToolbarContent>
-                <TableNabItem filterItems={filterItems} />
+                {selected != 0 && selected != 2 && (
+                  <TableNavItem filterItems={filterItems} noDateRange />
+                )}
+                <Button
+                  renderIcon={(props: any) => <Add size={20} {...props} />}
+                  buttonLabel={`Create ${
+                    navItems[selected]?.title.split(' ')[
+                      navItems[selected]?.title.split(' ').length - 1
+                    ]
+                  }`}
+                  handleClick={toggleModal}
+                />
+                {selected !== 0 && (
+                  <Button
+                    renderIcon={(props: any) => <Upload size={20} {...props} />}
+                    handleClick={() => console.log('123')}
+                    buttonLabel={`Bulk Upload`}
+                    className={'transparent-button'}
+                  />
+                )}
               </TableToolbarContent>
             </TableToolbar>
             <Table {...getTableProps()}>
@@ -200,10 +242,10 @@ const Alert = () => {
         )}
       </DataTable>
       {isEmpty(Rows) && (
-        <Empty title={'No ' + navItems[selected].title + ' alerts found'} />
+        <Empty title={'No ' + navItems[selected].title + ' found'} />
       )}
     </Layout>
   );
 };
 
-export default Alert;
+export default Accounts;

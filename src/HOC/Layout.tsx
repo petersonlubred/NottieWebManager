@@ -9,7 +9,7 @@ import styled from 'styled-components';
 interface Iprops {
   routename: string;
   children: React.ReactNode;
-  navItem?: string[];
+  navItem: { title: string }[];
   selected?: number;
   handleSetIndex?: Function;
   title?: string;
@@ -81,5 +81,12 @@ const LayoutChildren = styled.div`
     td:last-child > div {
       padding: 0;
     }
+  }
+
+  .transparent-button {
+    background-color: transparent;
+    color: ${({ theme }) => theme.colors.white} !important;
+    border: 1px solid ${({ theme }) => theme.colors.white} !important;
+    margin-left: ${px(1)};
   }
 `;

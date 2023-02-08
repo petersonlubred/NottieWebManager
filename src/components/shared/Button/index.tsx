@@ -9,6 +9,7 @@ interface IProps {
   buttonLabel?: string;
   fullWidth?: boolean;
   validateButton?: boolean;
+  className?: string;
 }
 const Button = ({
   renderIcon,
@@ -17,6 +18,7 @@ const Button = ({
   buttonLabel,
   fullWidth,
   validateButton,
+  className,
 }: IProps) => {
   return (
     <ButtonStyle
@@ -25,6 +27,7 @@ const Button = ({
       onClick={handleClick}
       width={fullWidth}
       validateButton={validateButton}
+      className={className}
     >
       {buttonLabel}
     </ButtonStyle>

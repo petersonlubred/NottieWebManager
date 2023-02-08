@@ -5,7 +5,7 @@ import Icon from '../Icons';
 
 interface Iprops {
   title: string;
-  text: string;
+  text?: string;
 }
 const Empty = ({ title, text }: Iprops) => {
   return (
