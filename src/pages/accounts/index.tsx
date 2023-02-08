@@ -10,25 +10,36 @@ import {
   TableBody,
   TableCell,
   Checkbox,
+  TableSelectAll,
+  TableSelectRow,
+  TableToolbar,
+  TableToolbarAction,
+  TableToolbarContent,
+  TableToolbarSearch,
+  TableToolbarMenu,
+  TableBatchActions,
+  TableBatchAction,
+  ModalContainer,
 } from '@carbon/react';
+import { TrashCan, Save, Download, Add, Password } from '@carbon/react/icons';
+
 import { isEmpty } from 'lodash';
 import Empty from '@/components/shared/Empty';
 import { roles, users } from '@/mockData/index';
 import ActionIcons from '@/components/accounts/ActionIcons';
 import { AccessStatus } from '@/components/accounts/AccessStatus';
+import IconAndText from '@/components/accounts/IconAndText';
+import ModalContent from '@/components/accounts/ModalContent';
+import Modal from '@/components/shared/Modal';
+import Button from '@/components/shared/Button';
 
 const Accounts = () => {
-  const data: any[] = [];
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
 
   const usersheader = useMemo(() => {
     return [
-      {
-        key: 'item_key',
-        header: <Checkbox id="checked-1" labelText="" />,
-      },
       {
         key: 'first_name',
         header: 'First Name',
@@ -59,13 +70,9 @@ const Accounts = () => {
       },
     ];
   }, []);
-  
+
   const rolesheader = useMemo(() => {
     return [
-      {
-        key: 'item_key',
-        header: <Checkbox id="checked-1" labelText="" />,
-      },
       {
         key: 'role_name',
         header: 'Role Name',
@@ -76,7 +83,7 @@ const Accounts = () => {
       },
       {
         key: 'number',
-        header: 'Number',
+        header: 'Number of Users',
       },
       {
         key: 'others',
@@ -88,11 +95,11 @@ const Accounts = () => {
   const roleData = useMemo(() => {
     return roles.map((role, _) => {
       return {
-        id: role.id,
-        item_key: <Checkbox id="checked-2" labelText="" />,
+        id: role.id.toString(),
+        item_key: <Checkbox id={`checked-role-${role.id}`} labelText="" />,
         role_name: role.role_name,
         description: role.description,
-        number: role.number,
+        number: <IconAndText text={role?.number.toString()} />,
         others: <ActionIcons />,
       };
     });
@@ -101,13 +108,13 @@ const Accounts = () => {
   const userData = useMemo(() => {
     return users.map((user, _) => {
       return {
-        id: user.id,
-        item_key: <Checkbox id="checked-2" labelText="" />,
+        id: user.id.toString(),
+        item_key: <Checkbox id={`checked-user-${user.id}`} labelText="" />,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
         access_status: <AccessStatus active={user.access_status} />,
-        role: user.role,
+        role: user.role.join(', '),
         authentication_type: user.authentication_type,
         others: <ActionIcons />,
       };
@@ -137,32 +144,73 @@ const Accounts = () => {
     >
       <PageSubHeader buttonLabel="Create new user" />
       <DataTable rows={Rows} headers={Headers}>
-        {({ rows, headers, getHeaderProps, getTableProps }: any) => (
-          <Table {...getTableProps()}>
-            <TableHead>
-              <TableRow>
-                {headers.map((header: any, index: number) => (
-                  <TableHeader {...getHeaderProps({ header })} key={index}>
-                    {header.header}
-                  </TableHeader>
-                ))}
-              </TableRow>
-            </TableHead>
-            {isEmpty(data) && (
-              <TableBody>
-                {rows.map((row: any) => (
-                  <TableRow key={row.id}>
-                    {row.cells.map((cell: any) => (
-                      <TableCell key={cell.id}>{cell.value}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            )}
-          </Table>
+        {({
+          rows,
+          headers,
+          getHeaderProps,
+          getRowProps,
+          getTableProps,
+          getSelectionProps,
+          getToolbarProps,
+          getBatchActionProps,
+          selectedRows,
+        }: any) => (
+          <>
+            <TableToolbar {...getToolbarProps()}>
+              <TableBatchActions {...getBatchActionProps()}>
+                {' '}
+                <TableBatchAction
+                  renderIcon={Password}
+                  iconDescription="Download the selected rows"
+                  onClick={console.log(selectedRows)}
+                >
+                  Reset Password
+                </TableBatchAction>
+                <TableBatchAction
+                  renderIcon={TrashCan}
+                  iconDescription="Delete the selected rows"
+                  onClick={console.log(selectedRows)}
+                >
+                  Delete
+                </TableBatchAction>
+              </TableBatchActions>
+              <TableToolbarContent>
+                <TableToolbarSearch onChange={() => console.log('123')} />
+                <Button
+                  renderIcon={(props: any) => <Add size={20} {...props} />}
+                  handleClick={() => console.log('123')}
+                  buttonLabel="Create new user"
+                />
+              </TableToolbarContent>
+            </TableToolbar>
+            <Table {...getTableProps()}>
+              <TableHead>
+                <TableRow>
+                  <TableSelectAll {...getSelectionProps()} />
+                  {headers.map((header: any, index: number) => (
+                    <TableHeader {...getHeaderProps({ header })} key={index}>
+                      {header.header}
+                    </TableHeader>
+                  ))}
+                </TableRow>
+              </TableHead>
+              {!isEmpty(Rows) && (
+                <TableBody>
+                  {rows.map((row: any) => (
+                    <TableRow key={row.id} {...getRowProps({ row })}>
+                      <TableSelectRow {...getSelectionProps({ row })} />
+                      {row.cells.map((cell: any) => (
+                        <TableCell key={cell.id}>{cell.value}</TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              )}
+            </Table>
+          </>
         )}
       </DataTable>
-      {!isEmpty(data) && (
+      {isEmpty(Rows) && (
         <Empty title="No users yet" text="You should create roles first." />
       )}
     </Layout>

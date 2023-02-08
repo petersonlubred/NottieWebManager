@@ -146,10 +146,10 @@
   "resolved" "https://registry.npmjs.org/@carbon/icon-helpers/-/icon-helpers-10.38.0.tgz"
   "version" "10.38.0"
 
-"@carbon/icons-react@^11.15.0":
-  "integrity" "sha512-2X1VKIKvVw/+9jG6j8MwIXNWm1683UdejdLv3hI/WZRtzoe8ljvmAPSZZKbBwXRcKIZ6vFlvwBeI3o6aE6ulLg=="
-  "resolved" "https://registry.npmjs.org/@carbon/icons-react/-/icons-react-11.15.0.tgz"
-  "version" "11.15.0"
+"@carbon/icons-react@^11.16.0":
+  "integrity" "sha512-MsbqFa3oQaz6++rDIZ3RBQVJw59yFZjkWewiTlaTp+IVsGpv5YltsS1QUePsKmLRLvTFCFRc0pnMbOaPwgs1bQ=="
+  "resolved" "https://registry.npmjs.org/@carbon/icons-react/-/icons-react-11.16.0.tgz"
+  "version" "11.16.0"
   dependencies:
     "@carbon/icon-helpers" "^10.38.0"
     "@carbon/telemetry" "0.1.0"
@@ -166,15 +166,15 @@
   "version" "11.9.0"
 
 "@carbon/react@^1.21.0":
-  "integrity" "sha512-NEMOfpOPkFOLI6l+qUKRac1Bl+VGtR5otRp8KBnxyzTIAYzBeu23BDdrS8hgGA6rc2BjhhDyDJ9gwDz0WtU1+g=="
-  "resolved" "https://registry.npmjs.org/@carbon/react/-/react-1.21.0.tgz"
-  "version" "1.21.0"
+  "integrity" "sha512-Igt6utOBhOL6Ux3Xhskqkx+COoGU3TJYnuyQoaXs9fIy78lphS3pwVVqhhOlz50yRMNVd+BlVnFRZUU4rpWNxg=="
+  "resolved" "https://registry.npmjs.org/@carbon/react/-/react-1.22.0.tgz"
+  "version" "1.22.0"
   dependencies:
     "@babel/runtime" "^7.18.3"
     "@carbon/feature-flags" "^0.12.0"
-    "@carbon/icons-react" "^11.15.0"
+    "@carbon/icons-react" "^11.16.0"
     "@carbon/layout" "^11.11.0"
-    "@carbon/styles" "^1.21.0"
+    "@carbon/styles" "^1.22.0"
     "@carbon/telemetry" "0.1.0"
     "classnames" "2.3.2"
     "copy-to-clipboard" "^3.3.1"
@@ -192,10 +192,10 @@
     "wicg-inert" "^3.1.1"
     "window-or-global" "^1.0.1"
 
-"@carbon/styles@^1.21.0":
-  "integrity" "sha512-7kIDGfLlMIcCwJG0y3jfyadHpAmOCth/kHdHxqxKzBmT/BDGiEmEsrdvknUXYJeGcwVA0s54xewVkpnnSFEVsA=="
-  "resolved" "https://registry.npmjs.org/@carbon/styles/-/styles-1.21.0.tgz"
-  "version" "1.21.0"
+"@carbon/styles@^1.22.0":
+  "integrity" "sha512-lfewhEFIaRDhnwGhknen+vzhgfgd/3nq1nk6JZWP9FqwwkJR02UiWrl7Mr40chyzxzuYmtAv/nJh2m7qJelhiw=="
+  "resolved" "https://registry.npmjs.org/@carbon/styles/-/styles-1.22.0.tgz"
+  "version" "1.22.0"
   dependencies:
     "@carbon/colors" "^11.12.0"
     "@carbon/feature-flags" "^0.12.0"

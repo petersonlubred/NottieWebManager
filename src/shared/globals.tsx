@@ -134,7 +134,8 @@ export const GlobalStyles = createGlobalStyle`
     box-shadow: none !important;
   }
 
-  .cds--checkbox-label,.cds--list-box__menu-item__option {
+  .cds--checkbox-label,
+  .cds--list-box__menu-item__option {
     color: ${({ theme }) => theme.colors.white} !important;
   }
   .cds--list-box__menu-item__option > svg {
@@ -156,7 +157,9 @@ export const GlobalStyles = createGlobalStyle`
   .cds--checkbox:checked + .cds--checkbox-label::before {
     background-color: ${({ theme }) => theme.colors.white} !important;
   }
-
+  .cds--checkbox:indeterminate + .cds--checkbox-label::after {
+    border-left: 0 solid ${({ theme }) => theme.colors.white} !important;
+  }
   .cds--list-box__menu {
     &:focus {
       outline: none !important;
@@ -171,10 +174,9 @@ export const GlobalStyles = createGlobalStyle`
       }
     }
   }
-   .cds--list-box__menu-item--active {
+  .cds--list-box__menu-item--active {
     background-color: ${({ theme }) => theme.colors.bgHover} !important;
   }
-
 
   input[type='text'],
   select {
@@ -185,6 +187,57 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.colors.white} !important;
     ::placeholder {
       color: ${({ theme }) => theme.colors.darkPrimary20} !important;
+    }
+  }
+  .cds--toolbar-search-container-expandable:hover {
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+  }
+  .cds--table-toolbar {
+    background-color: ${({ theme }) => theme.colors.bgPrimary} !important;
+    svg {
+      fill: ${({ theme }) => theme.colors.white};
+    }
+
+    input {
+      width: 100%;
+      background-color: ${({ theme }) => theme.colors.bgPrimary} !important;
+      border: none;
+      outline: none;
+      color: ${({ theme }) => theme.colors.white};
+
+      &:focus,
+      &:focus ~ button {
+        border: none;
+        outline: none;
+      }
+
+      &:focus ~ button:hover {
+        background-color: ${({ theme }) => theme.colors.bgPrimary};
+        border: none;
+        outline: none;
+      }
+    }
+  }
+  
+  .cds--btn--primary.cds--batch-summary__cancel::before {
+    background-color: #161616 !important;
+  }
+
+  .cds--batch-actions {
+    background-color: ${({ theme }) => theme.colors.button} !important;
+    color: #161616 !important;
+
+    & > div {
+      background-color: ${({ theme }) => theme.colors.button} !important;
+      span,
+      button {
+        background-color: ${({ theme }) => theme.colors.button} !important;
+        color: #161616 !important;
+
+        svg {
+          fill: #161616 !important;
+        }
+      }
     }
   }
 `;
