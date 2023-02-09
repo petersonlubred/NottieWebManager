@@ -28,8 +28,9 @@ import ExceptionModalContent from '@/components/profile/ExceptionModalContent';
 import ExcludeModalContent from '@/components/profile/ExcludeContent';
 import SubscriptionModalContent from '@/components/profile/SubscriptionContent';
 import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
+import UploadContent from '@/components/profile/UploadContent';
 
-const Accounts = () => {
+const Profile = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
@@ -184,7 +185,7 @@ const Accounts = () => {
         open={bulkopen}
         toggleModal={toggleBulkModal}
       >
-        <SimpleModalcontent content={''} />
+        <SimpleModalcontent content={<UploadContent />} />
       </Modal>
       <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
@@ -274,4 +275,4 @@ const Accounts = () => {
   );
 };
 
-export default Accounts;
+export default Profile;
