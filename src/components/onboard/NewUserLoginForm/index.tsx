@@ -162,9 +162,9 @@ const HeaderTitle = styled.h1`
 export const FormContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: ${px(16)};
-  margin-bottom: ${px(32)};
-  place-items: center;
+  grid-gap: 0 ${px(16)};
+  margin-bottom: ${px(16)};
+  place-items: start;
   > div {
     width: 100%;
   }

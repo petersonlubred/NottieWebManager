@@ -1,4 +1,11 @@
-import { IinitialSiginin, IinitialUserLogin } from './../index';
+import {
+  IinitialAlertProfile,
+  IinitialSiginin,
+  IinitialUserLogin,
+  IinitialAlertException,
+  IinitialAlertExclude,
+  IinitialSubscription,
+} from './../index';
 import { IinitialDatabase } from '..';
 
 export const initialSigninValue: IinitialSiginin = {
@@ -17,9 +24,41 @@ export const initialDatabaseValue: IinitialDatabase = {
   password: '',
 };
 
-export const initialUserLoginValue: IinitialUserLogin={
-  firstname:'',
-  lastname:'',
-  password:'',
-  confirmPassword:''
-}
+export const initialUserLoginValue: IinitialUserLogin = {
+  firstname: '',
+  lastname: '',
+  password: '',
+  confirmPassword: '',
+};
+
+export const initialAlertProfileValue: IinitialAlertProfile = {
+  description: '',
+  name: '',
+  template: '',
+  min_threshold: '',
+  max_threshold: '',
+};
+
+export const initialAlertException: IinitialAlertException = {
+  customerId: '',
+  accountNo: '',
+  profile: '',
+  alertMedium: '',
+  recipient: '',
+  status: '',
+};
+
+export const initialSubscription: IinitialSubscription = {
+  customerId: '',
+  accountNo: '',
+  profile: '',
+  alertMedium: '',
+  recipient: '',
+  status: '',
+};
+
+export const initialAlertExclude: IinitialAlertExclude = {
+  label: '',
+  operator: '',
+  textToExclude: '',
+};

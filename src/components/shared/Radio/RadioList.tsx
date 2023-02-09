@@ -3,9 +3,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { RadioButtonGroup, RadioButton } from '@carbon/react';
 
-const Radioitems = ['Classic', 'AD', 'SSO'];
+interface Iprops {
+  Radioitems: string[];
+}
 
-const RadioList = () => {
+const RadioList = ({ Radioitems }: Iprops) => {
   return (
     <RadioItemList
       defaultSelected="default-selected"
@@ -31,4 +33,5 @@ const RadioItemList = styled(RadioButtonGroup)`
   justify-content: center;
   width: 100%;
   gap: ${px(36)};
+  margin-top: ${px(20)};
 `;

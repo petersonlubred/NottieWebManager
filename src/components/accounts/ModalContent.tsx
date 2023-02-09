@@ -1,7 +1,7 @@
 import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
-import RadioList from './RadioList';
+import RadioList from '../shared/Radio/RadioList';
 import { Checkbox, TextInput, MultiSelect, FormGroup } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
 import { EmailSchema } from '@/schemas';
@@ -17,8 +17,8 @@ const ModalContent = ({ isEdit }: Iprops) => {
   return (
     <ModalContentContainer>
       <ModalItem>
-        <ModalLabel>AuthenticationType</ModalLabel>
-        <RadioList />
+        <ModalLabel>Authentication Type</ModalLabel>
+        <RadioList Radioitems={['Classic', 'AD', 'SSO']} />
       </ModalItem>
       <ModalItem>
         <ModalLabel>Enable Access</ModalLabel>{' '}

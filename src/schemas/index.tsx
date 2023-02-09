@@ -39,3 +39,34 @@ export const RolesAndPrivilagesSchema = Yup.object({
   roleName:Yup.string().required('role name is required'),
   roleDescription:Yup.string().required('role description is required')
 })
+export const AlertProfileSchema = Yup.object({
+  name: Yup.string().required('Name is required'),
+  description: Yup.string().required('Description is required'),
+  template: Yup.string().required('Template is required'),
+  min_threshold: Yup.string().required('Min Threshold is required'),
+  max_threshold: Yup.string().required('Max Threshold is required'),
+});
+
+export const AlertExceptionSchema = Yup.object({
+  customerId: Yup.string().required('Customer Id is required'),
+  accountNo: Yup.string().required('Account No is required'),
+  alertMedium: Yup.string().required('Alert Medium is required'),
+  recipient: Yup.string().required('Recipient is required'),
+  profile: Yup.string().required('Profile is required'),
+  status: Yup.string().required('Status is required'),
+});
+
+export const AlertExcludeSchema = Yup.object({
+  label: Yup.string().required('Label is required'),
+  operator: Yup.string().required('Operator is required'),
+  textToExclude: Yup.string().required('Text to Exclude is required'),
+});
+
+export const SubscriptionSchema = Yup.object({
+  customerId: Yup.string().required('Customer Id is required'),
+  accountNo: Yup.string().required('Account No is required'),
+  alertMedium: Yup.string().required('Alert Medium is required'),
+  recipient: Yup.string().required('Recipient is required'),
+  profile: Yup.string().required('Profile is required'),
+  status: Yup.string().required('Status is required'),
+});
