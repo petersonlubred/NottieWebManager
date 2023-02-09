@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface Iprops {
-  content: string;
+  content: string | JSX.Element;
 }
 const SimpleModalcontent = ({ content }: Iprops) => {
   return <Paragraph>{content}</Paragraph>;
