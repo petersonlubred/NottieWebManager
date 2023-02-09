@@ -47,7 +47,9 @@ const SetDatabaseForm = ({ handleSetStep }: IProps) => {
                       labelText="Select"
                       {...field}
                       onKeyUp={() => setFieldTouched('databaseType', true)}
-                      invalid={Boolean(touched.server && errors.server)}
+                      invalid={Boolean(
+                        touched.databaseType && errors.databaseType
+                      )}
                       invalidText={errors.databaseType}
                     >
                       <SelectItem text="Choose option" />

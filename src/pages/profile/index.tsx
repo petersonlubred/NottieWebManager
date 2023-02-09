@@ -23,13 +23,18 @@ import Button from '@/components/shared/Button';
 import useHeaders from '@/hooks/useHeaders';
 import TableNavItem from '@/components/alert/TableNavItems';
 import Modal from '@/components/shared/Modal';
-import ModalContent from '@/components/subscription/ProfileModalContent';
+import ModalContent from '@/components/profile/ProfileModalContent';
+import ExceptionModalContent from '@/components/profile/ExceptionModalContent';
+import ExcludeModalContent from '@/components/profile/ExcludeContent';
+import SubscriptionModalContent from '@/components/profile/SubscriptionContent';
+import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
 
 const Accounts = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const [bulkopen, setBulkOpen] = useState<boolean>(false);
   const { profileheader, alertexceptionheader, alertexcludeheader } =
     useHeaders();
   const [filterItems, setFilterItems] = useState<
@@ -132,6 +137,9 @@ const Accounts = () => {
   const toggleModal = () => {
     setOpen(!open);
   };
+  const toggleBulkModal = () => {
+    setBulkOpen(!bulkopen);
+  };
 
   return (
     <Layout
@@ -158,7 +166,25 @@ const Accounts = () => {
         open={open}
         toggleModal={toggleModal}
       >
-        <ModalContent />
+        {selected === 0 ? (
+          <ModalContent />
+        ) : selected === 1 ? (
+          <ExceptionModalContent />
+        ) : selected === 2 ? (
+          <ExcludeModalContent />
+        ) : (
+          <SubscriptionModalContent />
+        )}
+      </Modal>
+      <Modal
+        buttonTriggerText={''}
+        buttonIcon={(props: any) => <Add size={24} {...props} />}
+        heading={`Bulk Upload`}
+        buttonLabel={`Upload`}
+        open={bulkopen}
+        toggleModal={toggleBulkModal}
+      >
+        <SimpleModalcontent content={''} />
       </Modal>
       <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
@@ -207,7 +233,7 @@ const Accounts = () => {
                 {selected !== 0 && (
                   <Button
                     renderIcon={(props: any) => <Upload size={20} {...props} />}
-                    handleClick={() => console.log('123')}
+                    handleClick={toggleBulkModal}
                     buttonLabel={`Bulk Upload`}
                     className={'transparent-button'}
                   />

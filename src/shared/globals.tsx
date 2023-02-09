@@ -179,6 +179,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   input[type='text'],
+  input[type='number'],
   select {
     height: ${px(48)} !important;
     width: 100% !important;
@@ -239,5 +240,22 @@ export const GlobalStyles = createGlobalStyle`
         }
       }
     }
+  }
+
+  .number-input{
+    button{
+      &:hover{
+        background-color: ${({ theme }) => theme.colors.bgHover} !important;
+      }
+    }
+    button::before, button::after{
+      width:0 !important;
+    }
+    .cds--number__rule-divider{
+      background-color: ${({ theme }) => theme.colors.bgHover} !important;
+    }
+     .cds--number__rule-divider:nth-child(2){
+      display:none;
+         }
   }
 `;
