@@ -12,7 +12,7 @@ import { px } from '../utils/px/px';
 
 const Home: NextPage = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
 
   const toggleLogin = () => {
     setIsLogin(false);

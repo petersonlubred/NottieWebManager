@@ -12,7 +12,7 @@ import { NextRouter, useRouter } from 'next/router';
 const Navbaritem = [
   { title: 'Dashboard', route: 'dashboard' },
   { title: 'Alerts and Notification', route: 'alert' },
-  { title: 'System Configuration', route: 'system-config' },
+  { title: 'System Configuration', route: 'configuration' },
   { title: 'User Management', route: 'accounts' },
   { title: 'Profile Subscription', route: 'profile' },
 ];
@@ -21,7 +21,6 @@ const Navbar = () => {
   const { mode } = useSelector((state: RootState) => state.sharedReducer);
   const router: NextRouter = useRouter();
   const dispatch = useDispatch();
-  // get the current route
   const currentRoute = router.pathname.split('/')[1];
 
   return (
@@ -47,6 +46,9 @@ const Navbar = () => {
                   },
                 ]}
                 label={item?.title}
+                onChange={() => {
+                  router.push(`/${item?.route}`);
+                }}
               />
             ) : (
               <NavbarItem

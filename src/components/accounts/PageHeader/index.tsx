@@ -87,7 +87,6 @@ const HeaderNavItem = styled.div<HeaderNavItemProps>`
       selected ? theme.colors.normalText : 'transparent'};
   font-weight: ${({ selected }) => selected && '700'};
   &:hover {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.normalText};
     font-weight: 700;
     color: ${({ theme }) => theme.colors.white};
   }

@@ -52,7 +52,7 @@ const NavSectionTwo = styled.div`
   .btn-primary {
     background-color: transparent !important;
     color: ${(props) => props.theme.colors.white} !important;
-    padding: calc(0.875rem - 3px) 36px calc(0.875rem - 3px) 15px !important;
+    padding: calc(0.875rem - 3px) 33px calc(0.875rem - 3px) 15px !important;
 
     &:hover {
       background-color: ${(props) => props.theme.colors.bgHover} !important;
