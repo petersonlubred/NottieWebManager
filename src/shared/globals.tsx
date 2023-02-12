@@ -111,14 +111,20 @@ export const GlobalStyles = createGlobalStyle`
     box-shadow: none;
   }
 
-  input,
   button,
-  input:focus,
   button:focus,
-  input:active,
   button:active {
     outline: none !important;
     border: none !important;
+    box-shadow: none !important;
+  }
+
+  input, textarea,
+  input:focus,textarea:focus,
+  input:active, textarea:active{
+    outline: none !important;
+    border: none !important;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover} !important;
     box-shadow: none !important;
   }
 
@@ -183,7 +189,16 @@ export const GlobalStyles = createGlobalStyle`
   select {
     height: ${px(48)} !important;
     width: 100% !important;
-    border: none !important;
+    border: none;
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+    color: ${({ theme }) => theme.colors.white} !important;
+    ::placeholder {
+      color: ${({ theme }) => theme.colors.darkPrimary20} !important;
+    }
+  }
+textarea{
+    width: 100% !important;
+    border: none;
     background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
     color: ${({ theme }) => theme.colors.white} !important;
     ::placeholder {

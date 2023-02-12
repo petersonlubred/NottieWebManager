@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   mode: 'dark',
+  selectedColor: '#00000',
 };
 
 const sharedSlice = createSlice({
@@ -12,9 +13,12 @@ const sharedSlice = createSlice({
       localStorage.setItem('theme', payload);
       state.mode = payload;
     },
+    setSelectedColor: (state, { payload }) => {
+      state.selectedColor = payload;
+    },
   },
 });
 
-export const { setMode } = sharedSlice.actions;
+export const { setMode, setSelectedColor } = sharedSlice.actions;
 const { reducer } = sharedSlice;
 export default reducer;

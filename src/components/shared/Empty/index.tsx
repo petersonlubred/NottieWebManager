@@ -38,6 +38,8 @@ const NoDataTitle = styled.p`
   margin-top: ${px(29)};
   line-height: ${px(34)}
   margin-bottom: ${px(16)};
+  width: ${px(383)};
+  text-align:center;
 `;
 
 const NoDataText = styled.p`
