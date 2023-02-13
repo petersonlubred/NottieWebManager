@@ -30,6 +30,7 @@ import Button from '@/components/shared/Button';
 import Icon from '@/components/shared/Icons';
 import DataSource from '@/components/configuration/DataSource';
 import DataSourceForm from '@/components/configuration/DataSourceForm';
+import ServiceMapping from '@/components/configuration/ServiceMapping';
 
 const SystemConfiguration = () => {
   const [selected, setSelected] = useState(0);
@@ -248,6 +249,12 @@ const SystemConfiguration = () => {
             <DataSourceForm />
           </ConfigurationContainer>
         </>
+      )}
+
+      {selected === 2 && (
+        <ConfigurationContainer>
+          <ServiceMapping />
+        </ConfigurationContainer>
       )}
     </Layout>
   );
