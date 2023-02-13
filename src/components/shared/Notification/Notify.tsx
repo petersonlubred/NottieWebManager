@@ -34,9 +34,8 @@ export const Toast = ({
   caption,
   description,
   message,
-  expiresIn
+  expiresIn,
 }: IProps) => {
-  
   <ToastNotification
     caption={caption}
     iconDescription={description}

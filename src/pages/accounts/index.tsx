@@ -28,12 +28,14 @@ import IconAndText from '@/components/accounts/IconAndText';
 import Button from '@/components/shared/Button';
 import Modal from '@/components/shared/Modal';
 import ModalContent from '@/components/accounts/ModalContent';
+import ModalisEditsAndPrivilages from '@/components/accounts/ModalRolesAndPrivilages';
 
 const Accounts = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const [openRole, setOpenRole] = useState<boolean>(false);
 
   const navItems = [
     { title: 'User accounts' },
@@ -138,7 +140,7 @@ const Accounts = () => {
   }, [roleData, rolesheader, selected, userData, usersheader]);
 
   const toggleModal = () => {
-    setOpen(!open);
+    selected === 0 ? setOpen(!open) : setOpenRole(!openRole);
   };
 
   return (
@@ -160,6 +162,11 @@ const Accounts = () => {
       >
         <ModalContent />
       </Modal>
+      <ModalisEditsAndPrivilages
+        open={openRole}
+        isEdit={false}
+        toggleModal={toggleModal}
+      />
       <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
         {({
@@ -196,7 +203,9 @@ const Accounts = () => {
                 <Button
                   renderIcon={(props: any) => <Add size={20} {...props} />}
                   handleClick={toggleModal}
-                  buttonLabel="Create new user"
+                  buttonLabel={
+                    selected === 0 ? 'Create new user' : 'Create new role'
+                  }
                 />
               </TableToolbarContent>
             </TableToolbar>
