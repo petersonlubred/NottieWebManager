@@ -70,3 +70,17 @@ export const SubscriptionSchema = Yup.object({
   profile: Yup.string().required('Profile is required'),
   status: Yup.string().required('Status is required'),
 });
+
+export const DataSourceSchema = Yup.object({
+  source_name: Yup.string().required('Source name is required'),
+  databaseType: Yup.string().required('Database type is required'),
+  server: Yup.string().required('server is required'),
+  port: Yup.string().required('port is required'),
+  maxPoolSize: Yup.string().required('server is required'),
+  connectionTimeOut: Yup.string().required('connection timeout is required'),
+  username: Yup.string().required('username is required'),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is required'),
+  status: Yup.string().required('Status is required'),
+});

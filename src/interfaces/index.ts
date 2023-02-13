@@ -1,6 +1,7 @@
 import {
   AlertExceptionSchema,
   AlertExcludeSchema,
+  DataSourceSchema,
   SubscriptionSchema,
 } from './../schemas/index';
 import {
@@ -18,6 +19,7 @@ export type IinitialAlertProfile = Yup.InferType<typeof AlertProfileSchema>;
 export type IinitialAlertException = Yup.InferType<typeof AlertExceptionSchema>;
 export type IinitialAlertExclude = Yup.InferType<typeof AlertExcludeSchema>;
 export type IinitialSubscription = Yup.InferType<typeof SubscriptionSchema>;
+export type IinitialDataSourceType = Yup.InferType<typeof DataSourceSchema>;
 
 export type userAccountType = {
   id: number;

@@ -7,14 +7,13 @@ import { TextInput, FormGroup, TextArea } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import RichTextExample from '@/components/shared/RichText';
-import CKeditor from '@/components/shared/CKEditor';
 
 const navItems = ['SMS Template', 'Email Template'];
 
 const MailBody = () => {
   const [selected, setSelected] = React.useState(0);
   const [editorLoaded, setEditorLoaded] = useState(false);
-  const [data, setData] = useState('');
+
   useEffect(() => {
     setEditorLoaded(true);
   }, []);

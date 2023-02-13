@@ -5,6 +5,7 @@ import {
   IinitialAlertException,
   IinitialAlertExclude,
   IinitialSubscription,
+  IinitialDataSourceType,
 } from './../index';
 import { IinitialDatabase } from '..';
 
@@ -61,4 +62,16 @@ export const initialAlertExclude: IinitialAlertExclude = {
   label: '',
   operator: '',
   textToExclude: '',
+};
+
+export const initialDataSource: IinitialDataSourceType = {
+  source_name: '',
+  databaseType: '',
+  server: '',
+  port: '',
+  maxPoolSize: '',
+  connectionTimeOut: '',
+  username: '',
+  password: '',
+  status: '',
 };
