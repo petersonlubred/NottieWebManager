@@ -16,17 +16,20 @@ import {
   TableBatchActions,
   TableBatchAction,
 } from '@carbon/react';
-import { TrashCan } from '@carbon/react/icons';
+import { TrashCan, Add } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import Empty from '@/components/shared/Empty';
 import useHeaders from '@/hooks/useHeaders';
-import TableNabItem from '@/components/alert/TableNavItems';
 import styled from 'styled-components';
 import Template from '@/components/configuration/Template';
-import Icon from '@/components/shared/Icons';
 import { px } from '@/utils';
 import MailBody from '@/components/configuration/MailBody';
 import TagSection from '@/components/configuration/TagSection';
+import Modal from '@/components/shared/Modal';
+import Button from '@/components/shared/Button';
+import Icon from '@/components/shared/Icons';
+import DataSource from '@/components/configuration/DataSource';
+import DataSourceForm from '@/components/configuration/DataSourceForm';
 
 const SystemConfiguration = () => {
   const [selected, setSelected] = useState(0);
@@ -48,7 +51,7 @@ const SystemConfiguration = () => {
   ]);
 
   const {
-    inflowheader,
+    datasourceheader,
     smsheader,
     emailheader,
     nontransactionheader,
@@ -75,8 +78,8 @@ const SystemConfiguration = () => {
 
   useEffect(() => {
     const headers = [
-      inflowheader,
-      smsheader,
+      datasourceheader,
+      datasourceheader,
       emailheader,
       nontransactionheader,
       smsheader,
@@ -132,7 +135,7 @@ const SystemConfiguration = () => {
     }
   }, [
     emailheader,
-    inflowheader,
+    datasourceheader,
     navItems,
     nontransactionheader,
     otpheader,
@@ -149,75 +152,103 @@ const SystemConfiguration = () => {
       title={'System Configuration'}
       subtitle={'Manage System Configuration'}
     >
-      <ConfigurationContainer>
-        <Template />
-        {/* <NoDataContainer>
+      {selected === 0 && (
+        <ConfigurationContainer>
+          <Template />
+          {/* <NoDataContainer>
           <Icon id="empty-drawer-icon" width={43} height={51} />
           <NoDataTitle>
             Select or create a template from the left panel and you can see it
             here.
           </NoDataTitle>
         </NoDataContainer>*/}
-        <MailBody /> <TagSection />
-      </ConfigurationContainer>
-      {/* <PageSubHeader navItem={navItems[selected]?.title} />
-      <DataTable rows={Rows} headers={Headers}>
-        {({
-          rows,
-          headers,
-          getHeaderProps,
-          getRowProps,
-          getTableProps,
-          getSelectionProps,
-          getToolbarProps,
-          getBatchActionProps,
-          selectedRows,
-        }: any) => (
-          <>
-            <TableToolbar {...getToolbarProps()}>
-              <TableBatchActions {...getBatchActionProps()}>
-                <TableBatchAction
-                  renderIcon={TrashCan}
-                  iconDescription="Delete the selected rows"
-                  onClick={console.log(selectedRows)}
-                >
-                  Delete
-                </TableBatchAction>
-              </TableBatchActions>
-              <TableToolbarContent>
-                <TableNabItem filterItems={filterItems} />
-              </TableToolbarContent>
-            </TableToolbar>
-            <Table {...getTableProps()}>
-              <TableHead>
-                <TableRow>
-                  <TableSelectAll {...getSelectionProps()} />
-                  {headers.map((header: any, index: number) => (
-                    <TableHeader {...getHeaderProps({ header })} key={index}>
-                      {header.header}
-                    </TableHeader>
-                  ))}
-                </TableRow>
-              </TableHead>
-              {!isEmpty(Rows) && (
-                <TableBody>
-                  {rows.map((row: any) => (
-                    <TableRow key={row.id} {...getRowProps({ row })}>
-                      <TableSelectRow {...getSelectionProps({ row })} />
-                      {row.cells.map((cell: any) => (
-                        <TableCell key={cell.id}>{cell.value}</TableCell>
+          <MailBody /> <TagSection />
+        </ConfigurationContainer>
+      )}
+
+      {selected === 1 && (
+        <>
+          {/* <PageSubHeader navItem={navItems[selected]?.title} />
+          <DataTable rows={Rows} headers={Headers}>
+            {({
+              rows,
+              headers,
+              getHeaderProps,
+              getRowProps,
+              getTableProps,
+              getSelectionProps,
+              getToolbarProps,
+              getBatchActionProps,
+              selectedRows,
+            }: any) => (
+              <>
+                <TableToolbar {...getToolbarProps()}>
+                  <TableBatchActions {...getBatchActionProps()}>
+                    <TableBatchAction
+                      renderIcon={TrashCan}
+                      iconDescription="Delete the selected rows"
+                      // onClick={console.log(selectedRows)}
+                    >
+                      Delete
+                    </TableBatchAction>
+                  </TableBatchActions>
+                  <TableToolbarContent>
+                    <Button
+                      renderIcon={(props: any) => <Add size={20} {...props} />}
+                      buttonLabel={`Create ${
+                        navItems[selected]?.title.split(' ')[
+                          navItems[selected]?.title.split(' ').length - 1
+                        ]
+                      }`}
+                      handleClick={() => null}
+                    />
+                  </TableToolbarContent>
+                </TableToolbar>
+                <Table {...getTableProps()}>
+                  <TableHead>
+                    <TableRow>
+                      <TableSelectAll {...getSelectionProps()} />
+                      {headers.map((header: any, index: number) => (
+                        <TableHeader
+                          {...getHeaderProps({ header })}
+                          key={index}
+                        >
+                          {header.header}
+                        </TableHeader>
                       ))}
                     </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
-          </>
-        )}
-      </DataTable>
-      {isEmpty(Rows) && (
-        <Empty title={'No ' + navItems[selected].title + ' alerts found'} />
-      )} */}
+                  </TableHead>
+                  {!isEmpty(Rows) && (
+                    <TableBody>
+                      {rows.map((row: any) => (
+                        <TableRow key={row.id} {...getRowProps({ row })}>
+                          <TableSelectRow {...getSelectionProps({ row })} />
+                          {row.cells.map((cell: any) => (
+                            <TableCell key={cell.id}>{cell.value}</TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  )}
+                </Table>
+              </>
+            )}
+          </DataTable>
+          {isEmpty(Rows) && (
+            <Empty title={'No ' + navItems[selected].title + ' found'} />
+          )} */}
+          <ConfigurationContainer>
+            <DataSource />
+            {/* <NoDataContainer>
+              <Icon id="empty-drawer-icon" width={43} height={51} />
+              <NoDataTitle>
+                Select or create a new source from the left panel.
+              </NoDataTitle>
+            </NoDataContainer> */}
+            <DataSourceForm />
+          </ConfigurationContainer>
+        </>
+      )}
     </Layout>
   );
 };

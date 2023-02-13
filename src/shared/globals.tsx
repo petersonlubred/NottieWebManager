@@ -1,5 +1,5 @@
 import { px } from '@/utils';
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   html {
@@ -119,9 +119,12 @@ export const GlobalStyles = createGlobalStyle`
     box-shadow: none !important;
   }
 
-  input, textarea,
-  input:focus,textarea:focus,
-  input:active, textarea:active{
+  input,
+  textarea,
+  input:focus,
+  textarea:focus,
+  input:active,
+  textarea:active {
     outline: none !important;
     border: none !important;
     border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover} !important;
@@ -185,7 +188,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   input[type='text'],
-  input[type='number'],
+  input[type='number']:not(.numInput),
   select {
     height: ${px(48)} !important;
     width: 100% !important;
@@ -196,7 +199,8 @@ export const GlobalStyles = createGlobalStyle`
       color: ${({ theme }) => theme.colors.darkPrimary20} !important;
     }
   }
-textarea{
+  
+  textarea {
     width: 100% !important;
     border: none;
     background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
@@ -234,7 +238,7 @@ textarea{
       }
     }
   }
-  
+
   .cds--btn--primary.cds--batch-summary__cancel::before {
     background-color: #161616 !important;
   }
@@ -257,20 +261,28 @@ textarea{
     }
   }
 
-  .number-input{
-    button{
-      &:hover{
+  .number-input {
+    button {
+      &:hover {
         background-color: ${({ theme }) => theme.colors.bgHover} !important;
       }
     }
-    button::before, button::after{
-      width:0 !important;
+    button::before,
+    button::after {
+      width: 0 !important;
     }
-    .cds--number__rule-divider{
+    .cds--number__rule-divider {
       background-color: ${({ theme }) => theme.colors.bgHover} !important;
     }
-     .cds--number__rule-divider:nth-child(2){
-      display:none;
-         }
+    .cds--number__rule-divider:nth-child(2) {
+      display: none;
+    }
   }
+
+  select{
+    &:focus{
+      outline: none !important;
+    }
+  }
+  
 `;

@@ -273,6 +273,55 @@ const useHeaders = () => {
     ];
   }, []);
 
+  const datasourceheader = useMemo(() => {
+    return [
+      {
+        key: 'profile_name',
+        header: 'Profile Name',
+      },
+      {
+        key: 'description',
+        header: 'Description',
+      },
+      {
+        key: 'template',
+        header: 'Template',
+      },
+      {
+        key: 'email_min_threshold',
+        header: 'Email Min Threshold',
+      },
+      {
+        key: 'sms_min_threshold',
+        header: 'SMS Min Threshold',
+      },
+      {
+        key: 'status',
+        header: 'Status',
+      },
+      {
+        key: 'hide_balance',
+        header: 'Hide Balance',
+      },
+      {
+        key: 'mask_account',
+        header: 'Mask Account',
+      },
+      {
+        key: 'enable_email',
+        header: 'Enable Email',
+      },
+      {
+        key: 'enable_sms',
+        header: 'Enable SMS',
+      },
+      {
+        key: 'others',
+        header: '',
+      },
+    ];
+  }, []);
+
   return {
     inflowheader,
     smsheader,
@@ -282,6 +331,7 @@ const useHeaders = () => {
     profileheader,
     alertexceptionheader,
     alertexcludeheader,
+    datasourceheader,
   };
 };
 
