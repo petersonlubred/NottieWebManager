@@ -5,6 +5,7 @@ import { Formik, Form, Field } from 'formik';
 import styled from 'styled-components';
 import Modal from '../shared/Modal';
 import { RolesAndPrivilagesSchema } from '@/schemas';
+import { px } from '@/utils';
 
 const checkBoxFileds = [
   [
@@ -24,11 +25,13 @@ const checkBoxFileds = [
   ],
 ];
 
-type IPROPS = {
+type IProps = {
   isEdit: boolean;
+  open?: boolean;
+  toggleModal: () => void;
 };
 
-const ModalisEditsAndPrivilages = ({ isEdit }: IPROPS) => {
+const ModalisEditsAndPrivilages = ({ isEdit, open, toggleModal }: IProps) => {
   return (
     <>
       <Modal
@@ -37,7 +40,8 @@ const ModalisEditsAndPrivilages = ({ isEdit }: IPROPS) => {
         heading={!isEdit ? 'Create New Role' : 'Edit Role'}
         buttonTriggerText={!isEdit ? 'Create role' : ''}
         secondaryButtonText="Close"
-        extent="lg"
+        open={open}
+        toggleModal={toggleModal}
       >
         <ModalContainer>
           <Formik
@@ -89,7 +93,11 @@ const ModalisEditsAndPrivilages = ({ isEdit }: IPROPS) => {
                 <CheckBoxHeader>Alert & Notification</CheckBoxHeader>
                 <CheckBoxWrapper>
                   {checkBoxFileds[0].map((checkbox) => (
-                    <Checkbox key={checkbox.id} labelText={checkbox.label} id={checkbox.id} />
+                    <Checkbox
+                      key={checkbox.id}
+                      labelText={checkbox.label}
+                      id={checkbox.id}
+                    />
                   ))}
                 </CheckBoxWrapper>
               </Wrapper>
@@ -97,7 +105,11 @@ const ModalisEditsAndPrivilages = ({ isEdit }: IPROPS) => {
                 <CheckBoxHeader>Users</CheckBoxHeader>
                 <CheckBoxWrapper>
                   {checkBoxFileds[1].map((checkbox) => (
-                    <Checkbox key={checkbox.id} labelText={checkbox.label} id={checkbox.id} />
+                    <Checkbox
+                      key={checkbox.id}
+                      labelText={checkbox.label}
+                      id={checkbox.id}
+                    />
                   ))}
                 </CheckBoxWrapper>
               </Wrapper>
@@ -105,7 +117,11 @@ const ModalisEditsAndPrivilages = ({ isEdit }: IPROPS) => {
                 <CheckBoxHeader>Roles & Privileges</CheckBoxHeader>
                 <CheckBoxWrapper>
                   {checkBoxFileds[2].map((checkbox) => (
-                    <Checkbox key={checkbox.id} labelText={checkbox.label} id={checkbox.id} />
+                    <Checkbox
+                      key={checkbox.id}
+                      labelText={checkbox.label}
+                      id={checkbox.id}
+                    />
                   ))}
                 </CheckBoxWrapper>
               </Wrapper>
@@ -119,9 +135,6 @@ const ModalisEditsAndPrivilages = ({ isEdit }: IPROPS) => {
 
 export default ModalisEditsAndPrivilages;
 
-
-
-
 const ModalContainer = styled.div`
   width: 100%;
   padding: 1rem;
@@ -133,11 +146,11 @@ const InputContainer = styled.div`
   color: ${({ theme }) => theme.colors.lightText};
 `;
 
-const Text= styled(TextInput)`
-  label{
+const Text = styled(TextInput)`
+  label {
     color: ${({ theme }) => theme.colors.lightText};
   }
-`
+`;
 
 const CheckBoxContainer = styled.div`
   display: flex;
@@ -150,7 +163,7 @@ const Label = styled.p`
   font-size: 12px;
   line-height: 16px;
 
-  margin-bottom: 1rem;
+  margin-bottom: 4px;
   color: ${({ theme }) => theme.colors.lightText};
 `;
 
@@ -168,8 +181,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 65%;
-
-  margin-bottom: 1rem;
 `;
 
 const CheckBoxHeader = styled.legend`
@@ -179,7 +190,7 @@ const CheckBoxHeader = styled.legend`
   font-size: 20px;
   line-height: 20px;
   letter-spacing: 0.16px;
-
+  margin-bottom: ${px(20)};
   color: ${({ theme }) => theme.colors.white};
 `;
 
@@ -187,5 +198,9 @@ const CheckBoxWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: ${px(33)};
 
+  & > div:first-of-type {
+    margin-top: 0 !important;
+  }
 `;

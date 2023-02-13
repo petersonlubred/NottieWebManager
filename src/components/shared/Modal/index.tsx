@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react';
-import {  Modal as M } from '@carbon/react';
+import { Modal as M } from '@carbon/react';
 import styled from 'styled-components';
 
 interface Iprops {
@@ -12,7 +12,7 @@ interface Iprops {
   secondaryButtonText?: string;
   open?: boolean;
   danger?: boolean;
-  extent:string;
+  extent?: string;
   toggleModal?: () => void;
 }
 
@@ -25,7 +25,7 @@ const Modal = ({
   secondaryButtonText = 'Close',
   open,
   danger,
-  extent
+  extent = 'md',
   toggleModal,
 }: Iprops) => {
   return (
