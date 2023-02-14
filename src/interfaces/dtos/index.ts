@@ -6,6 +6,11 @@ import {
   IinitialAlertExclude,
   IinitialSubscription,
   IinitialDataSourceType,
+  IinitialSMSCForm,
+  IinitialSMSRouteForm,
+  IinitialSMSRouteConfigForm,
+  IinitialSMTPForm,
+  IinitialSMTPRouteForm,
 } from './../index';
 import { IinitialDatabase } from '..';
 
@@ -74,4 +79,53 @@ export const initialDataSource: IinitialDataSourceType = {
   username: '',
   password: '',
   status: '',
+};
+
+export const initialSMSCValue: IinitialSMSCForm = {
+  smsc_name: '',
+  server: '',
+  TXPort: '',
+  noOfSessions: '',
+  dataEncoding: '',
+  npi: '',
+  onpi: '',
+  TON: '',
+  otin: '',
+  dnpi: '',
+  dton: '',
+  activate: '',
+};
+
+export const initialSMSRouteValue: IinitialSMSRouteForm = {
+  route_name: '',
+  aggregator: '',
+  serviceType: '',
+};
+
+export const initialSMSRouteConfigValue: IinitialSMSRouteConfigForm = {
+  route: '',
+  aggregator: '',
+  routeType: '',
+  country: '',
+  network: '',
+  accountType: '',
+  productCode: '',
+  transactionType: '',
+};
+
+export const initialSMTPValue: IinitialSMTPForm = {
+  smtp_name: '',
+  server: '',
+  port: '',
+  use_ssl_tls: '',
+  email: '',
+  displayName: '',
+  username: '',
+  password: '',
+};
+
+export const initialSMTPRouteValue: IinitialSMTPRouteForm = {
+  route_name: '',
+  smtp_name: '',
+  serviceType: '',
 };

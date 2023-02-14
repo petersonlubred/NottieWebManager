@@ -36,9 +36,9 @@ export const EmailSchema = Yup.object({
 });
 
 export const RolesAndPrivilagesSchema = Yup.object({
-  roleName:Yup.string().required('role name is required'),
-  roleDescription:Yup.string().required('role description is required')
-})
+  roleName: Yup.string().required('role name is required'),
+  roleDescription: Yup.string().required('role description is required'),
+});
 export const AlertProfileSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is required'),
@@ -83,4 +83,55 @@ export const DataSourceSchema = Yup.object({
     .min(8, 'Password must be at least 8 characters')
     .required('Password is required'),
   status: Yup.string().required('Status is required'),
+});
+
+export const SMSCSchema = Yup.object({
+  smsc_name: Yup.string().required('SMSC name is required'),
+  server: Yup.string().required('server is required'),
+  TXPort: Yup.string().required('TX Port is required'),
+  noOfSessions: Yup.string().required('No of Sessions is required'),
+  dataEncoding: Yup.string().required('Data Encoding is required'),
+  npi: Yup.string().required('NPI is required'),
+  onpi: Yup.string().required('ONPI is required'),
+  ton: Yup.string().required('TON is required'),
+  otin: Yup.string().required('OTIN is required'),
+  dnpi: Yup.string().required('DNPI is required'),
+  dton: Yup.string().required('DTON is required'),
+  activate: Yup.string().required('Activate is required'),
+});
+
+export const SMSRouteSchema = Yup.object({
+  route_name: Yup.string().required('Route name is required'),
+  aggregator: Yup.string().required('Aggregator is required'),
+  serviceType: Yup.string().required('Service Type is required'),
+});
+
+export const SMSRouteConfigSchema = Yup.object({
+  route: Yup.string().required('Route is required'),
+  aggregator: Yup.string().required('Aggregator is required'),
+  routeType: Yup.string().required('Route Type is required'),
+  country: Yup.string().required('Country is required'),
+  network: Yup.string().required('Network is required'),
+  accountType: Yup.string().required('Account Type is required'),
+  transactionType: Yup.string().required('Transaction Type is required'),
+  productCode: Yup.string().required('Product Code is required'),
+});
+
+export const SMTPSchema = Yup.object({
+  smtp_name: Yup.string().required('SMTP name is required'),
+  server: Yup.string().required('server is required'),
+  port: Yup.string().required('Port is required'),
+  use_ssl_tls: Yup.string().required('Use SSL/TLS is required'),
+  email: Yup.string().required('Email is required'),
+  displayName: Yup.string().required('Display Name is required'),
+  username: Yup.string().required('Username is required'),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is required'),
+});
+
+export const SMTPRouteSchema = Yup.object({
+  route_name: Yup.string().required('Route name is required'),
+  smtp_name: Yup.string().required('SMTP name is required'),
+  serviceType: Yup.string().required('Service Type is required'),
 });

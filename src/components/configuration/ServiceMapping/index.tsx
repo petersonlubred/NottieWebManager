@@ -37,13 +37,57 @@ const ServiceMapping = () => {
               toggleDropdown={toggleDropdown}
               opened={opened.includes(index)}
               itemsOnExpand={
-                <AccordionItemListBox>
-                  <AccordionListTitle>
-                    <Icon id="dotted-cube-icon" width={18} height={19} />
-                    <TitleParagraph>Unmapped Services</TitleParagraph>
-                  </AccordionListTitle>{' '}
-                  <Icon id="dotted-rectangle-icon" width={14} height={15} />
-                </AccordionItemListBox>
+                <>
+                  {' '}
+                  <AccordionItemListBox>
+                    <AccordionListTitle>
+                      <Icon id="dotted-cube-icon" width={18} height={19} />
+                      <TitleParagraph>Unmapped Services</TitleParagraph>
+                    </AccordionListTitle>{' '}
+                    <Icon id="dotted-rectangle-icon" width={6} height={9} />
+                  </AccordionItemListBox>{' '}
+                  <AccordionItemListBox>
+                    <AccordionListTitle>
+                      <Icon id="crawler-icon" width={16} height={17} />
+                      <TitleParagraph>Unmapped Services</TitleParagraph>
+                    </AccordionListTitle>{' '}
+                    <Icon id="dotted-rectangle-icon" width={6} height={9} />
+                  </AccordionItemListBox>
+                </>
+              }
+            />
+          ))}
+        </MappingCard>
+        <MappingCard>
+          <MappingTitleBox>
+            <Icon id="dotted-cube-icon" width={18} height={19} />
+            <MappingTitle>Unmapped Services</MappingTitle>
+          </MappingTitleBox>
+          {AccordionItems.map((item, index) => (
+            <AccordionBox
+              title={item}
+              key={index}
+              index={index}
+              toggleDropdown={toggleDropdown}
+              opened={opened.includes(index)}
+              itemsOnExpand={
+                <>
+                  {' '}
+                  <AccordionItemListBox>
+                    <AccordionListTitle>
+                      <Icon id="dotted-cube-icon" width={18} height={19} />
+                      <TitleParagraph>Unmapped Services</TitleParagraph>
+                    </AccordionListTitle>{' '}
+                    <Icon id="dotted-rectangle-icon" width={6} height={9} />
+                  </AccordionItemListBox>{' '}
+                  <AccordionItemListBox>
+                    <AccordionListTitle>
+                      <Icon id="crawler-icon" width={16} height={17} />
+                      <TitleParagraph>Unmapped Services</TitleParagraph>
+                    </AccordionListTitle>{' '}
+                    <Icon id="dotted-rectangle-icon" width={6} height={9} />
+                  </AccordionItemListBox>
+                </>
               }
             />
           ))}
