@@ -187,7 +187,7 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.bgHover} !important;
   }
 
-  input[type='text'],
+  input[type='text'],input[type='password'],
   input[type='number']:not(.numInput),
   select {
     height: ${px(48)} !important;

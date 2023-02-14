@@ -36,32 +36,25 @@ import SystemSettingSideBar from '@/components/configuration/SystemSettings/Syst
 import CheckBoxForm from '@/components/configuration/SystemSettings/CheckboxForm';
 import DetailsForm from '@/components/configuration/SystemSettings/DetailsForm';
 import SeqLogForm from '@/components/configuration/SystemSettings/SeqLogForm';
+import SMSCForm from '@/components/configuration/Forms/SMSC';
+import SMSRoute from '@/components/configuration/Forms/SMSRoute';
+import SMSRouteConfig from '@/components/configuration/Forms/SMSRouteConfig';
+import SMTP from '@/components/configuration/Forms/SMTP';
+import SMTPRoute from '@/components/configuration/Forms/SMTPRoute';
 
 const SystemConfiguration = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
-  const [filterItems, setFilterItems] = useState<
-    { key: string; label: string; value: string }[]
-  >([
-    {
-      key: 'customer_id',
-      label: 'Customer ID',
-      value: '',
-    },
-    {
-      key: 'account_no',
-      label: 'Account Number',
-      value: '',
-    },
-  ]);
+  const [open, setOpen] = useState<boolean>(false);
 
   const {
     datasourceheader,
-    smsheader,
-    emailheader,
-    nontransactionheader,
-    otpheader,
+    smscheader,
+    smsrouteheader,
+    smsrouteconfigheader,
+    smtpheader,
+    smtprouteconfigheader,
   } = useHeaders();
 
   const navItems = useMemo(() => {
@@ -86,14 +79,14 @@ const SystemConfiguration = () => {
     const headers = [
       datasourceheader,
       datasourceheader,
-      emailheader,
-      nontransactionheader,
-      smsheader,
-      emailheader,
-      otpheader,
-      smsheader,
-      emailheader,
+      datasourceheader,
+      smscheader,
+      smsrouteheader,
+      smsrouteconfigheader,
+      smtpheader,
+      smtprouteconfigheader,
     ];
+
     headers?.forEach((header, index) => {
       if (index === selected) {
         setHeaders(header);
@@ -108,47 +101,20 @@ const SystemConfiguration = () => {
       });
       setRows(rows);
     });
-
-    if (navItems[selected].title.includes('SMS')) {
-      setFilterItems([
-        {
-          key: 'mobile_no',
-          label: 'Mobile No',
-          value: '',
-        },
-      ]);
-    } else if (navItems[selected].title.includes('Email')) {
-      setFilterItems([
-        {
-          key: 'email',
-          label: 'Email',
-          value: '',
-        },
-      ]);
-    } else {
-      setFilterItems([
-        {
-          key: 'customer_id',
-          label: 'Customer ID',
-          value: '',
-        },
-        {
-          key: 'account_no',
-          label: 'Account Number',
-          value: '',
-        },
-      ]);
-    }
   }, [
-    emailheader,
     datasourceheader,
     navItems,
-    nontransactionheader,
-    otpheader,
     selected,
-    smsheader,
+    smscheader,
+    smsrouteheader,
+    smsrouteconfigheader,
+    smtpheader,
+    smtprouteconfigheader,
   ]);
 
+  const toggleModal = () => {
+    setOpen(!open);
+  };
   return (
     <Layout
       routename="System Configuration"
@@ -158,6 +124,28 @@ const SystemConfiguration = () => {
       title={'System Configuration'}
       subtitle={'Manage System Configuration'}
     >
+      <Modal
+        buttonTriggerText={''}
+        buttonIcon={(props: any) => <Add size={24} {...props} />}
+        heading={`Create New ${navItems[selected]?.title.split(' ').join(' ')}`}
+        buttonLabel={`Create ${navItems[selected]?.title.split(' ').join(' ')}`}
+        open={open}
+        toggleModal={toggleModal}
+        extent="sm"
+      >
+        {selected === 3 ? (
+          <SMSCForm />
+        ) : selected === 4 ? (
+          <SMSRoute />
+        ) : selected === 5 ? (
+          <SMSRouteConfig />
+        ) : selected === 6 ? (
+          <SMTP />
+        ) : (
+          <SMTPRoute />
+        )}
+      </Modal>
+
       {selected === 0 && (
         <ConfigurationContainer>
           <Template />
@@ -172,9 +160,9 @@ const SystemConfiguration = () => {
         </ConfigurationContainer>
       )}
 
-      {selected === 1 && (
+      {selected !== 0 && selected !== 2 && (
         <>
-          {/* <PageSubHeader navItem={navItems[selected]?.title} />
+          <PageSubHeader navItem={navItems[selected]?.title} />
           <DataTable rows={Rows} headers={Headers}>
             {({
               rows,
@@ -201,12 +189,10 @@ const SystemConfiguration = () => {
                   <TableToolbarContent>
                     <Button
                       renderIcon={(props: any) => <Add size={20} {...props} />}
-                      buttonLabel={`Create ${
-                        navItems[selected]?.title.split(' ')[
-                          navItems[selected]?.title.split(' ').length - 1
-                        ]
-                      }`}
-                      handleClick={() => null}
+                      buttonLabel={`Create ${navItems[selected]?.title
+                        .split(' ')
+                        .join(' ')}`}
+                      handleClick={() => selected !== 1 && toggleModal()}
                     />
                   </TableToolbarContent>
                 </TableToolbar>
@@ -240,21 +226,21 @@ const SystemConfiguration = () => {
               </>
             )}
           </DataTable>
-          {isEmpty(Rows) && (
+          {/* {isEmpty(Rows) && (
             <Empty title={'No ' + navItems[selected].title + ' found'} />
           )} */}
-          <ConfigurationContainer>
-            <DataSource />
-            {/* <NoDataContainer>
+        </>
+      )}
+      {/* <ConfigurationContainer> */}
+      {/* <DataSource /> */}
+      {/* <NoDataContainer>
               <Icon id="empty-drawer-icon" width={43} height={51} />
               <NoDataTitle>
                 Select or create a new source from the left panel.
               </NoDataTitle>
             </NoDataContainer> */}
-            <DataSourceForm />
-          </ConfigurationContainer>
-        </>
-      )}
+      {/* <DataSourceForm /> */}
+      {/* </ConfigurationContainer> */}
 
       {selected === 2 && (
         <ConfigurationContainer>
@@ -267,8 +253,8 @@ const SystemConfiguration = () => {
           <SystemSettingSideBar />
           {/* <BatchProcessingForm /> */}
           {/* <CheckBoxForm isDesc={true} /> */}
-          <DetailsForm isSSO={false} />
-          {/* <SeqLogForm /> */}
+          {/* <DetailsForm isSSO={false} /> */}
+          <SeqLogForm />
         </ConfigurationContainer>
       )}
     </Layout>
@@ -300,7 +286,7 @@ const NoDataTitle = styled.p`
   font-weight: 400;
   color: ${({ theme }) => theme.colors.white};
   margin-top: ${px(29)};
-  line-height: ${px(34)}
+  line-height: ${px(34)};
   margin-bottom: ${px(16)};
   width: ${px(383)};
   text-align:center;

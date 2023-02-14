@@ -275,6 +275,6 @@ const FormField = styled.div`
   margin-bottom: ${px(16)};
 `;
 
-const PasswordContainer = styled.div`
+export const PasswordContainer = styled.div`
   position: relative;
 `;

@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { FormGroup, TextInput, PasswordInput } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
 import Button from '@/components/shared/Button';
-import { AdDetailsSchema } from '@/schemas';
-import { initialAdDetials } from '@/interfaces/dtos';
 import { px } from '@/utils';
 
 type IProps = {
@@ -25,8 +23,7 @@ const DetailsForm = ({ isSSO }: IProps) => {
         </ActionContainer>
       </MailNav>{' '}
       <Formik
-        initialValues={initialAdDetials}
-        validationSchema={AdDetailsSchema}
+        initialValues={{}}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
         }}

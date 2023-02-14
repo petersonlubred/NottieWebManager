@@ -6,9 +6,11 @@ import {
   IinitialAlertExclude,
   IinitialSubscription,
   IinitialDataSourceType,
-  IinitialBatchProcessing,
-  IinitialAdDetails,
-  IinitialSeqLog
+  IinitialSMSCForm,
+  IinitialSMSRouteForm,
+  IinitialSMSRouteConfigForm,
+  IinitialSMTPForm,
+  IinitialSMTPRouteForm,
 } from './../index';
 import { IinitialDatabase } from '..';
 
@@ -79,30 +81,52 @@ export const initialDataSource: IinitialDataSourceType = {
   status: '',
 };
 
-export const initialBatchProcessingValue:IinitialBatchProcessing={
-  transactionProcessBatch:0,
-  nonTransactionProcessingBatch:0,
-  transactionCrawlerProcessBatch:0,
-  nonTransactionCrawlerProcessBatch:0,
-  otpProcessBatch:0,
-  otpCrawlerProcessBatch:0,
-  archiverBatch:0
 
-}
+export const initialSMSCValue: IinitialSMSCForm = {
+  smsc_name: '',
+  server: '',
+  TXPort: '',
+  noOfSessions: '',
+  dataEncoding: '',
+  npi: '',
+  onpi: '',
+  ton: '',
+  otin: '',
+  dnpi: '',
+  dton: '',
+  activate: '',
+};
 
-export const initialAdDetials:IinitialAdDetails={
-  username:'',
-  password:'',
-  adServer:''
-}
+export const initialSMSRouteValue: IinitialSMSRouteForm = {
+  route_name: '',
+  aggregator: '',
+  serviceType: '',
+};
 
-export const initialSeqLog:IinitialSeqLog={
-  transactionApiKey:'',
-  transactionCrawlerApiKey:'',
-  nonTransactionApiKey:'',
-  nonTransactonCrawlerApiKey:'',
-  otpApiKey:'',
-  otpcrawlerApiKey:'',
-  globalServiceApiKey:'',
+export const initialSMSRouteConfigValue: IinitialSMSRouteConfigForm = {
+  route: '',
+  aggregator: '',
+  routeType: '',
+  country: '',
+  network: '',
+  accountType: '',
+  productCode: '',
+  transactionType: '',
+};
 
-}
+export const initialSMTPValue: IinitialSMTPForm = {
+  smtp_name: '',
+  server: '',
+  port: '',
+  use_ssl_tls: '',
+  email: '',
+  displayName: '',
+  username: '',
+  password: '',
+};
+
+export const initialSMTPRouteValue: IinitialSMTPRouteForm = {
+  route_name: '',
+  smtp_name: '',
+  serviceType: '',
+};
