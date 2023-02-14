@@ -31,6 +31,11 @@ import Icon from '@/components/shared/Icons';
 import DataSource from '@/components/configuration/DataSource';
 import DataSourceForm from '@/components/configuration/DataSourceForm';
 import ServiceMapping from '@/components/configuration/ServiceMapping';
+import BatchProcessingForm from '@/components/configuration/SystemSettings/BatchProcessingForm';
+import SystemSettingSideBar from '@/components/configuration/SystemSettings/SystemSettingSideBar/indx';
+import CheckBoxForm from '@/components/configuration/SystemSettings/CheckboxForm';
+import DetailsForm from '@/components/configuration/SystemSettings/DetailsForm';
+import SeqLogForm from '@/components/configuration/SystemSettings/SeqLogForm';
 
 const SystemConfiguration = () => {
   const [selected, setSelected] = useState(0);
@@ -254,6 +259,16 @@ const SystemConfiguration = () => {
       {selected === 2 && (
         <ConfigurationContainer>
           <ServiceMapping />
+        </ConfigurationContainer>
+      )}
+
+      {selected === 8 && (
+        <ConfigurationContainer>
+          <SystemSettingSideBar />
+          {/* <BatchProcessingForm /> */}
+          {/* <CheckBoxForm isDesc={true} /> */}
+          <DetailsForm isSSO={false} />
+          {/* <SeqLogForm /> */}
         </ConfigurationContainer>
       )}
     </Layout>
