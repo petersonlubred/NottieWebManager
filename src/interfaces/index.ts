@@ -2,6 +2,11 @@ import {
   AlertExceptionSchema,
   AlertExcludeSchema,
   DataSourceSchema,
+  SMSCSchema,
+  SMSRouteConfigSchema,
+  SMSRouteSchema,
+  SMTPRouteSchema,
+  SMTPSchema,
   SubscriptionSchema,
 } from './../schemas/index';
 import {
@@ -20,6 +25,13 @@ export type IinitialAlertException = Yup.InferType<typeof AlertExceptionSchema>;
 export type IinitialAlertExclude = Yup.InferType<typeof AlertExcludeSchema>;
 export type IinitialSubscription = Yup.InferType<typeof SubscriptionSchema>;
 export type IinitialDataSourceType = Yup.InferType<typeof DataSourceSchema>;
+export type IinitialSMSCForm = Yup.InferType<typeof SMSCSchema>;
+export type IinitialSMSRouteForm = Yup.InferType<typeof SMSRouteSchema>;
+export type IinitialSMSRouteConfigForm = Yup.InferType<
+  typeof SMSRouteConfigSchema
+>;
+export type IinitialSMTPForm = Yup.InferType<typeof SMTPSchema>;
+export type IinitialSMTPRouteForm = Yup.InferType<typeof SMTPRouteSchema>;
 
 export type userAccountType = {
   id: number;

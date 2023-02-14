@@ -191,6 +191,9 @@ export const FormContainer = styled.div`
       fill: ${({ theme }) => theme.colors.white};
     }
   }
+  svg {
+    fill: ${({ theme }) => theme.colors.white} !important;
+  }
 `;
 
 const PasswordContainer = styled.div`
