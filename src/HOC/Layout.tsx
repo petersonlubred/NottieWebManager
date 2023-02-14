@@ -14,6 +14,8 @@ interface Iprops {
   handleSetIndex?: Function;
   title?: string;
   subtitle?: string;
+  isDashboard?: boolean;
+  noPagination?: boolean;
 }
 const Layout = ({
   children,
@@ -23,6 +25,8 @@ const Layout = ({
   handleSetIndex,
   title,
   subtitle,
+  isDashboard,
+  noPagination,
 }: Iprops) => {
   return (
     <LayoutContainer>
@@ -34,9 +38,10 @@ const Layout = ({
         handleSetIndex={handleSetIndex}
         title={title}
         subtitle={subtitle}
+        isDashboard={isDashboard}
       />
       <LayoutChildren>{children}</LayoutChildren>
-      <PageFooter />
+      {!noPagination && <PageFooter />}{' '}
     </LayoutContainer>
   );
 };
