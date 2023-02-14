@@ -36,9 +36,9 @@ export const EmailSchema = Yup.object({
 });
 
 export const RolesAndPrivilagesSchema = Yup.object({
-  roleName:Yup.string().required('role name is required'),
-  roleDescription:Yup.string().required('role description is required')
-})
+  roleName: Yup.string().required('role name is required'),
+  roleDescription: Yup.string().required('role description is required'),
+});
 export const AlertProfileSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is required'),
@@ -84,3 +84,40 @@ export const DataSourceSchema = Yup.object({
     .required('Password is required'),
   status: Yup.string().required('Status is required'),
 });
+
+export const BatchProcessingSchema = Yup.object({
+  transactionProcessBatch: Yup.number().required(
+    'Transaction batch name required'
+  ),
+  nonTransactionProcessingBatch: Yup.number().required(
+    'Non Transaction batch required'
+  ),
+  transactionCrawlerProcessBatch: Yup.number().required(
+    'Transaction crawler batch required'
+  ),
+  nonTransactionCrawlerProcessBatch: Yup.number().required(
+    'Non transaction crawler batch required'
+  ),
+  otpProcessBatch: Yup.number().required('OTP process batch required'),
+  otpCrawlerProcessBatch: Yup.number().required('OTP crawler batch required'),
+  archiverBatch: Yup.number().required('Archiver batch required'),
+});
+
+export const AdDetailsSchema = Yup.object({
+  username: Yup.string().required('Username is required'),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is required'),
+  adServer: Yup.string().required('server is required'),
+});
+
+export const SeqLogSchema = Yup.object({
+  transactionApiKey:Yup.string().required('Transaction key is required'),
+  transactionCrawlerApiKey:Yup.string().required('Transaction crawler key is required'),
+  nonTransactionApiKey :Yup.string().required('Non transaction key is required'),
+  nonTransactonCrawlerApiKey:Yup.string().required('Non transaction crawler key is required'),
+  otpApiKey:Yup.string().required('OTP key is required'),
+  otpcrawlerApiKey:Yup.string().required('OTP crawler key is required'),
+  globalServiceApiKey:Yup.string().required('Global service key is required'),
+
+})

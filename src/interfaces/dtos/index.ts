@@ -6,6 +6,9 @@ import {
   IinitialAlertExclude,
   IinitialSubscription,
   IinitialDataSourceType,
+  IinitialBatchProcessing,
+  IinitialAdDetails,
+  IinitialSeqLog
 } from './../index';
 import { IinitialDatabase } from '..';
 
@@ -75,3 +78,31 @@ export const initialDataSource: IinitialDataSourceType = {
   password: '',
   status: '',
 };
+
+export const initialBatchProcessingValue:IinitialBatchProcessing={
+  transactionProcessBatch:0,
+  nonTransactionProcessingBatch:0,
+  transactionCrawlerProcessBatch:0,
+  nonTransactionCrawlerProcessBatch:0,
+  otpProcessBatch:0,
+  otpCrawlerProcessBatch:0,
+  archiverBatch:0
+
+}
+
+export const initialAdDetials:IinitialAdDetails={
+  username:'',
+  password:'',
+  adServer:''
+}
+
+export const initialSeqLog:IinitialSeqLog={
+  transactionApiKey:'',
+  transactionCrawlerApiKey:'',
+  nonTransactionApiKey:'',
+  nonTransactonCrawlerApiKey:'',
+  otpApiKey:'',
+  otpcrawlerApiKey:'',
+  globalServiceApiKey:'',
+
+}
