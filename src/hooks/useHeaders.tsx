@@ -322,6 +322,171 @@ const useHeaders = () => {
     ];
   }, []);
 
+  const smscheader = useMemo(() => {
+    return [
+      {
+        key: 'smsc_name',
+        header: 'SMSC Name',
+      },
+      {
+        key: 'seerver',
+        header: 'Server/IP',
+      },
+      {
+        key: 'connectionType',
+        header: 'Connection Type',
+      },
+      {
+        key: 'connectionSockets',
+        header: 'Connection Sockets',
+      },
+      {
+        key: 'data_encoding',
+        header: 'Data Encoding',
+      },
+      {
+        key: 'nip',
+        header: 'NIP',
+      },
+      {
+        key: 'ton',
+        header: 'TON',
+      },
+      {
+        key: 'onpi',
+        header: 'ONPI',
+      },
+      {
+        key: 'dnpi',
+        header: 'DNPI',
+      },
+      {
+        key: 'dton',
+        header: 'DTON',
+      },
+      {
+        key: 'status',
+        header: 'Status',
+      },
+      {
+        key: 'others',
+        header: '',
+      },
+    ];
+  }, []);
+
+  const smsrouteheader = useMemo(() => {
+    return [
+      {
+        key: 'route_name',
+        header: 'SMS Route Name',
+      },
+      {
+        key: 'aggregator',
+        header: 'Aggregator/SMSC',
+      },
+      {
+        key: 'serviceType',
+        header: 'Service Type',
+      },
+      {
+        key: 'others',
+        header: '',
+      },
+    ];
+  }, []);
+
+  const smsrouteconfigheader = useMemo(() => {
+    return [
+      {
+        key: 'route_name',
+        header: 'SMS Route Name',
+      },
+      {
+        key: 'aggregator',
+        header: 'Aggregator/SMSC',
+      },
+      {
+        key: 'routeType',
+        header: 'Route Type',
+      },
+      {
+        key: 'others',
+        header: '',
+      },
+    ];
+  }, []);
+
+  const smtpheader = useMemo(() => {
+    return [
+      {
+        key: 'smtp_name',
+        header: 'SMTP Name',
+      },
+      {
+        key: 'server',
+        header: 'Server/Ip',
+      },
+      {
+        key: 'port',
+        header: 'Port',
+      },
+      {
+        key: 'use_sssl_tls',
+        header: 'Use SSL/TLS',
+      },
+      {
+        key: 'username',
+        header: 'Username',
+      },
+      {
+        key: 'email_address',
+        header: 'Email Address',
+      },
+      {
+        key: 'password',
+        header: 'Password Address',
+      },
+      {
+        key: 'email_address',
+        header: 'Email Address',
+      },
+      {
+        key: 'password',
+        header: 'Password',
+      },
+      {
+        key: 'display_name',
+        header: 'Display Name',
+      },
+      {
+        key: 'others',
+        header: '',
+      },
+    ];
+  }, []);
+
+  const smtprouteconfigheader = useMemo(() => {
+    return [
+      {
+        key: 'route_name',
+        header: 'SMTP Route Name',
+      },
+      {
+        key: 'smtp_name',
+        header: 'SMTP Name',
+      },
+      {
+        key: 'serviceType',
+        header: 'Service Type',
+      },
+      {
+        key: 'others',
+        header: '',
+      },
+    ];
+  }, []);
+
   return {
     inflowheader,
     smsheader,
@@ -332,6 +497,11 @@ const useHeaders = () => {
     alertexceptionheader,
     alertexcludeheader,
     datasourceheader,
+    smscheader,
+    smsrouteheader,
+    smsrouteconfigheader,
+    smtpheader,
+    smtprouteconfigheader,
   };
 };
 

@@ -85,39 +85,53 @@ export const DataSourceSchema = Yup.object({
   status: Yup.string().required('Status is required'),
 });
 
-export const BatchProcessingSchema = Yup.object({
-  transactionProcessBatch: Yup.number().required(
-    'Transaction batch name required'
-  ),
-  nonTransactionProcessingBatch: Yup.number().required(
-    'Non Transaction batch required'
-  ),
-  transactionCrawlerProcessBatch: Yup.number().required(
-    'Transaction crawler batch required'
-  ),
-  nonTransactionCrawlerProcessBatch: Yup.number().required(
-    'Non transaction crawler batch required'
-  ),
-  otpProcessBatch: Yup.number().required('OTP process batch required'),
-  otpCrawlerProcessBatch: Yup.number().required('OTP crawler batch required'),
-  archiverBatch: Yup.number().required('Archiver batch required'),
+export const SMSCSchema = Yup.object({
+  smsc_name: Yup.string().required('SMSC name is required'),
+  server: Yup.string().required('server is required'),
+  TXPort: Yup.string().required('TX Port is required'),
+  noOfSessions: Yup.string().required('No of Sessions is required'),
+  dataEncoding: Yup.string().required('Data Encoding is required'),
+  npi: Yup.string().required('NPI is required'),
+  onpi: Yup.string().required('ONPI is required'),
+  ton: Yup.string().required('TON is required'),
+  otin: Yup.string().required('OTIN is required'),
+  dnpi: Yup.string().required('DNPI is required'),
+  dton: Yup.string().required('DTON is required'),
+  activate: Yup.string().required('Activate is required'),
 });
 
-export const AdDetailsSchema = Yup.object({
+export const SMSRouteSchema = Yup.object({
+  route_name: Yup.string().required('Route name is required'),
+  aggregator: Yup.string().required('Aggregator is required'),
+  serviceType: Yup.string().required('Service Type is required'),
+});
+
+export const SMSRouteConfigSchema = Yup.object({
+  route: Yup.string().required('Route is required'),
+  aggregator: Yup.string().required('Aggregator is required'),
+  routeType: Yup.string().required('Route Type is required'),
+  country: Yup.string().required('Country is required'),
+  network: Yup.string().required('Network is required'),
+  accountType: Yup.string().required('Account Type is required'),
+  transactionType: Yup.string().required('Transaction Type is required'),
+  productCode: Yup.string().required('Product Code is required'),
+});
+
+export const SMTPSchema = Yup.object({
+  smtp_name: Yup.string().required('SMTP name is required'),
+  server: Yup.string().required('server is required'),
+  port: Yup.string().required('Port is required'),
+  use_ssl_tls: Yup.string().required('Use SSL/TLS is required'),
+  email: Yup.string().required('Email is required'),
+  displayName: Yup.string().required('Display Name is required'),
   username: Yup.string().required('Username is required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
     .required('Password is required'),
-  adServer: Yup.string().required('server is required'),
 });
 
-export const SeqLogSchema = Yup.object({
-  transactionApiKey:Yup.string().required('Transaction key is required'),
-  transactionCrawlerApiKey:Yup.string().required('Transaction crawler key is required'),
-  nonTransactionApiKey :Yup.string().required('Non transaction key is required'),
-  nonTransactonCrawlerApiKey:Yup.string().required('Non transaction crawler key is required'),
-  otpApiKey:Yup.string().required('OTP key is required'),
-  otpcrawlerApiKey:Yup.string().required('OTP crawler key is required'),
-  globalServiceApiKey:Yup.string().required('Global service key is required'),
-
-})
+export const SMTPRouteSchema = Yup.object({
+  route_name: Yup.string().required('Route name is required'),
+  smtp_name: Yup.string().required('SMTP name is required'),
+  serviceType: Yup.string().required('Service Type is required'),
+});
