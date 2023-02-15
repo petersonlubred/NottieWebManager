@@ -13,6 +13,7 @@ export const GlobalStyles = createGlobalStyle`
     font-family: ${({ theme }) => theme.fontFamilies.default};
     font-weight: 400;
     font-size: ${({ theme }) => theme.fontSizes.m};
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
     line-height: 140.5%;
     overflow-x: hidden;
   }
