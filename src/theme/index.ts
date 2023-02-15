@@ -37,7 +37,7 @@ const fontFamilies = {
   default: 'IBM Plex Sans, sans-serif',
 };
 
-const theme = {
+const theme: any = {
   colors: {
     deepBlack: ' #0D0D0D',
     bgPrimary: '#161616',
@@ -55,13 +55,20 @@ const theme = {
     button: '#F4B400',
     danger: '#DA1E28',
     tagBackground: '#201F1F',
+    secondary: 'rgba(241, 194, 27, 0.5)',
+    secondaryLight: '#F1C21B',
+    dangerLight: '#FA4D56',
+    successLight: '#42BE65',
+    primaryLight: '#4589FF',
+    success: 'rgba(36, 161, 72, 0.5)',
+    slabackground: '#222121',
   },
   media,
   fontFamilies,
   fontSizes,
 };
 
-export const lightTheme = {
+export const lightTheme: any = {
   colors: {
     deepBlack: '#fff',
     bgPrimary: '#ffffff',
@@ -79,6 +86,13 @@ export const lightTheme = {
     button: '#F4B400',
     danger: '#DA1E28',
     tagBackground: '#ffffff',
+    secondary: 'rgba(241, 194, 27, 0.5)',
+    secondaryLight: '#F1C21B',
+    dangerLight: '#FA4D56',
+    successLight: '#42BE65',
+    primaryLight: '#4589FF',
+    success: 'rgba(36, 161, 72, 0.5)',
+    slabackground: '#f7f7f7',
   },
   media,
   fontFamilies,

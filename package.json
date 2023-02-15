@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@carbon/charts": "^1.6.4",
+    "@carbon/charts-react": "^1.6.4",
     "@carbon/react": "^1.21.0",
     "@ckeditor/ckeditor5-build-classic": "^36.0.1",
     "@ckeditor/ckeditor5-react": "^5.0.6",

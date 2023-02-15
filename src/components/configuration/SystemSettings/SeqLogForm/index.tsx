@@ -85,27 +85,6 @@ const SeqLogForm = ({ isEdit }: Iprops) => {
                   </FormContainer>
                 </FormField>
                 <FormField>
-                  <ModalLabel>Profile Description</ModalLabel>{' '}
-                  <FormEmailContainer>
-                    <Field name="description">
-                      {({ field }: any) => (
-                        <TextInput
-                          {...field}
-                          type="text"
-                          id="description-input"
-                          labelText=""
-                          placeholder="Enter description"
-                          onKeyUp={() => setFieldTouched('description', true)}
-                        />
-                      )}
-                    </Field>
-                  </FormEmailContainer>
-                  <ErrorMessage
-                    invalid={Boolean(touched.description && errors.description)}
-                    invalidText={errors.description}
-                  />
-                </FormField>{' '}
-                <FormField>
                   <FormContainer>
                     <Field name="min_threshold">
                       {({ field }: any) => (
@@ -152,7 +131,7 @@ const SeqLogForm = ({ isEdit }: Iprops) => {
                       invalidText={errors.max_threshold}
                     />
                     <ModalItem>
-                    <ModalLabel>Radio Button</ModalLabel>{' '}
+                      <ModalLabel>Radio Button</ModalLabel>{' '}
                       <RadioButtonGroup>
                         <RadioButton
                           labelText="Radio button label"
@@ -166,24 +145,8 @@ const SeqLogForm = ({ isEdit }: Iprops) => {
                       <ModalLabel>Hide Balance?</ModalLabel>{' '}
                       <Checkbox id="checked" labelText="Yes" />
                     </ModalItem>
-                    <ModalItem>
-                      <ModalLabel>Mask Account?</ModalLabel>{' '}
-                      <Checkbox id="checked-5" labelText="Yes" />
-                    </ModalItem>{' '}
-                    <ModalItem>
-                      <ModalLabel>Enable Email?</ModalLabel>{' '}
-                      <Checkbox id="checked-2" labelText="Yes" />
-                    </ModalItem>{' '}
-                    <ModalItem>
-                      <ModalLabel>Enable SMS?</ModalLabel>{' '}
-                      <Checkbox id="checked-4" labelText="Yes" />
-                    </ModalItem>
                   </FormContainer>
                 </FormField>
-                <ModalItem>
-                  <ModalLabel>Status</ModalLabel>{' '}
-                  <Checkbox id="checked-3" labelText="Yes" />
-                </ModalItem>
               </FormGroup>
             </Form>
           )}
