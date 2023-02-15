@@ -124,6 +124,7 @@ export default SmsDeliveryStatus;
 
 const EmailDeliveryContainerBox = styled.div`
   background-color: ${({ theme }) => theme.colors.bgPrimary};
+  padding-bottom: ${px(16)};
 `;
 
 const EmailDeliveryHeader = styled.div`
