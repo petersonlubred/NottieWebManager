@@ -6,11 +6,11 @@ import { persistor, wrapper } from '../redux/store';
 import { FC } from 'react';
 import ThemeProvider from '@/providers';
 import { PersistGate } from 'redux-persist/integration/react';
+import '@carbon/charts/styles.css';
 
 const MyApp: FC<AppProps> = ({ Component, ...rest }: AppProps) => {
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props;
-  
 
   return (
     <Provider store={store}>

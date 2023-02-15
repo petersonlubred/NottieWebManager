@@ -1,7 +1,7 @@
 import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
-import Icon from '../shared/Icons';
+import Icon from '../../shared/Icons';
 
 const MicroService = ({ heading }: { heading: string }) => {
   return (
@@ -41,7 +41,6 @@ const MonitorContentBox = styled.div`
   background: ${({ theme }) => theme.colors.bgPrimary};
   gap: ${px(10)};
 `;
-
 
 const MicroserviceCardTitle = styled.div`
   height: ${px(26)};

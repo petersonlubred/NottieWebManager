@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { px } from '@/utils';
 
 import BackgroundService from '@/components/dashboard/BackgroundService';
+import SmsandEmail from '@/components/dashboard/SmsAndEmail';
 
 const Dashboard = () => {
   const [selected, setSelected] = useState(0);
@@ -27,7 +28,7 @@ const Dashboard = () => {
       isDashboard
       noPagination
     >
-      {selected === 0 ? <BackgroundService /> : null}
+      {selected === 0 ? <BackgroundService /> : <SmsandEmail />}
     </Layout>
   );
 };
