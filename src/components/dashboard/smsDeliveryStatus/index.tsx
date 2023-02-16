@@ -3,6 +3,7 @@ import PercentageBar from '../percentageBar';
 import styled from 'styled-components';
 import { px } from '@/utils';
 
+
 const indicatorData: any[] = [
   { title: 'Delivered', color: '#0E6027' },
   { title: 'Pending', color: '#0258F0' },
@@ -14,31 +15,29 @@ const indicatorData: any[] = [
 const SmsDeliveryContainer = () => {
   return (
     <Container>
-      <ContentContainer>
-        <Header>SMS delivery status</Header>
-        <IndicatorContainer>
-          {indicatorData.map((item: any, index) => (
-            <IndicatorBox key={index}>
-              <Indicator bgColor={item.color}></Indicator>
-              <IndicatorTitle>{item.title}</IndicatorTitle>
-            </IndicatorBox>
-          ))}
-        </IndicatorContainer>
-        <PercentageBarContainer>
-          <PercentageBox>
-            <PercentageHeader>Transaction</PercentageHeader>
-            <PercentageBar />
-          </PercentageBox>
-          <PercentageBox>
-            <PercentageHeader>Non-transaction</PercentageHeader>
-            <PercentageBar />
-          </PercentageBox>
-          <PercentageBox>
-            <PercentageHeader>OTP</PercentageHeader>
-            <PercentageBar />
-          </PercentageBox>
-        </PercentageBarContainer>
-      </ContentContainer>
+      <Header>SMS delivery status</Header>
+      <IndicatorContainer>
+        {indicatorData.map((item: any, index) => (
+          <IndicatorBox key={index}>
+            <Indicator bgColor={item.color}></Indicator>
+            <IndicatorTitle>{item.title}</IndicatorTitle>
+          </IndicatorBox>
+        ))}
+      </IndicatorContainer>
+      <PercentageBarContainer>
+        <PercentageBox>
+          <PercentageHeader>Transaction</PercentageHeader>
+          <PercentageBar />
+        </PercentageBox>
+        <PercentageBox>
+          <PercentageHeader>Non-transaction</PercentageHeader>
+          <PercentageBar />
+        </PercentageBox>
+        <PercentageBox>
+          <PercentageHeader>OTP</PercentageHeader>
+          <PercentageBar />
+        </PercentageBox>
+      </PercentageBarContainer>
     </Container>
   );
 };
@@ -46,11 +45,11 @@ const SmsDeliveryContainer = () => {
 export default SmsDeliveryContainer;
 
 const Container = styled.div`
-  width: ${px(1468)};
-  height: ${px(185)};
+  width: 91.75rem;
+  height: 11.4375rem;
   background-color: ${({ theme }) => theme.colors.bgPrimary};
-  width: 95%;
   margin: auto;
+  padding:${px(16)};
 
   flex: none;
   order: 0;
@@ -58,11 +57,8 @@ const Container = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  padding: 1rem;
-  padding-left: 2.6rem;
-  width: 100%;
+  padding: 16px;
   margin: auto;
-
 `;
 
 const Header = styled.p`
@@ -72,22 +68,21 @@ const Header = styled.p`
   line-height: ${px(28)};
   color: ${({ theme }) => theme.colors.lightBackground};
 
-  margin-bottom: 2rem;
+  margin-bottom: 22px;
 `;
 
 const IndicatorContainer = styled.div`
-  width: 40%;
   display: flex;
-  justify-content: space-between;
+  gap: ${px(24)};
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: ${px(24)};
 `;
 
 const IndicatorBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: ${px(6)};
 `;
 
 const Indicator = styled.div<{ bgColor?: string }>`
@@ -103,7 +98,7 @@ const IndicatorTitle = styled.span`
   font-size: ${px(12)};
   line-height: ${px(18)};
 
-  letter-spacing: 0.16px;
+  letter-spacing:${px(0.16)};
 
   color: ${({ theme }) => theme.colors.lightBackground};
 
@@ -112,14 +107,15 @@ const IndicatorTitle = styled.span`
   flex-grow: 0;
 `;
 const PercentageBarContainer = styled.div`
-  width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap:${px(48)};
   align-items: center;
+  margin-bottom:${px(18)};
 `;
 
 const PercentageBox = styled.div`
   width: 100%;
+  padding: 0;
 `;
 const PercentageHeader = styled.p`
   font-family: ${({ theme }) => theme.fontFamilies.default};
@@ -127,9 +123,9 @@ const PercentageHeader = styled.p`
   font-weight: 600;
   font-size: ${px(14)};
   line-height: ${px(18)};
-  margin-bottom: 8px;
+  margin-bottom:${px(7)};
 
-  letter-spacing: 0.16px;
+  letter-spacing:${px(0.16)};
   text-align: left;
 
   color: ${({ theme }) => theme.colors.lightBackground};
