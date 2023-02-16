@@ -115,6 +115,14 @@ const LayoutChildren = styled.div`
       border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover};
     }
 
+    .cds--data-table--selected td,
+    .cds--data-table--selected:hover td {
+      background-color: ${({ theme }) =>
+        theme.colors.bgPrimaryLight} !important;
+      color: ${({ theme }) => theme.colors.white} !important;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover};t
+    }
+
     td:last-child,
     td:last-child > div {
       padding: 0;
