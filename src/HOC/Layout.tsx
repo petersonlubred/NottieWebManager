@@ -120,6 +120,7 @@ const LayoutChildren = styled.div`
       background-color: ${({ theme }) =>
         theme.colors.bgPrimaryLight} !important;
       color: ${({ theme }) => theme.colors.white} !important;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover};t
     }
 
     td:last-child,
