@@ -12,30 +12,12 @@ interface Iprops {
   isDashboard?: boolean;
 }
 
-const PageHeader = ({
-  navItem,
-  selected,
-  handleSetIndex,
-  title,
-  subtitle,
-  isDashboard,
-}: Iprops) => {
+const PageHeader = ({ title, subtitle, isDashboard }: Iprops) => {
   return (
     <HeaderContainer>
       <HeaderDashboardTitleBox>
         <HeaderTitle>{title}</HeaderTitle>
         <HeaderDescription>{subtitle}.</HeaderDescription>
-        <HeaderNav>
-          {navItem?.map((item, index) => (
-            <HeaderNavItem
-              key={index}
-              selected={selected === index}
-              onClick={() => handleSetIndex && handleSetIndex(index)}
-            >
-              {item?.title}
-            </HeaderNavItem>
-          ))}
-        </HeaderNav>
       </HeaderDashboardTitleBox>
       {isDashboard && (
         <HeaderStatisticsSection>
@@ -151,6 +133,7 @@ const HeaderDashboardTitleBox = styled.div`
   justify-content: center;
   width: 100%;
   flex-direction: column;
+  position: relative;
 `;
 
 const HeaderTitle = styled.h1`
@@ -168,30 +151,4 @@ const HeaderDescription = styled.p`
   margin: 0;
   margin-bottom: ${px(36)};
   color: ${({ theme }) => theme.colors.lightText};
-`;
-
-const HeaderNav = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: ${px(48)};
-`;
-
-type HeaderNavItemProps = { selected: boolean };
-
-const HeaderNavItem = styled.div<HeaderNavItemProps>`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: ${px(15)};
-  color: ${({ selected, theme }) => !selected && theme.colors.lightText};
-  transition: all 0.1s ease-in;
-  border-bottom: 1px solid
-    ${({ selected, theme }) =>
-      selected ? theme.colors.normalText : 'transparent'};
-  font-weight: ${({ selected }) => selected && '700'};
-  &:hover {
-    font-weight: 700;
-    color: ${({ theme }) => theme.colors.white};
-  }
 `;
