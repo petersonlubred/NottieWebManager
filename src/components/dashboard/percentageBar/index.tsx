@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { px } from '@/utils';
 
 interface IProp {
   size?:string;
@@ -23,14 +24,14 @@ export default PercentageBar;
 
 const BarContainer = styled.div`
   display: flex;
-  align-items: flex-start;
-  width: 100%;
+  align-items: center;
 `;
 const Bar = styled.div<{ size?: string, color?:string }>`
   width: ${(props) => props.size};
-  height: 32px;
+  height:${px(32)};
   text-align: left;
   background-color: ${(props)=>props.color};
-  padding-left: 5px;
+  padding-left:${px(4)};
+  padding-top: ${px(10)};
   color:${({theme})=>theme.colors.white}
 `;
