@@ -1,6 +1,7 @@
 import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
+import SmsDeliveryContainer from '../smsDeliveryStatus';
 import EmailDeliveryStatus from './EmailDeliveryStatus';
 import OutBoundSmcStatus from './OutBoundSmcStatus';
 import SmsDeliveryStatus from './SMSDeliveryStatus';
@@ -13,6 +14,7 @@ const deliveryItems = [
 const SmsandEmail = () => {
   return (
     <>
+      <SmsDeliveryContainer />
       <DeliveryContainer>
         {deliveryItems?.map((item, index) => (
           <SmsDeliveryStatus key={index} heading={item} />
