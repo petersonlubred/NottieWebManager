@@ -93,6 +93,9 @@ const NavbarContainer = styled.div`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.bgPrimary};
   color: ${({ theme }) => theme.colors.white};
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 `;
 const LogoContainer = styled.div`
   padding-left: ${px(27)};

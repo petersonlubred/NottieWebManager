@@ -16,6 +16,10 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
     line-height: 140.5%;
     overflow-x: hidden;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   a {
