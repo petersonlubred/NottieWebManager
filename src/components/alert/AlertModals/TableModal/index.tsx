@@ -87,48 +87,48 @@ type IProps = {
 
 const AlertTableModal = ({ open, toggleModal }: IProps) => {
   return (
-    <Modal
-      buttonLabel="Close"
-      heading="Account no: 3910793817"
-      open={open}
-      toggleModal={toggleModal}
-      secondaryButtonText=""
-      buttonTriggerText=""
-      extent="md"
-      buttonIcon={(props: any) => props}
-    >
-      <ModalContainer>
-        <SubHeader>
-          <Header>Customer ID: COMP1502 </Header>
-          <Header>Narration: Thanks for being great! ❤️</Header>
-        </SubHeader>
-        <DataTable rows={dummyData[1]} headers={dummyData[0]}>
-          {({ rows, headers, getHeaderProps, getTableProps }: any) => (
-            <Table {...getTableProps()}>
-              <TableHead>
-                <TableRow>
-                  {headers.map((header: any) => (
-                    <TableHeader {...getHeaderProps({ header })}>
-                      {header.header}
-                    </TableHeader>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row: any) => (
-                  <TableRow key={row.id}>
-                    {row.cells.map((cell: any) => (
-                      <TableCell key={cell.id}>{cell.value}</TableCell>
+    <InputModalContainer>
+      <Modal
+        buttonLabel="Close"
+        heading="Account no: 3910793817"
+        open={open}
+        toggleModal={toggleModal}
+        secondaryButtonText=""
+        buttonTriggerText=""
+        extent="md"
+        buttonIcon={(props: any) => props}
+      >
+        <ModalContainer>
+          <SubHeader>
+            <Header>Customer ID: COMP1502 </Header>
+            <Header>Narration: Thanks for being great! ❤️</Header>
+          </SubHeader>
+          <DataTable rows={dummyData[1]} headers={dummyData[0]}>
+            {({ rows, headers, getHeaderProps, getTableProps }: any) => (
+              <Table {...getTableProps()}>
+                <TableHead>
+                  <TableRow>
+                    {headers.map((header: any) => (
+                      <TableHeader {...getHeaderProps({ header })}>
+                        {header.header}
+                      </TableHeader>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </DataTable>
-        
-      </ModalContainer>
-      <PaginationContainer>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row: any) => (
+                    <TableRow key={row.id}>
+                      {row.cells.map((cell: any) => (
+                        <TableCell key={cell.id}>{cell.value}</TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </DataTable>
+        </ModalContainer>
+        <PaginationContainer>
           <Pagination
             backwardText="Previous page"
             forwardText="Next page"
@@ -140,14 +140,60 @@ const AlertTableModal = ({ open, toggleModal }: IProps) => {
             totalItems={103}
           />
         </PaginationContainer>
-    </Modal>
+      </Modal>
+    </InputModalContainer>
   );
 };
 
 export default AlertTableModal;
 
+const InputModalContainer = styled.div`
+  .cds--modal-container--md {
+    width: 926px !important;
+  }
+
+  .cds--modal .cds--pagination,
+  .cds--modal .cds--pagination__control-buttons,
+  .cds--modal .cds--text-input,
+  .cds--modal .cds--text-area,
+  .cds--modal .cds--search-input,
+  .cds--modal .cds--select-input,
+  .cds--modal .cds--dropdown,
+  .cds--modal .cds--dropdown-list,
+  .cds--modal .cds--number input[type='number'],
+  .cds--modal .cds--date-picker__input,
+  .cds--modal .cds--multi-select,
+  .cds--modal .cds--number__control-btn::before,
+  .cds--modal .cds--number__control-btn::after {
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+    color: ${({ theme }) => theme.colors.lightText} !important;
+  }
+
+  .cds--pagination__right .cds--pagination__text {
+    color: ${({ theme }) => theme.colors.lightText} !important;
+  }
+
+  span.cds--pagination__text.cds--pagination__items-count {
+    color: ${({ theme }) => theme.colors.lightText} !important;
+  }
+
+  .cds--btn--ghost:not([disabled]) svg {
+    fill: ${({ theme }) => theme.colors.lightText} !important;
+  }
+`;
+
 const ModalContainer = styled.div`
-  width: 100%;
+  .cds--data-table th {
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+    color: ${({ theme }) => theme.colors.lightBackground} !important;
+  }
+
+  .cds--data-table tbody tr,
+  .cds--data-table tbody tr td,
+  .cds--data-table tbody tr th {
+    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+    color: ${({ theme }) => theme.colors.lightBackground} !important;
+  }
 `;
 
 const SubHeader = styled.div`
@@ -158,11 +204,13 @@ const SubHeader = styled.div`
   margin-bottom: 2rem;
 `;
 const Header = styled.div`
+  position: sticky;
   font-family: ${({ theme }) => theme.fontFamilies.default};
   font-style: normal;
   font-weight: 400;
   font-size: ${px(18)};
   line-height: ${px(20)};
+
 
   letter-spacing: 0.16px;
 
@@ -175,6 +223,5 @@ const Header = styled.div`
 `;
 
 const PaginationContainer = styled.div`
-  width: 100%;
   background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
 `;

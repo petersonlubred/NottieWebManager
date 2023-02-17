@@ -29,43 +29,50 @@ type IProps = {
 
 const AlertInputFieldModal = ({ open, toggleModal }: IProps) => {
   return (
-    <Modal
-      buttonLabel="Save Chnages"
-      heading="Map custom tags"
-      open={open}
-      toggleModal={toggleModal}
-      secondaryButtonText="Cancel"
-      buttonTriggerText={''}
-      extent="sm"
-      buttonIcon={(props: any) => props}
-    >
-      {dummpData.map((item: any) => (
-        <InputFieldContainer key={item.id}>
-          <TagBox>{item.tagName}</TagBox>
-          <IconBox>
-            <Link />
-          </IconBox>
-          <InputBox>
-            <TextInput
-              type="text"
-              id={item.inputId}
-              placeholder={item.inputName}
-            />
-          </InputBox>
-        </InputFieldContainer>
-      ))}
-    </Modal>
+    <InputModalContainer>
+      <Modal
+        buttonLabel="Save Chnages"
+        heading="Map custom tags"
+        open={open}
+        toggleModal={toggleModal}
+        secondaryButtonText="Cancel"
+        buttonTriggerText={''}
+        extent="sm"
+        buttonIcon={(props: any) => props}
+      >
+        {dummpData.map((item: any) => (
+          <InputFieldContainer key={item.id}>
+            <TagBox>{item.tagName}</TagBox>
+            <IconBox>
+              <Link />
+            </IconBox>
+            <InputBox>
+              <TextInput
+                type="text"
+                id={item.inputId}
+                placeholder={item.inputName}
+              />
+            </InputBox>
+          </InputFieldContainer>
+        ))}
+      </Modal>
+    </InputModalContainer>
   );
 };
 
 export default AlertInputFieldModal;
 
+const InputModalContainer = styled.div`
+  .cds--modal-container--sm {
+    width: 435px !important;
+  }
+`;
+
 const InputFieldContainer = styled.div`
-  width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap:33px;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 14px;
 `;
 const TagBox = styled.div`
   width: 10%;
@@ -77,7 +84,7 @@ const IconBox = styled.div`
 `;
 
 const InputBox = styled.div`
-  width: 60%;
+  width: 256px;
 
   flex: none;
   order: 1;
