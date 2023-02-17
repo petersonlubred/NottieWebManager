@@ -45,12 +45,18 @@ const SmsDeliveryContainer = () => {
 export default SmsDeliveryContainer;
 
 const Container = styled.div`
+<<<<<<< HEAD
   width: 91.75rem;
   height: 11.4375rem;
   background-color: ${({ theme }) => theme.colors.bgPrimary};
   margin: auto;
   padding:${px(16)};
 
+=======
+  height: ${px(185)};
+  background-color: ${({ theme }) => theme.colors.bgPrimary};
+  margin-bottom: ${px(16)};
+>>>>>>> ea2bbfc094050752c4e50a431a789648ea4b9c9f
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -67,8 +73,12 @@ const Header = styled.p`
   font-size: ${px(20)};
   line-height: ${px(28)};
   color: ${({ theme }) => theme.colors.lightBackground};
+<<<<<<< HEAD
 
   margin-bottom: 22px;
+=======
+  margin-bottom: 2rem;
+>>>>>>> ea2bbfc094050752c4e50a431a789648ea4b9c9f
 `;
 
 const IndicatorContainer = styled.div`
