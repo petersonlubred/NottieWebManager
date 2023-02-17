@@ -12,43 +12,50 @@ type IProps = {
 
 const CreateTemplateAlertModal = ({ open, toggleModal }: IProps) => {
   return (
-    <Modal
-      buttonLabel="Create template"
-      heading=" Create template"
-      open={open}
-      toggleModal={toggleModal}
-      secondaryButtonText="Cancel"
-      buttonTriggerText={''}
-      extent="sm"
-      buttonIcon={(props: any) => props}
-    >
-      <ModalContainer>
-        <InputBox>
-          <Select id="select-1" labelText="Template name">
-            <SelectItem text="Choose option" />
-            <SelectItem text="Option 1" value="option-1" />
-            <SelectItem text="Option 2" value="option-2" />
-          </Select>
-        </InputBox>
-        <InputBox>
-          <TextInput
-            type="text"
-            id={'input_1'}
-            labelText="Service type"
-            placeholder="input text"
-          />
-        </InputBox>
-      </ModalContainer>
-    </Modal>
+    <TemplateModalContainer>
+      <Modal
+        buttonLabel="Create template"
+        heading=" Create template"
+        open={open}
+        toggleModal={toggleModal}
+        secondaryButtonText="Cancel"
+        buttonTriggerText={''}
+        extent="sm"
+        buttonIcon={(props: any) => props}
+      >
+        <ModalContainer>
+          <InputBox>
+            <Select id="select-1" labelText="Template name">
+              <SelectItem text="Choose option" />
+              <SelectItem text="Option 1" value="option-1" />
+              <SelectItem text="Option 2" value="option-2" />
+            </Select>
+          </InputBox>
+          <InputBox>
+            <TextInput
+              type="text"
+              id={'input_1'}
+              labelText="Service type"
+              placeholder="input text"
+            />
+          </InputBox>
+        </ModalContainer>
+      </Modal>
+    </TemplateModalContainer>
   );
 };
 
 export default CreateTemplateAlertModal;
 
+const TemplateModalContainer = styled.div`
+  .cds--modal-container--sm {
+    width: 451px !important;
+  }
+`;
+
 const ModalContainer = styled.div`
-  width: 100%;
-  label{
-    color: ${({theme})=>theme.colors.lightText};
+  label {
+    color: ${({ theme }) => theme.colors.lightText};
   }
 `;
 

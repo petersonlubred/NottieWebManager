@@ -10,7 +10,8 @@ type IProps = {
 
 const MobileModal = ({ open, toggleModal }: IProps) => {
   return (
-    <ModalMobile
+    <ModalMobileContainer>
+    <Modal
       buttonLabel="Close"
       heading="Mobile: 08012371829"
       open={open}
@@ -30,14 +31,16 @@ const MobileModal = ({ open, toggleModal }: IProps) => {
           pariatur.{' '}
         </Paragraph>
       </Container>
-    </ModalMobile>
+    </Modal>
+    </ModalMobileContainer>
   );
 };
 
 export default MobileModal;
-//TODO modify size
-const ModalMobile = styled(Modal)`
-  width: 320px !important; 
+const ModalMobileContainer = styled.div`
+  .cds--modal-container {
+    width: 320px !important;
+  }
 `;
 
 const Container = styled.div`
