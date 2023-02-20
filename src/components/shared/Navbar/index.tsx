@@ -38,11 +38,7 @@ const Navbar = () => {
                 items={[
                   {
                     id: 'option-1',
-                    label: 'Option 1',
-                  },
-                  {
-                    id: 'option-2',
-                    label: 'Option 2',
+                    label: 'System Configuration',
                   },
                 ]}
                 label={item?.title}
