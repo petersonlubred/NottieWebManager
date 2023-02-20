@@ -3,7 +3,6 @@ import PercentageBar from '../percentageBar';
 import styled from 'styled-components';
 import { px } from '@/utils';
 
-
 const indicatorData: any[] = [
   { title: 'Delivered', color: '#0E6027' },
   { title: 'Pending', color: '#0258F0' },
@@ -51,17 +50,13 @@ const Container = styled.div`
   flex: none;
   order: 0;
   flex-grow: 0;
-`;
-
-const ContentContainer = styled.div`
   padding: ${px(16)};
-  width: 100%;
-  margin: auto;
 `;
 
 const Header = styled.p`
   font-family: ${({ theme }) => theme.fontFamilies.default};
   font-weight: 400;
+
   font-size: ${px(20)};
   line-height: ${px(28)};
   color: ${({ theme }) => theme.colors.lightBackground};
@@ -96,7 +91,7 @@ const IndicatorTitle = styled.span`
   font-size: ${px(12)};
   line-height: ${px(18)};
 
-  letter-spacing:${px(0.16)};
+  letter-spacing: ${px(0.16)};
 
   color: ${({ theme }) => theme.colors.lightBackground};
 
@@ -106,9 +101,9 @@ const IndicatorTitle = styled.span`
 `;
 const PercentageBarContainer = styled.div`
   display: flex;
-  gap:${px(48)};
+  gap: ${px(48)};
   align-items: center;
-  margin-bottom:${px(18)};
+  margin-bottom: ${px(18)};
 `;
 
 const PercentageBox = styled.div`
@@ -121,9 +116,9 @@ const PercentageHeader = styled.p`
   font-weight: 600;
   font-size: ${px(14)};
   line-height: ${px(18)};
-  margin-bottom:${px(7)};
+  margin-bottom: ${px(7)};
 
-  letter-spacing:${px(0.16)};
+  letter-spacing: ${px(0.16)};
   text-align: left;
 
   color: ${({ theme }) => theme.colors.lightBackground};
