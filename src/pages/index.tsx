@@ -1,9 +1,11 @@
-import SetupNewUserLoginForm from '@/components/onboard/NewUserLoginForm';
 import SetDatabase from '@/components/onboard/SetDatabase';
+import SetDatabaseForm from '@/components/onboard/SetDatabaseForm/SetDatabaseForm';
 import SetupProcess from '@/components/onboard/SetupProcess/SetupProcess';
 import SetUpSuccess from '@/components/onboard/SetupSuccess/SetUpSuccess';
 import Signin from '@/components/onboard/SignIn';
 import Logo from '@/components/shared/Logo';
+import Toast from '@/components/shared/Notification/Toast';
+import { useRegisterDbMutation } from '@/redux/services';
 import type { NextPage } from 'next';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -11,8 +13,11 @@ import Seo from '../providers/seo';
 import { px } from '../utils/px/px';
 
 const Home: NextPage = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [step, setStep] = useState(0);
+  const [registerDb, { isLoading, isSuccess, isError, error }] =
+    useRegisterDbMutation();
+
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [step, setStep] = useState(3);
 
   const toggleLogin = () => {
     setIsLogin(false);
@@ -27,18 +32,29 @@ const Home: NextPage = () => {
     <Body>
       <Seo title="Home" />
       <Main>
+        <Toast />
         <NavbarSection>
           <LogoContainer>
             <Logo />
           </LogoContainer>
           {isLogin && step === 0 && <SetDatabase toggleLogin={toggleLogin} />}
         </NavbarSection>
-        {step === 0 ? (
+        {isLogin ? (
           <Signin handleSetStep={handleSetStep} />
         ) : step == 1 ? (
-          <SetupNewUserLoginForm handleSetStep={handleSetStep} />
+          <SetDatabaseForm
+            handleSetStep={handleSetStep}
+            registerDb={registerDb}
+            isLoading={isLoading}
+          />
         ) : step === 2 ? (
-          <SetupProcess handleSetStep={handleSetStep} />
+          <SetupProcess
+            handleSetStep={handleSetStep}
+            isLoading={isLoading}
+            isSuccess={isSuccess}
+            isError={isError}
+            error={error}
+          />
         ) : (
           step === 3 && <SetUpSuccess handleSetStep={handleSetStep} />
         )}

@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { px } from '@/utils';
 import { Button } from '@carbon/react';
 import { Copy, ArrowRight, CheckmarkFilled } from '@carbon/react/icons';
+import { useToast } from '@/context/ToastContext';
+
 type IProps = {
   handleSetStep: () => void;
 };
 
 const SetUpSuccess = ({ handleSetStep }: IProps) => {
+  const { toast } = useToast();
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText('AB-12345678');
+    toast('success', 'Details copied to clipboard');
+  };
+  const handleCopy2 = () => {
+    navigator.clipboard.writeText('AB-12345678');
+    toast(
+      'info',
+      'Details copied to clipboard Details copied to clipboard Details copied to clipboard'
+    );
+  };
+
   return (
     <SuccessContain>
       <div>
         <CheckmarkFilled size={90} style={{ color: '#25AE88' }} />
       </div>
       <div style={{ padding: '1rem' }}>
-        <h2>The Setup Was Successful</h2>
+        <h2 onClick={handleCopy2}>The Setup Was Successful</h2>
       </div>
       <SuccessDetails>
         <div className="para">
@@ -47,7 +63,13 @@ const SetUpSuccess = ({ handleSetStep }: IProps) => {
         </div>
 
         <InnerBtnDiv>
-          <Button className="btn" renderIcon={Copy} size="xl">
+          <Button
+            className="btn"
+            renderIcon={(props: any) => (
+              <Copy {...props} size={24} onClick={handleCopy} />
+            )}
+            size="xl"
+          >
             Copy details
           </Button>
           <Button
@@ -175,6 +197,11 @@ const InnerBtnDiv = styled.div`
     width: 50%;
     background-color: ${({ theme }) => theme.colors.bgHover};
     color: ${({ theme }) => theme.colors.white};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.bgHover};
+      color: ${({ theme }) => theme.colors.white};
+    }
   }
 
   .btn2 {

@@ -1,8 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+interface IState {
+  mode: string;
+  selectedColor: string;
+  notifications: any[];
+}
+
+const initialState: IState = {
   mode: 'dark',
   selectedColor: '#00000',
+  notifications: [],
 };
 
 const sharedSlice = createSlice({
@@ -16,9 +23,13 @@ const sharedSlice = createSlice({
     setSelectedColor: (state, { payload }) => {
       state.selectedColor = payload;
     },
+    setNotifications: (state, { payload }) => {
+      state.notifications = [...state.notifications, payload];
+    },
   },
 });
 
-export const { setMode, setSelectedColor } = sharedSlice.actions;
+export const { setMode, setSelectedColor, setNotifications } =
+  sharedSlice.actions;
 const { reducer } = sharedSlice;
 export default reducer;

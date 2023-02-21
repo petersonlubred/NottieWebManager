@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FormGroup,
@@ -7,183 +7,247 @@ import {
   PasswordInput,
   Select,
   SelectItem,
+  Loading,
 } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
 import { databaseSchema } from '@/schemas';
 import { initialDatabaseValue } from '@/interfaces/dtos';
+import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 
 type IProps = {
   handleSetStep: () => void;
+  registerDb: Function;
+  isLoading: boolean;
 };
 
-const SetDatabaseForm = ({ handleSetStep }: IProps) => {
+const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
+  const handleSubmit = (values: any) => {
+    registerDb(values);
+    handleSetStep();
+  };
+
   return (
     <SignInContainer>
       <HeaderTitle>Setup Application Database</HeaderTitle>
       <Formik
         initialValues={initialDatabaseValue}
         validationSchema={databaseSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(false);
-        }}
+        onSubmit={handleSubmit}
       >
         {({
           errors,
           touched,
-          isSubmitting,
           isValid,
           values,
           setFieldTouched,
+          handleSubmit,
         }) => (
           <Form>
             <FormGroup legendText="">
-              <FormContainer>
-                <Field name="databaseType">
-                  {({ field }: any) => (
-                    <Select
-                      id="select-1"
-                      labelText="Select"
-                      {...field}
-                      onKeyUp={() => setFieldTouched('databaseType', true)}
-                      invalid={Boolean(
-                        touched.databaseType && errors.databaseType
-                      )}
-                      invalidText={errors.databaseType}
-                    >
-                      <SelectItem text="Choose option" />
-                      <SelectItem text="Option 1" value="option-1" />
-                      <SelectItem text="Option 2" value="option-2" />
-                    </Select>
-                  )}
-                </Field>
-                <Field name="server">
-                  {({ field }: any) => (
-                    <TextInput
-                      {...field}
-                      type="text"
-                      id="server-input"
-                      labelText="Server/IP"
-                      placeholder="input text"
-                      onKeyUp={() => setFieldTouched('server', true)}
-                      invalid={Boolean(touched.server && errors.server)}
-                      invalidText={errors.server}
-                    />
-                  )}
-                </Field>
-              </FormContainer>
-              <FormContainer>
-                <Field name="port">
-                  {({ field }: any) => (
-                    <TextInput
-                      {...field}
-                      type="text"
-                      id="port-input"
-                      labelText="Port"
-                      placeholder="input number"
-                      onKeyUp={() => setFieldTouched('port', true)}
-                      invalid={Boolean(touched.port && errors.port)}
-                      invalidText={errors.port}
-                    />
-                  )}
-                </Field>
-                <Field name="maxPoolSize">
-                  {({ field }: any) => (
-                    <TextInput
-                      {...field}
-                      type="text"
-                      id="maxPoolSize-input"
-                      labelText="Maximum Pool Size"
-                      placeholder="input number"
-                      onKeyUp={() => setFieldTouched('maxPoolSize', true)}
-                      invalid={Boolean(
-                        touched.maxPoolSize && errors.maxPoolSize
-                      )}
-                      invalidText={errors.maxPoolSize}
-                    />
-                  )}
-                </Field>
-              </FormContainer>
-
-              <FormContainer>
-                <Field name="connectionTimeOut">
-                  {({ field }: any) => (
-                    <TextInput
-                      {...field}
-                      type="text"
-                      id="connectionTimeOut-input"
-                      labelText="Connection timeout"
-                      placeholder="input number"
-                      onKeyUp={() => setFieldTouched('connectionTimeOut', true)}
-                      invalid={Boolean(
-                        touched.connectionTimeOut && errors.connectionTimeOut
-                      )}
-                      invalidText={errors.connectionTimeOut}
-                    />
-                  )}
-                </Field>
-                <Field name="commandTimeOut">
-                  {({ field }: any) => (
-                    <TextInput
-                      {...field}
-                      type="text"
-                      id="commandTimeOut-input"
-                      labelText="Command timeout"
-                      placeholder="input number"
-                      onKeyUp={() => setFieldTouched('commandTimeOut', true)}
-                      invalid={Boolean(
-                        touched.commandTimeOut && errors.commandTimeOut
-                      )}
-                      invalidText={errors.commandTimeOut}
-                    />
-                  )}
-                </Field>
-              </FormContainer>
-              <FormContainer>
-                <Field name="username">
-                  {({ field }: any) => (
-                    <TextInput
-                      {...field}
-                      type="text"
-                      id="username-input"
-                      labelText="Username"
-                      placeholder="input text"
-                      onKeyUp={() => setFieldTouched('username', true)}
-                      invalid={Boolean(touched.username && errors.username)}
-                      invalidText={errors.username}
-                    />
-                  )}
-                </Field>
-                <PasswordContainer>
-                  <Field name="password">
+              <FormField>
+                <FormNameContainer>
+                  <Field name="databaseName">
                     {({ field }: any) => (
-                      <PasswordInput
+                      <TextInput
                         {...field}
-                        type="password"
-                        id="password-input"
-                        labelText="Password"
-                        placeholder="Password"
-                        onKeyUp={() => setFieldTouched('password', true)}
-                        invalid={Boolean(touched.password && errors.password)}
-                        invalidText={errors.password}
+                        type="text"
+                        id="databaseName-input"
+                        labelText="Database Name"
+                        placeholder="input text"
+                        onKeyUp={() => setFieldTouched('databaseName', true)}
                       />
                     )}
                   </Field>
-                </PasswordContainer>
-              </FormContainer>
+                </FormNameContainer>
+                <ErrorMessage
+                  invalid={Boolean(touched.databaseName && errors.databaseName)}
+                  invalidText={errors.databaseName}
+                />
+              </FormField>
+              <FormField>
+                <FormContainer>
+                  <Field name="databaseType">
+                    {({ field }: any) => (
+                      <Select
+                        id="select-1"
+                        labelText="Database type"
+                        {...field}
+                        onKeyUp={() => setFieldTouched('databaseType', true)}
+                      >
+                        <SelectItem text="Choose option" />
+                        <SelectItem text="Option 1" value="option-1" />
+                        <SelectItem text="Option 2" value="option-2" />
+                      </Select>
+                    )}
+                  </Field>
+                  <Field name="server">
+                    {({ field }: any) => (
+                      <TextInput
+                        {...field}
+                        type="text"
+                        id="server-input"
+                        labelText="Server/IP"
+                        placeholder="input text"
+                        onKeyUp={() => setFieldTouched('server', true)}
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage
+                    invalid={Boolean(
+                      touched.databaseType && errors.databaseType
+                    )}
+                    invalidText={errors.databaseType}
+                  />
+                  <ErrorMessage
+                    invalid={Boolean(touched.server && errors.server)}
+                    invalidText={errors.server}
+                  />
+                </FormContainer>
+              </FormField>
+              <FormField>
+                <FormContainer>
+                  <Field name="port">
+                    {({ field }: any) => (
+                      <TextInput
+                        {...field}
+                        type="text"
+                        id="port-input"
+                        labelText="Port"
+                        placeholder="input number"
+                        onKeyUp={() => setFieldTouched('port', true)}
+                      />
+                    )}
+                  </Field>
+                  <Field name="maxPoolSize">
+                    {({ field }: any) => (
+                      <TextInput
+                        {...field}
+                        type="text"
+                        id="maxPoolSize-input"
+                        labelText="Maximum Pool Size"
+                        placeholder="input number"
+                        onKeyUp={() => setFieldTouched('maxPoolSize', true)}
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage
+                    invalid={Boolean(touched.port && errors.port)}
+                    invalidText={errors.port}
+                  />
+                  <ErrorMessage
+                    invalid={Boolean(touched.maxPoolSize && errors.maxPoolSize)}
+                    invalidText={errors.maxPoolSize}
+                  />
+                </FormContainer>
+              </FormField>
+              <FormField>
+                <FormContainer>
+                  <Field name="connectionTimeout">
+                    {({ field }: any) => (
+                      <TextInput
+                        {...field}
+                        type="text"
+                        id="connectionTimeout-input"
+                        labelText="Connection timeout"
+                        placeholder="input number"
+                        onKeyUp={() =>
+                          setFieldTouched('connectionTimeout', true)
+                        }
+                      />
+                    )}
+                  </Field>
+                  <Field name="commandTimeout">
+                    {({ field }: any) => (
+                      <TextInput
+                        {...field}
+                        type="text"
+                        id="commandTimeout-input"
+                        labelText="Command timeout"
+                        placeholder="input number"
+                        onKeyUp={() => setFieldTouched('commandTimeout', true)}
+                      />
+                    )}
+                  </Field>
+
+                  <ErrorMessage
+                    invalid={Boolean(
+                      touched.connectionTimeout && errors.connectionTimeout
+                    )}
+                    invalidText={errors.connectionTimeout}
+                  />
+                  <ErrorMessage
+                    invalid={Boolean(
+                      touched.commandTimeout && errors.commandTimeout
+                    )}
+                    invalidText={errors.commandTimeout}
+                  />
+                </FormContainer>
+              </FormField>
+              <FormField>
+                <FormContainer>
+                  <Field name="userId">
+                    {({ field }: any) => (
+                      <TextInput
+                        {...field}
+                        type="text"
+                        id="username-input"
+                        labelText="Username"
+                        placeholder="input text"
+                        onKeyUp={() => setFieldTouched('userId', true)}
+                      />
+                    )}
+                  </Field>
+                  <PasswordContainer>
+                    <Field name="password">
+                      {({ field }: any) => (
+                        <PasswordInput
+                          {...field}
+                          type="password"
+                          id="password-input"
+                          labelText="Password"
+                          placeholder="Password"
+                          onKeyUp={() => setFieldTouched('password', true)}
+                        />
+                      )}
+                    </Field>
+                  </PasswordContainer>
+                  <ErrorMessage
+                    invalid={Boolean(touched.userId && errors.userId)}
+                    invalidText={errors.userId}
+                  />
+                  <ErrorMessage
+                    invalid={Boolean(touched.password && errors.password)}
+                    invalidText={errors.password}
+                  />
+                </FormContainer>
+              </FormField>
               <Button
-                renderIcon={(props: any) => <ArrowRight size={24} {...props} />}
+                renderIcon={(props: any) =>
+                  isLoading ? (
+                    <Loading
+                      size={24}
+                      {...props}
+                      small
+                      description="Active loading indicator"
+                      withOverlay={false}
+                    />
+                  ) : (
+                    <ArrowRight {...props} size={24} />
+                  )
+                }
                 iconDescription="Arrow-right"
                 disabled={
-                  isSubmitting ||
                   !isValid ||
                   !values?.databaseType ||
-                  !values?.password
+                  !values?.password ||
+                  isLoading
                 }
-                onClick={handleSetStep}
+                onClick={handleSubmit}
+                style={{ position: 'relative' }}
               >
-                Connect to database{' '}
+                Connect to database
               </Button>
             </FormGroup>
             <Paragraph>
@@ -245,8 +309,8 @@ const HeaderTitle = styled.h1`
 const FormContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: ${px(16)};
-  margin-bottom: ${px(32)};
+  grid-gap: 0 ${px(16)};
+  margin-bottom: ${px(16)};
   place-items: center;
   > div {
     width: 100%;
@@ -288,5 +352,18 @@ const Paragraph = styled.p`
   font-size: ${({ theme }) => theme.fontSizes.l};
   & > span {
     display: inline-block;
+  }
+`;
+
+const FormField = styled.div`
+  margin-bottom: ${px(16)};
+`;
+
+export const FormNameContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  label {
+    color: ${({ theme }) => theme.colors.white};
   }
 `;

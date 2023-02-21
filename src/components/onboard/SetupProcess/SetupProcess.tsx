@@ -1,7 +1,12 @@
 import { px, rem } from '@/utils';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { CircleDash, CheckmarkOutline } from '@carbon/react/icons';
+import {
+  useLazyCreateTableQuery,
+  useLazyLoadDefaultDataQuery,
+  useLazyWrapUpQuery,
+} from '@/redux/services';
 
 const itemsList = [
   'Creating stored procedures and views',
@@ -12,10 +17,66 @@ const itemsList = [
 
 type IProps = {
   handleSetStep: () => void;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isError: boolean;
+  error: any;
 };
 
-const SetupProcess = ({ handleSetStep }: IProps) => {
-  const [processStep] = React.useState<number>(1);
+const SetupProcess = ({ handleSetStep, isSuccess, isLoading }: IProps) => {
+  const [processStep, setProcessStep] = React.useState<number>(-2);
+  const [createTable, { isLoading: step2Loading, isSuccess: step2Success }] =
+    useLazyCreateTableQuery();
+  const [loadDefault, { isLoading: step3Loading, isSuccess: step3Success }] =
+    useLazyLoadDefaultDataQuery();
+
+  const [wrapUp, { isLoading: step4Loading, isSuccess: step4Success }] =
+    useLazyWrapUpQuery();
+
+  const incrementStep = () => {
+    setProcessStep(processStep + 1);
+  };
+
+  useEffect(() => {
+    if (isLoading) {
+      incrementStep();
+    }
+    if (isSuccess) {
+      createTable({});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createTable, isLoading, isSuccess]);
+
+  useEffect(() => {
+    if (step2Loading) {
+      incrementStep();
+    }
+    if (step2Success) {
+      loadDefault({});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createTable, step2Loading, step2Success]);
+
+  useEffect(() => {
+    if (step3Loading) {
+      incrementStep();
+    }
+    if (step3Success) {
+      wrapUp({});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createTable, step3Loading, step3Success]);
+
+  useEffect(() => {
+    if (step4Loading) {
+      incrementStep();
+    }
+
+    if (step4Success) {
+      handleSetStep();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleSetStep, step4Loading, step4Success]);
 
   return (
     <Setupcontainer>

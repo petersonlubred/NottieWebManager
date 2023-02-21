@@ -1,3 +1,4 @@
+import { databaseApi } from './../services/databaseApi';
 import { reduxBatch } from '@manaflair/redux-batch';
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore } from 'redux-persist';
@@ -25,6 +26,7 @@ export const store = configureStore({
       },
       thunk: true,
     }),
+    databaseApi.middleware,
   ],
   enhancers: [reduxBatch],
 });
