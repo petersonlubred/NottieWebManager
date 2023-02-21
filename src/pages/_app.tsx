@@ -7,6 +7,7 @@ import { FC } from 'react';
 import ThemeProvider from '@/providers';
 import { PersistGate } from 'redux-persist/integration/react';
 import '@carbon/charts/styles.css';
+import { AppContextProvider } from '@/context';
 
 const MyApp: FC<AppProps> = ({ Component, ...rest }: AppProps) => {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -17,7 +18,9 @@ const MyApp: FC<AppProps> = ({ Component, ...rest }: AppProps) => {
       <ThemeProvider>
         <GlobalStyles />
         <PersistGate loading={null} persistor={persistor}>
-          <Component {...pageProps} />{' '}
+          <AppContextProvider>
+            <Component {...pageProps} />
+          </AppContextProvider>
         </PersistGate>
       </ThemeProvider>
     </Provider>

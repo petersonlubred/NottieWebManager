@@ -137,11 +137,11 @@ const DataSourceForm = () => {
                       />
                     )}
                   </Field>{' '}
-                  <Field name="connectionTimeOut">
+                  <Field name="connectionTimeout">
                     {({ field }: any) => (
                       <NumberInput
                         {...field}
-                        id="connectionTimeOut"
+                        id="connectionTimeout"
                         label="Connection timeout"
                         max={10000}
                         min={0}
@@ -150,7 +150,7 @@ const DataSourceForm = () => {
                         value={0}
                         placeholder="0"
                         onKeyUp={() =>
-                          setFieldTouched('connectionTimeOut', true)
+                          setFieldTouched('connectionTimeout', true)
                         }
                       />
                     )}
@@ -161,9 +161,9 @@ const DataSourceForm = () => {
                   />
                   <ErrorMessage
                     invalid={Boolean(
-                      touched.connectionTimeOut && errors.connectionTimeOut
+                      touched.connectionTimeout && errors.connectionTimeout
                     )}
-                    invalidText={errors.connectionTimeOut}
+                    invalidText={errors.connectionTimeout}
                   />
                 </FormContainer>
               </FormField>

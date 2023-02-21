@@ -155,7 +155,7 @@ const ModalContentContainer = styled.div`
 
 const ModalItem = styled.div``;
 
-const ModalLabel = styled.div`
+export const ModalLabel = styled.div`
   color: ${({ theme }) => theme.colors.lightText} !important;
   font-size: ${({ theme }) => theme.fontSizes.s};
   font-weight: 400;
@@ -168,7 +168,7 @@ const FormField = styled.div`
   margin-bottom: ${px(16)};
 `;
 
-const FormEmailContainer = styled.div`
+export const FormEmailContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;

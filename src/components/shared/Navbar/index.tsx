@@ -6,7 +6,7 @@ import { Dropdown } from '@carbon/react';
 import { Light, LightFilled, Notification, User } from '@carbon/react/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { setMode } from '@/redux/slices/shared';
+import { setMode } from '@/redux/slices/util';
 import { NextRouter, useRouter } from 'next/router';
 
 const Navbaritem = [

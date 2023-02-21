@@ -25,8 +25,8 @@ const Button = ({
       renderIcon={renderIcon}
       disabled={disabled}
       onClick={handleClick}
-      width={fullWidth}
-      validateButton={validateButton}
+      width={fullWidth ? '100%' : 'auto'}
+      valid={validateButton}
       className={className}
     >
       {buttonLabel}
@@ -37,16 +37,16 @@ const Button = ({
 export default Button;
 
 type ButtonProps = {
-  width: boolean;
+  width: string;
   disabled: boolean;
-  validateButton?: boolean;
+  valid?: boolean;
 };
 
 const ButtonStyle = styled(Btn)<ButtonProps>`
   max-width: 30rem;
-  width: ${({ width }) => (width ? '100%' : 'auto')};
-  color: ${({ disabled, validateButton }) =>
-    validateButton && disabled
+  width: ${({ width }) => (width === '100%' ? '100%' : 'auto')};
+  color: ${({ disabled, valid }) =>
+    valid && disabled
       ? 'white !important'
       : disabled
       ? '#6f6f6f !important'
@@ -55,8 +55,8 @@ const ButtonStyle = styled(Btn)<ButtonProps>`
     disabled ? '#525252 !important' : theme.colors.button};
 
   &:hover {
-    color: ${({ disabled, validateButton }) =>
-      validateButton && disabled
+    color: ${({ disabled, valid }) =>
+      valid && disabled
         ? 'white !important'
         : disabled
         ? '#6f6f6f !important'

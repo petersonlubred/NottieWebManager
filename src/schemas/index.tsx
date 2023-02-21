@@ -8,13 +8,22 @@ export const signinSchema = Yup.object({
 });
 
 export const databaseSchema = Yup.object({
+  databaseName: Yup.string().required('Database name is required'),
   databaseType: Yup.string().required('Database type is required'),
   server: Yup.string().required('server is required'),
-  port: Yup.string().required('port is required'),
-  maxPoolSize: Yup.string().required('server is required'),
-  connectionTimeOut: Yup.string().required('connection timeout is required'),
-  commandTimeOut: Yup.string().required('command timeout is required'),
-  username: Yup.string().required('username is required'),
+  port: Yup.number()
+    .typeError('only digit(s) is allowed')
+    .required('port is required'),
+  maxPoolSize: Yup.number()
+    .typeError('only digit(s) is allowed')
+    .required('server is required'),
+  connectionTimeout: Yup.number()
+    .typeError('only digit(s) is allowed')
+    .required('connection timeout is required'),
+  commandTimeout: Yup.number()
+    .typeError('only digit(s) is allowed')
+    .required('command timeout is required'),
+  userId: Yup.string().required('username is required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
     .required('Password is required'),
@@ -77,7 +86,7 @@ export const DataSourceSchema = Yup.object({
   server: Yup.string().required('server is required'),
   port: Yup.string().required('port is required'),
   maxPoolSize: Yup.string().required('server is required'),
-  connectionTimeOut: Yup.string().required('connection timeout is required'),
+  connectionTimeout: Yup.string().required('connection timeout is required'),
   username: Yup.string().required('username is required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')

@@ -1,4 +1,4 @@
-import { setMode } from '@/redux/slices/shared';
+import { setMode } from '@/redux/slices/util';
 import { RootState } from '@/redux/store';
 import theme, { lightTheme } from '@/theme';
 import React, { PropsWithChildren, useEffect } from 'react';

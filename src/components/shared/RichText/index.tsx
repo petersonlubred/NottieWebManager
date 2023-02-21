@@ -12,7 +12,7 @@ import { Button, Icon, Toolbar } from './Toolbar';
 import { CompactPicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { setSelectedColor } from '@/redux/slices/shared';
+import { setSelectedColor } from '@/redux/slices/util';
 
 const HOTKEYS: { [key: string]: string } = {
   'mod+b': 'bold',

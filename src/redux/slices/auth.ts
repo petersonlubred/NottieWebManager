@@ -13,6 +13,7 @@ const initialState = {
 export const persistConfig = {
   storage: storageSession,
   key: 'theme',
+  blacklist: ['notifications'],
 };
 const authSlice = createSlice({
   name: 'auth',

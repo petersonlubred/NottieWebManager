@@ -22,12 +22,13 @@ export const initialSigninValue: IinitialSiginin = {
 export const initialDatabaseValue: IinitialDatabase = {
   databaseType: '',
   server: '',
-  port: '',
-  maxPoolSize: '',
-  connectionTimeOut: '',
-  commandTimeOut: '',
-  username: '',
+  port: 0,
+  maxPoolSize: 0,
+  connectionTimeout: 0,
+  commandTimeout: 0,
+  userId: '',
   password: '',
+  databaseName: '',
 };
 
 export const initialUserLoginValue: IinitialUserLogin = {
@@ -75,12 +76,11 @@ export const initialDataSource: IinitialDataSourceType = {
   server: '',
   port: '',
   maxPoolSize: '',
-  connectionTimeOut: '',
+  connectionTimeout: '',
   username: '',
   password: '',
   status: '',
 };
-
 
 export const initialSMSCValue: IinitialSMSCForm = {
   smsc_name: '',
