@@ -24,7 +24,7 @@ const sharedSlice = createSlice({
       state.selectedColor = payload;
     },
     setNotifications: (state, { payload }) => {
-      state.notifications = [...state.notifications, payload];
+      state.notifications = [payload, ...state.notifications];
     },
   },
 });

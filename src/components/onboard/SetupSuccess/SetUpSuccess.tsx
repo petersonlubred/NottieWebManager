@@ -14,12 +14,12 @@ const SetUpSuccess = ({ handleSetStep }: IProps) => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText('AB-12345678');
-    toast('success', 'Details copied to clipboard');
+    toast('info', 'Details copied to clipboard');
   };
   const handleCopy2 = () => {
     navigator.clipboard.writeText('AB-12345678');
     toast(
-      'info',
+      'success',
       'Details copied to clipboard Details copied to clipboard Details copied to clipboard'
     );
   };

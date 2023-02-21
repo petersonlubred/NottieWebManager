@@ -46,7 +46,7 @@ const Toast = () => {
           kind={kind}
           title={title}
           subtitle={subtitle}
-          timeout={1000000}
+          timeout={3000}
           onCloseButtonClick={() => handleRemoveNotification(id)}
         />
       ))}
