@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { ToastNotification } from '@carbon/react';
 import { useToast } from '@/context/ToastContext';
 import styled from 'styled-components';
-import { px, rem } from '@/utils';
+import { px } from '@/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setNotifications } from '@/redux/slices/util';
