@@ -127,11 +127,12 @@ export const SMSRouteConfigSchema = Yup.object({
 });
 
 export const SMTPSchema = Yup.object({
-  smtp_name: Yup.string().required('SMTP name is required'),
   server: Yup.string().required('server is required'),
-  port: Yup.string().required('Port is required'),
-  use_ssl_tls: Yup.string().required('Use SSL/TLS is required'),
-  email: Yup.string().required('Email is required'),
+  port: Yup.number()
+    .typeError('only digit(s) is allowed')
+    .required('port is required'),
+  useSslTls: Yup.boolean(),
+  emailAddress: Yup.string().required('Email is required'),
   displayName: Yup.string().required('Display Name is required'),
   username: Yup.string().required('Username is required'),
   password: Yup.string()

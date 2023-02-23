@@ -9,10 +9,10 @@ import { initialUserLoginValue } from '@/interfaces/dtos';
 import Button from '../../shared/Button';
 
 type IProps = {
-  handleSetStep: () => void;
+  toggleLogin: () => void;
 };
 
-const SetupNewUserLoginForm = ({ handleSetStep }: IProps) => {
+const SetupNewUserLoginForm = ({ toggleLogin }: IProps) => {
   return (
     <SignInContainer>
       <HeaderTitle>Almost done, please set your password and name.</HeaderTitle>
@@ -110,7 +110,7 @@ const SetupNewUserLoginForm = ({ handleSetStep }: IProps) => {
               <Button
                 renderIcon={(props: any) => <ArrowRight size={24} {...props} />}
                 disabled={isSubmitting || !isValid || !values?.password}
-                handleClick={handleSetStep}
+                handleClick={toggleLogin}
                 buttonLabel="Continue"
                 fullWidth
               />

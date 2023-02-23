@@ -1,3 +1,4 @@
+import SetupNewUserLoginForm from '@/components/onboard/NewUserLoginForm';
 import SetDatabase from '@/components/onboard/SetDatabase';
 import SetDatabaseForm from '@/components/onboard/SetDatabaseForm/SetDatabaseForm';
 import SetupProcess from '@/components/onboard/SetupProcess/SetupProcess';
@@ -6,22 +7,28 @@ import Signin from '@/components/onboard/SignIn';
 import Logo from '@/components/shared/Logo';
 import Toast from '@/components/shared/Notification/Toast';
 import { useRegisterDbMutation } from '@/redux/services';
-import type { NextPage } from 'next';
+import { protectedRouteProps } from '@/utils/withSession';
+import type { GetServerSideProps, NextPage } from 'next';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Seo from '../providers/seo';
 import { px } from '../utils/px/px';
 
 const Home: NextPage = () => {
-  const [registerDb, { isLoading, isSuccess, isError, error }] =
-    useRegisterDbMutation();
+  const [registerDb, { isLoading, isSuccess }] = useRegisterDbMutation();
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [loginDetails, setLoginDetails] = useState<{
+    username: string;
+    password: string;
+  }>({
+    username: '',
+    password: '',
+  });
 
-  const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
 
   const toggleLogin = () => {
     setIsLogin(false);
-    setStep(step + 1);
   };
 
   const handleSetStep = () => {
@@ -32,15 +39,14 @@ const Home: NextPage = () => {
     <Body>
       <Seo title="Home" />
       <Main>
-        <Toast />
         <NavbarSection>
           <LogoContainer>
             <Logo />
           </LogoContainer>
-          {isLogin && step === 0 && <SetDatabase toggleLogin={toggleLogin} />}
+          {isLogin && <SetDatabase toggleLogin={toggleLogin} />}
         </NavbarSection>
         {isLogin ? (
-          <Signin handleSetStep={handleSetStep} />
+          <Signin />
         ) : step == 1 ? (
           <SetDatabaseForm
             handleSetStep={handleSetStep}
@@ -52,16 +58,19 @@ const Home: NextPage = () => {
             handleSetStep={handleSetStep}
             isLoading={isLoading}
             isSuccess={isSuccess}
-            isError={isError}
-            error={error}
+            setLoginDetails={setLoginDetails}
           />
+        ) : step === 3 ? (
+          <SetUpSuccess toggleLogin={setIsLogin} loginDetails={loginDetails} />
         ) : (
-          step === 3 && <SetUpSuccess handleSetStep={handleSetStep} />
+          step === 4 && <SetupNewUserLoginForm toggleLogin={toggleLogin} />
         )}
       </Main>
     </Body>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = protectedRouteProps(true);
 
 //TODO: sticky doesn't work with overflow
 const Body = styled.div``;

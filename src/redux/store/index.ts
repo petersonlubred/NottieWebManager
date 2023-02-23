@@ -1,7 +1,7 @@
-import { databaseApi } from './../services/databaseApi';
 import { reduxBatch } from '@manaflair/redux-batch';
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore } from 'redux-persist';
+import createSagaMiddleware from 'redux-saga';
 import { rootReducer } from '../root-reducer';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,10 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import rootSaga from '../sagas';
+import { databaseApi, smtpApi } from '../services';
+
+const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -26,7 +30,9 @@ export const store = configureStore({
       },
       thunk: true,
     }),
+    sagaMiddleware,
     databaseApi.middleware,
+    smtpApi.middleware,
   ],
   enhancers: [reduxBatch],
 });
@@ -40,3 +46,5 @@ export const useAppThunkDispatch = () => useDispatch<ThunkAppDispatch>();
 const makeStore = () => store;
 
 export const wrapper = createWrapper(makeStore);
+
+sagaMiddleware.run(rootSaga);

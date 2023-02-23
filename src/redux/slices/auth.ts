@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import storageSession from 'redux-persist/lib/storage/session';
+import { HYDRATE } from 'next-redux-wrapper';
+import { UserData } from '@/interfaces/user';
 
-const initialState = {
-  user: {
-    full_name: '',
-    email: '',
-    profile_picture: '',
-  },
-  authorization: { access_token: '' },
+export type AuthState = {
+  user: UserData | null;
+  token: string | null;
+};
+
+const initialState: AuthState = {
+  user: null,
+  token: null,
 };
 
 export const persistConfig = {
@@ -19,13 +22,22 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setLoginUser: (state, { payload }) => {
-      state.user = payload?.data?.loginUser;
-      state.authorization.access_token = payload?.data.accesstoken;
+    setAuth: (state, { payload }) => {
+      state.user = payload?.user;
+      state.token = payload?.token;
     },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(HYDRATE, (state, action: any) => {
+      return {
+        ...state,
+        ...action.payload.auth,
+      };
+    });
   },
 });
 
-export const { setLoginUser } = authSlice.actions;
+export const { setAuth } = authSlice.actions;
 const { reducer } = authSlice;
 export default reducer;

@@ -1,1 +1,2 @@
-export * from "./databaseApi";
+export * from './databaseApi';
+export * from './smtpApi';

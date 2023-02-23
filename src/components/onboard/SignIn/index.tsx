@@ -1,35 +1,54 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FormGroup, TextInput, PasswordInput } from '@carbon/react';
+import { FormGroup, TextInput, PasswordInput, Loading } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
 import { initialSigninValue } from '@/interfaces/dtos';
 import { signinSchema } from '@/schemas';
 import Button from '@/components/shared/Button';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
-type IProps = {
-  handleSetStep: () => void;
-};
+const Signin = () => {
+  const [loading, setIsLoading] = React.useState(false);
+  const dispatch = useDispatch();
 
-const Signin = ({ handleSetStep }: IProps) => {
+  const handleSubmit = async (values: any) => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post(
+        'https://api-test.nottie.net/api/Authentication/Login',
+        { username: values?.email, password: values?.password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <SignInContainer>
       <HeaderTitle>Sign In to Continue</HeaderTitle>
       <Formik
         initialValues={initialSigninValue}
         validationSchema={signinSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(false);
-        }}
+        onSubmit={handleSubmit}
       >
         {({
           errors,
           touched,
-          isSubmitting,
           isValid,
           values,
           setFieldTouched,
+          handleSubmit,
         }) => (
           <Form>
             <FormGroup legendText="">
@@ -65,16 +84,25 @@ const Signin = ({ handleSetStep }: IProps) => {
                 <ResetPasswordValue>Reset Password</ResetPasswordValue>
               </PasswordContainer>
               <Button
-                renderIcon={(props: any) => <ArrowRight size={24} {...props} />}
+                renderIcon={(props: any) =>
+                  loading ? (
+                    <Loading
+                      size={24}
+                      {...props}
+                      small
+                      description="Active loading indicator"
+                      withOverlay={false}
+                    />
+                  ) : (
+                    <ArrowRight {...props} size={24} />
+                  )
+                }
                 disabled={
-                  isSubmitting ||
-                  !isValid ||
-                  !values?.email ||
-                  !values?.password
+                  !isValid || !values?.email || !values?.password || loading
                 }
                 fullWidth
-                handleClick={handleSetStep}
                 buttonLabel={'Login'}
+                handleClick={handleSubmit}
               />
             </FormGroup>
             <Paragraph>
