@@ -420,10 +420,6 @@ const useHeaders = () => {
   const smtpheader = useMemo(() => {
     return [
       {
-        key: 'smtp_name',
-        header: 'SMTP Name',
-      },
-      {
         key: 'server',
         header: 'Server/Ip',
       },
@@ -432,7 +428,7 @@ const useHeaders = () => {
         header: 'Port',
       },
       {
-        key: 'use_sssl_tls',
+        key: 'useSslTls',
         header: 'Use SSL/TLS',
       },
       {
@@ -440,15 +436,7 @@ const useHeaders = () => {
         header: 'Username',
       },
       {
-        key: 'email_address',
-        header: 'Email Address',
-      },
-      {
-        key: 'password',
-        header: 'Password Address',
-      },
-      {
-        key: 'email_address',
+        key: 'emailAddress',
         header: 'Email Address',
       },
       {
@@ -456,7 +444,7 @@ const useHeaders = () => {
         header: 'Password',
       },
       {
-        key: 'display_name',
+        key: 'displayName',
         header: 'Display Name',
       },
       {

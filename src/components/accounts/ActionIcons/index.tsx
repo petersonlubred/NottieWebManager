@@ -7,9 +7,10 @@ import Modal from '@/components/shared/Modal';
 const ActionIcons = () => {
   return (
     <NavSectionTwo>
+      <TrashCan size={20} />
       <Modal
         buttonTriggerText={''}
-        buttonIcon={(props: any) => <TrashCan size={20} {...props} />}
+        buttonIcon={TrashCan}
         heading="Confirm delete"
         buttonLabel="Delete"
         secondaryButtonText="Cancel"

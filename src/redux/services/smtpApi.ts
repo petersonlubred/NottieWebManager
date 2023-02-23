@@ -13,6 +13,7 @@ export const smtpApi = createApi({
     CustomError,
     Record<string, any>
   >,
+  tagTypes: ['smtp'],
   endpoints: (builder) => ({
     createSmtp: builder.mutation({
       query: (data) => {
@@ -22,7 +23,37 @@ export const smtpApi = createApi({
           body: data,
         };
       },
+      invalidatesTags: ['smtp'],
     }),
+
+    editSmtp: builder.mutation({
+      query: (data) => {
+        return {
+          url: `SmtpServer/${data.smtpId}`,
+          method: 'PUT',
+          body: data,
+        };
+      },
+      invalidatesTags: (_result, _error, { smtpId }) => [
+        { type: 'smtp', smtpId },
+      ],
+    }),
+
+    deleteSmtp: builder.mutation({
+      query: (id) => {
+        return {
+          url: `SmtpServer/${id}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'smtp', id }],
+    }),
+
+    getSmtpserver: builder.query({
+      query: () => createRequest('SmtpServer'),
+      providesTags: ['smtp'],
+    }),
+
     sendTestMail: builder.mutation({
       query: (data) => {
         return {
@@ -35,4 +66,10 @@ export const smtpApi = createApi({
   }),
 });
 
-export const { useCreateSmtpMutation, useSendTestMailMutation } = smtpApi;
+export const {
+  useCreateSmtpMutation,
+  useSendTestMailMutation,
+  useLazyGetSmtpserverQuery,
+  useEditSmtpMutation,
+  useDeleteSmtpMutation,
+} = smtpApi;

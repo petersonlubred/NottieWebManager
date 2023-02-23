@@ -1,13 +1,11 @@
 import { px } from '@/utils';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   TextInput,
   FormGroup,
   PasswordInput,
   NumberInput,
-  Checkbox,
-  Loading,
 } from '@carbon/react';
 import { Send } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
@@ -21,19 +19,32 @@ import { FormikRefType } from '@/interfaces/formik.type';
 import Loader from '@/components/shared/Loader';
 import {
   useCreateSmtpMutation,
+  useEditSmtpMutation,
   useSendTestMailMutation,
 } from '@/redux/services';
 import { useToast } from '@/context/ToastContext';
+import Checkbox from '@/components/shared/Checkbox';
 
 interface Props {
   formRef: React.RefObject<FormikRefType<IinitialSMTPForm>>;
+  formdata?: IinitialSMTPForm & { smtpId: string };
+  toggleModal: () => void;
 }
 
-const SMTP = ({ formRef }: Props) => {
+const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
   const [testEmail, setTestEmail] = React.useState('');
   const [istestEmail, setIstestEmail] = React.useState(false);
   const [createSmtp, { isLoading, isSuccess, isError, error }] =
     useCreateSmtpMutation();
+  const [
+    editSmtp,
+    {
+      isLoading: editLoading,
+      isSuccess: editSuccess,
+      isError: isEditError,
+      error: editError,
+    },
+  ] = useEditSmtpMutation();
   const [
     sendTestMail,
     {
@@ -47,50 +58,69 @@ const SMTP = ({ formRef }: Props) => {
   const { toast } = useToast();
 
   const handleSubmit = (values: IinitialSMTPForm) => {
-    createSmtp(values);
+    formdata?.smtpId ? editSmtp(values) : createSmtp(values);
   };
-  const handleSendTestMail = () => {
+
+  const handleSendTestMail = useCallback(() => {
     Object.keys(initialSMTPValue)?.forEach((key) => {
       formRef.current?.setFieldTouched(key, true);
     });
-    if (formRef.current?.isValid && testEmail) {
-      sendTestMail({ ...formRef?.current?.values, email: testEmail });
+    if (testEmail) {
+      if (formRef.current?.isValid) {
+        sendTestMail({
+          ...formRef?.current?.values,
+          recipientEmailAddress: testEmail,
+        });
+      }
     } else {
       setIstestEmail(true);
     }
-  };
+  }, [formRef, sendTestMail, testEmail]);
 
   useEffect(() => {
     if (isSuccess) {
       toast('success', 'SMTP configuration saved successfully');
+      toggleModal();
     }
     if (isError && error && 'status' in error) {
-      toast('danger', error?.data?.message);
+      toast('error', error?.data?.message);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isError, isSuccess]);
 
   useEffect(() => {
+    if (editSuccess) {
+      toast('success', 'SMTP configuration saved successfully');
+      toggleModal();
+    }
+    if (isEditError && editError && 'status' in editError) {
+      toast('error', editError?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editError, editSuccess, isEditError]);
+
+  useEffect(() => {
     if (isTestSuccess) {
       toast('success', 'Test Email sent successfully');
+      toggleModal();
     }
     if (isTestError && testError && 'status' in testError) {
-      toast('danger', testError?.data?.message);
+      toast('error', testError?.data?.message);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTestError, isTestSuccess, testError]);
 
   return (
     <ModalContentContainer>
-      {(isLoading || isTestLoading) && <Loader />}
+      {(isLoading || isTestLoading || editLoading) && <Loader />}
       <ModalItem>
         <Formik
-          initialValues={initialSMTPValue}
+          initialValues={formdata?.smtpId ? formdata : initialSMTPValue}
           validationSchema={SMTPSchema}
           onSubmit={handleSubmit}
           innerRef={formRef}
         >
-          {({ errors, touched, setFieldTouched, setFieldValue }) => (
+          {({ errors, touched, setFieldTouched, setFieldValue, values }) => (
             <Form>
               <FormGroup legendText="">
                 <FormField>
@@ -119,7 +149,7 @@ const SMTP = ({ formRef }: Props) => {
                             event: React.ChangeEvent<HTMLInputElement>,
                             { value }: any
                           ) => {
-                            setFieldValue('port', Number(value));
+                            setFieldValue('port', value);
                           }}
                           step={10}
                           className="number-input"
@@ -219,13 +249,18 @@ const SMTP = ({ formRef }: Props) => {
                 <FormContainer>
                   <FormField>
                     <ModalLabel>Use SSL/TLS</ModalLabel>
-                    <ModalItem>
-                      <Field name="useSslTls">
-                        {({ field }: any) => (
-                          <Checkbox id="checked" labelText="Yes" {...field} />
-                        )}
-                      </Field>{' '}
-                    </ModalItem>
+                    <Field name="useSslTls">
+                      {(field: any) => (
+                        <Checkbox
+                          {...field}
+                          label="Yes"
+                          value={values?.useSslTls}
+                          onChange={(e: any) => {
+                            setFieldValue('useSslTls', e.target.checked);
+                          }}
+                        />
+                      )}
+                    </Field>
                   </FormField>
                 </FormContainer>
               </FormGroup>

@@ -48,15 +48,21 @@ import SMSRoute from '@/components/configuration/Forms/SMSRoute';
 import SMSRouteConfig from '@/components/configuration/Forms/SMSRouteConfig';
 import SMTP from '@/components/configuration/Forms/SMTP';
 import SMTPRoute from '@/components/configuration/Forms/SMTPRoute';
-import { FormikValues } from 'formik';
 import { FormikRefType } from '@/interfaces/formik.type';
+import Loader from '@/components/shared/Loader';
+import { useLazyGetSmtpserverQuery } from '@/redux/services';
+import ActionIcons from '@/components/configuration/Smtp/ActionIcons';
+import { initialSMTPValue } from '@/interfaces/dtos';
 
 const SystemConfiguration = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
+  const [responseData, setResponseData] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const formRef = useRef<FormikRefType<any>>(null);
+  const [triggerSMTP, { data, isFetching: isLoading }] =
+    useLazyGetSmtpserverQuery();
 
   const {
     datasourceheader,
@@ -83,6 +89,11 @@ const SystemConfiguration = () => {
 
   const handleSetIndex = (index: number) => {
     setSelected(index);
+    index === 6 && triggerSMTP({}, true);
+  };
+
+  const handleSubmit = () => {
+    formRef.current?.handleSubmit();
   };
 
   useEffect(() => {
@@ -101,15 +112,23 @@ const SystemConfiguration = () => {
       if (index === selected) {
         setHeaders(header);
       }
-      const data: any[] = [];
-      const rows = data.map((item: any) => {
+      const rows = responseData?.map((item: any) => {
         const row: any = {};
         headers[selected].forEach((item2: { key: string; header: string }) => {
           row[item2.key] = item[item2.key];
+          if (selected === 6) {
+            row.id = item['smtpId'];
+            row['others'] = (
+              <ActionIcons
+                data={item}
+              />
+            );
+            row['useSslTls'] = item['useSslTls'] ? 'Yes' : 'No';
+          }
         });
         return row;
       });
-      setRows(rows);
+      rows && setRows([...rows]);
     });
   }, [
     datasourceheader,
@@ -120,15 +139,17 @@ const SystemConfiguration = () => {
     smsrouteconfigheader,
     smtpheader,
     smtprouteconfigheader,
+    responseData,
   ]);
 
   const toggleModal = () => {
+    formRef.current?.resetForm();
     setOpen(!open);
   };
 
-  const handleSubmit = useCallback(() => {
-    formRef.current?.handleSubmit();
-  }, []);
+  useEffect(() => {
+    selected == 6 ? setResponseData(data?.data) : setResponseData([]);
+  }, [data?.data, selected]);
 
   return (
     <Layout
@@ -156,7 +177,10 @@ const SystemConfiguration = () => {
         ) : selected === 5 ? (
           <SMSRouteConfig />
         ) : selected === 6 ? (
-          <SMTP formRef={formRef} />
+          <SMTP
+            formRef={formRef}
+            toggleModal={toggleModal}
+          />
         ) : (
           <SMTPRoute />
         )}
@@ -228,7 +252,7 @@ const SystemConfiguration = () => {
                   </TableHead>
                   {!isEmpty(Rows) && (
                     <TableBody>
-                      {rows.map((row: any) => (
+                      {rows?.map((row: any) => (
                         <TableRow key={row.id} {...getRowProps({ row })}>
                           <TableSelectRow {...getSelectionProps({ row })} />
                           {row.cells.map((cell: any) => (
@@ -245,6 +269,7 @@ const SystemConfiguration = () => {
           {/* {isEmpty(Rows) && (
             <Empty title={'No ' + navItems[selected].title + ' found'} />
           )} */}
+          {isLoading && <Loader />}
         </>
       )}
       {/* <ConfigurationContainer> */}
