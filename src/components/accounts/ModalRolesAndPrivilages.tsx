@@ -1,61 +1,134 @@
-import React from 'react';
-import { TextInput, Checkbox } from '@carbon/react';
-import { Edit } from '@carbon/react/icons';
+import React, { useEffect } from 'react';
+import { TextInput, FormGroup } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
 import styled from 'styled-components';
-import Modal from '../shared/Modal';
-import { RolesAndPrivilagesSchema } from '@/schemas';
 import { px } from '@/utils';
-
-const checkBoxFileds = [
-  [
-    { label: 'Can create', id: 'check-box-1' },
-    { label: 'Can edit', id: 'check-box-2' },
-    { label: 'Can approve', id: 'check-box-3' },
-  ],
-  [
-    { label: 'Can create', id: 'check-box-4' },
-    { label: 'Can edit', id: 'check-box-5' },
-    { label: 'Can update', id: 'check-box-6' },
-  ],
-  [
-    { label: 'Can create', id: 'check-box-7' },
-    { label: 'Can edit', id: 'check-box-8' },
-    { label: 'Can update', id: 'check-box-9' },
-  ],
-];
+import { FormikRefType } from '@/interfaces/formik.type';
+import { IinitialRoleForm } from '@/interfaces/schema';
+import { useCreateRoleMutation, useEditRoleMutation } from '@/redux/services';
+import { useToast } from '@/context/ToastContext';
+import { RoleAndProvilegesSchema } from '@/schemas';
+import { initialRoleValue } from '@/interfaces/dtos';
+import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
+import { FormEmailContainer } from '../profile/SubscriptionContent';
+import CheckboxMultiple from '../shared/Checkbox/CheckBoxMultiple';
+import Loader from '../shared/Loader';
+import { IPrivileges } from '@/interfaces/role';
 
 type IProps = {
-  isEdit: boolean;
-  open?: boolean;
+  formRef: React.RefObject<FormikRefType<IinitialRoleForm>>;
+  formdata?: IinitialRoleForm & { roleId: string };
   toggleModal: () => void;
+  data?: IPrivileges[];
+  loadPrivileges?: boolean;
 };
 
-const ModalisEditsAndPrivilages = ({ isEdit, open, toggleModal }: IProps) => {
+const RolesAndProvileges = ({
+  formRef,
+  formdata,
+  toggleModal,
+  data,
+  loadPrivileges,
+}: IProps) => {
+  const [createRole, { isLoading, isSuccess, isError, error }] =
+    useCreateRoleMutation();
+  const [
+    editRole,
+    {
+      isLoading: editLoading,
+      isSuccess: editSuccess,
+      isError: isEditError,
+      error: editError,
+    },
+  ] = useEditRoleMutation();
+  const { toast } = useToast();
+
+  const priviledges =
+    data?.map((item: IPrivileges) => item.systemPrivilegeId) || [];
+
+  const flattenedPrivileges = data?.reduce((acc: any, obj) => {
+    const { systemPrivilegeId, access }: any = obj;
+    const keys = Object.keys(access).filter((key) => access[key]);
+    if (keys.length > 0) {
+      acc[systemPrivilegeId] = keys;
+    }
+    return acc;
+  }, {});
+
+  const handleSubmit = (values: any) => {
+    const Privileges = [];
+    for (const systemPrivilegeId of priviledges) {
+      const privileges = values[systemPrivilegeId];
+      if (privileges) {
+        const access = {
+          canRead: privileges.includes('canRead'),
+          canWrite: privileges.includes('canWrite'),
+          canDelete: privileges.includes('canDelete'),
+        };
+        Privileges.push({
+          systemPrivilegeId,
+          access,
+        });
+      }
+    }
+    if (formdata?.roleId) {
+      editRole({
+        roleId: values?.roleId,
+        roleName: values?.roleName,
+        description: values?.description,
+        rolePrivileges: Privileges,
+      });
+    } else {
+      createRole(values);
+    }
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast('success', 'Role saved successfully');
+      toggleModal();
+    }
+    if (isError && error && 'status' in error) {
+      toast('error', error?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, isError, isSuccess]);
+
+  useEffect(() => {
+    if (editSuccess) {
+      toast('success', 'Role saved successfully');
+      toggleModal();
+    }
+    if (isEditError && editError && 'status' in editError) {
+      toast('error', editError?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editError, editSuccess, isEditError]);
+
+  console.log(flattenedPrivileges);
+
   return (
-    <>
-      <Modal
-        buttonLabel={!isEdit ? 'Create role' : 'Save Changes'}
-        buttonIcon={(props: any) => <Edit size={20} {...props} />}
-        heading={!isEdit ? 'Create New Role' : 'Edit Role'}
-        buttonTriggerText={!isEdit ? 'Create role' : ''}
-        secondaryButtonText="Close"
-        open={open}
-        toggleModal={toggleModal}
+    <ModalContainer>
+      {(isLoading || editLoading || loadPrivileges) && <Loader />}
+      <Formik
+        initialValues={{
+          ...initialRoleValue,
+          ...formdata,
+          ...flattenedPrivileges,
+        }}
+        validationSchema={RoleAndProvilegesSchema}
+        onSubmit={handleSubmit}
+        innerRef={formRef}
+        enableReinitialize
       >
-        <ModalContainer>
-          <Formik
-            initialValues={{ roleName: '', roleDescription: '' }}
-            validationSchema={RolesAndPrivilagesSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(false);
-            }}
-          >
-            {({ errors, touched, handleChange, values }) => (
-              <Form>
-                <Field name="roleName">
-                  {({ field }: any) => (
-                    <InputContainer>
+        {({ errors, touched, handleChange, values }) => (
+          <Form>
+            <FormGroup legendText="">
+              <FormField>
+                <FormEmailContainer>
+                  {console.log(values)}
+                  <Field name="roleName">
+                    {({ field }: any) => (
                       <Text
                         {...field}
                         type="text"
@@ -64,13 +137,18 @@ const ModalisEditsAndPrivilages = ({ isEdit, open, toggleModal }: IProps) => {
                         placeholder="input text"
                         onChange={handleChange}
                       />
-                    </InputContainer>
-                  )}
-                </Field>
-
-                <Field name="roleDescription">
-                  {({ field }: any) => (
-                    <InputContainer>
+                    )}
+                  </Field>
+                </FormEmailContainer>
+                <ErrorMessage
+                  invalid={Boolean(touched.roleName && errors.roleName)}
+                  invalidText={errors.roleName}
+                />
+              </FormField>{' '}
+              <FormField>
+                <FormEmailContainer>
+                  <Field name="description">
+                    {({ field }: any) => (
                       <Text
                         {...field}
                         type="text"
@@ -79,71 +157,65 @@ const ModalisEditsAndPrivilages = ({ isEdit, open, toggleModal }: IProps) => {
                         placeholder="input text"
                         onChange={handleChange}
                       />
-                    </InputContainer>
-                  )}
-                </Field>
-              </Form>
-            )}
-          </Formik>
-
-          <CheckBoxContainer>
-            <Label>Privilages</Label>
-            <CheckBoxContent>
-              <Wrapper>
-                <CheckBoxHeader>Alert & Notification</CheckBoxHeader>
-                <CheckBoxWrapper>
-                  {checkBoxFileds[0].map((checkbox) => (
-                    <Checkbox
-                      key={checkbox.id}
-                      labelText={checkbox.label}
-                      id={checkbox.id}
-                    />
-                  ))}
-                </CheckBoxWrapper>
-              </Wrapper>
-              <Wrapper>
-                <CheckBoxHeader>Users</CheckBoxHeader>
-                <CheckBoxWrapper>
-                  {checkBoxFileds[1].map((checkbox) => (
-                    <Checkbox
-                      key={checkbox.id}
-                      labelText={checkbox.label}
-                      id={checkbox.id}
-                    />
-                  ))}
-                </CheckBoxWrapper>
-              </Wrapper>
-              <Wrapper>
-                <CheckBoxHeader>Roles & Privileges</CheckBoxHeader>
-                <CheckBoxWrapper>
-                  {checkBoxFileds[2].map((checkbox) => (
-                    <Checkbox
-                      key={checkbox.id}
-                      labelText={checkbox.label}
-                      id={checkbox.id}
-                    />
-                  ))}
-                </CheckBoxWrapper>
-              </Wrapper>
-            </CheckBoxContent>
-          </CheckBoxContainer>
-        </ModalContainer>
-      </Modal>
-    </>
+                    )}
+                  </Field>
+                </FormEmailContainer>
+                <ErrorMessage
+                  invalid={Boolean(touched.description && errors.description)}
+                  invalidText={errors.description}
+                />
+              </FormField>
+              {formdata?.roleId && (
+                <CheckBoxContainer>
+                  <Label>Privilages</Label>
+                  <CheckBoxContent>
+                    {data?.map((item: IPrivileges, index) => (
+                      <Wrapper key={index}>
+                        <CheckBoxHeader>{item?.privilegeName}</CheckBoxHeader>
+                        <CheckBoxWrapper
+                          role="group"
+                          aria-labelledby="checkbox-group"
+                        >
+                          {Object.entries(item.access)
+                            .map(([name, value]) => ({
+                              name,
+                              value,
+                              label: name
+                                .replace(/([A-Z])/g, ' $1')
+                                .replace(/^./, (s) => s.toUpperCase()),
+                            }))
+                            .map((checkbox, ind2) => (
+                              <CheckboxMultiple
+                                name={item?.systemPrivilegeId}
+                                key={index + ind2}
+                                label={checkbox.label}
+                                value={checkbox.name}
+                              />
+                            ))}
+                        </CheckBoxWrapper>
+                      </Wrapper>
+                    ))}
+                  </CheckBoxContent>
+                </CheckBoxContainer>
+              )}
+            </FormGroup>
+          </Form>
+        )}
+      </Formik>
+    </ModalContainer>
   );
 };
 
-export default ModalisEditsAndPrivilages;
+export default RolesAndProvileges;
 
 const ModalContainer = styled.div`
   width: 100%;
   padding: 1rem;
-`;
+  scrollbar-width: none;
 
-const InputContainer = styled.div`
-  width: 100%;
-  margin-bottom: 1rem;
-  color: ${({ theme }) => theme.colors.lightText};
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Text = styled(TextInput)`
@@ -203,4 +275,8 @@ const CheckBoxWrapper = styled.div`
   & > div:first-of-type {
     margin-top: 0 !important;
   }
+`;
+
+const FormField = styled.div`
+  margin-bottom: ${px(16)};
 `;

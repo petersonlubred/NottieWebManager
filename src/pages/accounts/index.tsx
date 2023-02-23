@@ -1,6 +1,6 @@
 import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Layout from '@/HOC/Layout';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   DataTable,
   Table,
@@ -21,127 +21,94 @@ import {
 import { TrashCan, Add, Password } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import Empty from '@/components/shared/Empty';
-import { roles, users } from '@/mockData/index';
 import ActionIcons from '@/components/accounts/ActionIcons';
 import { AccessStatus } from '@/components/accounts/AccessStatus';
 import IconAndText from '@/components/accounts/IconAndText';
 import Button from '@/components/shared/Button';
 import Modal from '@/components/shared/Modal';
 import ModalContent from '@/components/accounts/ModalContent';
-import ModalisEditsAndPrivilages from '@/components/accounts/ModalRolesAndPrivilages';
+import RolesAndProvileges from '@/components/accounts/ModalRolesAndPrivilages';
+import { useLazyGetRolesQuery, useLazyGetUsersQuery } from '@/redux/services';
+import useHeaders from '@/hooks/useHeaders';
+import { FormikRefType } from '@/interfaces/formik.type';
+import Loader from '@/components/shared/Loader';
 
 const Accounts = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [openRole, setOpenRole] = useState<boolean>(false);
+  const [responseData, setResponseData] = useState<any[]>([]);
+  const formRef = useRef<FormikRefType<any>>(null);
+  const [triggerRoles, { data, isFetching: isLoading }] =
+    useLazyGetRolesQuery();
+  const [triggerUsers, { data: users, isFetching: isLoadingUser }] =
+    useLazyGetUsersQuery();
 
-  const navItems = [
-    { title: 'User accounts' },
-    { title: 'Roles & privileges' },
-  ];
-
-  const usersheader = useMemo(() => {
-    return [
-      {
-        key: 'first_name',
-        header: 'First Name',
-      },
-      {
-        key: 'last_name',
-        header: 'lastName',
-      },
-      {
-        key: 'email',
-        header: 'Email Address',
-      },
-      {
-        key: 'access_status',
-        header: 'Access Status',
-      },
-      {
-        key: 'role',
-        header: 'Role',
-      },
-      {
-        key: 'authentication_type',
-        header: 'Authentication Type',
-      },
-      {
-        key: 'others',
-        header: '',
-      },
-    ];
+  const navItems = useMemo(() => {
+    return [{ title: 'User accounts' }, { title: 'Roles & privileges' }];
   }, []);
 
-  const rolesheader = useMemo(() => {
-    return [
-      {
-        key: 'role_name',
-        header: 'Role Name',
-      },
-      {
-        key: 'description',
-        header: 'Description',
-      },
-      {
-        key: 'number',
-        header: 'Number of Users',
-      },
-      {
-        key: 'others',
-        header: '',
-      },
-    ];
-  }, []);
-
-  const roleData = useMemo(() => {
-    return roles.map((role, _) => {
-      return {
-        id: role.id.toString(),
-        item_key: <Checkbox id={`checked-role-${role.id}`} labelText="" />,
-        role_name: role.role_name,
-        description: role.description,
-        number: <IconAndText text={role?.number.toString()} />,
-        others: <ActionIcons />,
-      };
-    });
-  }, []);
-
-  const userData = useMemo(() => {
-    return users.map((user, _) => {
-      return {
-        id: user.id.toString(),
-        item_key: <Checkbox id={`checked-user-${user.id}`} labelText="" />,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        access_status: <AccessStatus active={user.access_status} />,
-        role: user.role.join(', '),
-        authentication_type: user.authentication_type,
-        others: <ActionIcons />,
-      };
-    });
-  }, []);
+  const { usersheader, rolesheader } = useHeaders();
 
   const handleSetIndex = (index: number) => {
     setSelected(index);
   };
 
+  const handleSubmit = () => {
+    formRef.current?.handleSubmit();
+  };
+  const toggleModal = () => {
+    formRef.current?.resetForm();
+    setOpen(!open);
+  };
+
+  useEffect(() => {
+    const headers = [usersheader, rolesheader];
+
+    headers?.forEach((header, index) => {
+      if (index === selected) {
+        setHeaders(header);
+      }
+      const rows = responseData?.map((item: any) => {
+        const row: any = {};
+        headers[selected].forEach((item2: { key: string; header: string }) => {
+          row[item2.key] = item[item2.key];
+          if (selected === 0) {
+            row['others'] = <ActionIcons data={item} />;
+            row['status'] = <AccessStatus active={item['status']} />;
+            row['roleIds'] = item['roleIds']?.join(', ');
+            row.id = item['id'];
+          } else {
+            row['others'] = <ActionIcons roleData={item} />;
+            row['users'] = <IconAndText text={item['users']?.toString()} />;
+            row.id = item['roleId'];
+          }
+        });
+        return row;
+      });
+
+      !isEmpty(responseData) && setRows(rows);
+    });
+  }, [rolesheader, navItems, selected, usersheader, responseData]);
+
   useEffect(() => {
     if (selected === 1) {
-      setHeaders(rolesheader);
-      setRows(roleData);
-    } else {
-      setHeaders(usersheader);
-      setRows(userData);
+      isEmpty(data?.data) ? setResponseData([]) : setResponseData(data?.data);
     }
-  }, [roleData, rolesheader, selected, userData, usersheader]);
+    if (selected === 0) {
+      isEmpty(users?.data) ? setResponseData([]) : setResponseData(users?.data);
+    }
+  }, [data?.data, selected, users?.data]);
 
-  const toggleModal = () => {
-    selected === 0 ? setOpen(!open) : setOpenRole(!openRole);
-  };
+  useEffect(() => {
+    if (selected === 1) {
+      triggerRoles({}, true);
+    }
+    if (selected === 0) {
+      triggerUsers({}, true);
+    }
+  }, [selected, triggerRoles, triggerUsers]);
 
   return (
     <Layout
@@ -155,18 +122,24 @@ const Accounts = () => {
       <Modal
         buttonTriggerText={''}
         buttonIcon={(props: any) => <Add size={24} {...props} />}
-        heading="Create New User"
-        buttonLabel="Invite user"
+        heading={`Create New ${navItems[selected]?.title.split(' ').join(' ')}`}
+        buttonLabel={`${selected === 0 ? 'Invite' : 'Create'} ${navItems[
+          selected
+        ]?.title
+          .split(' ')
+          .join(' ')}`}
         open={open}
         toggleModal={toggleModal}
+        onRequestSubmit={handleSubmit}
+        extent="sm"
       >
-        <ModalContent />
+        {selected === 0 ? (
+          <ModalContent formRef={formRef} toggleModal={toggleModal} />
+        ) : (
+          <RolesAndProvileges formRef={formRef} toggleModal={toggleModal} />
+        )}
       </Modal>
-      <ModalisEditsAndPrivilages
-        open={openRole}
-        isEdit={false}
-        toggleModal={toggleModal}
-      />
+
       <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
         {({
@@ -178,7 +151,6 @@ const Accounts = () => {
           getSelectionProps,
           getToolbarProps,
           getBatchActionProps,
-          selectedRows,
         }: any) => (
           <>
             <TableToolbar {...getToolbarProps()}>
@@ -186,14 +158,14 @@ const Accounts = () => {
                 <TableBatchAction
                   renderIcon={Password}
                   iconDescription="Download the selected rows"
-                  onClick={console.log(selectedRows)}
+                  // onClick={console.log(selectedRows)}
                 >
                   Reset Password
                 </TableBatchAction>
                 <TableBatchAction
                   renderIcon={TrashCan}
                   iconDescription="Delete the selected rows"
-                  onClick={console.log(selectedRows)}
+                  // onClick={console.log(selectedRows)}
                 >
                   Delete
                 </TableBatchAction>
@@ -237,8 +209,12 @@ const Accounts = () => {
         )}
       </DataTable>
       {isEmpty(Rows) && (
-        <Empty title="No users yet" text="You should create roles first." />
+        <Empty
+          title={'No ' + navItems[selected].title + ' found'}
+          text={'You should create' + navItems[selected].title + 'first.'}
+        />
       )}
+      {(isLoading || isLoadingUser) && <Loader />}
     </Layout>
   );
 };

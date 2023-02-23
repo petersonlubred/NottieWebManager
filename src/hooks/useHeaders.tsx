@@ -1,6 +1,60 @@
 import { useMemo } from 'react';
 
 const useHeaders = () => {
+  const usersheader = useMemo(() => {
+    return [
+      {
+        key: 'firstName',
+        header: 'First Name',
+      },
+      {
+        key: 'lastName',
+        header: 'lastName',
+      },
+      {
+        key: 'email',
+        header: 'Email Address',
+      },
+      {
+        key: 'status',
+        header: 'Access Status',
+      },
+      {
+        key: 'roleIds',
+        header: 'Role',
+      },
+      {
+        key: 'authenticationType',
+        header: 'Authentication Type',
+      },
+      {
+        key: 'others',
+        header: '',
+      },
+    ];
+  }, []);
+
+  const rolesheader = useMemo(() => {
+    return [
+      {
+        key: 'roleName',
+        header: 'Role Name',
+      },
+      {
+        key: 'description',
+        header: 'Description',
+      },
+      {
+        key: 'users',
+        header: 'Number of Users',
+      },
+      {
+        key: 'others',
+        header: '',
+      },
+    ];
+  }, []);
+
   const inflowheader = useMemo(() => {
     return [
       {
@@ -490,6 +544,8 @@ const useHeaders = () => {
     smsrouteconfigheader,
     smtpheader,
     smtprouteconfigheader,
+    usersheader,
+    rolesheader,
   };
 };
 

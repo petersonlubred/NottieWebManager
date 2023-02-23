@@ -1,3 +1,4 @@
+import { IinitialUserForm, IinitialRoleForm } from './../schema';
 import {
   IinitialAlertProfile,
   IinitialSiginin,
@@ -128,4 +129,19 @@ export const initialSMTPRouteValue: IinitialSMTPRouteForm = {
   route_name: '',
   smtp_name: '',
   serviceType: '',
+};
+
+export const initialUserValue: IinitialUserForm = {
+  emailAddress: '',
+  authenticationType: '',
+  firstName: '',
+  lastName: '',
+  otherNames: '',
+  roleIds: [],
+};
+
+export const initialRoleValue: IinitialRoleForm = {
+  roleName: '',
+  description: '',
+  rolePrivileges: [],
 };

@@ -106,7 +106,7 @@ const NavSectionTwo = styled.div`
   }
 `;
 
-const IconBox = styled.div`
+export const IconBox = styled.div`
   padding: ${px(12)};
   cursor: pointer;
 `;
