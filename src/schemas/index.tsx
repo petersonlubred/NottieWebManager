@@ -7,6 +7,25 @@ export const signinSchema = Yup.object({
     .required('Password is required'),
 });
 
+export const userAccountSchema = Yup.object({
+  emailAddress: Yup.string()
+    .email('Invalid email')
+    .required('Email is required'),
+  authenticationType: Yup.string().required('Authentication type is required'),
+  firstName: Yup.string().required('first name is required'),
+  lastName: Yup.string().required('last name is required'),
+  otherNames: Yup.string().required('other name is required'),
+  roleIds: Yup.array()
+    .min(1, 'user must be assigned at least 1 role ')
+    .required('required'),
+});
+
+export const RoleAndProvilegesSchema = Yup.object({
+  roleName: Yup.string().required('role name is required'),
+  description: Yup.string().required('description is required'),
+  rolePrivileges: Yup.array(),
+});
+
 export const databaseSchema = Yup.object({
   databaseName: Yup.string().required('Database name is required'),
   databaseType: Yup.string().required('Database type is required'),
@@ -44,10 +63,6 @@ export const EmailSchema = Yup.object({
   email: Yup.string().email('Invalid email').required('Email is required'),
 });
 
-export const RolesAndPrivilagesSchema = Yup.object({
-  roleName: Yup.string().required('role name is required'),
-  roleDescription: Yup.string().required('role description is required'),
-});
 export const AlertProfileSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   description: Yup.string().required('Description is required'),

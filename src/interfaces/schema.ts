@@ -1,3 +1,4 @@
+import { RoleAndProvilegesSchema, userAccountSchema } from './../schemas/index';
 import {
   AlertExceptionSchema,
   AlertExcludeSchema,
@@ -32,22 +33,8 @@ export type IinitialSMSRouteConfigForm = Yup.InferType<
 >;
 export type IinitialSMTPForm = Yup.InferType<typeof SMTPSchema>;
 export type IinitialSMTPRouteForm = Yup.InferType<typeof SMTPRouteSchema>;
-
-export type userAccountType = {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  access_status: boolean;
-  role: string[];
-  authentication_type: string;
-};
-export type roleType = {
-  id: number;
-  role_name: string;
-  description: string;
-  number: string;
-};
+export type IinitialUserForm = Yup.InferType<typeof userAccountSchema>;
+export type IinitialRoleForm = Yup.InferType<typeof RoleAndProvilegesSchema>;
 
 export interface APIResponse<T> {
   status: string;

@@ -51,8 +51,7 @@ import SMTPRoute from '@/components/configuration/Forms/SMTPRoute';
 import { FormikRefType } from '@/interfaces/formik.type';
 import Loader from '@/components/shared/Loader';
 import { useLazyGetSmtpserverQuery } from '@/redux/services';
-import ActionIcons from '@/components/configuration/Smtp/ActionIcons';
-import { initialSMTPValue } from '@/interfaces/dtos';
+import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
 
 const SystemConfiguration = () => {
   const [selected, setSelected] = useState(0);
@@ -96,6 +95,11 @@ const SystemConfiguration = () => {
     formRef.current?.handleSubmit();
   };
 
+  const toggleModal = () => {
+    formRef.current?.resetForm();
+    setOpen(!open);
+  };
+
   useEffect(() => {
     const headers = [
       datasourceheader,
@@ -118,11 +122,7 @@ const SystemConfiguration = () => {
           row[item2.key] = item[item2.key];
           if (selected === 6) {
             row.id = item['smtpId'];
-            row['others'] = (
-              <ActionIcons
-                data={item}
-              />
-            );
+            row['others'] = <ActionIcons data={item} />;
             row['useSslTls'] = item['useSslTls'] ? 'Yes' : 'No';
           }
         });
@@ -141,11 +141,6 @@ const SystemConfiguration = () => {
     smtprouteconfigheader,
     responseData,
   ]);
-
-  const toggleModal = () => {
-    formRef.current?.resetForm();
-    setOpen(!open);
-  };
 
   useEffect(() => {
     selected == 6 ? setResponseData(data?.data) : setResponseData([]);
@@ -177,10 +172,7 @@ const SystemConfiguration = () => {
         ) : selected === 5 ? (
           <SMSRouteConfig />
         ) : selected === 6 ? (
-          <SMTP
-            formRef={formRef}
-            toggleModal={toggleModal}
-          />
+          <SMTP formRef={formRef} toggleModal={toggleModal} />
         ) : (
           <SMTPRoute />
         )}
@@ -266,9 +258,9 @@ const SystemConfiguration = () => {
               </>
             )}
           </DataTable>
-          {/* {isEmpty(Rows) && (
-            <Empty title={'No ' + navItems[selected].title + ' found'} />
-          )} */}
+          {isEmpty(Rows) && (
+            <Empty title={'No ' + navItems[1].title + ' found'} />
+          )}
           {isLoading && <Loader />}
         </>
       )}
