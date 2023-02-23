@@ -19,18 +19,22 @@ type IProps = {
   handleSetStep: () => void;
   isSuccess: boolean;
   isLoading: boolean;
-  isError: boolean;
-  error: any;
+  setLoginDetails: (value: React.SetStateAction<any>) => void;
 };
 
-const SetupProcess = ({ handleSetStep, isSuccess, isLoading }: IProps) => {
+const SetupProcess = ({
+  handleSetStep,
+  isSuccess,
+  isLoading,
+  setLoginDetails,
+}: IProps) => {
   const [processStep, setProcessStep] = React.useState<number>(-2);
   const [createTable, { isLoading: step2Loading, isSuccess: step2Success }] =
     useLazyCreateTableQuery();
   const [loadDefault, { isLoading: step3Loading, isSuccess: step3Success }] =
     useLazyLoadDefaultDataQuery();
 
-  const [wrapUp, { isLoading: step4Loading, isSuccess: step4Success }] =
+  const [wrapUp, { data, isLoading: step4Loading, isSuccess: step4Success }] =
     useLazyWrapUpQuery();
 
   const incrementStep = () => {
@@ -73,6 +77,7 @@ const SetupProcess = ({ handleSetStep, isSuccess, isLoading }: IProps) => {
     }
 
     if (step4Success) {
+      setLoginDetails(data?.data);
       handleSetStep();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

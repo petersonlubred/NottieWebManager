@@ -8,7 +8,7 @@ import {
   SMTPRouteSchema,
   SMTPSchema,
   SubscriptionSchema,
-} from './../schemas/index';
+} from '../schemas/index';
 import {
   AlertProfileSchema,
   databaseSchema,
@@ -48,3 +48,9 @@ export type roleType = {
   description: string;
   number: string;
 };
+
+export interface APIResponse<T> {
+  status: string;
+  message: string;
+  data: T;
+}

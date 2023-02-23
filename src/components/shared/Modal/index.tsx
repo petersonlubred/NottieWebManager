@@ -14,6 +14,7 @@ interface Iprops {
   danger?: boolean;
   extent?: string;
   toggleModal?: () => void;
+  onRequestSubmit?: () => void;
 }
 
 const Modal = ({
@@ -27,6 +28,7 @@ const Modal = ({
   danger,
   extent = 'md',
   toggleModal,
+  onRequestSubmit,
 }: Iprops) => {
   return (
     <ModalContainer
@@ -40,6 +42,7 @@ const Modal = ({
       open={open}
       danger={danger}
       onRequestClose={toggleModal}
+      onRequestSubmit={onRequestSubmit}
     >
       {children}
     </ModalContainer>
@@ -53,7 +56,7 @@ type ModalProps = { danger?: boolean };
 export const ModalContainer = styled(M)<ModalProps>`
   & > div {
     background-color: ${({ theme }) => theme.colors.bgPrimary};
-    border-top: 1px solid ${({ theme }) => theme.colors.bgPrimaryLight};
+    // border-top: 1px solid ${({ theme }) => theme.colors.bgPrimaryLight};
 
     & > * > * {
       color: ${({ theme }) => theme.colors.white};

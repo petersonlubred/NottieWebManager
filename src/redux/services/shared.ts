@@ -6,7 +6,7 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
-import { setLoginUser } from '../slices/auth';
+import { setAuth } from '../slices/auth';
 import { RootState } from '../store';
 
 export interface CustomError {
@@ -24,10 +24,10 @@ export const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,
   prepareHeaders: (headers, { getState }) => {
     const {
-      authStore: { authorization },
+      auth: { token },
     } = getState() as RootState;
-    if (authorization.access_token) {
-      headers.set('authorization', `Bearer ${authorization.access_token}`);
+    if (token) {
+      headers.set('authorization', `Bearer ${token}`);
     }
     return headers;
   },
@@ -52,7 +52,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           extraOptions
         )) as any;
         if (response.data) {
-          api.dispatch(setLoginUser(response.data));
+          api.dispatch(setAuth(response.data));
           result = await baseQuery(args, api, extraOptions);
         } else {
           api.dispatch({ type: 'LOGOUT' });

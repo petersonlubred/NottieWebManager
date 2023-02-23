@@ -6,22 +6,21 @@ import { Copy, ArrowRight, CheckmarkFilled } from '@carbon/react/icons';
 import { useToast } from '@/context/ToastContext';
 
 type IProps = {
-  handleSetStep: () => void;
+  toggleLogin: Function;
+  loginDetails: {
+    username: string;
+    password: string;
+  };
 };
 
-const SetUpSuccess = ({ handleSetStep }: IProps) => {
+const SetUpSuccess = ({ toggleLogin, loginDetails }: IProps) => {
   const { toast } = useToast();
 
   const handleCopy = () => {
-    navigator.clipboard.writeText('AB-12345678');
-    toast('info', 'Details copied to clipboard');
-  };
-  const handleCopy2 = () => {
-    navigator.clipboard.writeText('AB-12345678');
-    toast(
-      'success',
-      'Details copied to clipboard Details copied to clipboard Details copied to clipboard'
+    navigator.clipboard.writeText(
+      `username: ${loginDetails?.username} password: ${loginDetails?.password}`
     );
+    toast('info', 'Details copied to clipboard');
   };
 
   return (
@@ -30,7 +29,7 @@ const SetUpSuccess = ({ handleSetStep }: IProps) => {
         <CheckmarkFilled size={90} style={{ color: '#25AE88' }} />
       </div>
       <div style={{ padding: '1rem' }}>
-        <h2 onClick={handleCopy2}>The Setup Was Successful</h2>
+        <h2>The Setup Was Successful</h2>
       </div>
       <SuccessDetails>
         <div className="para">
@@ -49,7 +48,7 @@ const SetUpSuccess = ({ handleSetStep }: IProps) => {
               <p>username</p>
             </div>
             <div className="user">
-              <p>admin001</p>
+              <p>{loginDetails?.username}</p>
             </div>
           </div>
           <div className="left">
@@ -57,7 +56,7 @@ const SetUpSuccess = ({ handleSetStep }: IProps) => {
               <p>password</p>
             </div>
             <div className="password">
-              <p>SDFGHJKJU456</p>
+              <p>{loginDetails?.password}</p>
             </div>
           </div>
         </div>
@@ -76,7 +75,7 @@ const SetUpSuccess = ({ handleSetStep }: IProps) => {
             className="btn2"
             renderIcon={ArrowRight}
             size="xl"
-            onClick={handleSetStep}
+            onClick={() => toggleLogin(true)}
           >
             Get started
           </Button>
@@ -197,10 +196,15 @@ const InnerBtnDiv = styled.div`
     width: 50%;
     background-color: ${({ theme }) => theme.colors.bgHover};
     color: ${({ theme }) => theme.colors.white};
+    cursor: default;
 
     &:hover {
       background-color: ${({ theme }) => theme.colors.bgHover};
       color: ${({ theme }) => theme.colors.white};
+    }
+
+    svg {
+      cursor: pointer;
     }
   }
 

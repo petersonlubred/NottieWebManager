@@ -11,8 +11,8 @@ import {
   IinitialSMSRouteConfigForm,
   IinitialSMTPForm,
   IinitialSMTPRouteForm,
-} from './../index';
-import { IinitialDatabase } from '..';
+} from '../schema';
+import { IinitialDatabase } from '../schema';
 
 export const initialSigninValue: IinitialSiginin = {
   email: '',
@@ -115,11 +115,10 @@ export const initialSMSRouteConfigValue: IinitialSMSRouteConfigForm = {
 };
 
 export const initialSMTPValue: IinitialSMTPForm = {
-  smtp_name: '',
   server: '',
-  port: '',
-  use_ssl_tls: '',
-  email: '',
+  port: 0,
+  useSslTls: false,
+  emailAddress: '',
   displayName: '',
   username: '',
   password: '',

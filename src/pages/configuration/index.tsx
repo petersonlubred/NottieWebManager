@@ -1,6 +1,12 @@
 import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Layout from '@/HOC/Layout';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   DataTable,
   Table,
@@ -15,6 +21,7 @@ import {
   TableToolbarContent,
   TableBatchActions,
   TableBatchAction,
+  Loading,
 } from '@carbon/react';
 import { TrashCan, Add } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
@@ -41,12 +48,15 @@ import SMSRoute from '@/components/configuration/Forms/SMSRoute';
 import SMSRouteConfig from '@/components/configuration/Forms/SMSRouteConfig';
 import SMTP from '@/components/configuration/Forms/SMTP';
 import SMTPRoute from '@/components/configuration/Forms/SMTPRoute';
+import { FormikValues } from 'formik';
+import { FormikRefType } from '@/interfaces/formik.type';
 
 const SystemConfiguration = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const formRef = useRef<FormikRefType<any>>(null);
 
   const {
     datasourceheader,
@@ -115,6 +125,11 @@ const SystemConfiguration = () => {
   const toggleModal = () => {
     setOpen(!open);
   };
+
+  const handleSubmit = useCallback(() => {
+    formRef.current?.handleSubmit();
+  }, []);
+
   return (
     <Layout
       routename="System Configuration"
@@ -132,6 +147,7 @@ const SystemConfiguration = () => {
         open={open}
         toggleModal={toggleModal}
         extent="sm"
+        onRequestSubmit={handleSubmit}
       >
         {selected === 3 ? (
           <SMSCForm />
@@ -140,7 +156,7 @@ const SystemConfiguration = () => {
         ) : selected === 5 ? (
           <SMSRouteConfig />
         ) : selected === 6 ? (
-          <SMTP />
+          <SMTP formRef={formRef} />
         ) : (
           <SMTPRoute />
         )}
@@ -289,6 +305,5 @@ const NoDataTitle = styled.p`
   line-height: ${px(34)};
   margin-bottom: ${px(16)};
   width: ${px(383)};
-  text-align:center;
-  
+  text-align: center;
 `;

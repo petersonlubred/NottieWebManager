@@ -1,4 +1,4 @@
-import { userAccountType, roleType } from '../interfaces/index';
+import { userAccountType, roleType } from '../interfaces/schema';
 export const users: userAccountType[] = [
   {
     id: 1,

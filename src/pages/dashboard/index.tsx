@@ -5,6 +5,8 @@ import { px } from '@/utils';
 
 import BackgroundService from '@/components/dashboard/BackgroundService';
 import SmsandEmail from '@/components/dashboard/SmsAndEmail';
+import { GetServerSideProps } from 'next';
+import { protectedRouteProps } from '@/utils/withSession';
 
 const Dashboard = () => {
   const [selected, setSelected] = useState(0);
@@ -34,6 +36,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+export const getServerSideProps: GetServerSideProps = protectedRouteProps();
 
 export const TextIcon = styled.div`
   display: flex;
