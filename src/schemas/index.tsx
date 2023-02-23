@@ -131,7 +131,7 @@ export const SMTPSchema = Yup.object({
   port: Yup.number()
     .typeError('only digit(s) is allowed')
     .required('port is required'),
-  useSslTls: Yup.boolean(),
+  useSslTls: Yup.bool(),
   emailAddress: Yup.string().required('Email is required'),
   displayName: Yup.string().required('Display Name is required'),
   username: Yup.string().required('Username is required'),

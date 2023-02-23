@@ -1,12 +1,14 @@
 import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
+import Loader from '../Loader';
 
 interface Iprops {
   content: string | JSX.Element;
+  isLoading?: boolean;
 }
-const SimpleModalcontent = ({ content }: Iprops) => {
-  return <Paragraph>{content}</Paragraph>;
+const SimpleModalcontent = ({ content, isLoading }: Iprops) => {
+  return isLoading ? <Loader /> : <Paragraph>{content}</Paragraph>;
 };
 
 export default SimpleModalcontent;
