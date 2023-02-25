@@ -4,12 +4,14 @@ interface IState {
   mode: string;
   selectedColor: string;
   notifications: any[];
+  tab: number;
 }
 
 const initialState: IState = {
   mode: 'dark',
   selectedColor: '#00000',
   notifications: [],
+  tab: 0,
 };
 
 const sharedSlice = createSlice({
@@ -26,10 +28,12 @@ const sharedSlice = createSlice({
     setNotifications: (state, { payload }) => {
       state.notifications = [payload, ...state.notifications];
     },
+    setTab: (state, { payload }) => {
+      state.tab = payload;
+    },
   },
 });
 
-export const { setMode, setSelectedColor, setNotifications } =
-  sharedSlice.actions;
+export const { setMode, setSelectedColor, setNotifications, setTab } = sharedSlice.actions;
 const { reducer } = sharedSlice;
 export default reducer;

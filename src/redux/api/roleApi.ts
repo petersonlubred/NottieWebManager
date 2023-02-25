@@ -1,18 +1,9 @@
 import { baseQueryWithReauth, CustomError, createRequest } from './shared';
-import {
-  BaseQueryFn,
-  createApi,
-  FetchArgs,
-} from '@reduxjs/toolkit/query/react';
+import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 
 export const roleApi = createApi({
   reducerPath: 'roleApi',
-  baseQuery: baseQueryWithReauth as BaseQueryFn<
-    string | FetchArgs,
-    unknown,
-    CustomError,
-    Record<string, any>
-  >,
+  baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
   tagTypes: ['role'],
   endpoints: (builder) => ({
     createRole: builder.mutation({
@@ -34,9 +25,7 @@ export const roleApi = createApi({
           body: data,
         };
       },
-      invalidatesTags: (_result, _error, { roleId }) => [
-        { type: 'role', roleId },
-      ],
+      invalidatesTags: (_result, _error, { roleId }) => [{ type: 'role', roleId }],
     }),
 
     deleteRole: builder.mutation({
@@ -49,7 +38,7 @@ export const roleApi = createApi({
       invalidatesTags: (_result, _error, { id }) => [{ type: 'role', id }],
     }),
 
-    getRoles: builder.query({
+    getRoles: builder.query<any, void>({
       query: () => createRequest('Roles'),
       providesTags: ['role'],
     }),
@@ -61,10 +50,5 @@ export const roleApi = createApi({
   }),
 });
 
-export const {
-  useCreateRoleMutation,
-  useEditRoleMutation,
-  useDeleteRoleMutation,
-  useLazyGetRolesQuery,
-  useGetPrivilegesQuery,
-} = roleApi;
+export const { useCreateRoleMutation, useEditRoleMutation, useDeleteRoleMutation, useLazyGetRolesQuery, useGetPrivilegesQuery, useGetRolesQuery } =
+  roleApi;

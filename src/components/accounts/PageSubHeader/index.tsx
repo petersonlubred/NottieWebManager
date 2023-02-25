@@ -12,7 +12,6 @@ const PageSubHeader = ({ navItem }: PropType) => {
       <SearchSection>
         {/* <SearchBar /> */}
         {/* <Modal
-          buttonTriggerText={buttonLabel}
           buttonIcon={(props: any) => <Add size={24} {...props} />}
           heading="Create New User"
           buttonLabel="Invite user"

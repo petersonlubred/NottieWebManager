@@ -14,8 +14,8 @@ import {
 import { Formik, Form, Field } from 'formik';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
-import { initialDataSource } from '@/interfaces/dtos';
-import { DataSourceSchema } from '@/schemas';
+import { initialDataSource } from '@/schemas/schema';
+import { DataSourceSchema } from '@/schemas/schema';
 
 const DataSourceForm = () => {
   return (

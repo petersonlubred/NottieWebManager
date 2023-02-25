@@ -3,10 +3,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { FormGroup, Select, SelectItem } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
-import { AlertExcludeSchema } from '@/schemas';
+import { AlertExcludeSchema } from '@/schemas/schema';
 import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 import { FormContainer } from '../onboard/NewUserLoginForm';
-import { initialAlertExclude } from '@/interfaces/dtos';
+import { initialAlertExclude } from '@/schemas/dto';
 
 interface Iprops {
   isEdit?: boolean;

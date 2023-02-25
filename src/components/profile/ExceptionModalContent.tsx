@@ -9,11 +9,11 @@ import {
   SelectItem,
 } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
-import { SubscriptionSchema } from '@/schemas';
+import { SubscriptionSchema } from '@/schemas/schema';
 import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 import { FormContainer } from '../onboard/NewUserLoginForm';
-import { initialSubscription } from '@/interfaces/dtos';
-import RadioList from '../shared/Radio/RadioList';
+import { initialSubscription } from '@/schemas/dto';
+import RadioButton from '../shared/RadioButton';
 
 interface Iprops {
   isEdit?: boolean;
@@ -75,7 +75,7 @@ const ModalContent = ({ isEdit }: Iprops) => {
                       {({ field }: any) => (
                         <ModalItem {...field}>
                           <ModalLabel>Alert Medium</ModalLabel>
-                          <RadioList Radioitems={['Classic', 'AD', 'SSO']} />
+                          <RadioButton items={[]} />
                         </ModalItem>
                       )}
                     </Field>{' '}

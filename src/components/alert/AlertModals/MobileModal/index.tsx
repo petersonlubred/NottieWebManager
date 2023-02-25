@@ -17,9 +17,7 @@ const MobileModal = ({ open, toggleModal }: IProps) => {
       open={open}
       toggleModal={toggleModal}
       secondaryButtonText=""
-      buttonTriggerText=""
       extent="sm"
-      buttonIcon={(props: any) => props}
     >
       <Container>
         <Paragraph>

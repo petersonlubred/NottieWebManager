@@ -1,4 +1,5 @@
-import { IinitialUserForm, IinitialRoleForm } from './../schema';
+import { IinitialUserForm, IinitialRoleForm } from './interface';
+import { IinitialDatabase } from './interface';
 import {
   IinitialAlertProfile,
   IinitialSiginin,
@@ -12,8 +13,7 @@ import {
   IinitialSMSRouteConfigForm,
   IinitialSMTPForm,
   IinitialSMTPRouteForm,
-} from '../schema';
-import { IinitialDatabase } from '../schema';
+} from './interface';
 
 export const initialSigninValue: IinitialSiginin = {
   email: '',
@@ -134,10 +134,10 @@ export const initialSMTPRouteValue: IinitialSMTPRouteForm = {
 export const initialUserValue: IinitialUserForm = {
   emailAddress: '',
   authenticationType: '',
+  roleIds: [],
+  status: true,
   firstName: '',
   lastName: '',
-  otherNames: '',
-  roleIds: [],
 };
 
 export const initialRoleValue: IinitialRoleForm = {

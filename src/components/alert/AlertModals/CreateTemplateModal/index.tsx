@@ -19,9 +19,7 @@ const CreateTemplateAlertModal = ({ open, toggleModal }: IProps) => {
         open={open}
         toggleModal={toggleModal}
         secondaryButtonText="Cancel"
-        buttonTriggerText={''}
         extent="sm"
-        buttonIcon={(props: any) => props}
       >
         <ModalContainer>
           <InputBox>

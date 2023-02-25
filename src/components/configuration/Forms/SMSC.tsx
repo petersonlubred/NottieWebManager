@@ -10,8 +10,8 @@ import {
   NumberInput,
 } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
-import { SMSCSchema } from '@/schemas';
-import { initialSMSCValue } from '@/interfaces/dtos';
+import { SMSCSchema } from '@/schemas/schema';
+import { initialSMSCValue } from '@/schemas/schema';
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 

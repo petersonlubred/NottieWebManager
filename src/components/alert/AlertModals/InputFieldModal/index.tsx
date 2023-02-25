@@ -36,9 +36,7 @@ const AlertInputFieldModal = ({ open, toggleModal }: IProps) => {
         open={open}
         toggleModal={toggleModal}
         secondaryButtonText="Cancel"
-        buttonTriggerText={''}
         extent="sm"
-        buttonIcon={(props: any) => props}
       >
         {dummpData.map((item: any) => (
           <InputFieldContainer key={item.id}>

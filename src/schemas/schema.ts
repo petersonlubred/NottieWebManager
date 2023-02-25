@@ -12,12 +12,19 @@ export const userAccountSchema = Yup.object({
     .email('Invalid email')
     .required('Email is required'),
   authenticationType: Yup.string().required('Authentication type is required'),
-  firstName: Yup.string().required('first name is required'),
-  lastName: Yup.string().required('last name is required'),
-  otherNames: Yup.string().required('other name is required'),
   roleIds: Yup.array()
     .min(1, 'user must be assigned at least 1 role ')
     .required('required'),
+
+  status: Yup.boolean().required('required'),
+  firstName: Yup.string().when('authenticationType', {
+    is: (val: string) => val === 'AD',
+    then: Yup.string().required('first name is required'),
+  }),
+  lastName: Yup.string().when('authenticationType', {
+    is: (val: string) => val === 'AD',
+    then: Yup.string().required('last name is required'),
+  }),
 });
 
 export const RoleAndProvilegesSchema = Yup.object({

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { FormGroup, NumberInput } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
-import { initialBatchProcessingValue } from '@/interfaces/dtos';
-import { BatchProcessingSchema } from '@/schemas';
+import { initialBatchProcessingValue } from '@/schemas/schema';
+import { BatchProcessingSchema } from '@/schemas/schema';
 import Button from '@/components/shared/Button';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 

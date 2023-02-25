@@ -152,8 +152,6 @@ const Profile = () => {
       subtitle={'Create and manage profile and permissions and subscription'}
     >
       <Modal
-        buttonTriggerText={''}
-        buttonIcon={(props: any) => <Add size={24} {...props} />}
         heading={`Create ${selected === 3 ? 'New' : 'Alert'} ${
           navItems[selected]?.title.split(' ')[
             navItems[selected]?.title.split(' ').length - 1
@@ -178,8 +176,6 @@ const Profile = () => {
         )}
       </Modal>
       <Modal
-        buttonTriggerText={''}
-        buttonIcon={(props: any) => <Add size={24} {...props} />}
         heading={`Bulk Upload`}
         buttonLabel={`Upload`}
         open={bulkopen}

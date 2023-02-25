@@ -1,13 +1,10 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Modal as M } from '@carbon/react';
 import styled from 'styled-components';
 
 interface Iprops {
   buttonLabel: string;
-  // eslint-disable-next-line no-unused-vars
-  buttonIcon: (props: any) => ReactElement;
   heading: string;
-  buttonTriggerText: string;
   children: ReactNode;
   secondaryButtonText?: string;
   open?: boolean;
@@ -19,9 +16,7 @@ interface Iprops {
 
 const Modal = ({
   buttonLabel,
-  buttonIcon,
   heading,
-  buttonTriggerText,
   children,
   secondaryButtonText = 'Close',
   open,
@@ -32,9 +27,6 @@ const Modal = ({
 }: Iprops) => {
   return (
     <ModalContainer
-      buttonTriggerClassName="btn-primary"
-      buttonTriggerText={buttonTriggerText}
-      renderTriggerButtonIcon={buttonIcon}
       modalHeading={heading}
       size={extent}
       primaryButtonText={buttonLabel}

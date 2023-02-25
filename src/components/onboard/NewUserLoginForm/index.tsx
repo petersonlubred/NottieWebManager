@@ -4,8 +4,8 @@ import { FormGroup, TextInput, PasswordInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
-import { userLoginSchema } from '@/schemas';
-import { initialUserLoginValue } from '@/interfaces/dtos';
+import { userLoginSchema } from '@/schemas/schema';
+import { initialUserLoginValue } from '@/schemas/schema';
 import Button from '../../shared/Button';
 
 type IProps = {

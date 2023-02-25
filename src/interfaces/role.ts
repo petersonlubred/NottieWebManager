@@ -9,3 +9,10 @@ export type IPrivileges = {
     canDelete: boolean;
   };
 };
+
+export type IRoles = {
+  roleId: string;
+  roleName: string;
+  description: string;
+  users: number;
+};

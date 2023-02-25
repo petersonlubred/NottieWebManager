@@ -15,7 +15,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import rootSaga from '../sagas';
-import { databaseApi, roleApi, smtpApi, userApi } from '../services';
+import { databaseApi, roleApi, smtpApi, userApi } from '../api';
 
 const sagaMiddleware = createSagaMiddleware();
 

@@ -9,10 +9,10 @@ import {
   SelectItem,
 } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
-import { SubscriptionSchema } from '@/schemas';
+import { SubscriptionSchema } from '@/schemas/schema';
 import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 import { FormContainer } from '../onboard/NewUserLoginForm';
-import { initialSubscription } from '@/interfaces/dtos';
+import { initialSubscription } from '@/schemas/dto';
 
 interface Iprops {
   isEdit?: boolean;

@@ -1,18 +1,9 @@
 import { baseQueryWithReauth, CustomError, createRequest } from './shared';
-import {
-  BaseQueryFn,
-  createApi,
-  FetchArgs,
-} from '@reduxjs/toolkit/query/react';
+import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: baseQueryWithReauth as BaseQueryFn<
-    string | FetchArgs,
-    unknown,
-    CustomError,
-    Record<string, any>
-  >,
+  baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
   tagTypes: ['user'],
   endpoints: (builder) => ({
     createUser: builder.mutation({
@@ -29,14 +20,12 @@ export const userApi = createApi({
     editUser: builder.mutation({
       query: (data) => {
         return {
-          url: `UserAccount/${data.userId}`,
+          url: `UserAccount/${data.id}`,
           method: 'PUT',
           body: data,
         };
       },
-      invalidatesTags: (_result, _error, { userId }) => [
-        { type: 'user', userId },
-      ],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'user', id }],
     }),
 
     deleteUser: builder.mutation({
@@ -58,17 +47,11 @@ export const userApi = createApi({
       },
     }),
 
-    getUsers: builder.query({
+    getUsers: builder.query<any, void>({
       query: () => createRequest('UserAccount'),
       providesTags: ['user'],
     }),
   }),
 });
 
-export const {
-  useCreateUserMutation,
-  useEditUserMutation,
-  useDeleteUserMutation,
-  useLazyGetUsersQuery,
-  useResendPasswordMutation,
-} = userApi;
+export const { useCreateUserMutation, useEditUserMutation, useDeleteUserMutation, useGetUsersQuery, useResendPasswordMutation } = userApi;

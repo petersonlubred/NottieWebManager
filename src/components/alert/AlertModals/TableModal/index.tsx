@@ -94,9 +94,7 @@ const AlertTableModal = ({ open, toggleModal }: IProps) => {
         open={open}
         toggleModal={toggleModal}
         secondaryButtonText=""
-        buttonTriggerText=""
         extent="md"
-        buttonIcon={(props: any) => props}
       >
         <ModalContainer>
           <SubHeader>
