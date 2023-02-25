@@ -1,62 +1,48 @@
 import { TrashCan, Password, Edit } from '@carbon/react/icons';
 import styled from 'styled-components';
 import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
-import ModalContent from '@/components/accounts/ModalContent';
 import Modal from '@/components/shared/Modal';
 import { IconBox } from '@/components/configuration/ActionIcons/Smtp';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { useEffect, useRef, useState } from 'react';
 import { useToast } from '@/context/ToastContext';
-import {
-  useDeleteRoleMutation,
-  useDeleteUserMutation,
-  useGetPrivilegesQuery,
-  useResendPasswordMutation,
-} from '@/redux/services';
-import { IinitialRoleForm, IinitialUserForm } from '@/interfaces/schema';
-import RolesAndProvileges from '../ModalRolesAndPrivilages';
+import { useDeleteRoleMutation, useDeleteUserMutation, useGetPrivilegesQuery, useResendPasswordMutation } from '@/redux/api';
+import RolesAndProvileges from '../Forms/CreateRolesForm';
 import { px } from '@/utils';
+import CreateUserForm from '../Forms/CreateUserForm';
+import { IinitialRoleForm, IinitialUserForm } from '@/schemas/interface';
+import { IRoles } from '@/interfaces/role';
 
 type Props = {
   data?: IinitialUserForm & { id: string };
   roleData?: IinitialRoleForm & { roleId: string };
+  initialChecked?: IRoles[];
+  setInitialChecked?: Function;
+  isUpdatedMultiselect?: boolean;
+  setIsUpdatedMultiselect?: Function;
 };
 
-const ActionIcons = ({ data, roleData }: Props) => {
+const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultiselect }: Props) => {
   const formRef = useRef<FormikRefType<any>>(null);
   const [edit, setEdit] = useState(false);
-  const { data: privileges, isFetching } = useGetPrivilegesQuery(
-    roleData?.roleId
-  );
-
-  console.log(privileges, roleData?.roleId);
+  const { data: privileges, isFetching } = useGetPrivilegesQuery(roleData?.roleId);
 
   const [opendeleteModal, setOpenDeleteModal] = useState(false);
   const [openResetPassword, setOpenResetPassword] = useState(false);
   const { toast } = useToast();
-  const [deleteUser, { isLoading, isSuccess, isError, error }] =
-    useDeleteUserMutation();
-  const [
-    deleteRole,
-    {
-      isLoading: isRoleLoading,
-      isSuccess: isRoleSuccess,
-      isError: isRoleError,
-      error: roleError,
-    },
-  ] = useDeleteRoleMutation();
+  const [deleteUser, { isLoading, isSuccess, isError, error }] = useDeleteUserMutation();
+  const [deleteRole, { isLoading: isRoleLoading, isSuccess: isRoleSuccess, isError: isRoleError, error: roleError }] = useDeleteRoleMutation();
   const [
     sendResetPassword,
-    {
-      isLoading: isResetPasswordLoading,
-      isSuccess: isResetPasswordSuccess,
-      isError: isResetPasswordError,
-      error: resetPasswordError,
-    },
+    { isLoading: isResetPasswordLoading, isSuccess: isResetPasswordSuccess, isError: isResetPasswordError, error: resetPasswordError },
   ] = useResendPasswordMutation();
 
   const toggleModal = () => {
     formRef.current?.resetForm();
+    setIsUpdatedMultiselect && setIsUpdatedMultiselect(false);
+    if (!isUpdatedMultiselect) {
+      setIsUpdatedMultiselect && setIsUpdatedMultiselect(true);
+    }
     setEdit(!open);
   };
 
@@ -65,9 +51,9 @@ const ActionIcons = ({ data, roleData }: Props) => {
   };
 
   const handleDelete = () => {
-    deleteUser(data?.id);
-    deleteRole(roleData?.roleId);
+    data?.id ? deleteUser(data?.id) : deleteRole(roleData?.roleId);
   };
+
   useEffect(() => {
     if (isSuccess) {
       toast('success', 'User Account deleted successfully');
@@ -95,11 +81,7 @@ const ActionIcons = ({ data, roleData }: Props) => {
       toast('success', 'Password sent to the email successfully');
       setOpenDeleteModal(!opendeleteModal);
     }
-    if (
-      isResetPasswordError &&
-      resetPasswordError &&
-      'status' in resetPasswordError
-    ) {
+    if (isResetPasswordError && resetPasswordError && 'status' in resetPasswordError) {
       toast('error', resetPasswordError?.data?.message);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,8 +102,6 @@ const ActionIcons = ({ data, roleData }: Props) => {
       </IconBox>
 
       <Modal
-        buttonTriggerText={''}
-        buttonIcon={TrashCan}
         heading="Confirm delete"
         buttonLabel="Delete"
         secondaryButtonText="Cancel"
@@ -140,23 +120,11 @@ const ActionIcons = ({ data, roleData }: Props) => {
           isLoading={isLoading || isRoleLoading}
         />
       </Modal>
-      <Modal
-        buttonTriggerText={''}
-        buttonIcon={(props: any) => <Password size={20} {...props} />}
-        heading="Confirm password reset"
-        buttonLabel="Reset Password"
-        secondaryButtonText="Cancel"
-        extent="sm"
-      >
-        <SimpleModalcontent
-          content="This user will be sent a temporay password to their email address."
-          isLoading={isResetPasswordLoading}
-        />
+      <Modal heading="Confirm password reset" buttonLabel="Reset Password" secondaryButtonText="Cancel" extent="sm">
+        <SimpleModalcontent content="This user will be sent a temporay password to their email address." isLoading={isResetPasswordLoading} />
       </Modal>
 
       <Modal
-        buttonTriggerText={''}
-        buttonIcon={Edit}
         heading={data?.id ? 'Edit User' : 'Edit Role'}
         buttonLabel="Save changes"
         extent="sm"
@@ -165,19 +133,15 @@ const ActionIcons = ({ data, roleData }: Props) => {
         onRequestSubmit={handleSubmit}
       >
         {data?.id ? (
-          <ModalContent
+          <CreateUserForm
             formRef={formRef}
             formdata={data}
             toggleModal={toggleModal}
+            isUpdatedMultiselect={isUpdatedMultiselect}
+            setIsUpdatedMultiselect={setIsUpdatedMultiselect}
           />
         ) : (
-          <RolesAndProvileges
-            formRef={formRef}
-            formdata={roleData}
-            toggleModal={toggleModal}
-            data={privileges?.data}
-            loadPrivileges={isFetching}
-          />
+          <RolesAndProvileges formRef={formRef} formdata={roleData} toggleModal={toggleModal} data={privileges?.data} loadPrivileges={isFetching} />
         )}
       </Modal>
     </NavSectionTwo>

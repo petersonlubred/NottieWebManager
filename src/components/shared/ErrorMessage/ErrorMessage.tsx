@@ -1,15 +1,23 @@
+import { FormikErrors } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
 interface Iprops {
   invalid: boolean;
-  invalidText: string | undefined;
+  invalidText:
+    | string
+    | string[]
+    | FormikErrors<any>
+    | FormikErrors<any>[]
+    | undefined;
 }
 
 const ErrorMessage = ({ invalid, invalidText }: Iprops) => {
   return (
     <ErrorContainer>
-      {invalid && <ErrorDescription>{invalidText}</ErrorDescription>}
+      {invalid && (
+        <ErrorDescription>{invalidText?.toString()}</ErrorDescription>
+      )}
     </ErrorContainer>
   );
 };

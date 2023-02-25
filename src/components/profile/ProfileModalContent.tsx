@@ -2,7 +2,6 @@ import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
 import {
-  Checkbox,
   TextInput,
   FormGroup,
   Select,
@@ -10,10 +9,11 @@ import {
   NumberInput,
 } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
-import { AlertProfileSchema } from '@/schemas';
+import { AlertProfileSchema } from '@/schemas/schema';
 import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 import { FormContainer } from '../onboard/NewUserLoginForm';
-import { initialAlertProfileValue } from '@/interfaces/dtos';
+import { initialAlertProfileValue } from '@/schemas/dto';
+import Checkbox from '../shared/Checkbox/Checkbox';
 
 interface Iprops {
   isEdit?: boolean;
@@ -140,25 +140,25 @@ const ModalContent = ({ isEdit }: Iprops) => {
                     />
                     <ModalItem>
                       <ModalLabel>Hide Balance?</ModalLabel>{' '}
-                      <Checkbox id="checked" labelText="Yes" />
+                      <Checkbox name="checked" label="Yes" />
                     </ModalItem>
                     <ModalItem>
                       <ModalLabel>Mask Account?</ModalLabel>{' '}
-                      <Checkbox id="checked-5" labelText="Yes" />
+                      <Checkbox name="checked-5" label="Yes" />
                     </ModalItem>{' '}
                     <ModalItem>
                       <ModalLabel>Enable Email?</ModalLabel>{' '}
-                      <Checkbox id="checked-2" labelText="Yes" />
+                      <Checkbox name="checked-2" label="Yes" />
                     </ModalItem>{' '}
                     <ModalItem>
                       <ModalLabel>Enable SMS?</ModalLabel>{' '}
-                      <Checkbox id="checked-4" labelText="Yes" />
+                      <Checkbox name="checked-4" label="Yes" />
                     </ModalItem>
                   </FormContainer>
                 </FormField>
                 <ModalItem>
                   <ModalLabel>Status</ModalLabel>{' '}
-                  <Checkbox id="checked-3" labelText="Yes" />
+                  <Checkbox name="checked-3" label="Yes" />
                 </ModalItem>
               </FormGroup>
             </Form>

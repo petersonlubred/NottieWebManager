@@ -6,7 +6,7 @@ import {
   useLazyCreateTableQuery,
   useLazyLoadDefaultDataQuery,
   useLazyWrapUpQuery,
-} from '@/redux/services';
+} from '@/redux/api';
 
 const itemsList = [
   'Creating stored procedures and views',

@@ -1,12 +1,6 @@
 import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Layout from '@/HOC/Layout';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   DataTable,
   Table,
@@ -50,27 +44,23 @@ import SMTP from '@/components/configuration/Forms/SMTP';
 import SMTPRoute from '@/components/configuration/Forms/SMTPRoute';
 import { FormikRefType } from '@/interfaces/formik.type';
 import Loader from '@/components/shared/Loader';
-import { useLazyGetSmtpserverQuery } from '@/redux/services';
+import { useLazyGetSmtpserverQuery } from '@/redux/api';
 import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
+import { useDispatch } from 'react-redux';
+import useSelectorValue from '@/hooks/useSelector';
+import { setTab } from '@/redux/slices/util';
 
 const SystemConfiguration = () => {
-  const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [responseData, setResponseData] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const formRef = useRef<FormikRefType<any>>(null);
-  const [triggerSMTP, { data, isFetching: isLoading }] =
-    useLazyGetSmtpserverQuery();
+  const [triggerSMTP, { data, isFetching: isLoading }] = useLazyGetSmtpserverQuery();
+  const dispatch = useDispatch();
+  const { tab } = useSelectorValue();
 
-  const {
-    datasourceheader,
-    smscheader,
-    smsrouteheader,
-    smsrouteconfigheader,
-    smtpheader,
-    smtprouteconfigheader,
-  } = useHeaders();
+  const { datasourceheader, smscheader, smsrouteheader, smsrouteconfigheader, smtpheader, smtprouteconfigheader } = useHeaders();
 
   const navItems = useMemo(() => {
     return [
@@ -87,7 +77,7 @@ const SystemConfiguration = () => {
   }, []);
 
   const handleSetIndex = (index: number) => {
-    setSelected(index);
+    dispatch(setTab(index));
     index === 6 && triggerSMTP({}, true);
   };
 
@@ -113,14 +103,14 @@ const SystemConfiguration = () => {
     ];
 
     headers?.forEach((header, index) => {
-      if (index === selected) {
+      if (index === tab) {
         setHeaders(header);
       }
       const rows = responseData?.map((item: any) => {
         const row: any = {};
-        headers[selected].forEach((item2: { key: string; header: string }) => {
+        headers[tab].forEach((item2: { key: string; header: string }) => {
           row[item2.key] = item[item2.key];
-          if (selected === 6) {
+          if (tab === 6) {
             row.id = item['smtpId'];
             row['others'] = <ActionIcons data={item} />;
             row['useSslTls'] = item['useSslTls'] ? 'Yes' : 'No';
@@ -130,55 +120,43 @@ const SystemConfiguration = () => {
       });
       rows && setRows([...rows]);
     });
-  }, [
-    datasourceheader,
-    navItems,
-    selected,
-    smscheader,
-    smsrouteheader,
-    smsrouteconfigheader,
-    smtpheader,
-    smtprouteconfigheader,
-    responseData,
-  ]);
+  }, [datasourceheader, navItems, tab, smscheader, smsrouteheader, smsrouteconfigheader, smtpheader, smtprouteconfigheader, responseData]);
 
   useEffect(() => {
-    selected == 6 ? setResponseData(data?.data) : setResponseData([]);
-  }, [data?.data, selected]);
+    tab == 6 ? setResponseData(data?.data) : setResponseData([]);
+  }, [data?.data, tab]);
 
   return (
     <Layout
       routename="System Configuration"
       navItem={navItems}
-      selected={selected}
+      selected={tab}
       handleSetIndex={handleSetIndex}
       title={'System Configuration'}
       subtitle={'Manage System Configuration'}
     >
       <Modal
-        buttonTriggerText={''}
-        buttonIcon={(props: any) => <Add size={24} {...props} />}
-        heading={`Create New ${navItems[selected]?.title.split(' ').join(' ')}`}
-        buttonLabel={`Create ${navItems[selected]?.title.split(' ').join(' ')}`}
+        heading={`Create New ${navItems[tab]?.title.split(' ').join(' ')}`}
+        buttonLabel={`Create ${navItems[tab]?.title.split(' ').join(' ')}`}
         open={open}
         toggleModal={toggleModal}
         extent="sm"
         onRequestSubmit={handleSubmit}
       >
-        {selected === 3 ? (
+        {tab === 3 ? (
           <SMSCForm />
-        ) : selected === 4 ? (
+        ) : tab === 4 ? (
           <SMSRoute />
-        ) : selected === 5 ? (
+        ) : tab === 5 ? (
           <SMSRouteConfig />
-        ) : selected === 6 ? (
+        ) : tab === 6 ? (
           <SMTP formRef={formRef} toggleModal={toggleModal} />
         ) : (
           <SMTPRoute />
         )}
       </Modal>
 
-      {selected === 0 && (
+      {tab === 0 && (
         <ConfigurationContainer>
           <Template />
           {/* <NoDataContainer>
@@ -192,21 +170,11 @@ const SystemConfiguration = () => {
         </ConfigurationContainer>
       )}
 
-      {selected !== 0 && selected !== 2 && (
+      {tab !== 0 && tab !== 2 && (
         <>
-          <PageSubHeader navItem={navItems[selected]?.title} />
+          <PageSubHeader navItem={navItems[tab]?.title} />
           <DataTable rows={Rows} headers={Headers}>
-            {({
-              rows,
-              headers,
-              getHeaderProps,
-              getRowProps,
-              getTableProps,
-              getSelectionProps,
-              getToolbarProps,
-              getBatchActionProps,
-              selectedRows,
-            }: any) => (
+            {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps }: any) => (
               <>
                 <TableToolbar {...getToolbarProps()}>
                   <TableBatchActions {...getBatchActionProps()}>
@@ -221,10 +189,8 @@ const SystemConfiguration = () => {
                   <TableToolbarContent>
                     <Button
                       renderIcon={(props: any) => <Add size={20} {...props} />}
-                      buttonLabel={`Create ${navItems[selected]?.title
-                        .split(' ')
-                        .join(' ')}`}
-                      handleClick={() => selected !== 1 && toggleModal()}
+                      buttonLabel={`Create ${navItems[tab]?.title.split(' ').join(' ')}`}
+                      handleClick={() => tab !== 1 && toggleModal()}
                     />
                   </TableToolbarContent>
                 </TableToolbar>
@@ -233,10 +199,7 @@ const SystemConfiguration = () => {
                     <TableRow>
                       <TableSelectAll {...getSelectionProps()} />
                       {headers.map((header: any, index: number) => (
-                        <TableHeader
-                          {...getHeaderProps({ header })}
-                          key={index}
-                        >
+                        <TableHeader {...getHeaderProps({ header })} key={index}>
                           {header.header}
                         </TableHeader>
                       ))}
@@ -258,9 +221,7 @@ const SystemConfiguration = () => {
               </>
             )}
           </DataTable>
-          {isEmpty(Rows) && (
-            <Empty title={'No ' + navItems[1].title + ' found'} />
-          )}
+          {isEmpty(Rows) && <Empty title={'No ' + navItems[1].title + ' found'} />}
           {isLoading && <Loader />}
         </>
       )}
@@ -275,13 +236,13 @@ const SystemConfiguration = () => {
       {/* <DataSourceForm /> */}
       {/* </ConfigurationContainer> */}
 
-      {selected === 2 && (
+      {tab === 2 && (
         <ConfigurationContainer>
           <ServiceMapping />
         </ConfigurationContainer>
       )}
 
-      {selected === 8 && (
+      {tab === 8 && (
         <ConfigurationContainer>
           <SystemSettingSideBar />
           {/* <BatchProcessingForm /> */}

@@ -12,8 +12,8 @@ import {
 import { ArrowRight } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
-import { databaseSchema } from '@/schemas';
-import { initialDatabaseValue } from '@/interfaces/dtos';
+import { databaseSchema } from '@/schemas/schema';
+import { initialDatabaseValue } from '@/schemas/schema';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 
 type IProps = {

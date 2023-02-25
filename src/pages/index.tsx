@@ -5,8 +5,7 @@ import SetupProcess from '@/components/onboard/SetupProcess/SetupProcess';
 import SetUpSuccess from '@/components/onboard/SetupSuccess/SetUpSuccess';
 import Signin from '@/components/onboard/SignIn';
 import Logo from '@/components/shared/Logo';
-import Toast from '@/components/shared/Notification/Toast';
-import { useRegisterDbMutation } from '@/redux/services';
+import { useRegisterDbMutation } from '@/redux/api';
 import { protectedRouteProps } from '@/utils/withSession';
 import type { GetServerSideProps, NextPage } from 'next';
 import { useState } from 'react';
@@ -24,7 +23,6 @@ const Home: NextPage = () => {
     username: '',
     password: '',
   });
-
   const [step, setStep] = useState(1);
 
   const toggleLogin = () => {
@@ -48,18 +46,9 @@ const Home: NextPage = () => {
         {isLogin ? (
           <Signin />
         ) : step == 1 ? (
-          <SetDatabaseForm
-            handleSetStep={handleSetStep}
-            registerDb={registerDb}
-            isLoading={isLoading}
-          />
+          <SetDatabaseForm handleSetStep={handleSetStep} registerDb={registerDb} isLoading={isLoading} />
         ) : step === 2 ? (
-          <SetupProcess
-            handleSetStep={handleSetStep}
-            isLoading={isLoading}
-            isSuccess={isSuccess}
-            setLoginDetails={setLoginDetails}
-          />
+          <SetupProcess handleSetStep={handleSetStep} isLoading={isLoading} isSuccess={isSuccess} setLoginDetails={setLoginDetails} />
         ) : step === 3 ? (
           <SetUpSuccess toggleLogin={setIsLogin} loginDetails={loginDetails} />
         ) : (

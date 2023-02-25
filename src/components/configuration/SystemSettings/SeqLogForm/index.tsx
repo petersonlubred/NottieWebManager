@@ -12,10 +12,10 @@ import {
   RadioButton,
 } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
-import { AlertProfileSchema } from '@/schemas';
+import { AlertProfileSchema } from '@/schemas/schema';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
-import { initialAlertProfileValue } from '@/interfaces/dtos';
+import { initialAlertProfileValue } from '@/schemas/schema';
 import Button from '@/components/shared/Button';
 
 interface Iprops {

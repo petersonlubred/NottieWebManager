@@ -1,5 +1,10 @@
-import { APIResponse } from './schema';
 import { UserData } from './user';
+
+export interface APIResponse<T> {
+  status: string;
+  message: string;
+  data: T;
+}
 
 export interface LoginRequest {
   email: string;

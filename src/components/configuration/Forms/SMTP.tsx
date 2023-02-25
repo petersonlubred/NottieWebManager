@@ -9,21 +9,21 @@ import {
 } from '@carbon/react';
 import { Send } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
-import { SMTPSchema } from '@/schemas';
-import { initialSMTPValue } from '@/interfaces/dtos';
+import { SMTPSchema } from '@/schemas/schema';
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Button from '@/components/shared/Button';
-import { IinitialSMTPForm } from '@/interfaces/schema';
 import { FormikRefType } from '@/interfaces/formik.type';
 import Loader from '@/components/shared/Loader';
 import {
   useCreateSmtpMutation,
   useEditSmtpMutation,
   useSendTestMailMutation,
-} from '@/redux/services';
+} from '@/redux/api';
 import { useToast } from '@/context/ToastContext';
-import Checkbox from '@/components/shared/Checkbox';
+import { IinitialSMTPForm } from '@/schemas/interface';
+import Checkbox from '@/components/shared/Checkbox/Checkbox';
+import { initialSMTPValue } from '@/schemas/dto';
 
 interface Props {
   formRef: React.RefObject<FormikRefType<IinitialSMTPForm>>;
@@ -249,18 +249,7 @@ const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
                 <FormContainer>
                   <FormField>
                     <ModalLabel>Use SSL/TLS</ModalLabel>
-                    <Field name="useSslTls">
-                      {(field: any) => (
-                        <Checkbox
-                          {...field}
-                          label="Yes"
-                          value={values?.useSslTls}
-                          onChange={(e: any) => {
-                            setFieldValue('useSslTls', e.target.checked);
-                          }}
-                        />
-                      )}
-                    </Field>
+                    <Checkbox label="Yes" name="useSslTls" />
                   </FormField>
                 </FormContainer>
               </FormGroup>

@@ -2,6 +2,7 @@ import PageHeader from '@/components/accounts/PageHeader';
 import Navbar from '@/components/shared/Navbar';
 import NavbarRoute from '@/components/shared/NavbarRoute';
 import PageFooter from '@/components/shared/PageFooter';
+import Seo from '@/providers/seo';
 import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
@@ -11,40 +12,26 @@ interface Iprops {
   children: React.ReactNode;
   navItem: { title: string }[];
   selected?: number;
-  handleSetIndex?: Function;
+  handleSetIndex: Function;
   title?: string;
   subtitle?: string;
   isDashboard?: boolean;
   noPagination?: boolean;
 }
-const Layout = ({
-  children,
-  routename,
-  navItem,
-  selected,
-  handleSetIndex,
-  title,
-  subtitle,
-  isDashboard,
-  noPagination,
-}: Iprops) => {
+const Layout = ({ children, routename, navItem, selected, handleSetIndex, title, subtitle, isDashboard, noPagination }: Iprops) => {
   return (
     <LayoutContainer>
+      <Seo title={routename} />
       <Navbar /> <NavbarRoute routename={routename} />{' '}
-      <PageHeader
-        navItem={navItem}
-        selected={selected}
-        handleSetIndex={handleSetIndex}
-        title={title}
-        subtitle={subtitle}
-        isDashboard={isDashboard}
-      />{' '}
+      <PageHeader navItem={navItem} selected={selected} handleSetIndex={handleSetIndex} title={title} subtitle={subtitle} isDashboard={isDashboard} />{' '}
       <HeaderNav>
         {navItem?.map((item, index) => (
           <HeaderNavItem
             key={index}
             selected={selected === index}
-            onClick={() => handleSetIndex && handleSetIndex(index)}
+            onClick={() => {
+             handleSetIndex(index);
+            }}
           >
             {item?.title}
           </HeaderNavItem>
@@ -96,8 +83,7 @@ const LayoutChildren = styled.div`
 
     thead,
     th {
-      background-color: ${({ theme }) =>
-        theme.colors.bgPrimaryLight} !important;
+      background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
       color: ${({ theme }) => theme.colors.white};
     }
 
@@ -117,8 +103,7 @@ const LayoutChildren = styled.div`
 
     .cds--data-table--selected td,
     .cds--data-table--selected:hover td {
-      background-color: ${({ theme }) =>
-        theme.colors.bgPrimaryLight} !important;
+      background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
       color: ${({ theme }) => theme.colors.white} !important;
       border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover};t
     }
@@ -161,9 +146,7 @@ const HeaderNavItem = styled.div<HeaderNavItemProps>`
   padding: ${px(15)};
   color: ${({ selected, theme }) => !selected && theme.colors.lightText};
   transition: all 0.1s ease-in;
-  border-bottom: 1px solid
-    ${({ selected, theme }) =>
-      selected ? theme.colors.normalText : 'transparent'};
+  border-bottom: 1px solid ${({ selected, theme }) => (selected ? theme.colors.normalText : 'transparent')};
   font-weight: ${({ selected }) => selected && '700'};
   &:hover {
     font-weight: 700;

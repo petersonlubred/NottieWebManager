@@ -1,4 +1,4 @@
-import { RoleAndProvilegesSchema, userAccountSchema } from './../schemas/index';
+import { RoleAndProvilegesSchema, userAccountSchema } from './schema';
 import {
   AlertExceptionSchema,
   AlertExcludeSchema,
@@ -9,13 +9,13 @@ import {
   SMTPRouteSchema,
   SMTPSchema,
   SubscriptionSchema,
-} from '../schemas/index';
+} from './schema';
 import {
   AlertProfileSchema,
   databaseSchema,
   signinSchema,
   userLoginSchema,
-} from '@/schemas';
+} from '@/schemas/schema';
 import * as Yup from 'yup';
 
 export type IinitialSiginin = Yup.InferType<typeof signinSchema>;
@@ -35,9 +35,3 @@ export type IinitialSMTPForm = Yup.InferType<typeof SMTPSchema>;
 export type IinitialSMTPRouteForm = Yup.InferType<typeof SMTPRouteSchema>;
 export type IinitialUserForm = Yup.InferType<typeof userAccountSchema>;
 export type IinitialRoleForm = Yup.InferType<typeof RoleAndProvilegesSchema>;
-
-export interface APIResponse<T> {
-  status: string;
-  message: string;
-  data: T;
-}

@@ -1,17 +1,21 @@
 import { Field } from 'formik';
 import React from 'react';
 
-const CheckboxMultiple = ({
-  name,
+const Checkbox = ({
   label,
+  name,
+  isMultiple,
   value,
-  checked,
 }: {
   name: string;
   label: string;
+  isMultiple?: boolean;
   value?: string;
-  checked?: boolean;
 }) => {
+  const props = { label, name, value };
+  if (isMultiple) {
+    delete props.value;
+  }
   return (
     <>
       <label
@@ -19,14 +23,10 @@ const CheckboxMultiple = ({
         style={{
           width: 'fit-content',
           display: 'block',
+          position: 'relative',
         }}
       >
-        <Field
-          className="cds--checkbox"
-          type={'checkbox'}
-          name={name}
-          value={value}
-        />
+        <Field type="checkbox" {...props} className="cds--checkbox" />
         <p className="cds--checkbox-label" title="">
           <span className="cds--checkbox-label-text">{label}</span>
         </p>
@@ -35,4 +35,4 @@ const CheckboxMultiple = ({
   );
 };
 
-export default CheckboxMultiple;
+export default Checkbox;

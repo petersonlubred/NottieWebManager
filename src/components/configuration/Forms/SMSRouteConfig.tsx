@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { TextInput, FormGroup, Select, SelectItem } from '@carbon/react';
 import { Formik, Form, Field } from 'formik';
-import { SMSRouteConfigSchema } from '@/schemas';
-import { initialSMSRouteConfigValue } from '@/interfaces/dtos';
+import { SMSRouteConfigSchema } from '@/schemas/schema';
+import { initialSMSRouteConfigValue } from '@/schemas/schema';
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 

@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import SMTP from '../../Forms/SMTP';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { IinitialSMTPForm } from '@/interfaces/schema';
-import { useDeleteSmtpMutation } from '@/redux/services';
+import { useDeleteSmtpMutation } from '@/redux/api';
 import { useToast } from '@/context/ToastContext';
 
 type Props = {
@@ -55,8 +55,6 @@ const ActionIcons = ({ data }: Props) => {
         <Edit size={20} />
       </IconBox>
       <Modal
-        buttonTriggerText={''}
-        buttonIcon={TrashCan}
         heading="Confirm delete"
         buttonLabel="Delete"
         secondaryButtonText="Cancel"
@@ -72,8 +70,6 @@ const ActionIcons = ({ data }: Props) => {
         />
       </Modal>
       <Modal
-        buttonTriggerText={''}
-        buttonIcon={Edit}
         heading="Edit SMTP"
         buttonLabel="Save changes"
         extent="sm"

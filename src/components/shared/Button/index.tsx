@@ -26,7 +26,7 @@ const Button = ({
       disabled={disabled}
       onClick={handleClick}
       width={fullWidth ? '100%' : 'auto'}
-      valid={validateButton}
+      valid={validateButton?.toString()}
       className={className}
     >
       {buttonLabel}
@@ -46,7 +46,7 @@ const ButtonStyle = styled(Btn)<ButtonProps>`
   max-width: 30rem;
   width: ${({ width }) => (width === '100%' ? '100%' : 'auto')};
   color: ${({ disabled, valid }) =>
-    valid && disabled
+    valid === 'true' && disabled
       ? 'white !important'
       : disabled
       ? '#6f6f6f !important'
@@ -56,7 +56,7 @@ const ButtonStyle = styled(Btn)<ButtonProps>`
 
   &:hover {
     color: ${({ disabled, valid }) =>
-      valid && disabled
+      valid === 'true' && disabled
         ? 'white !important'
         : disabled
         ? '#6f6f6f !important'

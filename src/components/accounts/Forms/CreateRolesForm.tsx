@@ -4,16 +4,16 @@ import { Formik, Form, Field } from 'formik';
 import styled from 'styled-components';
 import { px } from '@/utils';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { IinitialRoleForm } from '@/interfaces/schema';
-import { useCreateRoleMutation, useEditRoleMutation } from '@/redux/services';
+import { useCreateRoleMutation, useEditRoleMutation } from '@/redux/api';
 import { useToast } from '@/context/ToastContext';
-import { RoleAndProvilegesSchema } from '@/schemas';
-import { initialRoleValue } from '@/interfaces/dtos';
-import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-import { FormEmailContainer } from '../profile/SubscriptionContent';
-import CheckboxMultiple from '../shared/Checkbox/CheckBoxMultiple';
-import Loader from '../shared/Loader';
+import { RoleAndProvilegesSchema } from '@/schemas/schema';
+import ErrorMessage from '../../shared/ErrorMessage/ErrorMessage';
+import { FormEmailContainer } from '../../profile/SubscriptionContent';
+import Loader from '../../shared/Loader';
 import { IPrivileges } from '@/interfaces/role';
+import { initialRoleValue } from '@/schemas/dto';
+import { IinitialRoleForm } from '@/schemas/interface';
+import Checkbox from '@/components/shared/Checkbox/Checkbox';
 
 type IProps = {
   formRef: React.RefObject<FormikRefType<IinitialRoleForm>>;
@@ -105,8 +105,6 @@ const RolesAndProvileges = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editError, editSuccess, isEditError]);
 
-  console.log(flattenedPrivileges);
-
   return (
     <ModalContainer>
       {(isLoading || editLoading || loadPrivileges) && <Loader />}
@@ -121,12 +119,11 @@ const RolesAndProvileges = ({
         innerRef={formRef}
         enableReinitialize
       >
-        {({ errors, touched, handleChange, values }) => (
+        {({ errors, touched, handleChange }) => (
           <Form>
             <FormGroup legendText="">
               <FormField>
                 <FormEmailContainer>
-                  {console.log(values)}
                   <Field name="roleName">
                     {({ field }: any) => (
                       <Text
@@ -185,7 +182,7 @@ const RolesAndProvileges = ({
                                 .replace(/^./, (s) => s.toUpperCase()),
                             }))
                             .map((checkbox, ind2) => (
-                              <CheckboxMultiple
+                              <Checkbox
                                 name={item?.systemPrivilegeId}
                                 key={index + ind2}
                                 label={checkbox.label}
