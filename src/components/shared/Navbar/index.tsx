@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { setMode, setTab } from '@/redux/slices/util';
 import { NextRouter, useRouter } from 'next/router';
-import useSelectorValue from '@/hooks/useSelector';
 
 const Navbaritem = [
   { title: 'Dashboard', route: 'dashboard' },
@@ -45,7 +44,6 @@ const Navbar = () => {
                 label={item?.title}
                 onChange={() => {
                   router.push(`/${item?.route}`);
-                  dispatch(setTab(0));
                 }}
               />
             ) : (
@@ -53,7 +51,6 @@ const Navbar = () => {
                 active={currentRoute === item?.route}
                 onClick={() => {
                   router.push(`/${item?.route}`);
-                  dispatch(setTab(0));
                 }}
               >
                 {item?.title}

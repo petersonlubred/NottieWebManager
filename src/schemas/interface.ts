@@ -1,4 +1,4 @@
-import { RoleAndProvilegesSchema, userAccountSchema } from './schema';
+import * as Yup from 'yup';
 import {
   AlertExceptionSchema,
   AlertExcludeSchema,
@@ -9,14 +9,13 @@ import {
   SMTPRouteSchema,
   SMTPSchema,
   SubscriptionSchema,
-} from './schema';
-import {
   AlertProfileSchema,
   databaseSchema,
   signinSchema,
   userLoginSchema,
+  RoleAndProvilegesSchema,
+  userAccountSchema,
 } from '@/schemas/schema';
-import * as Yup from 'yup';
 
 export type IinitialSiginin = Yup.InferType<typeof signinSchema>;
 export type IinitialDatabase = Yup.InferType<typeof databaseSchema>;
@@ -28,9 +27,7 @@ export type IinitialSubscription = Yup.InferType<typeof SubscriptionSchema>;
 export type IinitialDataSourceType = Yup.InferType<typeof DataSourceSchema>;
 export type IinitialSMSCForm = Yup.InferType<typeof SMSCSchema>;
 export type IinitialSMSRouteForm = Yup.InferType<typeof SMSRouteSchema>;
-export type IinitialSMSRouteConfigForm = Yup.InferType<
-  typeof SMSRouteConfigSchema
->;
+export type IinitialSMSRouteConfigForm = Yup.InferType<typeof SMSRouteConfigSchema>;
 export type IinitialSMTPForm = Yup.InferType<typeof SMTPSchema>;
 export type IinitialSMTPRouteForm = Yup.InferType<typeof SMTPRouteSchema>;
 export type IinitialUserForm = Yup.InferType<typeof userAccountSchema>;

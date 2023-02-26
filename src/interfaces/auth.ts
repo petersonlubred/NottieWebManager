@@ -14,4 +14,5 @@ export interface AuthResponse {
   user: UserData;
   token: string;
 }
+
 export interface LoginResponse extends APIResponse<AuthResponse> {}

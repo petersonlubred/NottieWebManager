@@ -4,33 +4,34 @@ import NavbarRoute from '@/components/shared/NavbarRoute';
 import PageFooter from '@/components/shared/PageFooter';
 import Seo from '@/providers/seo';
 import { px } from '@/utils';
+import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
 interface Iprops {
   routename: string;
   children: React.ReactNode;
-  navItem: { title: string }[];
-  selected?: number;
+  navItem: { title: string; tabName: string }[];
   handleSetIndex: Function;
   title?: string;
   subtitle?: string;
   isDashboard?: boolean;
   noPagination?: boolean;
+  currentTab?: any;
 }
-const Layout = ({ children, routename, navItem, selected, handleSetIndex, title, subtitle, isDashboard, noPagination }: Iprops) => {
+const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle, isDashboard, noPagination, currentTab }: Iprops) => {
+  const router = useRouter();
   return (
     <LayoutContainer>
       <Seo title={routename} />
-      <Navbar /> <NavbarRoute routename={routename} />{' '}
-      <PageHeader navItem={navItem} selected={selected} handleSetIndex={handleSetIndex} title={title} subtitle={subtitle} isDashboard={isDashboard} />{' '}
+      <Navbar /> <NavbarRoute routename={routename} /> <PageHeader navItem={navItem} handleSetIndex={handleSetIndex} title={title} subtitle={subtitle} isDashboard={isDashboard} />{' '}
       <HeaderNav>
         {navItem?.map((item, index) => (
           <HeaderNavItem
             key={index}
-            selected={selected === index}
+            selected={currentTab === item?.tabName}
             onClick={() => {
-             handleSetIndex(index);
+              handleSetIndex(index);
             }}
           >
             {item?.title}
@@ -106,11 +107,6 @@ const LayoutChildren = styled.div`
       background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
       color: ${({ theme }) => theme.colors.white} !important;
       border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover};t
-    }
-
-    td:last-child,
-    td:last-child > div {
-      padding: 0;
     }
   }
 

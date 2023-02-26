@@ -1,3 +1,4 @@
+import { APIResponse } from './auth';
 export interface UserData {
   authenticationType: string;
   email: string;
@@ -14,7 +15,5 @@ export interface UserData {
   username: string;
 }
 
-export enum Role {
-  'AMBASSADOR' = 'AMBASSADOR',
-  'ADMIN' = 'ADMIN',
-}
+export interface UsersResponse extends APIResponse<UserData[]> {}
+export interface UserResponse extends APIResponse<UserData> {}

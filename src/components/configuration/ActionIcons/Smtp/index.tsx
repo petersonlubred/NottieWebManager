@@ -4,7 +4,7 @@ import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleMod
 import Modal from '@/components/shared/Modal';
 import { px } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
-import SMTP from '../../Forms/SMTP';
+import SMTP from '../../ModalForms/SMTP';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { IinitialSMTPForm } from '@/interfaces/schema';
 import { useDeleteSmtpMutation } from '@/redux/api';

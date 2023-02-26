@@ -1,41 +1,61 @@
-import { TrashCan, Password, Edit } from '@carbon/react/icons';
+import { TrashCan, Password, Edit, UserAdmin } from '@carbon/react/icons';
 import styled from 'styled-components';
 import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
 import Modal from '@/components/shared/Modal';
 import { IconBox } from '@/components/configuration/ActionIcons/Smtp';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useToast } from '@/context/ToastContext';
 import { useDeleteRoleMutation, useDeleteUserMutation, useGetPrivilegesQuery, useResendPasswordMutation } from '@/redux/api';
-import RolesAndProvileges from '../Forms/CreateRolesForm';
+import RolesAndProvileges from '../ModalForms/CreateRolesForm';
 import { px } from '@/utils';
-import CreateUserForm from '../Forms/CreateUserForm';
+import CreateUserForm from '../ModalForms/CreateUserForm';
 import { IinitialRoleForm, IinitialUserForm } from '@/schemas/interface';
-import { IRoles } from '@/interfaces/role';
+import { IRole } from '@/interfaces/role';
 
 type Props = {
-  data?: IinitialUserForm & { id: string };
+  data?: IinitialUserForm & { id: string; status: boolean };
   roleData?: IinitialRoleForm & { roleId: string };
-  initialChecked?: IRoles[];
+  initialChecked?: IRole[];
   setInitialChecked?: Function;
   isUpdatedMultiselect?: boolean;
   setIsUpdatedMultiselect?: Function;
+  selectedRows: string[];
+  opendeleteModal: boolean;
+  setOpenDeleteModal: Function;
+  openResetPassword?: boolean;
+  setOpenResetPassword?: Function;
+  openActivateModal?: boolean;
+  setOpenActivateModal?: Function;
+  setSelectedRows: Function;
+  isSingle: boolean;
+  setIsSingle: Function;
 };
 
-const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultiselect }: Props) => {
+const ActionIcons = ({
+  data,
+  roleData,
+  isUpdatedMultiselect,
+  setIsUpdatedMultiselect,
+  selectedRows,
+  opendeleteModal,
+  setOpenDeleteModal,
+  openResetPassword,
+  setOpenResetPassword,
+  openActivateModal,
+  setOpenActivateModal,
+  setSelectedRows,
+  isSingle,
+  setIsSingle,
+}: Props) => {
   const formRef = useRef<FormikRefType<any>>(null);
   const [edit, setEdit] = useState(false);
-  const { data: privileges, isFetching } = useGetPrivilegesQuery(roleData?.roleId);
-
-  const [opendeleteModal, setOpenDeleteModal] = useState(false);
-  const [openResetPassword, setOpenResetPassword] = useState(false);
   const { toast } = useToast();
+  const { data: privileges, isFetching } = useGetPrivilegesQuery(roleData?.roleId as string);
   const [deleteUser, { isLoading, isSuccess, isError, error }] = useDeleteUserMutation();
   const [deleteRole, { isLoading: isRoleLoading, isSuccess: isRoleSuccess, isError: isRoleError, error: roleError }] = useDeleteRoleMutation();
-  const [
-    sendResetPassword,
-    { isLoading: isResetPasswordLoading, isSuccess: isResetPasswordSuccess, isError: isResetPasswordError, error: resetPasswordError },
-  ] = useResendPasswordMutation();
+  const [sendResetPassword, { isLoading: isResetPasswordLoading, isSuccess: isResetPasswordSuccess, isError: isResetPasswordError, error: resetPasswordError }] =
+    useResendPasswordMutation();
 
   const toggleModal = () => {
     formRef.current?.resetForm();
@@ -51,12 +71,16 @@ const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultise
   };
 
   const handleDelete = () => {
-    data?.id ? deleteUser(data?.id) : deleteRole(roleData?.roleId);
+    data?.id ? deleteUser(data?.status ? { status: false, id: data?.id } : { status: true, id: data?.id }) : deleteRole({ roleId: roleData?.roleId as string });
+  };
+
+  const handleResetPassword = () => {
+    sendResetPassword({ id: data?.id as string });
   };
 
   useEffect(() => {
     if (isSuccess) {
-      toast('success', 'User Account deleted successfully');
+      toast('success', `User Account ${data?.status ? 'deactivated' : 'activated'}successfully`);
       setOpenDeleteModal(!opendeleteModal);
     }
     if (isError && error && 'status' in error) {
@@ -74,7 +98,7 @@ const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultise
       toast('error', roleError?.data?.message);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error, isError, isSuccess]);
+  }, [roleError, isRoleError, isRoleSuccess]);
 
   useEffect(() => {
     if (isResetPasswordSuccess) {
@@ -85,53 +109,102 @@ const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultise
       toast('error', resetPasswordError?.data?.message);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error, isError, isSuccess]);
+  }, [resetPasswordError, isResetPasswordError, isResetPasswordSuccess]);
 
   return (
     <NavSectionTwo>
-      <IconBox onClick={() => setOpenDeleteModal(!opendeleteModal)}>
-        <TrashCan size={20} />
-      </IconBox>
+      {(data?.status || roleData?.roleId) && (
+        <IconBox
+          onClick={() => {
+            setIsSingle(true);
+            setOpenDeleteModal(!opendeleteModal);
+          }}
+        >
+          <TrashCan size={20} />
+        </IconBox>
+      )}
+
+      {!data?.status && data?.id && (
+        <IconBox
+          onClick={() => {
+            setIsSingle(true);
+            setOpenActivateModal && setOpenActivateModal(!openActivateModal);
+          }}
+        >
+          <UserAdmin size={20} />
+        </IconBox>
+      )}
+
       {data?.id && (
-        <IconBox>
+        <IconBox
+          onClick={() => {
+            setIsSingle(true);
+            setOpenResetPassword && setOpenResetPassword(!openResetPassword);
+          }}
+        >
           <Password size={20} />{' '}
         </IconBox>
       )}
+
       <IconBox onClick={() => setEdit(!edit)}>
         <Edit size={20} />{' '}
       </IconBox>
 
+      {/* Delete Account */}
       <Modal
-        heading="Confirm delete"
-        buttonLabel="Delete"
+        heading={'Confirm delete'}
+        buttonLabel={'Delete'}
         secondaryButtonText="Cancel"
-        danger={true}
+        danger={opendeleteModal}
         open={opendeleteModal}
-        toggleModal={() => setOpenDeleteModal(!opendeleteModal)}
+        toggleModal={() => {
+          setIsSingle(false);
+          setOpenDeleteModal(!opendeleteModal);
+        }}
         extent="sm"
         onRequestSubmit={handleDelete}
       >
         <SimpleModalcontent
           content={
-            !data?.id
-              ? 'Deleting this role means all the users they have been assigned to won’t have any role anymore.'
-              : 'Are you sure you want to delete this account?'
+            !data?.id ? 'Deleting the role(s) means all the users they have been assigned to won’t have any role anymore.' : `Are you sure you want to  deactivate the account(s)?`
           }
           isLoading={isLoading || isRoleLoading}
         />
       </Modal>
-      <Modal heading="Confirm password reset" buttonLabel="Reset Password" secondaryButtonText="Cancel" extent="sm">
-        <SimpleModalcontent content="This user will be sent a temporay password to their email address." isLoading={isResetPasswordLoading} />
+
+      {/* Activate Account */}
+      <Modal
+        heading="Confirm activation"
+        buttonLabel={'Activate'}
+        secondaryButtonText="Cancel"
+        open={openActivateModal}
+        toggleModal={() => {
+          setIsSingle(false);
+          setOpenActivateModal && setOpenActivateModal(!openActivateModal);
+        }}
+        extent="sm"
+        onRequestSubmit={handleDelete}
+      >
+        <SimpleModalcontent content={`Are you sure you want to activate the account(s)?`} isLoading={isLoading} />
       </Modal>
 
+      {/* Reset Password */}
       <Modal
-        heading={data?.id ? 'Edit User' : 'Edit Role'}
-        buttonLabel="Save changes"
+        heading="Confirm password reset"
+        buttonLabel="Reset Password"
+        secondaryButtonText="Cancel"
         extent="sm"
-        open={edit}
-        toggleModal={toggleModal}
-        onRequestSubmit={handleSubmit}
+        open={openResetPassword}
+        toggleModal={() => {
+          setIsSingle(false);
+          setOpenResetPassword && setOpenResetPassword(!openResetPassword);
+        }}
+        onRequestSubmit={handleResetPassword}
       >
+        <SimpleModalcontent content="This user(s) will be sent a temporay password to their email address." isLoading={isResetPasswordLoading} />
+      </Modal>
+
+      <Modal heading={data?.id ? 'Edit User' : 'Edit Role'} buttonLabel="Save changes" extent="sm" open={edit} toggleModal={toggleModal} onRequestSubmit={handleSubmit}>
         {data?.id ? (
           <CreateUserForm
             formRef={formRef}

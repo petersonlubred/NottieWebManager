@@ -36,11 +36,8 @@ const Profile = () => {
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [bulkopen, setBulkOpen] = useState<boolean>(false);
-  const { profileheader, alertexceptionheader, alertexcludeheader } =
-    useHeaders();
-  const [filterItems, setFilterItems] = useState<
-    { key: string; label: string; value: string }[]
-  >([
+  const { profileheader, alertexceptionheader, alertexcludeheader } = useHeaders();
+  const [filterItems, setFilterItems] = useState<{ key: string; label: string; value: string }[]>([
     {
       key: 'customer_id',
       label: 'Customer ID',
@@ -54,24 +51,14 @@ const Profile = () => {
   ]);
 
   const navItems = useMemo(() => {
-    return [
-      { title: 'Transaction Alert Profile' },
-      { title: 'Transaction Alert Exception' },
-      { title: 'Transaction Alert Exclude' },
-      { title: 'Subscription' },
-    ];
+    return [{ title: 'Transaction Alert Profile' }, { title: 'Transaction Alert Exception' }, { title: 'Transaction Alert Exclude' }, { title: 'Subscription' }];
   }, []);
 
   const handleSetIndex = (index: number) => {
     setSelected(index);
   };
   useEffect(() => {
-    const headers = [
-      profileheader,
-      alertexceptionheader,
-      alertexcludeheader,
-      alertexceptionheader,
-    ];
+    const headers = [profileheader, alertexceptionheader, alertexcludeheader, alertexceptionheader];
     headers?.forEach((header, index) => {
       if (index === selected) {
         setHeaders(header);
@@ -127,13 +114,7 @@ const Profile = () => {
         },
       ]);
     }
-  }, [
-    alertexceptionheader,
-    alertexcludeheader,
-    navItems,
-    profileheader,
-    selected,
-  ]);
+  }, [alertexceptionheader, alertexcludeheader, navItems, profileheader, selected]);
 
   const toggleModal = () => {
     setOpen(!open);
@@ -152,50 +133,19 @@ const Profile = () => {
       subtitle={'Create and manage profile and permissions and subscription'}
     >
       <Modal
-        heading={`Create ${selected === 3 ? 'New' : 'Alert'} ${
-          navItems[selected]?.title.split(' ')[
-            navItems[selected]?.title.split(' ').length - 1
-          ]
-        }`}
-        buttonLabel={`Create ${
-          navItems[selected]?.title.split(' ')[
-            navItems[selected]?.title.split(' ').length - 1
-          ]
-        }`}
+        heading={`Create ${selected === 3 ? 'New' : 'Alert'} ${navItems[selected]?.title.split(' ')[navItems[selected]?.title.split(' ').length - 1]}`}
+        buttonLabel={`Create ${navItems[selected]?.title.split(' ')[navItems[selected]?.title.split(' ').length - 1]}`}
         open={open}
         toggleModal={toggleModal}
       >
-        {selected === 0 ? (
-          <ModalContent />
-        ) : selected === 1 ? (
-          <ExceptionModalContent />
-        ) : selected === 2 ? (
-          <ExcludeModalContent />
-        ) : (
-          <SubscriptionModalContent />
-        )}
+        {selected === 0 ? <ModalContent /> : selected === 1 ? <ExceptionModalContent /> : selected === 2 ? <ExcludeModalContent /> : <SubscriptionModalContent />}
       </Modal>
-      <Modal
-        heading={`Bulk Upload`}
-        buttonLabel={`Upload`}
-        open={bulkopen}
-        toggleModal={toggleBulkModal}
-      >
+      <Modal heading={`Bulk Upload`} buttonLabel={`Upload`} open={bulkopen} toggleModal={toggleBulkModal}>
         <SimpleModalcontent content={<UploadContent />} />
       </Modal>
       <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
-        {({
-          rows,
-          headers,
-          getHeaderProps,
-          getRowProps,
-          getTableProps,
-          getSelectionProps,
-          getToolbarProps,
-          getBatchActionProps,
-          selectedRows,
-        }: any) => (
+        {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps, selectedRows }: any) => (
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
@@ -215,26 +165,13 @@ const Profile = () => {
                 </TableBatchAction>
               </TableBatchActions>
               <TableToolbarContent>
-                {selected != 0 && selected != 2 && (
-                  <TableNavItem filterItems={filterItems} noDateRange />
-                )}
+                {selected != 0 && selected != 2 && <TableNavItem filterItems={filterItems} noDateRange />}
                 <Button
                   renderIcon={(props: any) => <Add size={20} {...props} />}
-                  buttonLabel={`Create ${
-                    navItems[selected]?.title.split(' ')[
-                      navItems[selected]?.title.split(' ').length - 1
-                    ]
-                  }`}
+                  buttonLabel={`Create ${navItems[selected]?.title.split(' ')[navItems[selected]?.title.split(' ').length - 1]}`}
                   handleClick={toggleModal}
                 />
-                {selected !== 0 && (
-                  <Button
-                    renderIcon={(props: any) => <Upload size={20} {...props} />}
-                    handleClick={toggleBulkModal}
-                    buttonLabel={`Bulk Upload`}
-                    className={'transparent-button'}
-                  />
-                )}
+                {selected !== 0 && <Button renderIcon={(props: any) => <Upload size={20} {...props} />} handleClick={toggleBulkModal} buttonLabel={`Bulk Upload`} className={'transparent-button'} />}
               </TableToolbarContent>
             </TableToolbar>
             <Table {...getTableProps()}>
@@ -264,9 +201,7 @@ const Profile = () => {
           </>
         )}
       </DataTable>
-      {isEmpty(Rows) && (
-        <Empty title={'No ' + navItems[selected].title + ' found'} />
-      )}
+      {isEmpty(Rows) && <Empty title={'No ' + navItems[selected].title + ' found'} />}
     </Layout>
   );
 };

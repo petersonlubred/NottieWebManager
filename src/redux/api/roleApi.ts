@@ -1,12 +1,14 @@
+import { APIResponse } from './../../interfaces/auth';
 import { baseQueryWithReauth, CustomError, createRequest } from './shared';
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
+import { PrivilegesResponse, RolesResponse, IRole, RoleResponse } from '@/interfaces/role';
 
 export const roleApi = createApi({
   reducerPath: 'roleApi',
   baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
   tagTypes: ['role'],
   endpoints: (builder) => ({
-    createRole: builder.mutation({
+    createRole: builder.mutation<RoleResponse, Omit<IRole, 'roleId'>>({
       query: (data) => {
         return {
           url: `Roles`,
@@ -17,7 +19,7 @@ export const roleApi = createApi({
       invalidatesTags: ['role'],
     }),
 
-    editRole: builder.mutation({
+    editRole: builder.mutation<RoleResponse, Partial<IRole> & Pick<IRole, 'roleId'>>({
       query: (data) => {
         return {
           url: `Roles/${data.roleId}`,
@@ -28,27 +30,26 @@ export const roleApi = createApi({
       invalidatesTags: (_result, _error, { roleId }) => [{ type: 'role', roleId }],
     }),
 
-    deleteRole: builder.mutation({
-      query: (id) => {
+    deleteRole: builder.mutation<APIResponse<object>, { roleId: string }>({
+      query: ({ roleId }) => {
         return {
-          url: `Roles/${id}`,
+          url: `Roles/${roleId}`,
           method: 'DELETE',
         };
       },
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'role', id }],
+      invalidatesTags: (_result, _error, { roleId }) => [{ type: 'role', roleId }],
     }),
 
-    getRoles: builder.query<any, void>({
+    getRoles: builder.query<RolesResponse, void>({
       query: () => createRequest('Roles'),
-      providesTags: ['role'],
+      providesTags: (result, _error, _arg) => (result?.data ? [...result.data.map(({ roleId }: any) => ({ type: 'role' as const, roleId })), 'role'] : ['role']),
     }),
 
-    getPrivileges: builder.query({
+    getPrivileges: builder.query<PrivilegesResponse, string>({
       query: (id) => createRequest(`Roles/Privileges/${id}`),
-      providesTags: ['role'],
+      providesTags: (result, _error, _arg) => (result?.data ? [...result.data.map(({ roleId }: any) => ({ type: 'role' as const, roleId })), 'role'] : ['role']),
     }),
   }),
 });
 
-export const { useCreateRoleMutation, useEditRoleMutation, useDeleteRoleMutation, useLazyGetRolesQuery, useGetPrivilegesQuery, useGetRolesQuery } =
-  roleApi;
+export const { useCreateRoleMutation, useEditRoleMutation, useDeleteRoleMutation, useLazyGetRolesQuery, useGetPrivilegesQuery, useGetRolesQuery } = roleApi;

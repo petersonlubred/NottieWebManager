@@ -2,21 +2,13 @@ import * as Yup from 'yup';
 
 export const signinSchema = Yup.object({
   email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
 });
 
 export const userAccountSchema = Yup.object({
-  emailAddress: Yup.string()
-    .email('Invalid email')
-    .required('Email is required'),
+  emailAddress: Yup.string().email('Invalid email').required('Email is required'),
   authenticationType: Yup.string().required('Authentication type is required'),
-  roleIds: Yup.array()
-    .min(1, 'user must be assigned at least 1 role ')
-    .required('required'),
-
-  status: Yup.boolean().required('required'),
+  roleIds: Yup.array().min(1, 'user must be assigned at least 1 role ').required('required'),
   firstName: Yup.string().when('authenticationType', {
     is: (val: string) => val === 'AD',
     then: Yup.string().required('first name is required'),
@@ -37,30 +29,18 @@ export const databaseSchema = Yup.object({
   databaseName: Yup.string().required('Database name is required'),
   databaseType: Yup.string().required('Database type is required'),
   server: Yup.string().required('server is required'),
-  port: Yup.number()
-    .typeError('only digit(s) is allowed')
-    .required('port is required'),
-  maxPoolSize: Yup.number()
-    .typeError('only digit(s) is allowed')
-    .required('server is required'),
-  connectionTimeout: Yup.number()
-    .typeError('only digit(s) is allowed')
-    .required('connection timeout is required'),
-  commandTimeout: Yup.number()
-    .typeError('only digit(s) is allowed')
-    .required('command timeout is required'),
+  port: Yup.number().typeError('only digit(s) is allowed').required('port is required'),
+  maxPoolSize: Yup.number().typeError('only digit(s) is allowed').required('server is required'),
+  connectionTimeout: Yup.number().typeError('only digit(s) is allowed').required('connection timeout is required'),
+  commandTimeout: Yup.number().typeError('only digit(s) is allowed').required('command timeout is required'),
   userId: Yup.string().required('username is required'),
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
 });
 
 export const userLoginSchema = Yup.object({
   firstname: Yup.string().required('first name is required'),
   lastname: Yup.string().required('last name is required'),
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
     .required('Confirm password is required'),
@@ -110,9 +90,7 @@ export const DataSourceSchema = Yup.object({
   maxPoolSize: Yup.string().required('server is required'),
   connectionTimeout: Yup.string().required('connection timeout is required'),
   username: Yup.string().required('username is required'),
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
   status: Yup.string().required('Status is required'),
 });
 
@@ -150,16 +128,12 @@ export const SMSRouteConfigSchema = Yup.object({
 
 export const SMTPSchema = Yup.object({
   server: Yup.string().required('server is required'),
-  port: Yup.number()
-    .typeError('only digit(s) is allowed')
-    .required('port is required'),
+  port: Yup.number().typeError('only digit(s) is allowed').required('port is required'),
   useSslTls: Yup.bool(),
   emailAddress: Yup.string().required('Email is required'),
   displayName: Yup.string().required('Display Name is required'),
   username: Yup.string().required('Username is required'),
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
 });
 
 export const SMTPRouteSchema = Yup.object({
