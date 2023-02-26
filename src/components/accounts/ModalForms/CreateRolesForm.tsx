@@ -35,7 +35,7 @@ const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileg
   const [createRole, { isLoading, isSuccess, isError, error }] = useCreateRoleMutation();
   const [editRole, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditRoleMutation();
   const { toast } = useToast();
-  const priviledges = data?.map((item: IPrivileges) => item.systemPrivilegeId) || [];
+  const priviledges = data?.map((item: IPrivilege) => item.systemPrivilegeId) || [];
 
   const flattenedPrivileges = data?.reduce((acc: FlattenedPrivileges, obj) => {
     const { systemPrivilegeId, access } = obj;
