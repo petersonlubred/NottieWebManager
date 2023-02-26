@@ -143,7 +143,9 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                   {formdata?.id && (
                     <FormContainer>
                       <Field name="firstName">
-                        {({ field }: { field: FieldInputProps<string> }) => <TextInput {...field} type="text" id="firstName-input" labelText="First Name" placeholder="input text" />}
+                        {({ field }: { field: FieldInputProps<string> }) => (
+                          <TextInput {...field} type="text" id="firstName-input" labelText="First Name" placeholder="input text" />
+                        )}
                       </Field>
                       <Field name="lastName">
                         {({ field }: { field: FieldInputProps<string> }) => <TextInput {...field} type="text" id="lastName-input" labelText="Last Name" placeholder="input text" />}

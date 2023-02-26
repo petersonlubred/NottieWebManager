@@ -1,7 +1,11 @@
 import _ from 'lodash';
 
-export const pickValues = (obj: any): any => {
-  return _.pickBy(obj, (value) => {
-    return !_.isUndefined(value) && !_.isNull(value) && !_.isEqual(value, '');
-  });
+export const pickValues = <T extends Record<string, any>>(obj: T): Partial<T> => {
+  const pickedObj: Partial<T> = {};
+  for (const key in obj) {
+    if (!_.isUndefined(obj[key]) && !_.isNull(obj[key]) && !_.isEqual(obj[key], '')) {
+      pickedObj[key] = obj[key];
+    }
+  }
+  return pickedObj;
 };
