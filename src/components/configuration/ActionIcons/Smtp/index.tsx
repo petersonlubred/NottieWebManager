@@ -1,4 +1,4 @@
-import { TrashCan, Password, Edit } from '@carbon/react/icons';
+import { TrashCan, Edit } from '@carbon/react/icons';
 import styled from 'styled-components';
 import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
 import Modal from '@/components/shared/Modal';
@@ -6,9 +6,9 @@ import { px } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
 import SMTP from '../../ModalForms/SMTP';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { IinitialSMTPForm } from '@/interfaces/schema';
 import { useDeleteSmtpMutation } from '@/redux/api';
 import { useToast } from '@/context/ToastContext';
+import { IinitialSMTPForm } from '@/schemas/interface';
 
 type Props = {
   data: IinitialSMTPForm & { smtpId: string };
@@ -19,8 +19,7 @@ const ActionIcons = ({ data }: Props) => {
   const [edit, setEdit] = useState(false);
   const [opendeleteModal, setOpenDeleteModal] = useState(false);
   const { toast } = useToast();
-  const [deleteSmtp, { isLoading, isSuccess, isError, error }] =
-    useDeleteSmtpMutation();
+  const [deleteSmtp, { isLoading, isSuccess, isError, error }] = useDeleteSmtpMutation();
 
   const toggleModal = () => {
     formRef.current?.resetForm();
@@ -43,7 +42,7 @@ const ActionIcons = ({ data }: Props) => {
   }, [error, isError, isSuccess]);
 
   const handleDelete = () => {
-    deleteSmtp(data?.smtpId);
+    deleteSmtp({ smtpId: data?.smtpId });
   };
 
   return (
@@ -64,19 +63,9 @@ const ActionIcons = ({ data }: Props) => {
         extent="sm"
         onRequestSubmit={handleDelete}
       >
-        <SimpleModalcontent
-          content="Are you sure you want to delete this SMTP."
-          isLoading={isLoading}
-        />
+        <SimpleModalcontent content="Are you sure you want to delete this SMTP." isLoading={isLoading} />
       </Modal>
-      <Modal
-        heading="Edit SMTP"
-        buttonLabel="Save changes"
-        extent="sm"
-        open={edit}
-        toggleModal={toggleModal}
-        onRequestSubmit={handleSubmit}
-      >
+      <Modal heading="Edit SMTP" buttonLabel="Save changes" extent="sm" open={edit} toggleModal={toggleModal} onRequestSubmit={handleSubmit}>
         <SMTP formRef={formRef} formdata={data} toggleModal={toggleModal} />
       </Modal>
     </NavSectionTwo>

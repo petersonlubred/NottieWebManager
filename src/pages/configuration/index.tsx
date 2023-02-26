@@ -61,18 +61,18 @@ const SystemConfiguration = () => {
 
   useEffect(() => {
     const headers = [
-      { data: datasourceheader, tabName: 'template' },
-      { data: datasourceheader, tabName: 'data-source' },
-      { data: datasourceheader, tabName: 'service-mapping' },
+      { tabName: 'template' },
+      { tabName: 'data-source' },
+      { tabName: 'service-mapping' },
       { data: smscheader, tabName: 'smsc' },
       { data: smsrouteheader, tabName: 'sms-route' },
       { data: smsrouteconfigheader, tabName: 'sms-route-config' },
       { data: smtpheader, tabName: 'smtp' },
       { data: smtprouteconfigheader, tabName: 'smtp-route' },
-      { data: datasourceheader, tabName: 'system-settings' },
+      { tabName: 'system-settings' },
     ];
     headers?.forEach((header) => {
-      if (header.tabName === currentTab) {
+      if (header.tabName === currentTab && header.data) {
         setHeaders(header.data);
       }
       const rows = responseData?.map((item: any) => {
