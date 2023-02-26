@@ -10,7 +10,7 @@ import { RoleAndProvilegesSchema } from '@/schemas/schema';
 import ErrorMessage from '../../shared/ErrorMessage/ErrorMessage';
 import { FormEmailContainer } from '../../profile/SubscriptionContent';
 import Loader from '../../shared/Loader';
-import { IPrivilege, IPrivileges } from '@/interfaces/role';
+import { IPrivilege } from '@/interfaces/role';
 import { initialRoleValue } from '@/schemas/dto';
 import { IinitialRoleForm } from '@/schemas/interface';
 import Checkbox from '@/components/shared/Checkbox/Checkbox';
@@ -20,7 +20,7 @@ type IProps = {
   formRef: React.RefObject<FormikRefType<IinitialRoleForm>>;
   formdata?: IinitialRoleForm & { roleId: string };
   toggleModal: () => void;
-  data?: IPrivileges[];
+  data?: IPrivilege[];
   loadPrivileges?: boolean;
 };
 interface FlattenedPrivileges {
@@ -139,7 +139,7 @@ const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileg
                 <CheckBoxContainer>
                   <Label>Privilages</Label>
                   <CheckBoxContent>
-                    {data?.map((item: IPrivileges, index) => (
+                    {data?.map((item: IPrivilege, index) => (
                       <Wrapper key={index}>
                         <CheckBoxHeader>{item?.privilegeName}</CheckBoxHeader>
                         <CheckBoxWrapper role="group" aria-labelledby="checkbox-group">
