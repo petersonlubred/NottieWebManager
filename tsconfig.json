@@ -30,6 +30,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.setup.js"
-, "src/context/combine.tsx"  ],
+, "src/context/combine.tsx", "src/components/accounts/index.tsx"  ],
   "exclude": ["node_modules"]
 }

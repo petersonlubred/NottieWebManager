@@ -1,21 +1,16 @@
+import { Ismtp, SmtpsResponse } from './../../interfaces/configuration';
 import { baseQueryWithReauth, CustomError, createRequest } from './shared';
-import {
-  BaseQueryFn,
-  createApi,
-  FetchArgs,
-} from '@reduxjs/toolkit/query/react';
+import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
+import { SmtpResponse } from '@/interfaces/configuration';
+import { APIResponse } from '@/interfaces/auth';
 
 export const smtpApi = createApi({
   reducerPath: 'smtpApi',
-  baseQuery: baseQueryWithReauth as BaseQueryFn<
-    string | FetchArgs,
-    unknown,
-    CustomError,
-    Record<string, any>
-  >,
+  baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
   tagTypes: ['smtp'],
+
   endpoints: (builder) => ({
-    createSmtp: builder.mutation({
+    createSmtp: builder.mutation<SmtpResponse, Partial<Ismtp>>({
       query: (data) => {
         return {
           url: `SmtpServer`,
@@ -26,7 +21,7 @@ export const smtpApi = createApi({
       invalidatesTags: ['smtp'],
     }),
 
-    editSmtp: builder.mutation({
+    editSmtp: builder.mutation<SmtpResponse, Partial<Ismtp> & Pick<Ismtp, 'smtpId'>>({
       query: (data) => {
         return {
           url: `SmtpServer/${data.smtpId}`,
@@ -34,24 +29,22 @@ export const smtpApi = createApi({
           body: data,
         };
       },
-      invalidatesTags: (_result, _error, { smtpId }) => [
-        { type: 'smtp', smtpId },
-      ],
+      invalidatesTags: (_result, _error, { smtpId }) => [{ type: 'smtp', smtpId }],
     }),
 
-    deleteSmtp: builder.mutation({
-      query: (id) => {
+    deleteSmtp: builder.mutation<APIResponse<object>, { smtpId: string }>({
+      query: ({ smtpId }) => {
         return {
-          url: `SmtpServer/${id}`,
+          url: `SmtpServer/${smtpId}`,
           method: 'DELETE',
         };
       },
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'smtp', id }],
+      invalidatesTags: (_result, _error, { smtpId }) => [{ type: 'smtp', smtpId }],
     }),
 
-    getSmtpserver: builder.query({
+    getSmtpservers: builder.query<SmtpsResponse, void>({
       query: () => createRequest('SmtpServer'),
-      providesTags: ['smtp'],
+      providesTags: (result, _error, _arg) => (result?.data ? [...result.data.map(({ smtpId }: any) => ({ type: 'smtp' as const, smtpId })), 'smtp'] : ['smtp']),
     }),
 
     sendTestMail: builder.mutation({
@@ -66,10 +59,4 @@ export const smtpApi = createApi({
   }),
 });
 
-export const {
-  useCreateSmtpMutation,
-  useSendTestMailMutation,
-  useLazyGetSmtpserverQuery,
-  useEditSmtpMutation,
-  useDeleteSmtpMutation,
-} = smtpApi;
+export const { useCreateSmtpMutation, useSendTestMailMutation, useGetSmtpserversQuery, useEditSmtpMutation, useDeleteSmtpMutation } = smtpApi;

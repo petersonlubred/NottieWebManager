@@ -1,7 +1,8 @@
-import { IinitialUserForm, IinitialRoleForm } from './interface';
-import { IinitialDatabase } from './interface';
 import {
   IinitialAlertProfile,
+  IinitialDatabase,
+  IinitialUserForm,
+  IinitialRoleForm,
   IinitialSiginin,
   IinitialUserLogin,
   IinitialAlertException,
@@ -135,7 +136,6 @@ export const initialUserValue: IinitialUserForm = {
   emailAddress: '',
   authenticationType: '',
   roleIds: [],
-  status: true,
   firstName: '',
   lastName: '',
 };

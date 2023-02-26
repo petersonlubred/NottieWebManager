@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 interface Iprops {
   navItem?: { title: string }[];
-  selected?: number;
   handleSetIndex?: Function;
   title?: string;
   subtitle?: string;

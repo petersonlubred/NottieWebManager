@@ -5,7 +5,7 @@ type AccessDotProps = {
   active: boolean;
 };
 
-export const AccessStatus = ({ active }: AccessDotProps) => {
+const AccessStatus = ({ active }: AccessDotProps) => {
   return (
     <AccessStatusContainer>
       <AccessDot active={active} />
@@ -13,6 +13,8 @@ export const AccessStatus = ({ active }: AccessDotProps) => {
     </AccessStatusContainer>
   );
 };
+
+export default AccessStatus;
 
 const AccessStatusContainer = styled.div`
   display: flex;

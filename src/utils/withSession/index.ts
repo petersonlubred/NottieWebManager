@@ -2,11 +2,7 @@ import { UserData } from '@/interfaces/user';
 import { setAuth } from '@/redux/slices/auth';
 import { wrapper } from '@/redux/store';
 import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
-import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  NextApiHandler,
-} from 'next';
+import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -14,7 +10,6 @@ declare module 'iron-session' {
     token?: string;
   }
 }
-
 
 const sessionOptions = {
   password: process.env.NEXT_SESSION_PASSWORD || '',
@@ -26,12 +21,8 @@ export function withSessionRoute(handler: NextApiHandler) {
 }
 
 // Theses types are compatible with InferGetStaticPropsType https://nextjs.org/docs/basic-features/data-fetching#typescript-use-getstaticprops
-export function withSessionSsr<
-  P extends { [key: string]: unknown } = { [key: string]: unknown }
->(
-  handler: (
-    context: GetServerSidePropsContext
-  ) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>
+export function withSessionSsr<P extends { [key: string]: unknown } = { [key: string]: unknown }>(
+  handler: (context: GetServerSidePropsContext) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>
 ) {
   return withIronSessionSsr(handler, sessionOptions);
 }
@@ -56,9 +47,7 @@ export const protectedRouteProps = (isAuthPage: boolean = false) =>
         }
       } else {
         if (req.session?.user && req.session?.token) {
-          store.dispatch(
-            setAuth({ user: req.session.user, token: req.session.token })
-          );
+          store.dispatch(setAuth({ user: req.session.user, token: req.session.token }));
           return {
             props: {
               user: req.session?.user,

@@ -18,6 +18,7 @@ export const persistConfig = {
   key: 'theme',
   blacklist: ['notifications'],
 };
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
