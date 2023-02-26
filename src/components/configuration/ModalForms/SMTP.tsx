@@ -1,12 +1,7 @@
 import { px } from '@/utils';
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import {
-  TextInput,
-  FormGroup,
-  PasswordInput,
-  NumberInput,
-} from '@carbon/react';
+import { TextInput, FormGroup, PasswordInput, NumberInput } from '@carbon/react';
 import { Send } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
 import { SMTPSchema } from '@/schemas/schema';
@@ -15,11 +10,7 @@ import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Button from '@/components/shared/Button';
 import { FormikRefType } from '@/interfaces/formik.type';
 import Loader from '@/components/shared/Loader';
-import {
-  useCreateSmtpMutation,
-  useEditSmtpMutation,
-  useSendTestMailMutation,
-} from '@/redux/api';
+import { useCreateSmtpMutation, useEditSmtpMutation, useSendTestMailMutation } from '@/redux/api';
 import { useToast } from '@/context/ToastContext';
 import { IinitialSMTPForm } from '@/schemas/interface';
 import Checkbox from '@/components/shared/Checkbox/Checkbox';
@@ -34,31 +25,15 @@ interface Props {
 const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
   const [testEmail, setTestEmail] = React.useState('');
   const [istestEmail, setIstestEmail] = React.useState(false);
-  const [createSmtp, { isLoading, isSuccess, isError, error }] =
-    useCreateSmtpMutation();
-  const [
-    editSmtp,
-    {
-      isLoading: editLoading,
-      isSuccess: editSuccess,
-      isError: isEditError,
-      error: editError,
-    },
-  ] = useEditSmtpMutation();
-  const [
-    sendTestMail,
-    {
-      isLoading: isTestLoading,
-      isSuccess: isTestSuccess,
-      isError: isTestError,
-      error: testError,
-    },
-  ] = useSendTestMailMutation();
+  const [createSmtp, { isLoading, isSuccess, isError, error }] = useCreateSmtpMutation();
+  const [editSmtp, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditSmtpMutation();
+  const [sendTestMail, { isLoading: isTestLoading, isSuccess: isTestSuccess, isError: isTestError, error: testError }] = useSendTestMailMutation();
 
   const { toast } = useToast();
 
   const handleSubmit = (values: IinitialSMTPForm) => {
-    formdata?.smtpId ? editSmtp(values) : createSmtp(values);
+    const formvalues = values as IinitialSMTPForm & { smtpId: string };
+    formdata?.smtpId ? editSmtp(formvalues) : createSmtp(formvalues);
   };
 
   const handleSendTestMail = useCallback(() => {
@@ -114,27 +89,15 @@ const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
     <ModalContentContainer>
       {(isLoading || isTestLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik
-          initialValues={formdata?.smtpId ? formdata : initialSMTPValue}
-          validationSchema={SMTPSchema}
-          onSubmit={handleSubmit}
-          innerRef={formRef}
-        >
-          {({ errors, touched, setFieldTouched, setFieldValue, values }) => (
+        <Formik initialValues={formdata?.smtpId ? formdata : initialSMTPValue} validationSchema={SMTPSchema} onSubmit={handleSubmit} innerRef={formRef}>
+          {({ errors, touched, setFieldTouched, setFieldValue }) => (
             <Form>
               <FormGroup legendText="">
                 <FormField>
                   <FormContainer>
                     <Field name="server">
                       {({ field }: any) => (
-                        <TextInput
-                          {...field}
-                          type="text"
-                          id="server-input"
-                          labelText="Server/IP"
-                          placeholder="enter text"
-                          onKeyUp={() => setFieldTouched('server', true)}
-                        />
+                        <TextInput {...field} type="text" id="server-input" labelText="Server/IP" placeholder="enter text" onKeyUp={() => setFieldTouched('server', true)} />
                       )}
                     </Field>{' '}
                     <Field name="port">
@@ -145,10 +108,7 @@ const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
                           label="Port"
                           max={10000}
                           min={0}
-                          onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>,
-                            { value }: any
-                          ) => {
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('port', value);
                           }}
                           step={10}
@@ -159,14 +119,8 @@ const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
                         />
                       )}
                     </Field>{' '}
-                    <ErrorMessage
-                      invalid={Boolean(touched.server && errors.server)}
-                      invalidText={errors.server}
-                    />{' '}
-                    <ErrorMessage
-                      invalid={Boolean(touched.port && errors.port)}
-                      invalidText={errors.port}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.server && errors.server)} invalidText={errors.server} />{' '}
+                    <ErrorMessage invalid={Boolean(touched.port && errors.port)} invalidText={errors.port} />
                   </FormContainer>
                 </FormField>
                 <FormField>
@@ -195,32 +149,15 @@ const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
                         />
                       )}
                     </Field>
-                    <ErrorMessage
-                      invalid={Boolean(
-                        touched.emailAddress && errors.emailAddress
-                      )}
-                      invalidText={errors.emailAddress}
-                    />
-                    <ErrorMessage
-                      invalid={Boolean(
-                        touched.displayName && errors.displayName
-                      )}
-                      invalidText={errors.displayName}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.emailAddress && errors.emailAddress)} invalidText={errors.emailAddress} />
+                    <ErrorMessage invalid={Boolean(touched.displayName && errors.displayName)} invalidText={errors.displayName} />
                   </FormContainer>
                 </FormField>{' '}
                 <FormField>
                   <FormContainer>
                     <Field name="username">
                       {({ field }: any) => (
-                        <TextInput
-                          {...field}
-                          type="text"
-                          id="username-input"
-                          labelText="Username"
-                          placeholder="enter text"
-                          onKeyUp={() => setFieldTouched('username', true)}
-                        />
+                        <TextInput {...field} type="text" id="username-input" labelText="Username" placeholder="enter text" onKeyUp={() => setFieldTouched('username', true)} />
                       )}
                     </Field>{' '}
                     <Field name="password">
@@ -236,14 +173,8 @@ const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
                         />
                       )}
                     </Field>
-                    <ErrorMessage
-                      invalid={Boolean(touched.username && errors.username)}
-                      invalidText={errors.username}
-                    />
-                    <ErrorMessage
-                      invalid={Boolean(touched.password && errors.password)}
-                      invalidText={errors.password}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.username && errors.username)} invalidText={errors.username} />
+                    <ErrorMessage invalid={Boolean(touched.password && errors.password)} invalidText={errors.password} />
                   </FormContainer>
                 </FormField>{' '}
                 <FormContainer>
@@ -274,16 +205,9 @@ const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
                 }
               }}
             />{' '}
-            <Button
-              renderIcon={(props: any) => <Send {...props} />}
-              handleClick={handleSendTestMail}
-              buttonLabel="Send mail"
-            />{' '}
+            <Button renderIcon={(props: any) => <Send {...props} />} handleClick={handleSendTestMail} buttonLabel="Send mail" />{' '}
           </SendMailSection>{' '}
-          <ErrorMessage
-            invalid={istestEmail}
-            invalidText={'Enter Test Email Address'}
-          />
+          <ErrorMessage invalid={istestEmail} invalidText={'Enter Test Email Address'} />
         </SendMailContainer>
       </ModalItem>
     </ModalContentContainer>

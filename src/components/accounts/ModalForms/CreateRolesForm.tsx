@@ -10,10 +10,11 @@ import { RoleAndProvilegesSchema } from '@/schemas/schema';
 import ErrorMessage from '../../shared/ErrorMessage/ErrorMessage';
 import { FormEmailContainer } from '../../profile/SubscriptionContent';
 import Loader from '../../shared/Loader';
-import { IPrivileges } from '@/interfaces/role';
+import { IPrivilege, IPrivileges } from '@/interfaces/role';
 import { initialRoleValue } from '@/schemas/dto';
 import { IinitialRoleForm } from '@/schemas/interface';
 import Checkbox from '@/components/shared/Checkbox/Checkbox';
+import { pickValues } from '@/utils/helpers/helpers';
 
 type IProps = {
   formRef: React.RefObject<FormikRefType<IinitialRoleForm>>;
@@ -47,7 +48,7 @@ const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileg
 
   const handleSubmit = (values: IinitialRoleForm) => {
     const formvalues = values as IinitialRoleForm & { roleId: string };
-    const Privileges = [];
+    const Privileges: Partial<IPrivilege>[] = [];
     for (const systemPrivilegeId of priviledges) {
       const privileges = values[systemPrivilegeId as keyof IinitialRoleForm];
       if (privileges) {
@@ -62,6 +63,7 @@ const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileg
         });
       }
     }
+
     if (formdata?.roleId) {
       editRole({
         roleId: formvalues?.roleId,
@@ -116,7 +118,9 @@ const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileg
               <FormField>
                 <FormEmailContainer>
                   <Field name="roleName">
-                    {({ field }: { field: FieldInputProps<string> }) => <Text {...field} type="text" id="role-name" labelText="User Role" placeholder="input text" onChange={handleChange} />}
+                    {({ field }: { field: FieldInputProps<string> }) => (
+                      <Text {...field} type="text" id="role-name" labelText="User Role" placeholder="input text" onChange={handleChange} />
+                    )}
                   </Field>
                 </FormEmailContainer>
                 <ErrorMessage invalid={Boolean(touched.roleName && errors.roleName)} invalidText={errors.roleName} />
