@@ -12,7 +12,7 @@ export type IPrivilege = {
 };
 
 export type IRole = {
-  roleId: string;
+  roleId?: string;
   roleName: string;
   description: string;
   users: number;

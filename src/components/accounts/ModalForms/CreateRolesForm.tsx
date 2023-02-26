@@ -65,14 +65,16 @@ const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileg
     }
 
     if (formdata?.roleId) {
-      editRole({
-        roleId: formvalues?.roleId,
-        roleName: formvalues?.roleName,
-        description: formvalues?.description,
-        rolePrivileges: Privileges,
-      });
+      editRole(
+        pickValues({
+          roleId: formvalues?.roleId,
+          roleName: formvalues?.roleName,
+          description: formvalues?.description,
+          rolePrivileges: Privileges,
+        })
+      );
     } else {
-      createRole(formvalues);
+      createRole(pickValues(formvalues));
     }
   };
 

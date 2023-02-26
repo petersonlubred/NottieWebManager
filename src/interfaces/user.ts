@@ -4,7 +4,7 @@ export interface UserData {
   email: string;
   entryDate: string;
   firstName: string;
-  id: string;
+  id?: string;
   isTempPassord: string;
   lastLogin: string;
   lastName: string;
