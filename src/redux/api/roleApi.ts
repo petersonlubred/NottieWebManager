@@ -1,14 +1,14 @@
 import { APIResponse } from './../../interfaces/auth';
 import { baseQueryWithReauth, CustomError, createRequest } from './shared';
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
-import { PrivilegesResponse, RolesResponse, IRole, RoleResponse } from '@/interfaces/role';
+import { PrivilegesResponse, RolesResponse, IRole, RoleResponse, IPrivilege } from '@/interfaces/role';
 
 export const roleApi = createApi({
   reducerPath: 'roleApi',
   baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
   tagTypes: ['role'],
   endpoints: (builder) => ({
-    createRole: builder.mutation<RoleResponse, Omit<IRole, 'roleId'>>({
+    createRole: builder.mutation<RoleResponse, Partial<IRole>>({
       query: (data) => {
         return {
           url: `Roles`,
@@ -19,7 +19,7 @@ export const roleApi = createApi({
       invalidatesTags: ['role'],
     }),
 
-    editRole: builder.mutation<RoleResponse, Partial<IRole> & Pick<IRole, 'roleId'>>({
+    editRole: builder.mutation<RoleResponse, Partial<IRole & { rolePrivileges: Partial<IPrivilege>[] }> & Pick<IRole, 'roleId'>>({
       query: (data) => {
         return {
           url: `Roles/${data.roleId}`,
