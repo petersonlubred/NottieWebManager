@@ -13,6 +13,8 @@ import { IHeader, IRole } from '@/interfaces/role';
 import { UserData } from '@/interfaces/user';
 import { AccessStatus, ActionIcons, IconAndText, ModalContent } from '@/components/accounts';
 import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import { protectedRouteProps } from '@/utils/withSession';
 
 const Accounts = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);
@@ -127,3 +129,4 @@ const Accounts = () => {
 };
 
 export default Accounts;
+export const getServerSideProps: GetServerSideProps = protectedRouteProps();

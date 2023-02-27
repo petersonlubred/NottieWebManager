@@ -1,20 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {
-  FormGroup,
-  TextInput,
-  Button,
-  PasswordInput,
-  Select,
-  SelectItem,
-  Loading,
-} from '@carbon/react';
+import { FormGroup, TextInput, Button, PasswordInput, Select, SelectItem, Loading } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { Formik, Form, Field } from 'formik';
 import { px } from '@/utils';
 import { databaseSchema } from '@/schemas/schema';
-import { initialDatabaseValue } from '@/schemas/schema';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+import { initialDatabaseValue } from '@/schemas/dto';
 
 type IProps = {
   handleSetStep: () => void;
@@ -31,19 +23,8 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
   return (
     <SignInContainer>
       <HeaderTitle>Setup Application Database</HeaderTitle>
-      <Formik
-        initialValues={initialDatabaseValue}
-        validationSchema={databaseSchema}
-        onSubmit={handleSubmit}
-      >
-        {({
-          errors,
-          touched,
-          isValid,
-          values,
-          setFieldTouched,
-          handleSubmit,
-        }) => (
+      <Formik initialValues={initialDatabaseValue} validationSchema={databaseSchema} onSubmit={handleSubmit}>
+        {({ errors, touched, isValid, values, setFieldTouched, handleSubmit }) => (
           <Form>
             <FormGroup legendText="">
               <FormField>
@@ -61,21 +42,13 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                     )}
                   </Field>
                 </FormNameContainer>
-                <ErrorMessage
-                  invalid={Boolean(touched.databaseName && errors.databaseName)}
-                  invalidText={errors.databaseName}
-                />
+                <ErrorMessage invalid={Boolean(touched.databaseName && errors.databaseName)} invalidText={errors.databaseName} />
               </FormField>
               <FormField>
                 <FormContainer>
                   <Field name="databaseType">
                     {({ field }: any) => (
-                      <Select
-                        id="select-1"
-                        labelText="Database type"
-                        {...field}
-                        onKeyUp={() => setFieldTouched('databaseType', true)}
-                      >
+                      <Select id="select-1" labelText="Database type" {...field} onKeyUp={() => setFieldTouched('databaseType', true)}>
                         <SelectItem text="Choose option" />
                         <SelectItem text="Option 1" value="option-1" />
                         <SelectItem text="Option 2" value="option-2" />
@@ -84,40 +57,18 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                   </Field>
                   <Field name="server">
                     {({ field }: any) => (
-                      <TextInput
-                        {...field}
-                        type="text"
-                        id="server-input"
-                        labelText="Server/IP"
-                        placeholder="input text"
-                        onKeyUp={() => setFieldTouched('server', true)}
-                      />
+                      <TextInput {...field} type="text" id="server-input" labelText="Server/IP" placeholder="input text" onKeyUp={() => setFieldTouched('server', true)} />
                     )}
                   </Field>
-                  <ErrorMessage
-                    invalid={Boolean(
-                      touched.databaseType && errors.databaseType
-                    )}
-                    invalidText={errors.databaseType}
-                  />
-                  <ErrorMessage
-                    invalid={Boolean(touched.server && errors.server)}
-                    invalidText={errors.server}
-                  />
+                  <ErrorMessage invalid={Boolean(touched.databaseType && errors.databaseType)} invalidText={errors.databaseType} />
+                  <ErrorMessage invalid={Boolean(touched.server && errors.server)} invalidText={errors.server} />
                 </FormContainer>
               </FormField>
               <FormField>
                 <FormContainer>
                   <Field name="port">
                     {({ field }: any) => (
-                      <TextInput
-                        {...field}
-                        type="text"
-                        id="port-input"
-                        labelText="Port"
-                        placeholder="input number"
-                        onKeyUp={() => setFieldTouched('port', true)}
-                      />
+                      <TextInput {...field} type="text" id="port-input" labelText="Port" placeholder="input number" onKeyUp={() => setFieldTouched('port', true)} />
                     )}
                   </Field>
                   <Field name="maxPoolSize">
@@ -132,14 +83,8 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                       />
                     )}
                   </Field>
-                  <ErrorMessage
-                    invalid={Boolean(touched.port && errors.port)}
-                    invalidText={errors.port}
-                  />
-                  <ErrorMessage
-                    invalid={Boolean(touched.maxPoolSize && errors.maxPoolSize)}
-                    invalidText={errors.maxPoolSize}
-                  />
+                  <ErrorMessage invalid={Boolean(touched.port && errors.port)} invalidText={errors.port} />
+                  <ErrorMessage invalid={Boolean(touched.maxPoolSize && errors.maxPoolSize)} invalidText={errors.maxPoolSize} />
                 </FormContainer>
               </FormField>
               <FormField>
@@ -152,9 +97,7 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                         id="connectionTimeout-input"
                         labelText="Connection timeout"
                         placeholder="input number"
-                        onKeyUp={() =>
-                          setFieldTouched('connectionTimeout', true)
-                        }
+                        onKeyUp={() => setFieldTouched('connectionTimeout', true)}
                       />
                     )}
                   </Field>
@@ -171,32 +114,15 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                     )}
                   </Field>
 
-                  <ErrorMessage
-                    invalid={Boolean(
-                      touched.connectionTimeout && errors.connectionTimeout
-                    )}
-                    invalidText={errors.connectionTimeout}
-                  />
-                  <ErrorMessage
-                    invalid={Boolean(
-                      touched.commandTimeout && errors.commandTimeout
-                    )}
-                    invalidText={errors.commandTimeout}
-                  />
+                  <ErrorMessage invalid={Boolean(touched.connectionTimeout && errors.connectionTimeout)} invalidText={errors.connectionTimeout} />
+                  <ErrorMessage invalid={Boolean(touched.commandTimeout && errors.commandTimeout)} invalidText={errors.commandTimeout} />
                 </FormContainer>
               </FormField>
               <FormField>
                 <FormContainer>
                   <Field name="userId">
                     {({ field }: any) => (
-                      <TextInput
-                        {...field}
-                        type="text"
-                        id="username-input"
-                        labelText="Username"
-                        placeholder="input text"
-                        onKeyUp={() => setFieldTouched('userId', true)}
-                      />
+                      <TextInput {...field} type="text" id="username-input" labelText="Username" placeholder="input text" onKeyUp={() => setFieldTouched('userId', true)} />
                     )}
                   </Field>
                   <PasswordContainer>
@@ -213,37 +139,16 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                       )}
                     </Field>
                   </PasswordContainer>
-                  <ErrorMessage
-                    invalid={Boolean(touched.userId && errors.userId)}
-                    invalidText={errors.userId}
-                  />
-                  <ErrorMessage
-                    invalid={Boolean(touched.password && errors.password)}
-                    invalidText={errors.password}
-                  />
+                  <ErrorMessage invalid={Boolean(touched.userId && errors.userId)} invalidText={errors.userId} />
+                  <ErrorMessage invalid={Boolean(touched.password && errors.password)} invalidText={errors.password} />
                 </FormContainer>
               </FormField>
               <Button
                 renderIcon={(props: any) =>
-                  isLoading ? (
-                    <Loading
-                      size={24}
-                      {...props}
-                      small
-                      description="Active loading indicator"
-                      withOverlay={false}
-                    />
-                  ) : (
-                    <ArrowRight {...props} size={24} />
-                  )
+                  isLoading ? <Loading size={24} {...props} small description="Active loading indicator" withOverlay={false} /> : <ArrowRight {...props} size={24} />
                 }
                 iconDescription="Arrow-right"
-                disabled={
-                  !isValid ||
-                  !values?.databaseType ||
-                  !values?.password ||
-                  isLoading
-                }
+                disabled={!isValid || !values?.databaseType || !values?.password || isLoading}
                 onClick={handleSubmit}
                 style={{ position: 'relative' }}
               >
@@ -251,8 +156,7 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
               </Button>
             </FormGroup>
             <Paragraph>
-              Need help? Reach out at{' '}
-              <ContactValue>support@nottie.co</ContactValue>
+              Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
             </Paragraph>
           </Form>
         )}

@@ -1,3 +1,4 @@
+import { withSessionRoute } from '@/utils/withSession';
 import { NextApiHandler } from 'next';
 
 const logoutRoute: NextApiHandler<{ ok: boolean }> = async (req, res) => {
@@ -5,4 +6,4 @@ const logoutRoute: NextApiHandler<{ ok: boolean }> = async (req, res) => {
   res.send({ ok: true });
 };
 
-export default logoutRoute;
+export default withSessionRoute(logoutRoute);

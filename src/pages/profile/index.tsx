@@ -31,6 +31,8 @@ import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleMod
 import UploadContent from '@/components/profile/UploadContent';
 import { useRouter } from 'next/router';
 import { FormikRefType } from '@/interfaces/formik.type';
+import { GetServerSideProps } from 'next';
+import { protectedRouteProps } from '@/utils/withSession';
 
 const Profile = () => {
   const [Headers, setHeaders] = useState<any[]>([]);
@@ -243,3 +245,4 @@ const Profile = () => {
 };
 
 export default Profile;
+export const getServerSideProps: GetServerSideProps = protectedRouteProps();
