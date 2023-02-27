@@ -8,6 +8,7 @@ const SearchBar = () => {
 
   const handleSearchClick = () => {
     if (searchValue.length > 0) {
+      // console.log('searchValue', searchValue);
     }
   };
 

@@ -129,7 +129,7 @@ const Alert = () => {
     >
       <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
-        {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps, selectedRows }: any) => (
+        {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps }: any) => (
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
