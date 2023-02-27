@@ -1,6 +1,6 @@
 import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Layout from '@/HOC/Layout';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   DataTable,
   Table,
@@ -29,13 +29,33 @@ import ExcludeModalContent from '@/components/profile/ExcludeContent';
 import SubscriptionModalContent from '@/components/profile/SubscriptionContent';
 import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
 import UploadContent from '@/components/profile/UploadContent';
+import { useRouter } from 'next/router';
+import { FormikRefType } from '@/interfaces/formik.type';
 
 const Profile = () => {
-  const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
+  const [responseData, setResponseData] = useState([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [bulkopen, setBulkOpen] = useState<boolean>(false);
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const formRef = useRef<FormikRefType<any>>(null);
+  const router = useRouter();
+  const { tab } = router.query;
+  const tabNames = ['alert-profile', 'exception', 'exclude', 'subscription'];
+
+  const navItems = useMemo(() => {
+    return [{ title: 'Transaction Alert Profile' }, { title: 'Transaction Alert Exception' }, { title: 'Transaction Alert Exclude' }, { title: 'Subscription' }].map(
+      (item, index) => ({
+        ...item,
+        tabName: tabNames[index],
+      })
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const currentTab = navItems.some((item) => item.tabName === tab) ? tab : 'alert-profile';
+
   const { profileheader, alertexceptionheader, alertexcludeheader } = useHeaders();
   const [filterItems, setFilterItems] = useState<{ key: string; label: string; value: string }[]>([
     {
@@ -50,31 +70,50 @@ const Profile = () => {
     },
   ]);
 
-  const navItems = useMemo(() => {
-    return [{ title: 'Transaction Alert Profile' }, { title: 'Transaction Alert Exception' }, { title: 'Transaction Alert Exclude' }, { title: 'Subscription' }];
-  }, []);
-
   const handleSetIndex = (index: number) => {
-    setSelected(index);
+    setTabIndex(index);
+    router.push({
+      pathname: '/profile',
+      query: { tab: navItems[index]?.tabName },
+    });
   };
+
+  const handleSubmit = () => {
+    formRef.current?.handleSubmit();
+  };
+
+  const toggleModal = () => {
+    formRef.current?.resetForm();
+    setOpen(!open);
+  };
+  const toggleBulkModal = () => {
+    formRef.current?.resetForm();
+    setBulkOpen(!bulkopen);
+  };
+
   useEffect(() => {
-    const headers = [profileheader, alertexceptionheader, alertexcludeheader, alertexceptionheader];
-    headers?.forEach((header, index) => {
-      if (index === selected) {
-        setHeaders(header);
+    const headers = [profileheader, alertexceptionheader, alertexcludeheader, alertexceptionheader].map((item, index) => ({
+      data: item,
+      tabName: tabNames[index],
+    }));
+
+    headers?.forEach((header) => {
+      if (header.tabName === currentTab) {
+        setHeaders(header.data);
       }
       const data: any[] = [];
       const rows = data.map((item: any) => {
         const row: any = {};
-        headers[selected].forEach((item2: { key: string; header: string }) => {
+        const tabHeaders = headers.find((header) => header.tabName === currentTab)?.data || [];
+        tabHeaders.forEach((item2: { key: string; header: string }) => {
           row[item2.key] = item[item2.key];
         });
         return row;
       });
-      setRows(rows);
+      !rows.some((row) => row.id === undefined) && setRows(rows);
     });
 
-    if (navItems[selected].title.includes('SMS')) {
+    if (navItems[tabIndex].title.includes('SMS')) {
       setFilterItems([
         {
           key: 'mobile_no',
@@ -82,7 +121,7 @@ const Profile = () => {
           value: '',
         },
       ]);
-    } else if (navItems[selected].title.includes('Email')) {
+    } else if (navItems[tabIndex].title.includes('Email')) {
       setFilterItems([
         {
           key: 'email',
@@ -114,36 +153,38 @@ const Profile = () => {
         },
       ]);
     }
-  }, [alertexceptionheader, alertexcludeheader, navItems, profileheader, selected]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alertexceptionheader, alertexcludeheader, currentTab, navItems, profileheader, tabIndex]);
 
-  const toggleModal = () => {
-    setOpen(!open);
-  };
-  const toggleBulkModal = () => {
-    setBulkOpen(!bulkopen);
-  };
+  // useEffect(() => {
+  //   if (currentTab === 'role') {
+  //     // !isEmpty(data?.data) && setResponseData(data?.data as IRole[]);
+  //   } else if (currentTab === 'user') {
+  //     // !isEmpty(users?.data) && setResponseData(users?.data as UserData[]);
+  //   }
+  // }, [currentTab]);
 
   return (
     <Layout
       routename="Profile & Subscriptions"
       navItem={navItems}
-      selected={selected}
+      currentTab={currentTab}
       handleSetIndex={handleSetIndex}
       title={'Profile & Subscriptions'}
       subtitle={'Create and manage profile and permissions and subscription'}
     >
       <Modal
-        heading={`Create ${selected === 3 ? 'New' : 'Alert'} ${navItems[selected]?.title.split(' ')[navItems[selected]?.title.split(' ').length - 1]}`}
-        buttonLabel={`Create ${navItems[selected]?.title.split(' ')[navItems[selected]?.title.split(' ').length - 1]}`}
+        heading={`Create ${tabIndex === 3 ? 'New' : 'Alert'} ${navItems[tabIndex]?.title.split(' ')[navItems[tabIndex]?.title.split(' ').length - 1]}`}
+        buttonLabel={`Create ${navItems[tabIndex]?.title.split(' ')[navItems[tabIndex]?.title.split(' ').length - 1]}`}
         open={open}
         toggleModal={toggleModal}
       >
-        {selected === 0 ? <ModalContent /> : selected === 1 ? <ExceptionModalContent /> : selected === 2 ? <ExcludeModalContent /> : <SubscriptionModalContent />}
+        {tabIndex === 0 ? <ModalContent /> : tabIndex === 1 ? <ExceptionModalContent /> : tabIndex === 2 ? <ExcludeModalContent /> : <SubscriptionModalContent />}
       </Modal>
       <Modal heading={`Bulk Upload`} buttonLabel={`Upload`} open={bulkopen} toggleModal={toggleBulkModal}>
         <SimpleModalcontent content={<UploadContent />} />
       </Modal>
-      <PageSubHeader navItem={navItems[selected]?.title} />
+      <PageSubHeader navItem={navItems[tabIndex]?.title} />
       <DataTable rows={Rows} headers={Headers}>
         {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps, selectedRows }: any) => (
           <>
@@ -165,13 +206,15 @@ const Profile = () => {
                 </TableBatchAction>
               </TableBatchActions>
               <TableToolbarContent>
-                {selected != 0 && selected != 2 && <TableNavItem filterItems={filterItems} noDateRange />}
+                {tabIndex != 0 && tabIndex != 2 && <TableNavItem filterItems={filterItems} noDateRange />}
                 <Button
                   renderIcon={(props: any) => <Add size={20} {...props} />}
-                  buttonLabel={`Create ${navItems[selected]?.title.split(' ')[navItems[selected]?.title.split(' ').length - 1]}`}
+                  buttonLabel={`Create ${navItems[tabIndex]?.title.split(' ')[navItems[tabIndex]?.title.split(' ').length - 1]}`}
                   handleClick={toggleModal}
                 />
-                {selected !== 0 && <Button renderIcon={(props: any) => <Upload size={20} {...props} />} handleClick={toggleBulkModal} buttonLabel={`Bulk Upload`} className={'transparent-button'} />}
+                {tabIndex !== 0 && (
+                  <Button renderIcon={(props: any) => <Upload size={20} {...props} />} handleClick={toggleBulkModal} buttonLabel={`Bulk Upload`} className={'transparent-button'} />
+                )}
               </TableToolbarContent>
             </TableToolbar>
             <Table {...getTableProps()}>
@@ -201,7 +244,7 @@ const Profile = () => {
           </>
         )}
       </DataTable>
-      {isEmpty(Rows) && <Empty title={'No ' + navItems[selected].title + ' found'} />}
+      {isEmpty(Rows) && <Empty title={'No ' + navItems[tabIndex].title + ' found'} />}
     </Layout>
   );
 };
