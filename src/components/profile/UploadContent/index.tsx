@@ -1,8 +1,9 @@
-import { px } from '@/utils';
+import { Close } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
+
 import Button from '@/components/shared/Button';
-import { Close } from '@carbon/react/icons';
+import { px } from '@/utils';
 
 const UploadContent = () => {
   return (
@@ -13,7 +14,7 @@ const UploadContent = () => {
       </Description>
       <Button
         renderIcon={null}
-        handleClick={() => console.log('123')}
+        handleClick={() => null}
         buttonLabel="Add file"
       />{' '}
       <PreviewName>

@@ -1,9 +1,10 @@
-import { baseQueryWithReauth, CustomError, createRequest } from './shared';
 import {
   BaseQueryFn,
   createApi,
   FetchArgs,
 } from '@reduxjs/toolkit/query/react';
+
+import { baseQueryWithReauth, createRequest,CustomError } from './shared';
 
 export const databaseApi = createApi({
   reducerPath: 'databaseApi',

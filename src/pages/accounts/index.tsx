@@ -1,20 +1,22 @@
-import PageSubHeader from '@/components/accounts/PageSubHeader';
-import Layout from '@/HOC/Layout';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { isEmpty } from 'lodash';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+
+import { AccessStatus, ActionIcons, IconAndText, ModalContent } from '@/components/accounts';
+import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Empty from '@/components/shared/Empty';
+import Loader from '@/components/shared/Loader';
 import Modal from '@/components/shared/Modal';
-import { useGetRolesQuery, useGetUsersQuery } from '@/redux/api';
+import Layout from '@/HOC/Layout';
 import useHeaders from '@/hooks/useHeaders';
 import { FormikRefType } from '@/interfaces/formik.type';
-import Loader from '@/components/shared/Loader';
-import AccountTable from '../../components/accounts/views/AccountTable';
 import { IHeader, IRole } from '@/interfaces/role';
 import { UserData } from '@/interfaces/user';
-import { AccessStatus, ActionIcons, IconAndText, ModalContent } from '@/components/accounts';
-import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
+import { useGetRolesQuery, useGetUsersQuery } from '@/redux/api';
 import { protectedRouteProps } from '@/utils/withSession';
+
+import AccountTable from '../../components/accounts/views/AccountTable';
 
 const Accounts = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);

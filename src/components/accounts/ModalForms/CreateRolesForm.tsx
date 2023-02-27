@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { TextInput, FormGroup } from '@carbon/react';
-import { Formik, Form, Field, FieldInputProps } from 'formik';
+import { FormGroup,TextInput } from '@carbon/react';
+import { Field, FieldInputProps,Form, Formik } from 'formik';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { px } from '@/utils';
-import { FormikRefType } from '@/interfaces/formik.type';
-import { useCreateRoleMutation, useEditRoleMutation } from '@/redux/api';
+
+import Checkbox from '@/components/shared/Checkbox/Checkbox';
 import { useToast } from '@/context/ToastContext';
-import { RoleAndProvilegesSchema } from '@/schemas/schema';
-import ErrorMessage from '../../shared/ErrorMessage/ErrorMessage';
-import { FormEmailContainer } from '../../profile/SubscriptionContent';
-import Loader from '../../shared/Loader';
+import { FormikRefType } from '@/interfaces/formik.type';
 import { IPrivilege } from '@/interfaces/role';
+import { useCreateRoleMutation, useEditRoleMutation } from '@/redux/api';
 import { initialRoleValue } from '@/schemas/dto';
 import { IinitialRoleForm } from '@/schemas/interface';
-import Checkbox from '@/components/shared/Checkbox/Checkbox';
+import { RoleAndProvilegesSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 import { pickValues } from '@/utils/helpers/helpers';
+
+import { FormEmailContainer } from '../../profile/SubscriptionContent';
+import ErrorMessage from '../../shared/ErrorMessage/ErrorMessage';
+import Loader from '../../shared/Loader';
 
 type IProps = {
   formRef: React.RefObject<FormikRefType<IinitialRoleForm>>;

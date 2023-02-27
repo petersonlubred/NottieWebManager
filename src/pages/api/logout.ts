@@ -1,5 +1,6 @@
-import { withSessionRoute } from '@/utils/withSession';
 import { NextApiHandler } from 'next';
+
+import { withSessionRoute } from '@/utils/withSession';
 
 const logoutRoute: NextApiHandler<{ ok: boolean }> = async (req, res) => {
   req.session.destroy();

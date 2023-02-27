@@ -1,22 +1,24 @@
-import { TrashCan, Password, Edit, UserAdmin } from '@carbon/react/icons';
-import styled from 'styled-components';
-import Modal from '@/components/shared/Modal';
-import { IconBox } from '@/components/configuration/ActionIcons/Smtp';
-import { FormikRefType } from '@/interfaces/formik.type';
+import { Edit, Password, TrashCan, UserAdmin } from '@carbon/react/icons';
 import { useRef, useState } from 'react';
-import { useGetPrivilegesQuery } from '@/redux/api';
-import RolesAndProvileges from '../ModalForms/CreateRolesForm';
-import { px } from '@/utils';
-import CreateUserForm from '../ModalForms/CreateUserForm';
-import { IinitialRoleForm, IinitialUserForm } from '@/schemas/interface';
-import ActionModal from '../ActionModals';
+import styled from 'styled-components';
+
+import { IconBox } from '@/components/configuration/ActionIcons/Smtp';
+import Modal from '@/components/shared/Modal';
 import useNetworkRequest from '@/hooks/useNetworkRequest';
+import { FormikRefType, ISetState } from '@/interfaces/formik.type';
+import { useGetPrivilegesQuery } from '@/redux/api';
+import { IinitialRoleForm, IinitialUserForm } from '@/schemas/interface';
+import { px } from '@/utils';
+
+import ActionModal from '../ActionModals';
+import RolesAndProvileges from '../ModalForms/CreateRolesForm';
+import CreateUserForm from '../ModalForms/CreateUserForm';
 
 type Props = {
   data?: IinitialUserForm & { id: string; status: boolean };
   roleData?: IinitialRoleForm & { roleId: string };
   isUpdatedMultiselect?: boolean;
-  setIsUpdatedMultiselect?: Function;
+  setIsUpdatedMultiselect?: ISetState<boolean>;
 };
 
 const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultiselect }: Props) => {

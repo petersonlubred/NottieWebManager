@@ -1,14 +1,15 @@
 import { reduxBatch } from '@manaflair/redux-batch';
 import { configureStore } from '@reduxjs/toolkit';
-import { persistStore } from 'redux-persist';
-import createSagaMiddleware from 'redux-saga';
-import { rootReducer } from '../root-reducer';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { createWrapper } from 'next-redux-wrapper';
-import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import rootSaga from '../sagas';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { persistStore } from 'redux-persist';
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER,REHYDRATE } from 'redux-persist';
+import createSagaMiddleware from 'redux-saga';
+
 import { databaseApi, roleApi, smtpApi, userApi } from '../api';
+import { rootReducer } from '../root-reducer';
+import rootSaga from '../sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 

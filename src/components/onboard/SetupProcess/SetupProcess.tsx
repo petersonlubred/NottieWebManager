@@ -1,12 +1,14 @@
-import { px, rem } from '@/utils';
+import { CheckmarkOutline,CircleDash } from '@carbon/react/icons';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { CircleDash, CheckmarkOutline } from '@carbon/react/icons';
+
+import { ISetState } from '@/interfaces/formik.type';
 import {
   useLazyCreateTableQuery,
   useLazyLoadDefaultDataQuery,
   useLazyWrapUpQuery,
 } from '@/redux/api';
+import { px, rem } from '@/utils';
 
 const itemsList = [
   'Creating stored procedures and views',
@@ -19,7 +21,7 @@ type IProps = {
   handleSetStep: () => void;
   isSuccess: boolean;
   isLoading: boolean;
-  setLoginDetails: (value: React.SetStateAction<any>) => void;
+  setLoginDetails: ISetState<any>;
 };
 
 const SetupProcess = ({

@@ -1,33 +1,35 @@
-import React, { useState } from 'react';
 import {
   DataTable,
+  DataTableSkeleton,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
+  TableBatchAction,
+  TableBatchActionProps,
+  TableBatchActions,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableHeaderProps,
+  TableProps,
+  TableRow,
+  TableRowProps,
   TableSelectAll,
   TableSelectRow,
+  TableSelectRowProps,
   TableToolbar,
   TableToolbarContent,
-  TableToolbarSearch,
-  TableBatchActions,
-  TableBatchAction,
-  TableHeaderProps,
-  TableBatchActionProps,
   TableToolbarProps,
-  TableRowProps,
-  TableSelectRowProps,
-  TableProps,
-  DataTableSkeleton,
+  TableToolbarSearch,
 } from '@carbon/react';
-import { TrashCan, Add, Password } from '@carbon/react/icons';
-import Button from '@/components/shared/Button';
+import { Add, Password, TrashCan } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
-import { IHeader } from '@/interfaces/role';
-import ActionModal from '../../ActionModals';
+import React, { useState } from 'react';
+
+import Button from '@/components/shared/Button';
 import useNetworkRequest from '@/hooks/useNetworkRequest';
+import { IHeader } from '@/interfaces/role';
+
+import ActionModal from '../../ActionModals';
 
 type Props = {
   Rows: any[];
@@ -111,7 +113,7 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
                 </TableBatchAction>
               </TableBatchActions>
               <TableToolbarContent>
-                <TableToolbarSearch onChange={() => {}} />
+                <TableToolbarSearch onChange={() => null} />
                 <Button renderIcon={(props: any) => <Add size={20} {...props} />} handleClick={toggleModal} buttonLabel={tab === 0 ? 'Create new user' : 'Create new role'} />
               </TableToolbarContent>
             </TableToolbar>

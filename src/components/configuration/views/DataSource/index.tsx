@@ -1,7 +1,7 @@
 import Icon from '@/components/shared/Icons';
 import { ConfigurationContainer, NoDataContainer, NoDataTitle } from '@/pages/configuration';
+
 import DataSourceContent from './DataSourceContent';
-import DataSourceForm from './DataSourceForm';
 
 const DataSource = () => {
   return (

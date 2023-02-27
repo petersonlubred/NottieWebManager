@@ -1,16 +1,17 @@
+import { Button, FormGroup, Loading,PasswordInput, Select, SelectItem, TextInput } from '@carbon/react';
+import { ArrowRight } from '@carbon/react/icons';
+import { Field,Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import { FormGroup, TextInput, Button, PasswordInput, Select, SelectItem, Loading } from '@carbon/react';
-import { ArrowRight } from '@carbon/react/icons';
-import { Formik, Form, Field } from 'formik';
-import { px } from '@/utils';
-import { databaseSchema } from '@/schemas/schema';
+
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import { initialDatabaseValue } from '@/schemas/dto';
+import { databaseSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 
 type IProps = {
   handleSetStep: () => void;
-  registerDb: Function;
+  registerDb: (_values: any) => void;
   isLoading: boolean;
 };
 

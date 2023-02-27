@@ -1,8 +1,10 @@
-import { APIResponse } from './../../interfaces/auth';
-import { baseQueryWithReauth, CustomError, createRequest } from './shared';
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
-import { UserResponse, UserData, UsersResponse } from '@/interfaces/user';
 import { isEmpty } from 'lodash';
+
+import { UserData, UserResponse, UsersResponse } from '@/interfaces/user';
+
+import { APIResponse } from './../../interfaces/auth';
+import { baseQueryWithReauth, createRequest,CustomError } from './shared';
 
 export const userApi = createApi({
   reducerPath: 'userApi',

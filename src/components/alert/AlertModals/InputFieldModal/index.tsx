@@ -1,9 +1,9 @@
-import React from 'react';
 import { TextInput } from '@carbon/react';
 import { Link } from '@carbon/react/icons';
-import Modal from '@/components/shared/Modal';
-import { px } from '@/utils';
+import React from 'react';
 import styled from 'styled-components';
+
+import Modal from '@/components/shared/Modal';
 
 const dummpData: any[] = [
   { tagName: 'Tag1', id: 'id1', inputName: 'Name', inputId: 'name' },

@@ -1,7 +1,9 @@
-import { px } from '@/utils';
 import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
+
+import { px } from '@/utils';
+
 import Icon from '../Icons';
 
 const Logo = () => {

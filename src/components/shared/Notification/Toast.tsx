@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
 import { ToastNotification } from '@carbon/react';
-import { useToast } from '@/context/ToastContext';
-import styled from 'styled-components';
-import { px } from '@/utils';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import styled from 'styled-components';
+
+import { useToast } from '@/context/ToastContext';
 import { setNotifications } from '@/redux/slices/util';
+import { RootState } from '@/redux/store';
+import { px } from '@/utils';
 
 const Toast = () => {
   const { kind, title, rerender } = useToast();
@@ -15,17 +16,20 @@ const Toast = () => {
 
   const dispatch = useDispatch();
 
-  const handleAddNotification = useCallback((kind: string, title: string) => {
-    const id = Date.now().toString();
-    if (title) {
-      const notification = {
-        id,
-        title: title,
-        kind: kind,
-      };
-      dispatch(setNotifications(notification));
-    }
-  }, []);
+  const handleAddNotification = useCallback(
+    (kind: string, title: string) => {
+      const id = Date.now().toString();
+      if (title) {
+        const notification = {
+          id,
+          title: title,
+          kind: kind,
+        };
+        dispatch(setNotifications(notification));
+      }
+    },
+    [dispatch]
+  );
 
   const handleRemoveNotification = (id: string) => {
     const filteredNotifications = notifications.filter((n: any) => n.id !== id);

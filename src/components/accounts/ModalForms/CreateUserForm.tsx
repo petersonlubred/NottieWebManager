@@ -1,29 +1,30 @@
-import { px } from '@/utils';
+import { FormGroup, MultiSelect, TextInput } from '@carbon/react';
+import { Field, FieldInputProps, Form, Formik } from 'formik';
+import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TextInput, MultiSelect, FormGroup } from '@carbon/react';
-import { Formik, Form, Field, FieldInputProps } from 'formik';
-import { userAccountSchema } from '@/schemas/schema';
-import { FormikRefType } from '@/interfaces/formik.type';
-import { useCreateUserMutation, useEditUserMutation, useGetRolesQuery } from '@/redux/api';
-import { useToast } from '@/context/ToastContext';
-import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
-import Button from '@/components/shared/Button';
+
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
+import Button from '@/components/shared/Button';
+import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Loader from '@/components/shared/Loader';
-import { IRole } from '@/interfaces/role';
 import RadioButton from '@/components/shared/RadioButton';
+import { useToast } from '@/context/ToastContext';
+import { FormikRefType, ISetState } from '@/interfaces/formik.type';
+import { IRole } from '@/interfaces/role';
+import { useCreateUserMutation, useEditUserMutation, useGetRolesQuery } from '@/redux/api';
 import { initialUserValue } from '@/schemas/dto';
 import { IinitialUserForm } from '@/schemas/interface';
+import { userAccountSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 import { pickValues } from '@/utils/helpers/helpers';
-import { isEmpty } from 'lodash';
 
 interface Iprops {
   formRef: React.RefObject<FormikRefType<IinitialUserForm>>;
   formdata?: IinitialUserForm & { id: string };
   toggleModal: () => void;
   isUpdatedMultiselect?: boolean;
-  setIsUpdatedMultiselect?: Function;
+  setIsUpdatedMultiselect?: ISetState<boolean>;
 }
 
 const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, setIsUpdatedMultiselect }: Iprops) => {
@@ -125,7 +126,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                           //   Boolean(touched.email && errors.email) ||
                           //   !values?.email
                           // }
-                          handleClick={() => console.log('click')}
+                          handleClick={() => null}
                           buttonLabel="Validate Email"
                           validateButton
                         />

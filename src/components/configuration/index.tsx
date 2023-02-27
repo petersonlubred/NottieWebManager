@@ -1,8 +1,8 @@
 export { default as SMSC } from './ModalForms/SMSC';
-export { default as SMTP } from './ModalForms/SMTP';
-export { default as SMTPRoute } from './ModalForms/SMTPRoute';
 export { default as SMSRoute } from './ModalForms/SMSRoute';
 export { default as SMSRouteConfig } from './ModalForms/SMSRouteConfig';
+export { default as SMTP } from './ModalForms/SMTP';
+export { default as SMTPRoute } from './ModalForms/SMTPRoute';
 export { default as ConfigurationTable } from './views/ConfigurationTable';
 export { default as DataSource } from './views/DataSource';
 export { default as ServiceMapping } from './views/ServiceMapping';

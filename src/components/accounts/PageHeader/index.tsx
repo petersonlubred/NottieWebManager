@@ -1,11 +1,12 @@
-import Icon from '@/components/shared/Icons';
-import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
 
+import Icon from '@/components/shared/Icons';
+import { px } from '@/utils';
+
 interface Iprops {
   navItem?: { title: string }[];
-  handleSetIndex?: Function;
+  handleSetIndex?: (_index: number) => void;
   title?: string;
   subtitle?: string;
   isDashboard?: boolean;

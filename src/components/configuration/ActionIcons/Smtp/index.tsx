@@ -1,14 +1,16 @@
-import { TrashCan, Edit } from '@carbon/react/icons';
-import styled from 'styled-components';
-import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
-import Modal from '@/components/shared/Modal';
-import { px } from '@/utils';
+import { Edit,TrashCan } from '@carbon/react/icons';
 import { useEffect, useRef, useState } from 'react';
-import SMTP from '../../ModalForms/SMTP';
+import styled from 'styled-components';
+
+import Modal from '@/components/shared/Modal';
+import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
+import { useToast } from '@/context/ToastContext';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { useDeleteSmtpMutation } from '@/redux/api';
-import { useToast } from '@/context/ToastContext';
 import { IinitialSMTPForm } from '@/schemas/interface';
+import { px } from '@/utils';
+
+import SMTP from '../../ModalForms/SMTP';
 
 type Props = {
   data: IinitialSMTPForm & { smtpId: string };

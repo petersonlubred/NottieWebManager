@@ -1,12 +1,14 @@
-import { px } from '@/utils';
+import { Select, SelectItem } from '@carbon/react';
 import React from 'react';
 import styled from 'styled-components';
-import { Select, SelectItem } from '@carbon/react';
+
+import { px } from '@/utils';
+
+import MicroService from './MicroService';
+import MicroServiceheader from './MicroServiceHeader';
+import ProgressStatusTable from './ProgressStatusTable';
 import QueueMonitor from './QueueMonitor';
 import QueueTrend from './QueueTrend';
-import MicroServiceheader from './MicroServiceHeader';
-import MicroService from './MicroService';
-import ProgressStatusTable from './ProgressStatusTable';
 
 const queueMonitors = [
   'OTP Queue monitor',

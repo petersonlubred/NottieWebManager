@@ -1,9 +1,10 @@
-import { databaseApi } from './api/databaseApi';
 import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
+
+import { roleApi, smtpApi, userApi } from './api';
+import { databaseApi } from './api/databaseApi';
 import authReducer, { persistConfig } from './slices/auth';
 import sharedReducer from './slices/util';
-import { persistReducer } from 'redux-persist';
-import { roleApi, smtpApi, userApi } from './api';
 
 export const reducers = combineReducers({
   auth: authReducer,

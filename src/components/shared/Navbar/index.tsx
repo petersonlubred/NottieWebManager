@@ -1,15 +1,17 @@
-import { px } from '@/utils';
-import React from 'react';
-import styled from 'styled-components';
-import Logo from '../Logo';
 import { Dropdown } from '@carbon/react';
-import { Light, LightFilled, Notification, User, Logout } from '@carbon/react/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { setMode } from '@/redux/slices/util';
-import { NextRouter, useRouter } from 'next/router';
-import { logout } from '@/redux/slices/auth';
+import { Light, LightFilled, Logout, Notification, User } from '@carbon/react/icons';
 import axios from 'axios';
+import { NextRouter, useRouter } from 'next/router';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+
+import { logout } from '@/redux/slices/auth';
+import { setMode } from '@/redux/slices/util';
+import { RootState } from '@/redux/store';
+import { px } from '@/utils';
+
+import Logo from '../Logo';
 
 const Navbaritem = [
   { title: 'Dashboard', route: 'dashboard' },
@@ -35,7 +37,7 @@ const Navbar = () => {
       });
       dispatch(logout);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

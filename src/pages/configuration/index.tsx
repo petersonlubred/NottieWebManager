@@ -1,20 +1,22 @@
-import Layout from '@/HOC/Layout';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import useHeaders from '@/hooks/useHeaders';
-import styled from 'styled-components';
-import { px } from '@/utils';
-import Modal from '@/components/shared/Modal';
-import { FormikRefType } from '@/interfaces/formik.type';
-import { useGetSmtpserversQuery } from '@/redux/api';
-import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
-import ModalContent from '../../components/configuration/ModalContent';
-import { ConfigurationTable, DataSource, ServiceMapping, SystemSettings, Template } from '@/components/configuration';
-import { IHeader } from '@/interfaces/role';
 import { isEmpty } from 'lodash';
-import { Ismtp } from '@/interfaces/configuration';
-import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import styled from 'styled-components';
+
+import { ConfigurationTable, DataSource, ServiceMapping, SystemSettings, Template } from '@/components/configuration';
+import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
+import Modal from '@/components/shared/Modal';
+import Layout from '@/HOC/Layout';
+import useHeaders from '@/hooks/useHeaders';
+import { Ismtp } from '@/interfaces/configuration';
+import { FormikRefType } from '@/interfaces/formik.type';
+import { IHeader } from '@/interfaces/role';
+import { useGetSmtpserversQuery } from '@/redux/api';
+import { px } from '@/utils';
 import { protectedRouteProps } from '@/utils/withSession';
+
+import ModalContent from '../../components/configuration/ModalContent';
 
 const SystemConfiguration = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);

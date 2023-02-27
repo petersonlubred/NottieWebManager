@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from 'react';
 import { Search } from '@carbon/react';
+import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 
 const SearchBar = () => {
@@ -8,7 +8,6 @@ const SearchBar = () => {
 
   const handleSearchClick = () => {
     if (searchValue.length > 0) {
-      console.log('searchValue', searchValue);
     }
   };
 
@@ -27,14 +26,6 @@ const SearchBar = () => {
   };
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
-  };
-
-  const clearSearch = () => {
-    setSearchValue('');
-  };
-  const clearInput = () => {
-    clearSearch();
-    setOpenSearch((val: boolean) => !val);
   };
 
   return (

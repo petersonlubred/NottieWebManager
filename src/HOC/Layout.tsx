@@ -1,18 +1,18 @@
+import React from 'react';
+import styled from 'styled-components';
+
 import PageHeader from '@/components/accounts/PageHeader';
 import Navbar from '@/components/shared/Navbar';
 import NavbarRoute from '@/components/shared/NavbarRoute';
 import PageFooter from '@/components/shared/PageFooter';
 import Seo from '@/providers/seo';
 import { px } from '@/utils';
-import { useRouter } from 'next/router';
-import React from 'react';
-import styled from 'styled-components';
 
 interface Iprops {
   routename: string;
   children: React.ReactNode;
   navItem: { title: string; tabName: string }[];
-  handleSetIndex: Function;
+  handleSetIndex: (_index: number) => void;
   title?: string;
   subtitle?: string;
   isDashboard?: boolean;
@@ -20,7 +20,6 @@ interface Iprops {
   currentTab?: any;
 }
 const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle, isDashboard, noPagination, currentTab }: Iprops) => {
-  const router = useRouter();
   return (
     <LayoutContainer>
       <Seo title={routename} />

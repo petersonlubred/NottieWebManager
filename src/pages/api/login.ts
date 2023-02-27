@@ -1,4 +1,5 @@
 import { NextApiHandler } from 'next';
+
 import { withSessionRoute } from '@/utils/withSession';
 
 const loginRoute: NextApiHandler<{ ok: boolean }> = async (req, res) => {

@@ -1,5 +1,6 @@
-import { px } from '@/utils';
 import { createGlobalStyle } from 'styled-components';
+
+import { px } from '@/utils';
 
 export const GlobalStyles = createGlobalStyle`
   html {

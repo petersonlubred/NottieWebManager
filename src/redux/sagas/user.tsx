@@ -1,6 +1,8 @@
-import { AuthResponse, LoginResponse } from '@/interfaces/auth';
 import axios from 'axios';
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
+
+import { AuthResponse, LoginResponse } from '@/interfaces/auth';
+
 import { setAuth } from '../slices/auth';
 
 const sagas = [takeLatest('LOGIN_SUCCESS', logUserIn)];
@@ -31,7 +33,7 @@ function* logUserIn({ payload: { data } }: LoginType) {
     yield call(saveSession, data);
     yield put(setAuth(data));
   } catch (error) {
-    console.log('logUserIn error', error);
+    // console.log('logUserIn error', error);
   }
 }
 
