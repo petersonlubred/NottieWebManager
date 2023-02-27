@@ -7,7 +7,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "npx prettier --write .",
+    "eslint": "eslint ./ --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier --write .",
+    "pre-push": "npm run test",
+    "pre-commit": "lint-staged",
+    "prepare": "husky install && npx husky add .husky/pre-commit \"npm run lint:fix\""
   },
   "dependencies": {
     "@carbon/charts": "^1.6.4",
@@ -31,12 +38,14 @@
     "iron-session": "^6.3.1",
     "is-hotkey": "^0.2.0",
     "js-cookie": "^3.0.1",
+    "lint-staged": "^13.1.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "next": "13.1.6",
     "next-redux-wrapper": "^8.1.0",
     "npm": "^9.4.2",
     "polished": "^4.2.2",
+    "prettier": "^2.8.4",
     "react": "18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "18.2.0",
@@ -56,5 +65,14 @@
     "@types/react-color": "^3.0.6",
     "@types/recompose": "^0.30.10",
     "@types/styled-components": "^5.1.26"
+  },
+  "lint-staged": {
+    "*.{js,jsx, scss,css}": [
+      "prettier --write"
+    ],
+    "*.@(ts|tsx)": [
+      "npm run lint:fix",
+      "npm run format"
+    ]
   }
 }

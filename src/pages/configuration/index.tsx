@@ -13,6 +13,8 @@ import { IHeader } from '@/interfaces/role';
 import { isEmpty } from 'lodash';
 import { Ismtp } from '@/interfaces/configuration';
 import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import { protectedRouteProps } from '@/utils/withSession';
 
 const SystemConfiguration = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);
@@ -131,6 +133,7 @@ const SystemConfiguration = () => {
 };
 
 export default SystemConfiguration;
+export const getServerSideProps: GetServerSideProps = protectedRouteProps();
 
 export const ConfigurationContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.bgPrimary};

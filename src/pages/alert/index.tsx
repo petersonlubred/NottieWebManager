@@ -21,14 +21,14 @@ import { isEmpty } from 'lodash';
 import Empty from '@/components/shared/Empty';
 import useHeaders from '@/hooks/useHeaders';
 import TableNabItem from '@/components/alert/TableNavItems';
+import { GetServerSideProps } from 'next';
+import { protectedRouteProps } from '@/utils/withSession';
 
 const Alert = () => {
   const [selected, setSelected] = useState(0);
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
-  const [filterItems, setFilterItems] = useState<
-    { key: string; label: string; value: string }[]
-  >([
+  const [filterItems, setFilterItems] = useState<{ key: string; label: string; value: string }[]>([
     {
       key: 'customer_id',
       label: 'Customer ID',
@@ -69,17 +69,7 @@ const Alert = () => {
   };
 
   useEffect(() => {
-    const headers = [
-      inflowheader,
-      smsheader,
-      emailheader,
-      nontransactionheader,
-      smsheader,
-      emailheader,
-      otpheader,
-      smsheader,
-      emailheader,
-    ];
+    const headers = [inflowheader, smsheader, emailheader, nontransactionheader, smsheader, emailheader, otpheader, smsheader, emailheader];
     headers?.forEach((header, index) => {
       if (index === selected) {
         setHeaders(header);
@@ -125,15 +115,7 @@ const Alert = () => {
         },
       ]);
     }
-  }, [
-    emailheader,
-    inflowheader,
-    navItems,
-    nontransactionheader,
-    otpheader,
-    selected,
-    smsheader,
-  ]);
+  }, [emailheader, inflowheader, navItems, nontransactionheader, otpheader, selected, smsheader]);
 
   return (
     <Layout
@@ -146,25 +128,11 @@ const Alert = () => {
     >
       <PageSubHeader navItem={navItems[selected]?.title} />
       <DataTable rows={Rows} headers={Headers}>
-        {({
-          rows,
-          headers,
-          getHeaderProps,
-          getRowProps,
-          getTableProps,
-          getSelectionProps,
-          getToolbarProps,
-          getBatchActionProps,
-          selectedRows,
-        }: any) => (
+        {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps, selectedRows }: any) => (
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
-                <TableBatchAction
-                  renderIcon={TrashCan}
-                  iconDescription="Delete the selected rows"
-                  onClick={console.log(selectedRows)}
-                >
+                <TableBatchAction renderIcon={TrashCan} iconDescription="Delete the selected rows" onClick={console.log(selectedRows)}>
                   Delete
                 </TableBatchAction>
               </TableBatchActions>
@@ -199,11 +167,10 @@ const Alert = () => {
           </>
         )}
       </DataTable>
-      {isEmpty(Rows) && (
-        <Empty title={'No ' + navItems[selected].title + ' alerts found'} />
-      )}
+      {isEmpty(Rows) && <Empty title={'No ' + navItems[selected].title + ' alerts found'} />}
     </Layout>
   );
 };
 
 export default Alert;
+export const getServerSideProps: GetServerSideProps = protectedRouteProps();

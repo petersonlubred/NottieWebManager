@@ -16,6 +16,7 @@ import RadioButton from '@/components/shared/RadioButton';
 import { initialUserValue } from '@/schemas/dto';
 import { IinitialUserForm } from '@/schemas/interface';
 import { pickValues } from '@/utils/helpers/helpers';
+import { isEmpty } from 'lodash';
 
 interface Iprops {
   formRef: React.RefObject<FormikRefType<IinitialUserForm>>;
@@ -78,14 +79,14 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                   <MultipleSelect
                     itemToString={(item: { text: string }) => (item ? item.text : '')}
                     id="roles"
-                    items={
-                      data?.data
+                    items={[
+                      !isEmpty(data?.data)
                         ? data?.data?.map((item: IRole) => ({
                             id: item.roleId,
                             text: item.roleName,
                           }))
-                        : []
-                    }
+                        : [],
+                    ]}
                     label="Choose roles"
                     size="md"
                     onChange={(e: { selectedItems?: { id: string; text?: string }[] }) => {
