@@ -20,7 +20,7 @@ const useHeaders = () => {
         header: 'Access Status',
       },
       {
-        key: 'roleIds',
+        key: 'roles',
         header: 'Role',
       },
       {

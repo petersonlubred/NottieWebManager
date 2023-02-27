@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextInput, FormGroup } from '@carbon/react';
 import { Formik, Form, Field, FieldInputProps } from 'formik';
 import styled from 'styled-components';
@@ -32,8 +32,9 @@ interface Access {
   canDelete: boolean;
 }
 const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileges }: IProps) => {
-  const [createRole, { isLoading, isSuccess, isError, error }] = useCreateRoleMutation();
-  const [editRole, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditRoleMutation();
+  const [loading, setLoading] = useState(false);
+  const [createRole] = useCreateRoleMutation();
+  const [editRole] = useEditRoleMutation();
   const { toast } = useToast();
   const priviledges = data?.map((item: IPrivilege) => item.systemPrivilegeId) || [];
 
@@ -46,7 +47,7 @@ const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileg
     return acc;
   }, {});
 
-  const handleSubmit = (values: IinitialRoleForm) => {
+  const handleSubmit = async (values: IinitialRoleForm) => {
     const formvalues = values as IinitialRoleForm & { roleId: string };
     const Privileges: Partial<IPrivilege>[] = [];
     for (const systemPrivilegeId of priviledges) {
@@ -63,46 +64,32 @@ const RolesAndProvileges = ({ formRef, formdata, toggleModal, data, loadPrivileg
         });
       }
     }
-
-    if (formdata?.roleId) {
-      editRole(
-        pickValues({
-          roleId: formvalues?.roleId,
-          roleName: formvalues?.roleName,
-          description: formvalues?.description,
-          rolePrivileges: Privileges,
-        })
-      );
-    } else {
-      createRole(pickValues(formvalues));
+    try {
+      setLoading(true);
+      if (formdata?.roleId) {
+        await editRole(
+          pickValues({
+            roleId: formvalues?.roleId,
+            roleName: formvalues?.roleName,
+            description: formvalues?.description,
+            rolePrivileges: Privileges,
+          })
+        ).unwrap();
+      } else {
+        await createRole(pickValues(formvalues)).unwrap();
+      }
+      toast('success', 'Role  saved successfully');
+      toggleModal();
+      setLoading(false);
+    } catch (error: any) {
+      toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast('success', 'Role saved successfully');
-      toggleModal();
-    }
-    if (isError && error && 'status' in error) {
-      toast('error', error?.data?.message);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error, isError, isSuccess]);
-
-  useEffect(() => {
-    if (editSuccess) {
-      toast('success', 'Role saved successfully');
-      toggleModal();
-    }
-    if (isEditError && editError && 'status' in editError) {
-      toast('error', editError?.data?.message);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editError, editSuccess, isEditError]);
-
   return (
     <ModalContainer>
-      {(isLoading || editLoading || loadPrivileges) && <Loader />}
+      {(loading || loadPrivileges) && <Loader />}
       <Formik
         initialValues={{
           ...initialRoleValue,

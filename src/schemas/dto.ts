@@ -135,7 +135,7 @@ export const initialSMTPRouteValue: IinitialSMTPRouteForm = {
 export const initialUserValue: IinitialUserForm = {
   emailAddress: '',
   authenticationType: '',
-  roleIds: [],
+  roles: [],
   firstName: '',
   lastName: '',
 };

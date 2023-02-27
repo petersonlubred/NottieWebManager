@@ -10,7 +10,7 @@ export interface UserData {
   lastName: string;
   otherNames: string;
   password: string;
-  roleIds: string[];
+  roles: string[];
   status: string;
   username: string;
 }

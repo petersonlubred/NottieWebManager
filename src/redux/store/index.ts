@@ -6,14 +6,7 @@ import { rootReducer } from '../root-reducer';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { createWrapper } from 'next-redux-wrapper';
-import {
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from 'redux-persist';
+import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import rootSaga from '../sagas';
 import { databaseApi, roleApi, smtpApi, userApi } from '../api';
 
