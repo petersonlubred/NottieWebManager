@@ -76,7 +76,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                     items={[
                       { value: 'Classic', label: 'Classic' },
                       { value: 'AD', label: 'AD' },
-                      { value: 'SSO', label: 'SSO' },
+                      // { value: 'SSO', label: 'SSO' },
                     ]}
                   />
                   <ErrorMessage invalid={Boolean(touched.authenticationType && errors.authenticationType)} invalidText={errors.authenticationType} />

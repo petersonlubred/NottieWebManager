@@ -14,17 +14,7 @@ interface Iprops {
   onRequestSubmit?: () => void;
 }
 
-const Modal = ({
-  buttonLabel,
-  heading,
-  children,
-  secondaryButtonText = 'Close',
-  open,
-  danger,
-  extent = 'md',
-  toggleModal,
-  onRequestSubmit,
-}: Iprops) => {
+const Modal = ({ buttonLabel, heading, children, secondaryButtonText = 'Close', open, danger, extent = 'md', toggleModal, onRequestSubmit }: Iprops) => {
   return (
     <ModalContainer
       modalHeading={heading}
@@ -52,6 +42,10 @@ export const ModalContainer = styled(M)<ModalProps>`
 
     & > * > * {
       color: ${({ theme }) => theme.colors.white};
+    }
+
+    & > * > button {
+      color: ${({ theme }) => theme.colors.bgPrimary};
     }
 
     & > div:first-child button {
