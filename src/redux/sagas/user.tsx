@@ -14,7 +14,8 @@ export async function saveSession(data: AuthResponse) {
   const api = '/api/login';
   return saveToAPI(api, data);
 }
-async function saveToAPI(api: string, data: AuthResponse) {
+
+export async function saveToAPI(api: string, data: AuthResponse) {
   const { data: res } = await axios.post(api, {
     headers: {
       'Content-Type': 'application/json',
