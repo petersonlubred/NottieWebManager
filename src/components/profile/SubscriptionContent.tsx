@@ -1,24 +1,23 @@
-import { px } from '@/utils';
-import React from 'react';
-import styled from 'styled-components';
 import {
   Checkbox,
-  TextInput,
   FormGroup,
   Select,
   SelectItem,
+  TextInput,
 } from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
-import { SubscriptionSchema } from '@/schemas/schema';
-import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-import { FormContainer } from '../onboard/NewUserLoginForm';
+import { Field,Form, Formik } from 'formik';
+import React from 'react';
+import styled from 'styled-components';
+
 import { initialSubscription } from '@/schemas/dto';
+import { SubscriptionSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 
-interface Iprops {
-  isEdit?: boolean;
-}
+import { FormContainer } from '../onboard/NewUserLoginForm';
+import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 
-const SubscriptionModalContent = ({ isEdit }: Iprops) => {
+
+const SubscriptionModalContent = () => {
   return (
     <ModalContentContainer>
       <ModalItem>

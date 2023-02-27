@@ -1,12 +1,13 @@
+import { Button } from '@carbon/react';
+import { ArrowRight, CheckmarkFilled,Copy } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
-import { px } from '@/utils';
-import { Button } from '@carbon/react';
-import { Copy, ArrowRight, CheckmarkFilled } from '@carbon/react/icons';
+
 import { useToast } from '@/context/ToastContext';
+import { px } from '@/utils';
 
 type IProps = {
-  toggleLogin: Function;
+  toggleLogin: ()=>void;
   loginDetails: {
     username: string;
     password: string;

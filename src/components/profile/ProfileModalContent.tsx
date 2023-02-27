@@ -1,25 +1,25 @@
-import { px } from '@/utils';
-import React from 'react';
-import styled from 'styled-components';
 import {
-  TextInput,
   FormGroup,
+  NumberInput,
   Select,
   SelectItem,
-  NumberInput,
+  TextInput,
 } from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
-import { AlertProfileSchema } from '@/schemas/schema';
-import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-import { FormContainer } from '../onboard/NewUserLoginForm';
+import { Field,Form, Formik } from 'formik';
+import React from 'react';
+import styled from 'styled-components';
+
 import { initialAlertProfileValue } from '@/schemas/dto';
+import { AlertProfileSchema } from '@/schemas/schema';
+import { px } from '@/utils';
+
+import { FormContainer } from '../onboard/NewUserLoginForm';
 import Checkbox from '../shared/Checkbox/Checkbox';
+import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 
-interface Iprops {
-  isEdit?: boolean;
-}
 
-const ModalContent = ({ isEdit }: Iprops) => {
+
+const ModalContent = () => {
   return (
     <ModalContentContainer>
       <ModalItem>

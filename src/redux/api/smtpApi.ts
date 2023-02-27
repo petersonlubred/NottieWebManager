@@ -1,8 +1,10 @@
-import { Ismtp, SmtpsResponse } from './../../interfaces/configuration';
-import { baseQueryWithReauth, CustomError, createRequest } from './shared';
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
-import { SmtpResponse } from '@/interfaces/configuration';
+
 import { APIResponse } from '@/interfaces/auth';
+import { SmtpResponse } from '@/interfaces/configuration';
+
+import { Ismtp, SmtpsResponse } from './../../interfaces/configuration';
+import { baseQueryWithReauth, createRequest,CustomError } from './shared';
 
 export const smtpApi = createApi({
   reducerPath: 'smtpApi',

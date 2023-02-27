@@ -1,6 +1,5 @@
 import { combineComponents } from './combine';
-import { StoredValuesProvider } from './StoredValueContext';
 import { ToastProvider } from './ToastContext';
 
-const providers = [ToastProvider, StoredValuesProvider];
+const providers = [ToastProvider];
 export const AppContextProvider: any = combineComponents(...providers);

@@ -1,6 +1,7 @@
-import { useToast } from '@/context/ToastContext';
-import { useDeleteRoleMutation, useDeleteUserMutation, useResendPasswordMutation, useDeleteUsersMutation } from '@/redux/api';
 import { useState } from 'react';
+
+import { useToast } from '@/context/ToastContext';
+import { useDeleteRoleMutation, useDeleteUserMutation, useDeleteUsersMutation,useResendPasswordMutation } from '@/redux/api';
 
 type DataProps = {
   id?: string;

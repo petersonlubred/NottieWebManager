@@ -1,6 +1,8 @@
-import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
+
+import { px } from '@/utils';
+
 import SmsDeliveryContainer from '../smsDeliveryStatus';
 import EmailDeliveryStatus from './EmailDeliveryStatus';
 import OutBoundSmcStatus from './OutBoundSmcStatus';

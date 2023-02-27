@@ -1,9 +1,10 @@
+import { Add } from '@carbon/react/icons';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
 import Accordion from '@/components/shared/Accordion';
 import Button from '@/components/shared/Button';
 import { px } from '@/utils';
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Add } from '@carbon/react/icons';
 
 const AccordionItems = ['Transaction', 'Non-Transaction', 'OTP'];
 
@@ -21,7 +22,7 @@ const TemplateContent = () => {
     <TemplateContainer>
       <TemplateHeader>
         <HeaderParagraph>Templates</HeaderParagraph>
-        <Button renderIcon={(props: any) => <Add size={16} {...props} />} handleClick={() => console.log('123')} buttonLabel="" />
+        <Button renderIcon={(props: any) => <Add size={16} {...props} />} handleClick={() => null} buttonLabel="" />
       </TemplateHeader>
       {AccordionItems.map((item, index) => (
         <Accordion title={item} key={index} index={index} toggleDropdown={toggleDropdown} opened={opened.includes(index)} />

@@ -1,27 +1,28 @@
-import PageSubHeader from '@/components/accounts/PageSubHeader';
-import Layout from '@/HOC/Layout';
-import React, { useEffect, useMemo, useState } from 'react';
 import {
   DataTable,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
+  TableBatchAction,
+  TableBatchActions,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   TableSelectAll,
   TableSelectRow,
   TableToolbar,
   TableToolbarContent,
-  TableBatchActions,
-  TableBatchAction,
 } from '@carbon/react';
 import { TrashCan } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
-import Empty from '@/components/shared/Empty';
-import useHeaders from '@/hooks/useHeaders';
-import TableNabItem from '@/components/alert/TableNavItems';
 import { GetServerSideProps } from 'next';
+import React, { useEffect, useMemo, useState } from 'react';
+
+import PageSubHeader from '@/components/accounts/PageSubHeader';
+import TableNabItem from '@/components/alert/TableNavItems';
+import Empty from '@/components/shared/Empty';
+import Layout from '@/HOC/Layout';
+import useHeaders from '@/hooks/useHeaders';
 import { protectedRouteProps } from '@/utils/withSession';
 
 const Alert = () => {
@@ -132,7 +133,7 @@ const Alert = () => {
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
-                <TableBatchAction renderIcon={TrashCan} iconDescription="Delete the selected rows" onClick={console.log(selectedRows)}>
+                <TableBatchAction renderIcon={TrashCan} iconDescription="Delete the selected rows" onClick={() => null}>
                   Delete
                 </TableBatchAction>
               </TableBatchActions>

@@ -1,9 +1,10 @@
-import { setMode } from '@/redux/slices/util';
-import { RootState } from '@/redux/store';
-import theme, { lightTheme } from '@/theme';
 import React, { PropsWithChildren, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+
+import { setMode } from '@/redux/slices/util';
+import { RootState } from '@/redux/store';
+import theme, { lightTheme } from '@/theme';
 
 const Provider = ({ children }: PropsWithChildren) => {
   const { mode } = useSelector((state: RootState) => state.sharedReducer);

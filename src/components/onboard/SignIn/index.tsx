@@ -1,15 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import { FormGroup, TextInput, PasswordInput, Loading } from '@carbon/react';
+import { FormGroup, Loading,PasswordInput, TextInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
-import { Formik, Form, Field } from 'formik';
-import { px } from '@/utils';
-import { signinSchema } from '@/schemas/schema';
-import Button from '@/components/shared/Button';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { initialSigninValue } from '@/schemas/dto';
+import { Field,Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+
+import Button from '@/components/shared/Button';
+import { initialSigninValue } from '@/schemas/dto';
+import { signinSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 
 const Signin = () => {
   const [loading, setIsLoading] = React.useState(false);
@@ -32,7 +33,6 @@ const Signin = () => {
       router.push('/dashboard');
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };

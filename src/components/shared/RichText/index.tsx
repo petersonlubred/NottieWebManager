@@ -1,18 +1,20 @@
-import React, { useCallback, useMemo, useState } from 'react';
 import isHotkey from 'is-hotkey';
-import { Editable, withReact, useSlate, Slate, ReactEditor } from 'slate-react';
-import {
-  Editor,
-  Transforms,
-  createEditor,
-  Element as SlateElement,
-} from 'slate';
-import { withHistory } from 'slate-history';
-import { Button, Icon, Toolbar } from './Toolbar';
+import React, { useCallback, useMemo, useState } from 'react';
 import { CompactPicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import {
+  createEditor,
+  Editor,
+  Element as SlateElement,
+  Transforms,
+} from 'slate';
+import { withHistory } from 'slate-history';
+import { Editable, ReactEditor,Slate, useSlate, withReact } from 'slate-react';
+
 import { setSelectedColor } from '@/redux/slices/util';
+import { RootState } from '@/redux/store';
+
+import { Button, Icon, Toolbar } from './Toolbar';
 
 const HOTKEYS: { [key: string]: string } = {
   'mod+b': 'bold',

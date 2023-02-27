@@ -1,8 +1,8 @@
-import MailBody from '@/components/configuration/views/Template/MailBody';
-import TagSection from '@/components/configuration/views/Template/TagSection';
+import React from 'react';
+
 import TemplateSidebar from '@/components/configuration/views/Template/TemplateContent';
 import Icon from '@/components/shared/Icons';
-import React from 'react';
+
 import { ConfigurationContainer, NoDataContainer, NoDataTitle } from '../../../../pages/configuration';
 
 const Template = () => {

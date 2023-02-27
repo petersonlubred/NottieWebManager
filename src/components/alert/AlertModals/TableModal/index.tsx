@@ -1,15 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
 import {
   DataTable,
+  Pagination,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
-  Pagination,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@carbon/react';
+import React from 'react';
+import styled from 'styled-components';
+
 import Modal from '@/components/shared/Modal';
 import { px } from '@/utils';
 
@@ -106,8 +107,8 @@ const AlertTableModal = ({ open, toggleModal }: IProps) => {
               <Table {...getTableProps()}>
                 <TableHead>
                   <TableRow>
-                    {headers.map((header: any) => (
-                      <TableHeader {...getHeaderProps({ header })}>
+                    {headers.map((header: any, index:number) => (
+                      <TableHeader {...getHeaderProps({ header })} key={index}>
                         {header.header}
                       </TableHeader>
                     ))}

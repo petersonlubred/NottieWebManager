@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import storageSession from 'redux-persist/lib/storage/session';
 import { HYDRATE } from 'next-redux-wrapper';
+import storageSession from 'redux-persist/lib/storage/session';
+
 import { UserData } from '@/interfaces/user';
 
 export type AuthState = {

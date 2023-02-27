@@ -1,6 +1,8 @@
-import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
+
+import { px } from '@/utils';
+
 import Icon from '../Icons';
 
 interface Iprops {

@@ -1,12 +1,14 @@
+import React, { useEffect } from 'react';
+
 import Modal from '@/components/shared/Modal';
 import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
-import React, { useEffect } from 'react';
+import { ISetState } from '@/interfaces/formik.type';
 
 interface IProps {
   isLoading?: boolean;
   id?: string;
   action?: string;
-  setAction: Function;
+  setAction: ISetState<string>;
   context?: string;
   handleAction: () => void;
 }

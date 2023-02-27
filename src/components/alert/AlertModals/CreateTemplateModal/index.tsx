@@ -1,9 +1,8 @@
+import { Select, SelectItem,TextInput } from '@carbon/react';
 import React from 'react';
-import { TextInput, Select, SelectItem } from '@carbon/react';
-import { Link } from '@carbon/react/icons';
-import Modal from '@/components/shared/Modal';
-import { px } from '@/utils';
 import styled from 'styled-components';
+
+import Modal from '@/components/shared/Modal';
 
 type IProps = {
   open?: boolean;

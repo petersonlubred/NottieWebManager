@@ -1,7 +1,8 @@
-import { px } from '@/utils';
+import { GroupedBarChartOptions } from '@carbon/charts/interfaces';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { GroupedBarChartOptions } from '@carbon/charts/interfaces';
+
+import { px } from '@/utils';
 
 const EmailDeliveryStatus = () => {
   const chartRef = useRef<any>();

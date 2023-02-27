@@ -1,4 +1,3 @@
-import config from '@/config/config';
 import {
   BaseQueryFn,
   FetchArgs,
@@ -6,6 +5,9 @@ import {
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
+
+import config from '@/config/config';
+
 import { setAuth } from '../slices/auth';
 import { RootState } from '../store';
 

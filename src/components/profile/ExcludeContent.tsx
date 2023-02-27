@@ -1,18 +1,18 @@
-import { px } from '@/utils';
+import { FormGroup, Select, SelectItem } from '@carbon/react';
+import { Field,Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import { FormGroup, Select, SelectItem } from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
-import { AlertExcludeSchema } from '@/schemas/schema';
-import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-import { FormContainer } from '../onboard/NewUserLoginForm';
+
 import { initialAlertExclude } from '@/schemas/dto';
+import { AlertExcludeSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 
-interface Iprops {
-  isEdit?: boolean;
-}
+import { FormContainer } from '../onboard/NewUserLoginForm';
+import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 
-const ExcludeModalContent = ({ isEdit }: Iprops) => {
+
+
+const ExcludeModalContent = () => {
   return (
     <ModalContentContainer>
       <ModalItem>

@@ -1,42 +1,42 @@
-import PageSubHeader from '@/components/accounts/PageSubHeader';
-import Layout from '@/HOC/Layout';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   DataTable,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
+  TableBatchAction,
+  TableBatchActions,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   TableSelectAll,
   TableSelectRow,
   TableToolbar,
   TableToolbarContent,
-  TableBatchActions,
-  TableBatchAction,
 } from '@carbon/react';
-import { TrashCan, Add, Upload } from '@carbon/react/icons';
+import { Add, TrashCan, Upload } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
-import Empty from '@/components/shared/Empty';
-import Button from '@/components/shared/Button';
-import useHeaders from '@/hooks/useHeaders';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+
+import PageSubHeader from '@/components/accounts/PageSubHeader';
 import TableNavItem from '@/components/alert/TableNavItems';
-import Modal from '@/components/shared/Modal';
-import ModalContent from '@/components/profile/ProfileModalContent';
 import ExceptionModalContent from '@/components/profile/ExceptionModalContent';
 import ExcludeModalContent from '@/components/profile/ExcludeContent';
+import ModalContent from '@/components/profile/ProfileModalContent';
 import SubscriptionModalContent from '@/components/profile/SubscriptionContent';
-import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
 import UploadContent from '@/components/profile/UploadContent';
-import { useRouter } from 'next/router';
+import Button from '@/components/shared/Button';
+import Empty from '@/components/shared/Empty';
+import Modal from '@/components/shared/Modal';
+import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
+import Layout from '@/HOC/Layout';
+import useHeaders from '@/hooks/useHeaders';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { GetServerSideProps } from 'next';
 import { protectedRouteProps } from '@/utils/withSession';
 
 const Profile = () => {
   const [Headers, setHeaders] = useState<any[]>([]);
-  const [responseData, setResponseData] = useState([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [bulkopen, setBulkOpen] = useState<boolean>(false);
@@ -78,10 +78,6 @@ const Profile = () => {
       pathname: '/profile',
       query: { tab: navItems[index]?.tabName },
     });
-  };
-
-  const handleSubmit = () => {
-    formRef.current?.handleSubmit();
   };
 
   const toggleModal = () => {
@@ -188,7 +184,7 @@ const Profile = () => {
       </Modal>
       <PageSubHeader navItem={navItems[tabIndex]?.title} />
       <DataTable rows={Rows} headers={Headers}>
-        {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps, selectedRows }: any) => (
+        {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps }: any) => (
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>

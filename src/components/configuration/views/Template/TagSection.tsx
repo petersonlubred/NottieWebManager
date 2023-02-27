@@ -1,7 +1,8 @@
-import { px } from '@/utils';
+import { Hashtag,Search } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
-import { Search, Hashtag } from '@carbon/react/icons';
+
+import { px } from '@/utils';
 
 const TagSection = () => {
   return (
