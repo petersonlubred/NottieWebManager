@@ -8,7 +8,7 @@ export const signinSchema = Yup.object({
 export const userAccountSchema = Yup.object({
   emailAddress: Yup.string().email('Invalid email').required('Email is required'),
   authenticationType: Yup.string().required('Authentication type is required'),
-  roleIds: Yup.array().min(1, 'user must be assigned at least 1 role ').required('required'),
+  roles: Yup.array().min(1, 'user must be assigned at least 1 role ').required('required'),
   firstName: Yup.string().when('authenticationType', {
     is: (val: string) => val === 'AD',
     then: Yup.string().required('first name is required'),

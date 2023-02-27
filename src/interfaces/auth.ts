@@ -6,6 +6,13 @@ export interface APIResponse<T> {
   data: T;
 }
 
+export interface APIErrorResponse {
+  status: string;
+  data: {
+    message: string;
+  };
+}
+
 export interface LoginRequest {
   email: string;
   password: string;

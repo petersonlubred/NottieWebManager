@@ -16,7 +16,7 @@ import {
   TableBatchActions,
   TableBatchAction,
 } from '@carbon/react';
-import { TrashCan, Add, Password, Upload } from '@carbon/react/icons';
+import { TrashCan, Add, Upload } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import Empty from '@/components/shared/Empty';
 import Button from '@/components/shared/Button';
@@ -190,13 +190,6 @@ const Profile = () => {
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
-                <TableBatchAction
-                  renderIcon={Password}
-                  iconDescription="Download the selected rows"
-                  // onClick={console.log(selectedRows)}
-                >
-                  Reset Password
-                </TableBatchAction>
                 <TableBatchAction
                   renderIcon={TrashCan}
                   iconDescription="Delete the selected rows"

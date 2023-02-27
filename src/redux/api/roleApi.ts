@@ -30,7 +30,7 @@ export const roleApi = createApi({
       invalidatesTags: (_result, _error, { roleId }) => [{ type: 'role', roleId }],
     }),
 
-    deleteRole: builder.mutation<APIResponse<object>, { roleId: string }>({
+    deleteRole: builder.mutation<APIResponse<object>, { roleId?: string }>({
       query: ({ roleId }) => {
         return {
           url: `Roles/${roleId}`,

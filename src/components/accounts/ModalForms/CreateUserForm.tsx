@@ -1,5 +1,5 @@
 import { px } from '@/utils';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { TextInput, MultiSelect, FormGroup } from '@carbon/react';
 import { Formik, Form, Field, FieldInputProps } from 'formik';
@@ -27,36 +27,28 @@ interface Iprops {
 
 const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, setIsUpdatedMultiselect }: Iprops) => {
   const { data, isLoading: rolesLoading } = useGetRolesQuery();
-  const [createUser, { isLoading, isSuccess, isError, error }] = useCreateUserMutation();
-  const [editUser, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditUserMutation();
+  const [loading, setLoading] = useState(false);
+  const [createUser] = useCreateUserMutation();
+  const [editUser] = useEditUserMutation();
   const { toast } = useToast();
 
-  const handleSubmit = (values: IinitialUserForm) => {
+  const handleSubmit = async (values: IinitialUserForm) => {
     const formvalues = values as IinitialUserForm & { id: string };
-    formdata?.id ? editUser(pickValues(formvalues)) : createUser(pickValues(formvalues));
+    try {
+      setLoading(true);
+      if (formdata?.id) {
+        await editUser(pickValues(formvalues)).unwrap();
+      } else {
+        await createUser(pickValues(formvalues)).unwrap();
+      }
+      toast('success', 'User Account saved successfully');
+      toggleModal();
+      setLoading(false);
+    } catch (error: any) {
+      toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
+      setLoading(false);
+    }
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast('success', 'User Account saved successfully');
-      toggleModal();
-    }
-    if (isError && error && 'status' in error) {
-      toast('error', error?.data?.message);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error, isError, isSuccess]);
-
-  useEffect(() => {
-    if (editSuccess) {
-      toast('success', 'User Account saved successfully');
-      toggleModal();
-    }
-    if (isEditError && editError && 'status' in editError) {
-      toast('error', editError?.data?.message);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editError, editSuccess, isEditError]);
 
   useEffect(() => {
     setIsUpdatedMultiselect && setIsUpdatedMultiselect(true);
@@ -64,7 +56,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
 
   return (
     <ModalContentContainer>
-      {(isLoading || editLoading || rolesLoading) && <Loader />}
+      {(loading || rolesLoading) && <Loader />}
       <ModalItem>
         <Formik initialValues={{ ...initialUserValue, ...formdata }} validationSchema={userAccountSchema} onSubmit={handleSubmit} innerRef={formRef}>
           {({ errors, touched, setFieldTouched, setFieldValue }) => (
@@ -85,7 +77,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                   <ModalLabel>Role</ModalLabel>{' '}
                   <MultipleSelect
                     itemToString={(item: { text: string }) => (item ? item.text : '')}
-                    id="roleIds"
+                    id="roles"
                     items={
                       data?.data
                         ? data?.data?.map((item: IRole) => ({
@@ -98,15 +90,15 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                     size="md"
                     onChange={(e: { selectedItems?: { id: string; text?: string }[] }) => {
                       setFieldValue(
-                        'roleIds',
+                        'roles',
                         e.selectedItems?.map((item?: { id: string; text?: string }) => item?.id)
                       );
                     }}
                     key={isUpdatedMultiselect?.toString()}
                     initialSelectedItems={
-                      formdata?.roleIds
+                      formdata?.roles
                         ? data?.data
-                            ?.filter((item: IRole) => formdata?.roleIds?.includes(item.roleId))
+                            ?.filter((item: IRole) => formdata?.roles?.includes(item.roleId))
                             .map((item: IRole) => ({
                               id: item.roleId,
                               text: item.roleName,
@@ -114,7 +106,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                         : []
                     }
                   />
-                  <ErrorMessage invalid={Boolean(touched.roleIds && errors.roleIds)} invalidText={errors?.roleIds} />
+                  <ErrorMessage invalid={Boolean(touched.roles && errors.roles)} invalidText={errors?.roles} />
                 </ModalItem>
                 <ModalItem>
                   <ModalLabel>Email Address</ModalLabel>{' '}
