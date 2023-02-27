@@ -3,11 +3,13 @@ import React from 'react';
 import styled from 'styled-components';
 import Logo from '../Logo';
 import { Dropdown } from '@carbon/react';
-import { Light, LightFilled, Notification, User } from '@carbon/react/icons';
+import { Light, LightFilled, Notification, User, Logout } from '@carbon/react/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { setMode, setTab } from '@/redux/slices/util';
+import { setMode } from '@/redux/slices/util';
 import { NextRouter, useRouter } from 'next/router';
+import { logout } from '@/redux/slices/auth';
+import axios from 'axios';
 
 const Navbaritem = [
   { title: 'Dashboard', route: 'dashboard' },
@@ -22,6 +24,20 @@ const Navbar = () => {
   const router: NextRouter = useRouter();
   const dispatch = useDispatch();
   const currentRoute = router.pathname.split('/')[1];
+
+  const handleLogout = async (data?: any) => {
+    try {
+      await axios.post('/api/logout', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data,
+      });
+      dispatch(logout);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <NavbarContainer>
@@ -72,6 +88,9 @@ const Navbar = () => {
         </NavIconItem>
         <NavIconItem>
           <User size={20} />
+        </NavIconItem>
+        <NavIconItem onClick={() => handleLogout({})}>
+          <Logout size={20} />
         </NavIconItem>
       </NavSectionTwo>
     </NavbarContainer>
