@@ -1,10 +1,11 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
+import { isEmpty } from 'lodash';
 
 import { APIResponse } from '@/interfaces/auth';
 import { SmtpResponse } from '@/interfaces/configuration';
 
 import { Ismtp, SmtpsResponse } from './../../interfaces/configuration';
-import { baseQueryWithReauth, createRequest,CustomError } from './shared';
+import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
 export const smtpApi = createApi({
   reducerPath: 'smtpApi',
@@ -46,7 +47,8 @@ export const smtpApi = createApi({
 
     getSmtpservers: builder.query<SmtpsResponse, void>({
       query: () => createRequest('SmtpServer'),
-      providesTags: (result, _error, _arg) => (result?.data ? [...result.data.map(({ smtpId }: any) => ({ type: 'smtp' as const, smtpId })), 'smtp'] : ['smtp']),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smtpId }: any) => ({ type: 'smtp' as const, smtpId })), 'smtp'] : ['smtp'],
     }),
 
     sendTestMail: builder.mutation({
