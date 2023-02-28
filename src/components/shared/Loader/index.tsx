@@ -1,5 +1,5 @@
-import React from 'react';
 import { Loading } from '@carbon/react';
+import React from 'react';
 import styled from 'styled-components';
 
 const Loader = () => {

@@ -1,6 +1,7 @@
-import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
+
+import { px } from '@/utils';
 
 const tableItem = [
   { name: 'MTN', value: 287 },
@@ -35,9 +36,7 @@ const OutBoundSmcStatus = () => {
               <MonitorSubHeaderValue> 50 </MonitorSubHeaderValue>
             </MonitorSubHeaderParagraph>{' '}
             <MonitorSubHeaderTPSParagraph value={item?.value}>
-              <MonitorSubHeaderTPSValue>
-                {item?.value}{' '}
-              </MonitorSubHeaderTPSValue>
+              <MonitorSubHeaderTPSValue>{item?.value} </MonitorSubHeaderTPSValue>
             </MonitorSubHeaderTPSParagraph>
           </React.Fragment>
         ))}
@@ -108,29 +107,8 @@ const MonitorSubHeaderTPSParagraph = styled.div<{ value: number }>`
   font-weight: 400;
   padding: ${px(16)};
   background-color: ${({ value }) =>
-    value < 100
-      ? '#3B1A1A'
-      : value < 200
-      ? '#232016'
-      : value < 10000
-      ? '#171e19'
-      : value < 100000
-      ? '#232016'
-      : value < 1000000
-      ? '#3B1A1A'
-      : '#171e19'};
-  color: ${({ value }) =>
-    value < 100
-      ? '#F39698'
-      : value < 200
-      ? '#F1C21B'
-      : value < 10000
-      ? '#37D263'
-      : value < 100000
-      ? '#F1C21B'
-      : value < 1000000
-      ? '#F39698'
-      : '#37D263'};
+    value < 100 ? '#3B1A1A' : value < 200 ? '#232016' : value < 10000 ? '#171e19' : value < 100000 ? '#232016' : value < 1000000 ? '#3B1A1A' : '#171e19'};
+  color: ${({ value }) => (value < 100 ? '#F39698' : value < 200 ? '#F1C21B' : value < 10000 ? '#37D263' : value < 100000 ? '#F1C21B' : value < 1000000 ? '#F39698' : '#37D263')};
 `;
 
 const MonitorSubHeaderValue = styled.div``;

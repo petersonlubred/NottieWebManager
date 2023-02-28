@@ -1,14 +1,14 @@
-import React, { PropsWithChildren, useContext, useState } from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 
 interface IState {
-  toast: Function;
+  toast: (_kind: string, _title: string) => void;
   kind: string;
   title: string;
   rerender: boolean;
 }
 
 const initialState: IState = {
-  toast: () => {},
+  toast: () => null,
   kind: '',
   title: '',
   rerender: false,
@@ -33,7 +33,5 @@ export function ToastProvider({ children }: PropsWithChildren) {
 
   const value = { toast, kind, title, rerender };
 
-  return (
-    <ToastContext.Provider value={value}>{children}</ToastContext.Provider>
-  );
+  return <ToastContext.Provider value={value}>{children}</ToastContext.Provider>;
 }

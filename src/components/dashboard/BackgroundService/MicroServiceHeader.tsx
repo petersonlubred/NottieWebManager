@@ -1,7 +1,9 @@
-import Icon from '@/components/shared/Icons';
-import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
+
+import Icon from '@/components/shared/Icons';
+import { px } from '@/utils';
+
 import { TextIcon } from './MicroService';
 
 const MicroServiceheader = () => {

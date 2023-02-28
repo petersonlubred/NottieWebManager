@@ -1,31 +1,33 @@
-import React, { useCallback, useEffect } from 'react';
 import { ToastNotification } from '@carbon/react';
-import { useToast } from '@/context/ToastContext';
-import styled from 'styled-components';
-import { px } from '@/utils';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
+import styled from 'styled-components';
+
+import { useToast } from '@/context/ToastContext';
 import { setNotifications } from '@/redux/slices/util';
+import { RootState } from '@/redux/store';
+import { px } from '@/utils';
 
 const Toast = () => {
   const { kind, title, rerender } = useToast();
-  const { notifications } = useSelector(
-    (state: RootState) => state.sharedReducer
-  );
+  const { notifications } = useSelector((state: RootState) => state.sharedReducer);
 
   const dispatch = useDispatch();
 
-  const handleAddNotification = useCallback((kind: string, title: string) => {
-    const id = Date.now().toString();
-    if (title) {
-      const notification = {
-        id,
-        title: title,
-        kind: kind,
-      };
-      dispatch(setNotifications(notification));
-    }
-  }, []);
+  const handleAddNotification = useCallback(
+    (kind: string, title: string) => {
+      const id = Date.now().toString();
+      if (title) {
+        const notification = {
+          id,
+          title: title,
+          kind: kind,
+        };
+        dispatch(setNotifications(notification));
+      }
+    },
+    [dispatch]
+  );
 
   const handleRemoveNotification = (id: string) => {
     const filteredNotifications = notifications.filter((n: any) => n.id !== id);
@@ -39,14 +41,7 @@ const Toast = () => {
   return (
     <NotificationContainer>
       {notifications.map(({ id, title, subtitle, kind }: any) => (
-        <ToastNotification
-          key={id}
-          kind={kind}
-          title={title}
-          subtitle={subtitle}
-          timeout={3000}
-          onCloseButtonClick={() => handleRemoveNotification(id)}
-        />
+        <ToastNotification key={id} kind={kind} title={title} subtitle={subtitle} timeout={3000} onCloseButtonClick={() => handleRemoveNotification(id)} />
       ))}
     </NotificationContainer>
   );

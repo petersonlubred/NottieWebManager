@@ -1,8 +1,9 @@
-import { px } from '@/utils';
+import { Add } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
+
 import Button from '@/components/shared/Button';
-import { Add } from '@carbon/react/icons';
+import { px } from '@/utils';
 const AccordionItems = ['Source001', 'Source002', 'Source003'];
 
 const DataSourceContent = () => {
@@ -10,7 +11,7 @@ const DataSourceContent = () => {
     <DataSourceContainer>
       <DataSourceHeader>
         <HeaderParagraph>Data Source</HeaderParagraph>
-        <Button renderIcon={(props: any) => <Add size={16} {...props} />} handleClick={() => console.log('123')} buttonLabel="" />
+        <Button renderIcon={(props: any) => <Add size={16} {...props} />} handleClick={() => null} buttonLabel="" />
       </DataSourceHeader>
       {AccordionItems.map((item, index) => (
         <AccordionContainer key={index}>

@@ -1,30 +1,31 @@
-import React from 'react';
 import {
   DataTable,
+  DataTableSkeleton,
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
+  TableBatchAction,
+  TableBatchActionProps,
+  TableBatchActions,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableHeaderProps,
+  TableProps,
+  TableRow,
+  TableRowProps,
   TableSelectAll,
   TableSelectRow,
+  TableSelectRowProps,
   TableToolbar,
   TableToolbarContent,
-  TableBatchActions,
-  TableBatchAction,
-  TableHeaderProps,
-  TableBatchActionProps,
   TableToolbarProps,
-  TableRowProps,
-  TableSelectRowProps,
-  TableProps,
-  DataTableSkeleton,
 } from '@carbon/react';
-import { TrashCan, Add } from '@carbon/react/icons';
+import { Add, TrashCan } from '@carbon/react/icons';
+import { isEmpty } from 'lodash';
+import React from 'react';
+
 import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Button from '@/components/shared/Button';
-import { isEmpty } from 'lodash';
 import Empty from '@/components/shared/Empty';
 import Loader from '@/components/shared/Loader';
 import { IHeader } from '@/interfaces/role';

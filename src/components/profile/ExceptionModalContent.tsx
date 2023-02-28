@@ -1,25 +1,17 @@
-import { px } from '@/utils';
+import { Checkbox, FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import {
-  Checkbox,
-  TextInput,
-  FormGroup,
-  Select,
-  SelectItem,
-} from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
-import { SubscriptionSchema } from '@/schemas/schema';
-import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-import { FormContainer } from '../onboard/NewUserLoginForm';
+
 import { initialSubscription } from '@/schemas/dto';
+import { SubscriptionSchema } from '@/schemas/schema';
+import { px } from '@/utils';
+
+import { FormContainer } from '../onboard/NewUserLoginForm';
+import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 import RadioButton from '../shared/RadioButton';
 
-interface Iprops {
-  isEdit?: boolean;
-}
-
-const ModalContent = ({ isEdit }: Iprops) => {
+const ModalContent = () => {
   return (
     <ModalContentContainer>
       <ModalItem>
@@ -49,24 +41,11 @@ const ModalContent = ({ isEdit }: Iprops) => {
                     </Field>{' '}
                     <Field name="accountNo">
                       {({ field }: any) => (
-                        <TextInput
-                          {...field}
-                          type="text"
-                          id="accountNo-input"
-                          labelText="Account No"
-                          placeholder="input text"
-                          onKeyUp={() => setFieldTouched('accountNo', true)}
-                        />
+                        <TextInput {...field} type="text" id="accountNo-input" labelText="Account No" placeholder="input text" onKeyUp={() => setFieldTouched('accountNo', true)} />
                       )}
                     </Field>
-                    <ErrorMessage
-                      invalid={Boolean(touched.customerId && errors.customerId)}
-                      invalidText={errors.customerId}
-                    />
-                    <ErrorMessage
-                      invalid={Boolean(touched.accountNo && errors.accountNo)}
-                      invalidText={errors.accountNo}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.customerId && errors.customerId)} invalidText={errors.customerId} />
+                    <ErrorMessage invalid={Boolean(touched.accountNo && errors.accountNo)} invalidText={errors.accountNo} />
                   </FormContainer>
                 </FormField>
                 <FormField>
@@ -81,26 +60,11 @@ const ModalContent = ({ isEdit }: Iprops) => {
                     </Field>{' '}
                     <Field name="recipient">
                       {({ field }: any) => (
-                        <TextInput
-                          {...field}
-                          type="text"
-                          id="recipient-input"
-                          labelText="Recipient"
-                          placeholder="enter name"
-                          onKeyUp={() => setFieldTouched('recipient', true)}
-                        />
+                        <TextInput {...field} type="text" id="recipient-input" labelText="Recipient" placeholder="enter name" onKeyUp={() => setFieldTouched('recipient', true)} />
                       )}
                     </Field>{' '}
-                    <ErrorMessage
-                      invalid={Boolean(touched.recipient && errors.recipient)}
-                      invalidText={errors.recipient}
-                    />
-                    <ErrorMessage
-                      invalid={Boolean(
-                        touched.alertMedium && errors.alertMedium
-                      )}
-                      invalidText={errors.alertMedium}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.recipient && errors.recipient)} invalidText={errors.recipient} />
+                    <ErrorMessage invalid={Boolean(touched.alertMedium && errors.alertMedium)} invalidText={errors.alertMedium} />
                   </FormContainer>
                 </FormField>
                 <FormField>
@@ -108,12 +72,7 @@ const ModalContent = ({ isEdit }: Iprops) => {
                   <FormEmailContainer>
                     <Field name="profile">
                       {({ field }: any) => (
-                        <Select
-                          id="select-1"
-                          labelText=""
-                          {...field}
-                          onKeyUp={() => setFieldTouched('profile', true)}
-                        >
+                        <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('profile', true)}>
                           <SelectItem text="Choose option" />
                           <SelectItem text="Option 1" value="option-1" />
                           <SelectItem text="Option 2" value="option-2" />
@@ -121,14 +80,10 @@ const ModalContent = ({ isEdit }: Iprops) => {
                       )}
                     </Field>
                   </FormEmailContainer>
-                  <ErrorMessage
-                    invalid={Boolean(touched.profile && errors.profile)}
-                    invalidText={errors.profile}
-                  />
+                  <ErrorMessage invalid={Boolean(touched.profile && errors.profile)} invalidText={errors.profile} />
                 </FormField>{' '}
                 <ModalItem>
-                  <ModalLabel>Status</ModalLabel>{' '}
-                  <Checkbox id="checked-3" labelText="Yes" />
+                  <ModalLabel>Status</ModalLabel> <Checkbox id="checked-3" labelText="Yes" />
                 </ModalItem>
               </FormGroup>
             </Form>

@@ -1,3 +1,7 @@
+import type { GetServerSideProps, NextPage } from 'next';
+import { useState } from 'react';
+import styled from 'styled-components';
+
 import SetupNewUserLoginForm from '@/components/onboard/NewUserLoginForm';
 import SetDatabase from '@/components/onboard/SetDatabase';
 import SetDatabaseForm from '@/components/onboard/SetDatabaseForm/SetDatabaseForm';
@@ -7,9 +11,7 @@ import Signin from '@/components/onboard/SignIn';
 import Logo from '@/components/shared/Logo';
 import { useRegisterDbMutation } from '@/redux/api';
 import { protectedRouteProps } from '@/utils/withSession';
-import type { GetServerSideProps, NextPage } from 'next';
-import { useState } from 'react';
-import styled from 'styled-components';
+
 import Seo from '../providers/seo';
 import { px } from '../utils/px/px';
 

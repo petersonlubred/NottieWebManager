@@ -1,8 +1,9 @@
 import { NextApiHandler } from 'next';
+
 import { withSessionRoute } from '@/utils/withSession';
 
 const loginRoute: NextApiHandler<{ ok: boolean }> = async (req, res) => {
-  //Save user session serverside
+  //Save user session server side
   req.session.user = req.body.data.user;
   req.session.token = req.body.data.token;
   await req.session.save();

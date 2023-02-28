@@ -1,7 +1,8 @@
-import { px } from '@/utils';
+import { GroupedBarChartOptions } from '@carbon/charts/interfaces';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { GroupedBarChartOptions } from '@carbon/charts/interfaces';
+
+import { px } from '@/utils';
 
 const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
   const chartRef = useRef<any>();
@@ -90,9 +91,7 @@ const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
         <EmailDeliveryHeaderParagraph>{heading} </EmailDeliveryHeaderParagraph>
       </EmailDeliveryHeader>
       <StatusContainer>
-        <ChartContainer>
-          {isMounted && <DonutChart data={data} options={options}></DonutChart>}
-        </ChartContainer>
+        <ChartContainer>{isMounted && <DonutChart data={data} options={options}></DonutChart>}</ChartContainer>
         <BoxContainerSection>
           <BoxContainer>
             <Box value="#F9444C" />

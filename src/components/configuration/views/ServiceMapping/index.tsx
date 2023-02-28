@@ -1,9 +1,10 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
 import AccordionBox from '@/components/shared/AccordionBox';
 import Icon from '@/components/shared/Icons';
 import { ConfigurationContainer } from '@/pages/configuration';
 import { px } from '@/utils';
-import React, { useState } from 'react';
-import styled from 'styled-components';
 
 const AccordionItems = ['Transaction', 'Non-Transaction', 'OTP'];
 

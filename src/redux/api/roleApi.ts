@@ -1,7 +1,10 @@
-import { APIResponse } from './../../interfaces/auth';
-import { baseQueryWithReauth, CustomError, createRequest } from './shared';
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
-import { PrivilegesResponse, RolesResponse, IRole, RoleResponse, IPrivilege } from '@/interfaces/role';
+import { isEmpty } from 'lodash';
+
+import { IPrivilege, IRole, PrivilegesResponse, RoleResponse, RolesResponse } from '@/interfaces/role';
+
+import { APIResponse } from './../../interfaces/auth';
+import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
 export const roleApi = createApi({
   reducerPath: 'roleApi',
@@ -30,7 +33,7 @@ export const roleApi = createApi({
       invalidatesTags: (_result, _error, { roleId }) => [{ type: 'role', roleId }],
     }),
 
-    deleteRole: builder.mutation<APIResponse<object>, { roleId: string }>({
+    deleteRole: builder.mutation<APIResponse<object>, { roleId?: string }>({
       query: ({ roleId }) => {
         return {
           url: `Roles/${roleId}`,
@@ -42,12 +45,14 @@ export const roleApi = createApi({
 
     getRoles: builder.query<RolesResponse, void>({
       query: () => createRequest('Roles'),
-      providesTags: (result, _error, _arg) => (result?.data ? [...result.data.map(({ roleId }: any) => ({ type: 'role' as const, roleId })), 'role'] : ['role']),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ roleId }: any) => ({ type: 'role' as const, roleId })), 'role'] : ['role'],
     }),
 
     getPrivileges: builder.query<PrivilegesResponse, string>({
       query: (id) => createRequest(`Roles/Privileges/${id}`),
-      providesTags: (result, _error, _arg) => (result?.data ? [...result.data.map(({ roleId }: any) => ({ type: 'role' as const, roleId })), 'role'] : ['role']),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ roleId }: any) => ({ type: 'role' as const, roleId })), 'role'] : ['role'],
     }),
   }),
 });

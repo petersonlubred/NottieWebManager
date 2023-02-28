@@ -1,21 +1,16 @@
-import { px } from '@/utils';
+import { Close } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
+
 import Button from '@/components/shared/Button';
-import { Close } from '@carbon/react/icons';
+import { px } from '@/utils';
 
 const UploadContent = () => {
   return (
     <Container>
       <Label>Upload file</Label>
-      <Description>
-        Max file size is 5mb. Supported file types are csv or excel.
-      </Description>
-      <Button
-        renderIcon={null}
-        handleClick={() => console.log('123')}
-        buttonLabel="Add file"
-      />{' '}
+      <Description>Max file size is 5mb. Supported file types are csv or excel.</Description>
+      <Button renderIcon={null} handleClick={() => null} buttonLabel="Add file" />{' '}
       <PreviewName>
         <Paragraph>name.txt</Paragraph>
         <Close size={16} />

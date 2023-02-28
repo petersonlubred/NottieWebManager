@@ -1,9 +1,10 @@
-import { setMode } from '@/redux/slices/util';
-import { RootState } from '@/redux/store';
-import theme, { lightTheme } from '@/theme';
 import React, { PropsWithChildren, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+
+import { setMode } from '@/redux/slices/util';
+import { RootState } from '@/redux/store';
+import theme, { lightTheme } from '@/theme';
 
 const Provider = ({ children }: PropsWithChildren) => {
   const { mode } = useSelector((state: RootState) => state.sharedReducer);
@@ -13,9 +14,7 @@ const Provider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark =
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (savedTheme && ['dark', 'light'].includes(savedTheme)) {
       setMode(savedTheme);
     } else if (prefersDark) {

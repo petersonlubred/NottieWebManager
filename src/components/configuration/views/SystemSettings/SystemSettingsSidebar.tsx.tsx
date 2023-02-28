@@ -1,6 +1,7 @@
-import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
+
+import { px } from '@/utils';
 
 const AccordionItems = ['Batch processing', 'Service description', 'AD details', 'SSO details', 'Seg Log App Config', 'Auto fetch account details'];
 

@@ -1,8 +1,9 @@
+import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
+import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next';
+
 import { UserData } from '@/interfaces/user';
 import { setAuth } from '@/redux/slices/auth';
 import { wrapper } from '@/redux/store';
-import { withIronSessionApiRoute, withIronSessionSsr } from 'iron-session/next';
-import { GetServerSidePropsContext, GetServerSidePropsResult, NextApiHandler } from 'next';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -22,12 +23,12 @@ export function withSessionRoute(handler: NextApiHandler) {
 
 // Theses types are compatible with InferGetStaticPropsType https://nextjs.org/docs/basic-features/data-fetching#typescript-use-getstaticprops
 export function withSessionSsr<P extends { [key: string]: unknown } = { [key: string]: unknown }>(
-  handler: (context: GetServerSidePropsContext) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>
+  handler: (_context: GetServerSidePropsContext) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>
 ) {
   return withIronSessionSsr(handler, sessionOptions);
 }
 
-export const protectedRouteProps = (isAuthPage: boolean = false) =>
+export const protectedRouteProps = (isAuthPage = false) =>
   withSessionSsr(
     wrapper.getServerSideProps((store) => async ({ req }) => {
       if (isAuthPage) {

@@ -1,6 +1,7 @@
+import React from 'react';
+
 import { SMSC, SMSRoute, SMSRouteConfig, SMTP, SMTPRoute } from '@/components/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
-import React from 'react';
 
 interface Props {
   tab: number;

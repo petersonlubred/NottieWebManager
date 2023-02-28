@@ -1,23 +1,18 @@
-import { px } from '@/utils';
+import { CaretRight } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
-import { CaretRight } from '@carbon/react/icons';
+
+import { px } from '@/utils';
 
 type Iprops = {
   title: string;
   index: number;
-  toggleDropdown: Function;
+  toggleDropdown: (_index: number) => void;
   opened: boolean;
   itemsOnExpand?: JSX.Element;
 };
 
-const AccordionBox = ({
-  title,
-  index,
-  opened,
-  toggleDropdown,
-  itemsOnExpand,
-}: Iprops) => {
+const AccordionBox = ({ title, index, opened, toggleDropdown, itemsOnExpand }: Iprops) => {
   return (
     <AccordionContainer onClick={() => toggleDropdown(index)}>
       <AccordionHeader opened={opened}>

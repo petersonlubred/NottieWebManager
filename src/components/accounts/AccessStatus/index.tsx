@@ -1,5 +1,6 @@
-import { px } from '@/utils';
 import styled from 'styled-components';
+
+import { px } from '@/utils';
 
 type AccessDotProps = {
   active: boolean;

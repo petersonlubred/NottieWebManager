@@ -1,41 +1,26 @@
-import { px, rem } from '@/utils';
+import { CheckmarkOutline, CircleDash } from '@carbon/react/icons';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { CircleDash, CheckmarkOutline } from '@carbon/react/icons';
-import {
-  useLazyCreateTableQuery,
-  useLazyLoadDefaultDataQuery,
-  useLazyWrapUpQuery,
-} from '@/redux/api';
 
-const itemsList = [
-  'Creating stored procedures and views',
-  'Creating database table and indexes',
-  'Loading default data.',
-  'Wrapping up',
-];
+import { ISetState } from '@/interfaces/formik.type';
+import { useLazyCreateTableQuery, useLazyLoadDefaultDataQuery, useLazyWrapUpQuery } from '@/redux/api';
+import { px, rem } from '@/utils';
+
+const itemsList = ['Creating stored procedures and views', 'Creating database table and indexes', 'Loading default data.', 'Wrapping up'];
 
 type IProps = {
   handleSetStep: () => void;
   isSuccess: boolean;
   isLoading: boolean;
-  setLoginDetails: (value: React.SetStateAction<any>) => void;
+  setLoginDetails: ISetState<any>;
 };
 
-const SetupProcess = ({
-  handleSetStep,
-  isSuccess,
-  isLoading,
-  setLoginDetails,
-}: IProps) => {
+const SetupProcess = ({ handleSetStep, isSuccess, isLoading, setLoginDetails }: IProps) => {
   const [processStep, setProcessStep] = React.useState<number>(-2);
-  const [createTable, { isLoading: step2Loading, isSuccess: step2Success }] =
-    useLazyCreateTableQuery();
-  const [loadDefault, { isLoading: step3Loading, isSuccess: step3Success }] =
-    useLazyLoadDefaultDataQuery();
+  const [createTable, { isLoading: step2Loading, isSuccess: step2Success }] = useLazyCreateTableQuery();
+  const [loadDefault, { isLoading: step3Loading, isSuccess: step3Success }] = useLazyLoadDefaultDataQuery();
 
-  const [wrapUp, { data, isLoading: step4Loading, isSuccess: step4Success }] =
-    useLazyWrapUpQuery();
+  const [wrapUp, { data, isLoading: step4Loading, isSuccess: step4Success }] = useLazyWrapUpQuery();
 
   const incrementStep = () => {
     setProcessStep(processStep + 1);
@@ -85,20 +70,12 @@ const SetupProcess = ({
 
   return (
     <Setupcontainer>
-      <SetUpMessageSection>
-        Setting up the best service management system for you.
-      </SetUpMessageSection>
+      <SetUpMessageSection>Setting up the best service management system for you.</SetUpMessageSection>
       <VerticalLine />
       <SectionList>
         {itemsList?.map((item, index) => (
           <SectionListitem key={index} step={processStep} Id={index}>
-            <SectionListIcon>
-              {processStep === index || index < processStep ? (
-                <CheckmarkOutline />
-              ) : (
-                <CircleDash />
-              )}
-            </SectionListIcon>
+            <SectionListIcon>{processStep === index || index < processStep ? <CheckmarkOutline /> : <CircleDash />}</SectionListIcon>
             <SectionListDescription step={processStep} Id={index}>
               {item}
             </SectionListDescription>
@@ -141,8 +118,7 @@ const SectionList = styled.ul`
 type ListItemProps = { Id: number; step: number };
 
 const SectionListitem = styled.div<ListItemProps>`
-  color: ${({ Id, step, theme }) =>
-    Id === step || Id <= step ? theme.colors.normalText : theme.colors.white};
+  color: ${({ Id, step, theme }) => (Id === step || Id <= step ? theme.colors.normalText : theme.colors.white)};
   display: flex;
   align-items: center;
   margin-bottom: 10px;
@@ -163,10 +139,5 @@ const SectionListIcon = styled.div`
 const SectionListDescription = styled.div<ListItemProps>`
   font-size: ${px(16)};
   line-height: ${px(24)};
-  color: ${({ Id, step, theme }) =>
-    Id === step || Id <= step
-      ? theme.colors.normalText
-      : Id === step + 1
-      ? theme.colors.white
-      : theme.colors.bgHover};
+  color: ${({ Id, step, theme }) => (Id === step || Id <= step ? theme.colors.normalText : Id === step + 1 ? theme.colors.white : theme.colors.bgHover)};
 `;

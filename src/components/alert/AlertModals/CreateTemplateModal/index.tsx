@@ -1,9 +1,8 @@
+import { Select, SelectItem, TextInput } from '@carbon/react';
 import React from 'react';
-import { TextInput, Select, SelectItem } from '@carbon/react';
-import { Link } from '@carbon/react/icons';
-import Modal from '@/components/shared/Modal';
-import { px } from '@/utils';
 import styled from 'styled-components';
+
+import Modal from '@/components/shared/Modal';
 
 type IProps = {
   open?: boolean;
@@ -13,14 +12,7 @@ type IProps = {
 const CreateTemplateAlertModal = ({ open, toggleModal }: IProps) => {
   return (
     <TemplateModalContainer>
-      <Modal
-        buttonLabel="Create template"
-        heading=" Create template"
-        open={open}
-        toggleModal={toggleModal}
-        secondaryButtonText="Cancel"
-        extent="sm"
-      >
+      <Modal buttonLabel="Create template" heading=" Create template" open={open} toggleModal={toggleModal} secondaryButtonText="Cancel" extent="sm">
         <ModalContainer>
           <InputBox>
             <Select id="select-1" labelText="Template name">
@@ -30,12 +22,7 @@ const CreateTemplateAlertModal = ({ open, toggleModal }: IProps) => {
             </Select>
           </InputBox>
           <InputBox>
-            <TextInput
-              type="text"
-              id={'input_1'}
-              labelText="Service type"
-              placeholder="input text"
-            />
+            <TextInput type="text" id={'input_1'} labelText="Service type" placeholder="input text" />
           </InputBox>
         </ModalContainer>
       </Modal>

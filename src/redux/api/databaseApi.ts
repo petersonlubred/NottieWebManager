@@ -1,18 +1,10 @@
-import { baseQueryWithReauth, CustomError, createRequest } from './shared';
-import {
-  BaseQueryFn,
-  createApi,
-  FetchArgs,
-} from '@reduxjs/toolkit/query/react';
+import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
+
+import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
 export const databaseApi = createApi({
   reducerPath: 'databaseApi',
-  baseQuery: baseQueryWithReauth as BaseQueryFn<
-    string | FetchArgs,
-    unknown,
-    CustomError,
-    Record<string, any>
-  >,
+  baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
   endpoints: (builder) => ({
     registerDb: builder.mutation({
       query: (data) => {
@@ -35,9 +27,4 @@ export const databaseApi = createApi({
   }),
 });
 
-export const {
-  useRegisterDbMutation,
-  useLazyCreateTableQuery,
-  useLazyLoadDefaultDataQuery,
-  useLazyWrapUpQuery,
-} = databaseApi;
+export const { useRegisterDbMutation, useLazyCreateTableQuery, useLazyLoadDefaultDataQuery, useLazyWrapUpQuery } = databaseApi;

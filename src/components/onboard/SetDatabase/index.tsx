@@ -1,7 +1,8 @@
-import { px } from '@/utils';
+import { IbmCloudDedicatedHost } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
-import { IbmCloudDedicatedHost } from '@carbon/react/icons';
+
+import { px } from '@/utils';
 
 interface IProps {
   toggleLogin: () => void;
