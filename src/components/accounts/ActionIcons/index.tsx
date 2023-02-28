@@ -26,7 +26,11 @@ const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultise
   const { data: privileges, isFetching } = useGetPrivilegesQuery(roleData?.roleId as string);
   const [action, setAction] = useState('');
   const [context, setContext] = useState('');
-  const { handleRequest, loading } = useNetworkRequest();
+
+  const toggleActionModal = () => {
+    setAction('');
+  };
+  const { handleRequest, loading } = useNetworkRequest(toggleActionModal);
 
   const toggleModal = () => {
     formRef.current?.resetForm();
@@ -109,6 +113,7 @@ const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultise
         isLoading={loading}
         id={data?.id}
         setAction={setAction}
+        toggleModal={toggleActionModal}
         context={context}
         handleAction={() => {
           action === 'reset'

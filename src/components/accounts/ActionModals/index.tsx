@@ -11,14 +11,11 @@ interface IProps {
   setAction: ISetState<string>;
   context?: string;
   handleAction: () => void;
+  toggleModal: () => void;
 }
 
-const ActionModal = ({ isLoading, action, setAction, context, handleAction }: IProps) => {
+const ActionModal = ({ isLoading, action, toggleModal, context, handleAction }: IProps) => {
   const [message, setMessage] = React.useState('');
-
-  const toggleModal = () => {
-    setAction('');
-  };
 
   useEffect(() => {
     if (action === 'delete') {
