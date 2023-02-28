@@ -9,7 +9,7 @@ type DataProps = {
   ids?: string[];
 };
 
-const useNetworkRequest = () => {
+const useNetworkRequest = (toggleActionModal: () => void) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [sendResetPassword] = useResendPasswordMutation();
@@ -41,6 +41,7 @@ const useNetworkRequest = () => {
         toast('success', 'Roles deleted successfully');
       }
       setLoading(false);
+      toggleActionModal();
     } catch (error: any) {
       toast('error', error?.data?.message || 'Something went wrong');
       setLoading(false);

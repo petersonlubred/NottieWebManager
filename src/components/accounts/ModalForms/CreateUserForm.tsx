@@ -80,14 +80,14 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                   <MultipleSelect
                     itemToString={(item: { text: string }) => (item ? item.text : '')}
                     id="roles"
-                    items={[
+                    items={
                       !isEmpty(data?.data)
                         ? data?.data?.map((item: IRole) => ({
                             id: item.roleId,
                             text: item.roleName,
                           }))
-                        : [],
-                    ]}
+                        : []
+                    }
                     label="Choose roles"
                     size="md"
                     onChange={(e: { selectedItems?: { id: string; text?: string }[] }) => {
