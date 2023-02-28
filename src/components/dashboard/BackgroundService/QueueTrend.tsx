@@ -46,9 +46,7 @@ const QueueTrend = ({ heading }: { heading: string }) => {
         ))}
         <GraphContainer></GraphContainer>
         {socialItems?.map((item, index) => (
-          <MonitorSubHeaderTitle key={index}>
-            {item?.time}
-          </MonitorSubHeaderTitle>
+          <MonitorSubHeaderTitle key={index}>{item?.time}</MonitorSubHeaderTitle>
         ))}
       </MonitorContentBox>
     </MonitorContainerBox>

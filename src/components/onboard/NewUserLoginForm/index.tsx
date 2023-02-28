@@ -1,6 +1,6 @@
-import { FormGroup, PasswordInput,TextInput } from '@carbon/react';
+import { FormGroup, PasswordInput, TextInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
-import { Field,Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -25,14 +25,7 @@ const SetupNewUserLoginForm = ({ toggleLogin }: IProps) => {
           setSubmitting(false);
         }}
       >
-        {({
-          errors,
-          touched,
-          isSubmitting,
-          isValid,
-          values,
-          setFieldTouched,
-        }) => (
+        {({ errors, touched, isSubmitting, isValid, values, setFieldTouched }) => (
           <Form>
             <FormGroup legendText="">
               <FormContainer>
@@ -92,9 +85,7 @@ const SetupNewUserLoginForm = ({ toggleLogin }: IProps) => {
                         labelText="Confirm Password"
                         placeholder="Password"
                         onKeyUp={() => setFieldTouched('password', true)}
-                        invalid={Boolean(
-                          touched.confirmPassword && errors.confirmPassword
-                        )}
+                        invalid={Boolean(touched.confirmPassword && errors.confirmPassword)}
                         invalidText={errors.confirmPassword}
                       />
                     )}

@@ -4,22 +4,11 @@ import styled from 'styled-components';
 
 interface Iprops {
   invalid: boolean;
-  invalidText:
-    | string
-    | string[]
-    | FormikErrors<any>
-    | FormikErrors<any>[]
-    | undefined;
+  invalidText: string | string[] | FormikErrors<any> | FormikErrors<any>[] | undefined;
 }
 
 const ErrorMessage = ({ invalid, invalidText }: Iprops) => {
-  return (
-    <ErrorContainer>
-      {invalid && (
-        <ErrorDescription>{invalidText?.toString()}</ErrorDescription>
-      )}
-    </ErrorContainer>
-  );
+  return <ErrorContainer>{invalid && <ErrorDescription>{invalidText?.toString()}</ErrorDescription>}</ErrorContainer>;
 };
 
 export default ErrorMessage;

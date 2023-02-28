@@ -8,11 +8,7 @@ import EmailDeliveryStatus from './EmailDeliveryStatus';
 import OutBoundSmcStatus from './OutBoundSmcStatus';
 import SmsDeliveryStatus from './SMSDeliveryStatus';
 
-const deliveryItems = [
-  'Transaction SMS Delivery',
-  'Non-Transaction SMS Delivery',
-  'OTP SMS Delivery',
-];
+const deliveryItems = ['Transaction SMS Delivery', 'Non-Transaction SMS Delivery', 'OTP SMS Delivery'];
 const SmsandEmail = () => {
   return (
     <>

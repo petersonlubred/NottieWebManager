@@ -1,6 +1,6 @@
-import { FormGroup, TextArea,TextInput } from '@carbon/react';
+import { FormGroup, TextArea, TextInput } from '@carbon/react';
 import { Copy } from '@carbon/react/icons';
-import { Field,Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 

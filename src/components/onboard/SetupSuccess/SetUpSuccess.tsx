@@ -1,5 +1,5 @@
 import { Button } from '@carbon/react';
-import { ArrowRight, CheckmarkFilled,Copy } from '@carbon/react/icons';
+import { ArrowRight, CheckmarkFilled, Copy } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -7,7 +7,7 @@ import { useToast } from '@/context/ToastContext';
 import { px } from '@/utils';
 
 type IProps = {
-  toggleLogin: ()=>void;
+  toggleLogin: () => void;
   loginDetails: {
     username: string;
     password: string;
@@ -18,9 +18,7 @@ const SetUpSuccess = ({ toggleLogin, loginDetails }: IProps) => {
   const { toast } = useToast();
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(
-      `username: ${loginDetails?.username} password: ${loginDetails?.password}`
-    );
+    navigator.clipboard.writeText(`username: ${loginDetails?.username} password: ${loginDetails?.password}`);
     toast('info', 'Details copied to clipboard');
   };
 
@@ -37,10 +35,7 @@ const SetUpSuccess = ({ toggleLogin, loginDetails }: IProps) => {
           <p>We generated a login details for you, please copy and save it.</p>
         </div>
         <div className="para2">
-          <p>
-            This account will expire in 2 days and it can only be used to create
-            other accounts.
-          </p>
+          <p>This account will expire in 2 days and it can only be used to create other accounts.</p>
         </div>
 
         <div className="inner_div">
@@ -63,21 +58,10 @@ const SetUpSuccess = ({ toggleLogin, loginDetails }: IProps) => {
         </div>
 
         <InnerBtnDiv>
-          <Button
-            className="btn"
-            renderIcon={(props: any) => (
-              <Copy {...props} size={24} onClick={handleCopy} />
-            )}
-            size="xl"
-          >
+          <Button className="btn" renderIcon={(props: any) => <Copy {...props} size={24} onClick={handleCopy} />} size="xl">
             Copy details
           </Button>
-          <Button
-            className="btn2"
-            renderIcon={ArrowRight}
-            size="xl"
-            onClick={() => toggleLogin(true)}
-          >
+          <Button className="btn2" renderIcon={ArrowRight} size="xl" onClick={() => toggleLogin(true)}>
             Get started
           </Button>
         </InnerBtnDiv>

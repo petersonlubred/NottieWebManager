@@ -23,27 +23,19 @@ const ProgressStatusTable = ({ heading }: { heading: string }) => {
             <MonitorSubHeaderTitle>{item}</MonitorSubHeaderTitle>
             <MonitorSubHeaderParagraph>
               <MonitorSubHeaderValue>34,023</MonitorSubHeaderValue>
-              <MonitorSubHeaderPercentage color={'secondaryLight'}>
-                34%
-              </MonitorSubHeaderPercentage>
+              <MonitorSubHeaderPercentage color={'secondaryLight'}>34%</MonitorSubHeaderPercentage>
             </MonitorSubHeaderParagraph>{' '}
             <MonitorSubHeaderParagraph>
               <MonitorSubHeaderValue> 50,232 </MonitorSubHeaderValue>
-              <MonitorSubHeaderPercentage color={'dangerLight'}>
-                34%
-              </MonitorSubHeaderPercentage>
+              <MonitorSubHeaderPercentage color={'dangerLight'}>34%</MonitorSubHeaderPercentage>
             </MonitorSubHeaderParagraph>{' '}
             <MonitorSubHeaderParagraph>
               <MonitorSubHeaderValue> 50,232 </MonitorSubHeaderValue>
-              <MonitorSubHeaderPercentage color={'successLight'}>
-                34%
-              </MonitorSubHeaderPercentage>
+              <MonitorSubHeaderPercentage color={'successLight'}>34%</MonitorSubHeaderPercentage>
             </MonitorSubHeaderParagraph>{' '}
             <MonitorSubHeaderParagraph>
               <MonitorSubHeaderValue> 50,232 </MonitorSubHeaderValue>
-              <MonitorSubHeaderPercentage color={'primaryLight'}>
-                34%
-              </MonitorSubHeaderPercentage>
+              <MonitorSubHeaderPercentage color={'primaryLight'}>34%</MonitorSubHeaderPercentage>
             </MonitorSubHeaderParagraph>
           </React.Fragment>
         ))}

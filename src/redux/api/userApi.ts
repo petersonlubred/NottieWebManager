@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 import { UserData, UserResponse, UsersResponse } from '@/interfaces/user';
 
 import { APIResponse } from './../../interfaces/auth';
-import { baseQueryWithReauth, createRequest,CustomError } from './shared';
+import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
 export const userApi = createApi({
   reducerPath: 'userApi',

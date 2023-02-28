@@ -1,4 +1,4 @@
-import { Hashtag,Search } from '@carbon/react/icons';
+import { Hashtag, Search } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
 

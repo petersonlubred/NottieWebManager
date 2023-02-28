@@ -110,9 +110,7 @@ const EmailDeliveryStatus = () => {
   return (
     <EmailDeliveryContainerBox>
       <EmailDeliveryHeader>
-        <EmailDeliveryHeaderParagraph>
-          Email delivery status
-        </EmailDeliveryHeaderParagraph>
+        <EmailDeliveryHeaderParagraph>Email delivery status</EmailDeliveryHeaderParagraph>
       </EmailDeliveryHeader>
       <StatusContainer>
         <BoxContainer>
@@ -122,11 +120,7 @@ const EmailDeliveryStatus = () => {
           <Box value={'#C51C24'}></Box> Rejected/Error
         </BoxContainer>{' '}
       </StatusContainer>{' '}
-      <ChartContainer>
-        {isMounted && (
-          <GroupedBarChart data={data} options={options}></GroupedBarChart>
-        )}
-      </ChartContainer>
+      <ChartContainer>{isMounted && <GroupedBarChart data={data} options={options}></GroupedBarChart>}</ChartContainer>
     </EmailDeliveryContainerBox>
   );
 };

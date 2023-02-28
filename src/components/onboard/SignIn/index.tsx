@@ -1,7 +1,7 @@
-import { FormGroup, Loading,PasswordInput, TextInput } from '@carbon/react';
+import { FormGroup, Loading, PasswordInput, TextInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import axios from 'axios';
-import { Field,Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch } from 'react-redux';

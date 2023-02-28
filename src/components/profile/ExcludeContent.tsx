@@ -1,5 +1,5 @@
 import { FormGroup, Select, SelectItem } from '@carbon/react';
-import { Field,Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -9,8 +9,6 @@ import { px } from '@/utils';
 
 import { FormContainer } from '../onboard/NewUserLoginForm';
 import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-
-
 
 const ExcludeModalContent = () => {
   return (
@@ -30,12 +28,7 @@ const ExcludeModalContent = () => {
                   <FormContainer>
                     <Field name="label">
                       {({ field }: any) => (
-                        <Select
-                          id="select-1"
-                          labelText="Label"
-                          {...field}
-                          onKeyUp={() => setFieldTouched('label', true)}
-                        >
+                        <Select id="select-1" labelText="Label" {...field} onKeyUp={() => setFieldTouched('label', true)}>
                           <SelectItem text="Choose option" />
                           <SelectItem text="Option 1" value="option-1" />
                           <SelectItem text="Option 2" value="option-2" />
@@ -44,26 +37,15 @@ const ExcludeModalContent = () => {
                     </Field>
                     <Field name="operator">
                       {({ field }: any) => (
-                        <Select
-                          id="select-1"
-                          labelText="Operator"
-                          {...field}
-                          onKeyUp={() => setFieldTouched('operator', true)}
-                        >
+                        <Select id="select-1" labelText="Operator" {...field} onKeyUp={() => setFieldTouched('operator', true)}>
                           <SelectItem text="Choose option" />
                           <SelectItem text="Option 1" value="option-1" />
                           <SelectItem text="Option 2" value="option-2" />
                         </Select>
                       )}
                     </Field>
-                    <ErrorMessage
-                      invalid={Boolean(touched.label && errors.label)}
-                      invalidText={errors.label}
-                    />
-                    <ErrorMessage
-                      invalid={Boolean(touched.operator && errors.operator)}
-                      invalidText={errors.operator}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.label && errors.label)} invalidText={errors.label} />
+                    <ErrorMessage invalid={Boolean(touched.operator && errors.operator)} invalidText={errors.operator} />
                   </FormContainer>
                 </FormField>
                 <FormField>
@@ -71,13 +53,7 @@ const ExcludeModalContent = () => {
                   <FormEmailContainer>
                     <Field name="textToExclude">
                       {({ field }: any) => (
-                        <Select
-                          id="select-1"
-                          labelText=""
-                          {...field}
-                          onKeyUp={() => setFieldTouched('textToExclude', true)}
-                          helperText="Separate each text with comma “,”"
-                        >
+                        <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('textToExclude', true)} helperText="Separate each text with comma “,”">
                           <SelectItem text="Choose option" />
                           <SelectItem text="Option 1" value="option-1" />
                           <SelectItem text="Option 2" value="option-2" />
@@ -85,12 +61,7 @@ const ExcludeModalContent = () => {
                       )}
                     </Field>
                   </FormEmailContainer>
-                  <ErrorMessage
-                    invalid={Boolean(
-                      touched.textToExclude && errors.textToExclude
-                    )}
-                    invalidText={errors.textToExclude}
-                  />
+                  <ErrorMessage invalid={Boolean(touched.textToExclude && errors.textToExclude)} invalidText={errors.textToExclude} />
                 </FormField>
               </FormGroup>
             </Form>

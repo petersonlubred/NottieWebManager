@@ -1,5 +1,5 @@
-import { css,cx } from '@emotion/css';
-import React, { forwardRef,PropsWithChildren, Ref } from 'react';
+import { css, cx } from '@emotion/css';
+import React, { forwardRef, PropsWithChildren, Ref } from 'react';
 import ReactDOM from 'react-dom';
 
 interface BaseProps {
@@ -24,13 +24,7 @@ export const Button = forwardRef<
       className,
       css`
         cursor: pointer;
-        color: ${reversed
-          ? active
-            ? 'white'
-            : '#aaa'
-          : active
-          ? 'black'
-          : '#ccc'};
+        color: ${reversed ? (active ? 'white' : '#aaa') : active ? 'black' : '#ccc'};
       `
     )}
   />
@@ -91,10 +85,7 @@ export const EditorValue = forwardRef<
 
 EditorValue.displayName = 'EditorValue';
 
-export const Icon = forwardRef<
-  OrNull<HTMLSpanElement>,
-  PropsWithChildren<BaseProps>
->(({ className, ...props }, ref) => (
+export const Icon = forwardRef<OrNull<HTMLSpanElement>, PropsWithChildren<BaseProps>>(({ className, ...props }, ref) => (
   <span
     {...props}
     ref={ref}
@@ -111,10 +102,7 @@ export const Icon = forwardRef<
 
 Icon.displayName = 'Icon';
 
-export const Instruction = forwardRef<
-  OrNull<HTMLDivElement>,
-  PropsWithChildren<BaseProps>
->(({ className, ...props }, ref) => (
+export const Instruction = forwardRef<OrNull<HTMLDivElement>, PropsWithChildren<BaseProps>>(({ className, ...props }, ref) => (
   <div
     {...props}
     ref={ref}
@@ -133,10 +121,7 @@ export const Instruction = forwardRef<
 
 Instruction.displayName = 'Instruction';
 
-export const Menu = forwardRef<
-  OrNull<HTMLDivElement>,
-  PropsWithChildren<BaseProps>
->(({ className, ...props }, ref) => (
+export const Menu = forwardRef<OrNull<HTMLDivElement>, PropsWithChildren<BaseProps>>(({ className, ...props }, ref) => (
   <div
     {...props}
     data-test-id="menu"
@@ -158,32 +143,25 @@ export const Menu = forwardRef<
 Menu.displayName = 'Menu';
 
 export const Portal = ({ children }: PropsWithChildren) => {
-  return typeof document === 'object'
-    ? ReactDOM.createPortal(children, document.body)
-    : null;
+  return typeof document === 'object' ? ReactDOM.createPortal(children, document.body) : null;
 };
 
-export const Toolbar = forwardRef(
-  (
-    { className, ...props }: PropsWithChildren<BaseProps>,
-    ref: Ref<OrNull<HTMLDivElement>>
-  ) => (
-    <Menu
-      {...props}
-      ref={ref}
-      className={cx(
-        className,
-        css`
-          position: relative;
-          padding: 1px 18px 17px;
-          margin: 0 -20px;
-          border-bottom: 2px solid #eee;
-          margin-bottom: 20px;
-        `
-      )}
-    />
-  )
-);
+export const Toolbar = forwardRef(({ className, ...props }: PropsWithChildren<BaseProps>, ref: Ref<OrNull<HTMLDivElement>>) => (
+  <Menu
+    {...props}
+    ref={ref}
+    className={cx(
+      className,
+      css`
+        position: relative;
+        padding: 1px 18px 17px;
+        margin: 0 -20px;
+        border-bottom: 2px solid #eee;
+        margin-bottom: 20px;
+      `
+    )}
+  />
+));
 
 Portal.displayName = 'Portal';
 Toolbar.displayName = 'Toolbar';

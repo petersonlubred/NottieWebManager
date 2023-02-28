@@ -14,9 +14,7 @@ const Provider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark =
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (savedTheme && ['dark', 'light'].includes(savedTheme)) {
       setMode(savedTheme);
     } else if (prefersDark) {

@@ -1,17 +1,7 @@
 import { Field } from 'formik';
 import React from 'react';
 
-const Checkbox = ({
-  label,
-  name,
-  isMultiple,
-  value,
-}: {
-  name: string;
-  label: string;
-  isMultiple?: boolean;
-  value?: string;
-}) => {
+const Checkbox = ({ label, name, isMultiple, value }: { name: string; label: string; isMultiple?: boolean; value?: string }) => {
   const props = { label, name, value };
   if (isMultiple) {
     delete props.value;

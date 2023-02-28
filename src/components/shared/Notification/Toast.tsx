@@ -10,9 +10,7 @@ import { px } from '@/utils';
 
 const Toast = () => {
   const { kind, title, rerender } = useToast();
-  const { notifications } = useSelector(
-    (state: RootState) => state.sharedReducer
-  );
+  const { notifications } = useSelector((state: RootState) => state.sharedReducer);
 
   const dispatch = useDispatch();
 
@@ -43,14 +41,7 @@ const Toast = () => {
   return (
     <NotificationContainer>
       {notifications.map(({ id, title, subtitle, kind }: any) => (
-        <ToastNotification
-          key={id}
-          kind={kind}
-          title={title}
-          subtitle={subtitle}
-          timeout={3000}
-          onCloseButtonClick={() => handleRemoveNotification(id)}
-        />
+        <ToastNotification key={id} kind={kind} title={title} subtitle={subtitle} timeout={3000} onCloseButtonClick={() => handleRemoveNotification(id)} />
       ))}
     </NotificationContainer>
   );
