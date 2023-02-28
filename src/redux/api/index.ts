@@ -1,3 +1,4 @@
+export * from './alertApi';
 export * from './databaseApi';
 export * from './roleApi';
 export * from './smtpApi';

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 
-import { roleApi, smtpApi, userApi } from './api';
+import { alertApi, roleApi, smtpApi, userApi } from './api';
 import { databaseApi } from './api/databaseApi';
 import authReducer, { persistConfig } from './slices/auth';
 import sharedReducer from './slices/util';
@@ -12,6 +12,7 @@ export const reducers = combineReducers({
   [smtpApi.reducerPath]: smtpApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
+  [alertApi.reducerPath]: alertApi.reducer,
   sharedReducer: persistReducer(persistConfig, sharedReducer),
 });
 
