@@ -6,21 +6,24 @@ import { px } from '@/utils';
 import Modal from '@/components/shared/Modal';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { useGetSmtpserversQuery } from '@/redux/api';
+import { useGetSmscQuery } from '@/redux/api/smscApi';
 import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
 import ModalContent from '../../components/configuration/ModalContent';
 import { ConfigurationTable, DataSource, ServiceMapping, SystemSettings, Template } from '@/components/configuration';
 import { IHeader } from '@/interfaces/role';
 import { isEmpty } from 'lodash';
-import { Ismtp } from '@/interfaces/configuration';
+import { Ismtp, Smsc } from '@/interfaces/configuration';
 import { useRouter } from 'next/router';
 
 const SystemConfiguration = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);
   const [responseData, setResponseData] = useState<Ismtp[]>([]);
+  const [smscResponseData, setSmscResponseData]=useState<Smsc[]>([])
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const formRef = useRef<FormikRefType<any>>(null);
   const { data, isFetching: isLoading } = useGetSmtpserversQuery();
+  const { data:smscData, isFetching: isRetrieving } = useGetSmscQuery();
   const [tabIndex, setTabIndex] = useState<number>(0);
   const router = useRouter();
   const { tab } = router.query;
@@ -79,6 +82,7 @@ const SystemConfiguration = () => {
         const row: any = {};
         const tabHeaders = headers.find((header) => header.tabName === currentTab)?.data || [];
         tabHeaders.forEach((item2: { key: string; header: string }) => {
+          console.log('item2',item2)
           row[item2.key] = item[item2.key];
           if (currentTab === 'smtp') {
             row.id = item['smtpId'];
@@ -95,7 +99,10 @@ const SystemConfiguration = () => {
   useEffect(() => {
     if (currentTab === 'smtp') {
       !isEmpty(data?.data) && setResponseData(data?.data as Ismtp[]);
+    }else if(currentTab === 'smsc'){
+      !isEmpty(smscData?.data) && setSmscResponseData(smscData?.data as Smsc[]);
     } else {
+      setSmscResponseData([])
       setResponseData([]);
     }
   }, [data?.data, currentTab]);
