@@ -1,33 +1,81 @@
+import React,{useEffect} from 'react';
 import { Checkbox, FormGroup, NumberInput, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
 import styled from 'styled-components';
+import Loader from '@/components/shared/Loader';
+
+import { useCreateSmscMutation, useEditSmscMutation } from '@/redux/api';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import { SMSCSchema } from '@/schemas/schema';
-import { initialSMSCValue } from '@/schemas/schema';
+import { initialSMSCValue } from '@/schemas/dto';
+import { IinitialSMSCForm } from '@/schemas/interface';
+import { FormikRefType } from '@/interfaces/formik.type';
 import { px } from '@/utils';
+import { useToast } from '@/context/ToastContext';
 
-const SMSCForm = () => {
+interface Props {
+  formRef: React.RefObject<FormikRefType<IinitialSMSCForm>>;
+  formdata?: IinitialSMSCForm & { smscId: string };
+  toggleModal: () => void;
+}
+
+const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
+  const [createSmsc,{isLoading, isSuccess, isError, error}]=useCreateSmscMutation()
+  const [editSmsc,{isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError}]=useEditSmscMutation()
+
+  const {toast} =useToast()
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast('success', 'SMSC configuration saved successfully');
+      toggleModal();
+    }
+    if (isError && error && 'status' in error) {
+      toast('error', error?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, isError, isSuccess]);
+
+  useEffect(() => {
+    if (editSuccess) {
+      toast('success', 'SMSC edited successfully');
+      toggleModal();
+    }
+    if (isEditError && editError && 'status' in editError) {
+      toast('error', editError?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editError, editSuccess, isEditError]);
+
+
+  const handleSubmit = (values: IinitialSMSCForm) => {
+    console.log('clicked');
+    const formvalues = values as IinitialSMSCForm & { smscId: string };
+    formdata?.smscId ? editSmsc(formvalues) : createSmsc(formvalues);
+  };
+
+
+
   return (
     <ModalContentContainer>
+      {(isLoading  || editLoading) && <Loader />}
       <ModalItem>
         <Formik
-          initialValues={initialSMSCValue}
+          initialValues={formdata?.smscId? formdata: initialSMSCValue}
           validationSchema={SMSCSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
-          }}
+          onSubmit={handleSubmit}
+          innerRef={formRef}
         >
-          {({ errors, touched, setFieldTouched }) => (
+          {({ errors, touched, setFieldValue, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">
                 <FormField>
                   <FormContainer>
                     <Field name="smsc_name">
                       {({ field }: any) => (
-                        <TextInput {...field} type="text" id="smsc_name-input" labelText="SMSC Name" placeholder="enter name" onKeyUp={() => setFieldTouched('smsc_name', true)} />
+                        <TextInput {...field} type="text" id="smsc_name-input" labelText="SMSC Name" placeholder="enter name"  onKeyUp={() => setFieldTouched('smsc_name', true)} />
                       )}
                     </Field>
                     <Field name="server">
@@ -53,6 +101,9 @@ const SMSCForm = () => {
                           className="number-input"
                           value={0}
                           placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('TXPort', value);
+                          }}
                           onKeyUp={() => setFieldTouched('TXPort', true)}
                         />
                       )}
@@ -69,6 +120,9 @@ const SMSCForm = () => {
                           className="number-input"
                           value={0}
                           placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('noOfSessions', value);
+                          }}
                           onKeyUp={() => setFieldTouched('noOfSessions', true)}
                         />
                       )}
@@ -106,6 +160,9 @@ const SMSCForm = () => {
                           className="number-input"
                           value={0}
                           placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('npi', value);
+                          }}
                           onKeyUp={() => setFieldTouched('npi', true)}
                         />
                       )}
@@ -122,6 +179,9 @@ const SMSCForm = () => {
                           className="number-input"
                           value={0}
                           placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('onpi', value);
+                          }}
                           onKeyUp={() => setFieldTouched('onpi', true)}
                         />
                       )}
@@ -144,6 +204,9 @@ const SMSCForm = () => {
                           className="number-input"
                           value={0}
                           placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('ton', value);
+                          }}
                           onKeyUp={() => setFieldTouched('ton', true)}
                         />
                       )}
@@ -160,6 +223,9 @@ const SMSCForm = () => {
                           className="number-input"
                           value={0}
                           placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('otin', value);
+                          }}
                           onKeyUp={() => setFieldTouched('otin', true)}
                         />
                       )}
@@ -182,6 +248,9 @@ const SMSCForm = () => {
                           className="number-input"
                           value={0}
                           placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('dnpi', value);
+                          }}
                           onKeyUp={() => setFieldTouched('dnpi', true)}
                         />
                       )}
@@ -198,6 +267,9 @@ const SMSCForm = () => {
                           className="number-input"
                           value={0}
                           placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('dton', value);
+                          }}
                           onKeyUp={() => setFieldTouched('dton', true)}
                         />
                       )}
