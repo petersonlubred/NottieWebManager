@@ -43,7 +43,12 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [action, setAction] = useState<string>('');
   const [context, setContext] = useState<any>('');
-  const { handleRequest, loading } = useNetworkRequest();
+
+  const toggleActionModal = () => {
+    setAction('');
+  };
+
+  const { handleRequest, loading } = useNetworkRequest(toggleActionModal);
 
   return isLoading ? (
     <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
@@ -149,6 +154,7 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
         isLoading={loading}
         context={context}
         setAction={setAction}
+        toggleModal={toggleActionModal}
         handleAction={() =>
           action === 'delete' && context === 'user'
             ? handleRequest({ status: false, ids: selectedRows }, 'delete-users')

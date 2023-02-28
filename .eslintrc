@@ -5,7 +5,6 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:jest-dom/recommended",
-    "next",
     "next/core-web-vitals",
     "prettier",
     "plugin:react-hooks/recommended"
