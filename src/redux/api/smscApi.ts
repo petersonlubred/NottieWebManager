@@ -3,6 +3,7 @@ import { baseQueryWithReauth, CustomError, createRequest } from './shared';
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 import { SmscResponse } from '@/interfaces/configuration';
 import { APIResponse } from '@/interfaces/auth';
+import { isEmpty } from 'lodash';
 
 export const smscApi = createApi({
   reducerPath: 'smscApi',
@@ -23,7 +24,8 @@ export const smscApi = createApi({
 
     getSmsc: builder.query<SmscResponsez, void>({
       query: () => createRequest('Smsc'),
-      providesTags: (result, _error, _arg) => (result?.data ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc']),
+      providesTags: (result, _error, _arg) => (result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc']),
+      // providesTags: (result, _error, _arg) => (result?.data && !isEmpty(result?.data) ? [...result.data].map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })) : ['smsc']),
     }),
 
     getSmscRoutes: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscRouteId'>>({
@@ -81,7 +83,7 @@ export const smscApi = createApi({
 
     getSmscRoute: builder.query<SmscResponsez, void>({
       query: () => createRequest('Smsc/Route'),
-      providesTags: (result, _error, _arg) => (result?.data ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc']),
+      providesTags: (result, _error, _arg) => (result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc']),
     }),
 
     postSmscRouteConfig: builder.mutation<APIResponse<object>, Partial<Smsc>>({

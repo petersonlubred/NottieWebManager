@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { ConfigurationTable, DataSource, ServiceMapping, SystemSettings, Template } from '@/components/configuration';
 import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
+import ActionIconsSmsc from '@/components/configuration/ActionIcons/Smsc';
 import Modal from '@/components/shared/Modal';
 import Layout from '@/HOC/Layout';
 import useHeaders from '@/hooks/useHeaders';
@@ -23,13 +24,15 @@ import { Ismtp, Smsc } from '@/interfaces/configuration';
 
 const SystemConfiguration = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);
-  const [responseData, setResponseData] = useState<Ismtp[]>([]);
-  const [smscResponseData, setSmscResponseData]=useState<Smsc[]>([])
+  const [responseData, setResponseData] = useState<Ismtp[] | Smsc[]>([]);
+  // const [smscResponseData, setSmscResponseData]=useState<Smsc[]>([])
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const formRef = useRef<FormikRefType<any>>(null);
+  
   const { data, isFetching: isLoading } = useGetSmtpserversQuery();
   const { data:smscData, isFetching: isRetrieving } = useGetSmscQuery();
+  
   const [tabIndex, setTabIndex] = useState<number>(0);
   const router = useRouter();
   const { tab } = router.query;
@@ -90,10 +93,14 @@ const SystemConfiguration = () => {
         tabHeaders.forEach((item2: { key: string; header: string }) => {
           console.log('item2',item2)
           row[item2.key] = item[item2.key];
+          console.log('row', row)
           if (currentTab === 'smtp') {
             row.id = item['smtpId'];
             row['others'] = <ActionIcons data={item} />;
             row['useSslTls'] = item['useSslTls'] ? 'Yes' : 'No';
+          }else if(currentTab === 'smsc'){
+            row.id = item['smscId'];
+            row['others'] = <ActionIconsSmsc data={item} />
           }
         });
         return row;
@@ -106,9 +113,9 @@ const SystemConfiguration = () => {
     if (currentTab === 'smtp') {
       !isEmpty(data?.data) && setResponseData(data?.data as Ismtp[]);
     }else if(currentTab === 'smsc'){
-      !isEmpty(smscData?.data) && setSmscResponseData(smscData?.data as Smsc[]);
+      !isEmpty(smscData?.data) && setResponseData(smscData?.data as Smsc[]);
     } else {
-      setSmscResponseData([])
+      // setResponseData([])
       setResponseData([]);
     }
   }, [data?.data, currentTab]);
@@ -133,7 +140,7 @@ const SystemConfiguration = () => {
         <ModalContent tab={tabIndex} formRef={formRef} toggleModal={toggleModal} />
       </Modal>
       {currentTab !== 'template' && currentTab !== 'data-source' && currentTab !== 'service-mapping' && currentTab !== 'system-settings' && (
-        <ConfigurationTable navItems={navItems} Rows={Rows} Headers={Headers} tab={tabIndex} toggleModal={toggleModal} isLoading={isLoading} />
+        <ConfigurationTable navItems={navItems} Rows={Rows} Headers={Headers} tab={tabIndex} toggleModal={toggleModal} isLoading={isLoading || isRetrieving} />
       )}
       {currentTab === 'template' && <Template />}
       {currentTab === 'data-source' && <DataSource />}
