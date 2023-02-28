@@ -1,1 +1,1 @@
-export const px = (size: number | `${number}px`) => (typeof size === 'number' ? `${size}px` : size)
+export const px = (size: number | `${number}px`) => (typeof size === 'number' ? `${size}px` : size);

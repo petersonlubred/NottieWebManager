@@ -1,19 +1,19 @@
 import {
-  IinitialAlertProfile,
-  IinitialDatabase,
-  IinitialUserForm,
-  IinitialRoleForm,
-  IinitialSiginin,
-  IinitialUserLogin,
   IinitialAlertException,
   IinitialAlertExclude,
-  IinitialSubscription,
+  IinitialAlertProfile,
+  IinitialDatabase,
   IinitialDataSourceType,
+  IinitialRoleForm,
+  IinitialSiginin,
   IinitialSMSCForm,
-  IinitialSMSRouteForm,
   IinitialSMSRouteConfigForm,
+  IinitialSMSRouteForm,
   IinitialSMTPForm,
   IinitialSMTPRouteForm,
+  IinitialSubscription,
+  IinitialUserForm,
+  IinitialUserLogin,
 } from './interface';
 
 export const initialSigninValue: IinitialSiginin = {
@@ -135,7 +135,7 @@ export const initialSMTPRouteValue: IinitialSMTPRouteForm = {
 export const initialUserValue: IinitialUserForm = {
   emailAddress: '',
   authenticationType: '',
-  roleIds: [],
+  roles: [],
   firstName: '',
   lastName: '',
 };

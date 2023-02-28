@@ -1,18 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
-import { FormGroup, TextInput, PasswordInput, Loading } from '@carbon/react';
+import { FormGroup, Loading, PasswordInput, TextInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
-import { Formik, Form, Field } from 'formik';
-import { px } from '@/utils';
+import axios from 'axios';
+import { Field, Form, Formik } from 'formik';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+
+import Button from '@/components/shared/Button';
 import { initialSigninValue } from '@/schemas/dto';
 import { signinSchema } from '@/schemas/schema';
-import Button from '@/components/shared/Button';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { px } from '@/utils';
 
 const Signin = () => {
   const [loading, setIsLoading] = React.useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleSubmit = async (values: any) => {
     try {
@@ -27,9 +30,9 @@ const Signin = () => {
         }
       );
       dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
+      router.push('/dashboard');
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };
@@ -37,19 +40,8 @@ const Signin = () => {
   return (
     <SignInContainer>
       <HeaderTitle>Sign In to Continue</HeaderTitle>
-      <Formik
-        initialValues={initialSigninValue}
-        validationSchema={signinSchema}
-        onSubmit={handleSubmit}
-      >
-        {({
-          errors,
-          touched,
-          isValid,
-          values,
-          setFieldTouched,
-          handleSubmit,
-        }) => (
+      <Formik initialValues={initialSigninValue} validationSchema={signinSchema} onSubmit={handleSubmit}>
+        {({ errors, touched, isValid, values, setFieldTouched, handleSubmit }) => (
           <Form>
             <FormGroup legendText="">
               <Field name="email">
@@ -85,29 +77,16 @@ const Signin = () => {
               </PasswordContainer>
               <Button
                 renderIcon={(props: any) =>
-                  loading ? (
-                    <Loading
-                      size={24}
-                      {...props}
-                      small
-                      description="Active loading indicator"
-                      withOverlay={false}
-                    />
-                  ) : (
-                    <ArrowRight {...props} size={24} />
-                  )
+                  loading ? <Loading size={24} {...props} small description="Active loading indicator" withOverlay={false} /> : <ArrowRight {...props} size={24} />
                 }
-                disabled={
-                  !isValid || !values?.email || !values?.password || loading
-                }
+                disabled={!isValid || !values?.email || !values?.password || loading}
                 fullWidth
                 buttonLabel={'Login'}
                 handleClick={handleSubmit}
               />
             </FormGroup>
             <Paragraph>
-              Need help? Reach out at{' '}
-              <ContactValue>support@nottie.co</ContactValue>
+              Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
             </Paragraph>
           </Form>
         )}

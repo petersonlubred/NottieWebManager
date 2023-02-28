@@ -1,20 +1,22 @@
-import { px } from '@/utils';
-import React, { useEffect } from 'react';
+import { FormGroup, MultiSelect, TextInput } from '@carbon/react';
+import { Field, FieldInputProps, Form, Formik } from 'formik';
+import { isEmpty } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TextInput, MultiSelect, FormGroup } from '@carbon/react';
-import { Formik, Form, Field, FieldInputProps } from 'formik';
-import { userAccountSchema } from '@/schemas/schema';
-import { FormikRefType } from '@/interfaces/formik.type';
-import { useCreateUserMutation, useEditUserMutation, useGetRolesQuery } from '@/redux/api';
-import { useToast } from '@/context/ToastContext';
-import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
-import Button from '@/components/shared/Button';
+
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
+import Button from '@/components/shared/Button';
+import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Loader from '@/components/shared/Loader';
-import { IRole } from '@/interfaces/role';
 import RadioButton from '@/components/shared/RadioButton';
+import { useToast } from '@/context/ToastContext';
+import { FormikRefType, ISetState } from '@/interfaces/formik.type';
+import { IRole } from '@/interfaces/role';
+import { useCreateUserMutation, useEditUserMutation, useGetRolesQuery } from '@/redux/api';
 import { initialUserValue } from '@/schemas/dto';
 import { IinitialUserForm } from '@/schemas/interface';
+import { userAccountSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 import { pickValues } from '@/utils/helpers/helpers';
 
 interface Iprops {
@@ -22,41 +24,33 @@ interface Iprops {
   formdata?: IinitialUserForm & { id: string };
   toggleModal: () => void;
   isUpdatedMultiselect?: boolean;
-  setIsUpdatedMultiselect?: Function;
+  setIsUpdatedMultiselect?: ISetState<boolean>;
 }
 
 const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, setIsUpdatedMultiselect }: Iprops) => {
   const { data, isLoading: rolesLoading } = useGetRolesQuery();
-  const [createUser, { isLoading, isSuccess, isError, error }] = useCreateUserMutation();
-  const [editUser, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditUserMutation();
+  const [loading, setLoading] = useState(false);
+  const [createUser] = useCreateUserMutation();
+  const [editUser] = useEditUserMutation();
   const { toast } = useToast();
 
-  const handleSubmit = (values: IinitialUserForm) => {
+  const handleSubmit = async (values: IinitialUserForm) => {
     const formvalues = values as IinitialUserForm & { id: string };
-    formdata?.id ? editUser(pickValues(formvalues)) : createUser(pickValues(formvalues));
+    try {
+      setLoading(true);
+      if (formdata?.id) {
+        await editUser(pickValues(formvalues)).unwrap();
+      } else {
+        await createUser(pickValues(formvalues)).unwrap();
+      }
+      toast('success', 'User Account saved successfully');
+      toggleModal();
+      setLoading(false);
+    } catch (error: any) {
+      toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
+      setLoading(false);
+    }
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast('success', 'User Account saved successfully');
-      toggleModal();
-    }
-    if (isError && error && 'status' in error) {
-      toast('error', error?.data?.message);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error, isError, isSuccess]);
-
-  useEffect(() => {
-    if (editSuccess) {
-      toast('success', 'User Account saved successfully');
-      toggleModal();
-    }
-    if (isEditError && editError && 'status' in editError) {
-      toast('error', editError?.data?.message);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editError, editSuccess, isEditError]);
 
   useEffect(() => {
     setIsUpdatedMultiselect && setIsUpdatedMultiselect(true);
@@ -64,7 +58,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
 
   return (
     <ModalContentContainer>
-      {(isLoading || editLoading || rolesLoading) && <Loader />}
+      {(loading || rolesLoading) && <Loader />}
       <ModalItem>
         <Formik initialValues={{ ...initialUserValue, ...formdata }} validationSchema={userAccountSchema} onSubmit={handleSubmit} innerRef={formRef}>
           {({ errors, touched, setFieldTouched, setFieldValue }) => (
@@ -76,7 +70,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                     items={[
                       { value: 'Classic', label: 'Classic' },
                       { value: 'AD', label: 'AD' },
-                      { value: 'SSO', label: 'SSO' },
+                      // { value: 'SSO', label: 'SSO' },
                     ]}
                   />
                   <ErrorMessage invalid={Boolean(touched.authenticationType && errors.authenticationType)} invalidText={errors.authenticationType} />
@@ -85,28 +79,28 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                   <ModalLabel>Role</ModalLabel>{' '}
                   <MultipleSelect
                     itemToString={(item: { text: string }) => (item ? item.text : '')}
-                    id="roleIds"
-                    items={
-                      data?.data
+                    id="roles"
+                    items={[
+                      !isEmpty(data?.data)
                         ? data?.data?.map((item: IRole) => ({
                             id: item.roleId,
                             text: item.roleName,
                           }))
-                        : []
-                    }
+                        : [],
+                    ]}
                     label="Choose roles"
                     size="md"
                     onChange={(e: { selectedItems?: { id: string; text?: string }[] }) => {
                       setFieldValue(
-                        'roleIds',
+                        'roles',
                         e.selectedItems?.map((item?: { id: string; text?: string }) => item?.id)
                       );
                     }}
                     key={isUpdatedMultiselect?.toString()}
                     initialSelectedItems={
-                      formdata?.roleIds
+                      formdata?.roles
                         ? data?.data
-                            ?.filter((item: IRole) => formdata?.roleIds?.includes(item.roleId))
+                            ?.filter((item: IRole) => formdata?.roles?.includes(item.roleId))
                             .map((item: IRole) => ({
                               id: item.roleId,
                               text: item.roleName,
@@ -114,7 +108,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                         : []
                     }
                   />
-                  <ErrorMessage invalid={Boolean(touched.roleIds && errors.roleIds)} invalidText={errors?.roleIds} />
+                  <ErrorMessage invalid={Boolean(touched.roles && errors.roles)} invalidText={errors?.roles} />
                 </ModalItem>
                 <ModalItem>
                   <ModalLabel>Email Address</ModalLabel>{' '}
@@ -132,7 +126,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                           //   Boolean(touched.email && errors.email) ||
                           //   !values?.email
                           // }
-                          handleClick={() => console.log('click')}
+                          handleClick={() => null}
                           buttonLabel="Validate Email"
                           validateButton
                         />

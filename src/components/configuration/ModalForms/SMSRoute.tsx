@@ -1,12 +1,13 @@
-import { px } from '@/utils';
+import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import { TextInput, FormGroup, Select, SelectItem } from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
-import { SMSRouteSchema } from '@/schemas/schema';
-import { initialSMSRouteValue } from '@/schemas/schema';
+
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+import { SMSRouteSchema } from '@/schemas/schema';
+import { initialSMSRouteValue } from '@/schemas/schema';
+import { px } from '@/utils';
 
 const SMSRoute = () => {
   return (
@@ -26,12 +27,26 @@ const SMSRoute = () => {
                   <FormContainer>
                     <Field name="route_name">
                       {({ field }: any) => (
-                        <TextInput {...field} type="text" id="route_name-input" labelText="SMS Route Name" placeholder="enter name" onKeyUp={() => setFieldTouched('route_name', true)} />
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="route_name-input"
+                          labelText="SMS Route Name"
+                          placeholder="enter name"
+                          onKeyUp={() => setFieldTouched('route_name', true)}
+                        />
                       )}
                     </Field>
                     <Field name="aggregator">
                       {({ field }: any) => (
-                        <TextInput {...field} type="text" id="aggregator-input" labelText="Aggregator/SMSC" placeholder="enter text" onKeyUp={() => setFieldTouched('aggregator', true)} />
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="aggregator-input"
+                          labelText="Aggregator/SMSC"
+                          placeholder="enter text"
+                          onKeyUp={() => setFieldTouched('aggregator', true)}
+                        />
                       )}
                     </Field>
                     <ErrorMessage invalid={Boolean(touched.route_name && errors.route_name)} invalidText={errors.route_name} />

@@ -1,7 +1,9 @@
 import React from 'react';
-import PercentageBar from '../percentageBar';
 import styled from 'styled-components';
+
 import { px } from '@/utils';
+
+import PercentageBar from '../percentageBar';
 
 const indicatorData: any[] = [
   { title: 'Delivered', color: '#0E6027' },

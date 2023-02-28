@@ -1,20 +1,21 @@
 import * as Yup from 'yup';
+
 import {
   AlertExceptionSchema,
   AlertExcludeSchema,
+  AlertProfileSchema,
+  databaseSchema,
   DataSourceSchema,
+  RoleAndProvilegesSchema,
+  signinSchema,
   SMSCSchema,
   SMSRouteConfigSchema,
   SMSRouteSchema,
   SMTPRouteSchema,
   SMTPSchema,
   SubscriptionSchema,
-  AlertProfileSchema,
-  databaseSchema,
-  signinSchema,
-  userLoginSchema,
-  RoleAndProvilegesSchema,
   userAccountSchema,
+  userLoginSchema,
 } from '@/schemas/schema';
 
 export type IinitialSiginin = Yup.InferType<typeof signinSchema>;

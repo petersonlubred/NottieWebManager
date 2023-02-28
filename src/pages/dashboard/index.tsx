@@ -1,11 +1,11 @@
-import Layout from '@/HOC/Layout';
+import { GetServerSideProps } from 'next';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { px } from '@/utils';
 
 import BackgroundService from '@/components/dashboard/BackgroundService';
 import SmsandEmail from '@/components/dashboard/SmsAndEmail';
-import { GetServerSideProps } from 'next';
+import Layout from '@/HOC/Layout';
+import { px } from '@/utils';
 import { protectedRouteProps } from '@/utils/withSession';
 
 const Dashboard = () => {

@@ -1,20 +1,21 @@
-import Button from '@/components/shared/Button';
-import { px } from '@/utils';
+import { Checkbox, FormGroup, NumberInput, PasswordInput, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import { TextInput, FormGroup, Select, SelectItem, Checkbox, NumberInput, PasswordInput } from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
-import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
-import { DataSourceSchema } from '@/schemas/schema';
+import Button from '@/components/shared/Button';
+import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import { initialDataSource } from '@/schemas/dto';
+import { DataSourceSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 
 const DataSourceForm = () => {
   return (
     <Container>
       <MailNav>
         <ActionContainer>
-          <Button renderIcon={null} handleClick={() => console.log('123')} buttonLabel="Create source" />
+          <Button renderIcon={null} handleClick={() => null} buttonLabel="Create source" />
         </ActionContainer>
       </MailNav>{' '}
       <Formik
@@ -31,7 +32,14 @@ const DataSourceForm = () => {
                 <FormContainer>
                   <Field name="source_name">
                     {({ field }: any) => (
-                      <TextInput {...field} type="text" id="source_name-input" labelText="Data source name" placeholder="enter name" onKeyUp={() => setFieldTouched('source_name', true)} />
+                      <TextInput
+                        {...field}
+                        type="text"
+                        id="source_name-input"
+                        labelText="Data source name"
+                        placeholder="enter name"
+                        onKeyUp={() => setFieldTouched('source_name', true)}
+                      />
                     )}
                   </Field>{' '}
                   <Field name="databaseType">
@@ -50,7 +58,9 @@ const DataSourceForm = () => {
               <FormField>
                 <FormContainer>
                   <Field name="server">
-                    {({ field }: any) => <TextInput {...field} type="text" id="server-input" labelText="Server/IP" placeholder="input text" onKeyUp={() => setFieldTouched('server', true)} />}
+                    {({ field }: any) => (
+                      <TextInput {...field} type="text" id="server-input" labelText="Server/IP" placeholder="input text" onKeyUp={() => setFieldTouched('server', true)} />
+                    )}
                   </Field>{' '}
                   <Field name="port">
                     {({ field }: any) => (
@@ -113,7 +123,9 @@ const DataSourceForm = () => {
               <FormField>
                 <FormContainer>
                   <Field name="username">
-                    {({ field }: any) => <TextInput {...field} type="text" id="username-input" labelText="Username" placeholder="enter name" onKeyUp={() => setFieldTouched('username', true)} />}
+                    {({ field }: any) => (
+                      <TextInput {...field} type="text" id="username-input" labelText="Username" placeholder="enter name" onKeyUp={() => setFieldTouched('username', true)} />
+                    )}
                   </Field>{' '}
                   <PasswordContainer>
                     <Field name="password">

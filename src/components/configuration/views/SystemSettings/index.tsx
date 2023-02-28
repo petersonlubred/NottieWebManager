@@ -1,11 +1,13 @@
-import { px } from '@/utils';
+import { Checkbox, FormGroup, NumberInput, PasswordInput, RadioButton, RadioButtonGroup, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import { Checkbox, TextInput, FormGroup, Select, SelectItem, NumberInput, RadioButtonGroup, RadioButton, PasswordInput } from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
+
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import Button from '@/components/shared/Button';
 import { ConfigurationContainer } from '@/pages/configuration';
+import { px } from '@/utils';
+
 import SystemSettingSideBar from './SystemSettingsSidebar.tsx';
 
 const SystemSettings = () => {
@@ -15,7 +17,7 @@ const SystemSettings = () => {
       <Container>
         <MailNav>
           <ActionContainer>
-            <Button renderIcon={null} handleClick={() => console.log('123')} buttonLabel="Save changes" disabled={true} />
+            <Button renderIcon={null} handleClick={() => null} buttonLabel="Save changes" disabled={true} />
           </ActionContainer>
         </MailNav>{' '}
         <ModalItem>
@@ -32,7 +34,9 @@ const SystemSettings = () => {
                   <FormField>
                     <FormContainer>
                       <Field name="name">
-                        {({ field }: any) => <TextInput {...field} type="text" id="name-input" labelText="Profile Name" placeholder="enter name" onKeyUp={() => setFieldTouched('name', true)} />}
+                        {({ field }: any) => (
+                          <TextInput {...field} type="text" id="name-input" labelText="Profile Name" placeholder="enter name" onKeyUp={() => setFieldTouched('name', true)} />
+                        )}
                       </Field>
                       <Field name="template">
                         {({ field }: any) => (
@@ -93,7 +97,7 @@ const SystemSettings = () => {
                   <FormField>
                     <FormContainer>
                       <Field name="password">
-                        {({ field }: any) => <PasswordInput {...field} type="password" id="password-input" labelText="Password" placeholder="Password" onKeyUp={() => {}} />}
+                        {({ field }: any) => <PasswordInput {...field} type="password" id="password-input" labelText="Password" placeholder="Password" />}
                       </Field>
                     </FormContainer>
                   </FormField>

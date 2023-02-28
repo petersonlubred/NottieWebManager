@@ -1,29 +1,28 @@
-import PageSubHeader from '@/components/accounts/PageSubHeader';
-import Layout from '@/HOC/Layout';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { isEmpty } from 'lodash';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+
+import { AccessStatus, ActionIcons, IconAndText, ModalContent } from '@/components/accounts';
+import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Empty from '@/components/shared/Empty';
+import Loader from '@/components/shared/Loader';
 import Modal from '@/components/shared/Modal';
-import { useGetRolesQuery, useGetUsersQuery } from '@/redux/api';
+import Layout from '@/HOC/Layout';
 import useHeaders from '@/hooks/useHeaders';
 import { FormikRefType } from '@/interfaces/formik.type';
-import Loader from '@/components/shared/Loader';
-import AccountTable from '../../components/accounts/views/AccountTable';
 import { IHeader, IRole } from '@/interfaces/role';
 import { UserData } from '@/interfaces/user';
-import { AccessStatus, ActionIcons, IconAndText, ModalContent } from '@/components/accounts';
-import { useRouter } from 'next/router';
+import { useGetRolesQuery, useGetUsersQuery } from '@/redux/api';
+import { protectedRouteProps } from '@/utils/withSession';
+
+import AccountTable from '../../components/accounts/views/AccountTable';
 
 const Accounts = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [responseData, setResponseData] = useState<UserData[] | IRole[]>([]);
-  const [selectedRows, setSelectedRows] = useState<any[]>([]);
-  const [isSingle, setIsSingle] = useState(false);
-  const [opendeleteModal, setOpenDeleteModal] = useState(false);
-  const [openResetPassword, setOpenResetPassword] = useState(false);
-  const [openActivateModal, setOpenActivateModal] = useState(false);
   const formRef = useRef<FormikRefType<any>>(null);
   const [isUpdatedMultiselect, setIsUpdatedMultiselect] = useState(false);
   const { data, isFetching: isLoading } = useGetRolesQuery();
@@ -77,38 +76,12 @@ const Accounts = () => {
         tabHeaders.forEach((item2: IHeader) => {
           row[item2.key] = item[item2.key];
           if (currentTab === 'user') {
-            row['others'] = (
-              <ActionIcons
-                data={item}
-                isUpdatedMultiselect={isUpdatedMultiselect}
-                setIsUpdatedMultiselect={setIsUpdatedMultiselect}
-                selectedRows={selectedRows}
-                opendeleteModal={opendeleteModal}
-                setOpenDeleteModal={setOpenDeleteModal}
-                openResetPassword={openResetPassword}
-                setOpenResetPassword={setOpenResetPassword}
-                openActivateModal={openActivateModal}
-                setOpenActivateModal={setOpenActivateModal}
-                setSelectedRows={setSelectedRows}
-                isSingle={isSingle}
-                setIsSingle={setIsSingle}
-              />
-            );
+            row['others'] = <ActionIcons data={item} isUpdatedMultiselect={isUpdatedMultiselect} setIsUpdatedMultiselect={setIsUpdatedMultiselect} />;
             row['status'] = <AccessStatus active={item['status']} />;
-            row['roleIds'] = item['roleIds']?.join(', ');
+            row['roles'] = item['roles']?.join(', ');
             row.id = item['id'];
           } else {
-            row['others'] = (
-              <ActionIcons
-                roleData={item}
-                selectedRows={selectedRows}
-                opendeleteModal={opendeleteModal}
-                setOpenDeleteModal={setOpenDeleteModal}
-                setSelectedRows={setSelectedRows}
-                isSingle={isSingle}
-                setIsSingle={setIsSingle}
-              />
-            );
+            row['others'] = <ActionIcons roleData={item} />;
             row['users'] = <IconAndText text={item['users']?.toString()} />;
             row.id = item['roleId'];
           }
@@ -117,13 +90,13 @@ const Accounts = () => {
       });
       !rows.some((row) => row.id === undefined) && setRows(rows);
     });
-  }, [rolesheader, navItems, usersheader, responseData, isUpdatedMultiselect, selectedRows, opendeleteModal, openResetPassword, openActivateModal, isSingle, tabIndex, currentTab]);
+  }, [rolesheader, navItems, usersheader, responseData, isUpdatedMultiselect, tabIndex, currentTab]);
 
   useEffect(() => {
     if (currentTab === 'role') {
-      !isEmpty(data?.data) && setResponseData(data?.data as IRole[]);
+      !isEmpty(data?.data) ? setResponseData(data?.data as IRole[]) : setResponseData([]);
     } else if (currentTab === 'user') {
-      !isEmpty(users?.data) && setResponseData(users?.data as UserData[]);
+      !isEmpty(users?.data) ? setResponseData(users?.data as UserData[]) : setResponseData([]);
     }
   }, [data?.data, users?.data, currentTab]);
 
@@ -147,20 +120,7 @@ const Accounts = () => {
         <ModalContent tab={tabIndex} formRef={formRef} toggleModal={toggleModal} isUpdatedMultiselect={isUpdatedMultiselect} setIsUpdatedMultiselect={setIsUpdatedMultiselect} />
       </Modal>
       <PageSubHeader navItem={navItems[tabIndex]?.title} />
-      <AccountTable
-        Rows={Rows}
-        Headers={Headers}
-        tab={tabIndex}
-        toggleModal={toggleModal}
-        isLoading={isLoading || isLoadingUser}
-        setSelectedRows={setSelectedRows}
-        setOpenDeleteModal={setOpenDeleteModal}
-        setOpenResetPassword={setOpenResetPassword}
-        setOpenActivateModal={setOpenActivateModal}
-        openDeleteModal={opendeleteModal}
-        openResetPassword={openResetPassword}
-        openActivateModal={openActivateModal}
-      />
+      <AccountTable Rows={Rows} Headers={Headers} tab={tabIndex} toggleModal={toggleModal} isLoading={isLoading || isLoadingUser} />
       {isLoading || isLoadingUser ? (
         <Loader />
       ) : (
@@ -171,3 +131,4 @@ const Accounts = () => {
 };
 
 export default Accounts;
+export const getServerSideProps: GetServerSideProps = protectedRouteProps();

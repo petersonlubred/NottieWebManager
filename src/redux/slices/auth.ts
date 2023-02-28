@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import storageSession from 'redux-persist/lib/storage/session';
 import { HYDRATE } from 'next-redux-wrapper';
+import storageSession from 'redux-persist/lib/storage/session';
+
 import { UserData } from '@/interfaces/user';
 
 export type AuthState = {
@@ -27,6 +28,10 @@ const authSlice = createSlice({
       state.user = payload?.user;
       state.token = payload?.token;
     },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+    },
   },
 
   extraReducers: (builder) => {
@@ -39,6 +44,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setAuth, logout } = authSlice.actions;
 const { reducer } = authSlice;
 export default reducer;

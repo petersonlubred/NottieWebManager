@@ -1,18 +1,19 @@
-import Button from '@/components/shared/Button';
-import { px } from '@/utils';
+import { FormGroup, TextArea, TextInput } from '@carbon/react';
+import { Copy } from '@carbon/react/icons';
+import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Copy } from '@carbon/react/icons';
-import { TextInput, FormGroup, TextArea } from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
+
+import Button from '@/components/shared/Button';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import RichTextExample from '@/components/shared/RichText';
+import { px } from '@/utils';
 
 const navItems = ['SMS Template', 'Email Template'];
 
 const MailBody = () => {
   const [selected, setSelected] = React.useState(0);
-  const [editorLoaded, setEditorLoaded] = useState(false);
+  const [, setEditorLoaded] = useState(false);
 
   useEffect(() => {
     setEditorLoaded(true);
@@ -46,8 +47,8 @@ const MailBody = () => {
           <Copy size={16} />
         </CopyDetails>
         <ActionContainer>
-          <Button renderIcon={null} handleClick={() => console.log('123')} buttonLabel="Discard changes" />
-          <Button renderIcon={null} handleClick={() => console.log('123')} buttonLabel="Save Changes" />
+          <Button renderIcon={null} handleClick={() => null} buttonLabel="Discard changes" />
+          <Button renderIcon={null} handleClick={() => null} buttonLabel="Save Changes" />
         </ActionContainer>
       </MailNav>
       <Formik
@@ -59,10 +60,10 @@ const MailBody = () => {
           templatename: '',
         }}
         onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(false);
+          setSubmitting(!!values);
         }}
       >
-        {({ errors, touched, setFieldTouched, values }) => (
+        {({ errors, touched }) => (
           <Form>
             {selected == 0 ? (
               <FormGroup legendText="">
@@ -74,7 +75,9 @@ const MailBody = () => {
                 </FormField>{' '}
                 <FormField>
                   <FormContainer>
-                    <Field name="templateBody">{({ field }: any) => <TextArea {...field} enableCounter id="text-area-1" labelText="Template body" maxCount={500} placeholder="input text" />}</Field>
+                    <Field name="templateBody">
+                      {({ field }: any) => <TextArea {...field} enableCounter id="text-area-1" labelText="Template body" maxCount={500} placeholder="input text" />}
+                    </Field>
                   </FormContainer>
                   <ErrorMessage invalid={Boolean(touched.templateBody && errors.templateBody)} invalidText={errors.templateBody} />
                 </FormField>
@@ -83,7 +86,9 @@ const MailBody = () => {
               <FormGroup legendText="">
                 <FormField>
                   <FormContainer>
-                    <Field name="templatename">{({ field }: any) => <TextInput {...field} type="text" id="templatename-input" labelText="Template Name" placeholder="input name" />}</Field>
+                    <Field name="templatename">
+                      {({ field }: any) => <TextInput {...field} type="text" id="templatename-input" labelText="Template Name" placeholder="input name" />}
+                    </Field>
                   </FormContainer>
                   <ErrorMessage invalid={Boolean(touched.templatename && errors.templatename)} invalidText={errors.templatename} />
                 </FormField>
@@ -97,7 +102,7 @@ const MailBody = () => {
                 </FormField>
                 <FormField>
                   <FormContainer>
-                    <Field name="emailcontent">{({ field }: any) => <RichTextExample />}</Field>
+                    <Field name="emailcontent">{() => <RichTextExample />}</Field>
                   </FormContainer>
                   <ErrorMessage invalid={Boolean(touched.emailcontent && errors.emailcontent)} invalidText={errors.emailcontent} />
                 </FormField>

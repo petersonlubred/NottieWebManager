@@ -1,8 +1,9 @@
-import { px } from '@/utils';
-import React from 'react';
-import styled from 'styled-components';
 import { DatePicker, DatePickerInput, TextInput } from '@carbon/react';
 import { Filter } from '@carbon/react/icons';
+import React from 'react';
+import styled from 'styled-components';
+
+import { px } from '@/utils';
 
 interface Iprops {
   filterItems: { key: string; label: string; value: string }[];
@@ -15,33 +16,16 @@ const TableNavItem = ({ filterItems, noDateRange }: Iprops) => {
       {!noDateRange && (
         <NavItem>
           <NavItemTitle>Date Range:</NavItemTitle>
-          <DatePicker
-            dateFormat="m/d/Y"
-            datePickerType="range"
-            className="date_picker"
-          >
-            <DatePickerInput
-              placeholder="Start date"
-              id="date-picker-default-id"
-              size="md"
-            />
-            <DatePickerInput
-              placeholder="End date"
-              id="date-picker-default-id"
-              size="md"
-            />
+          <DatePicker dateFormat="m/d/Y" datePickerType="range" className="date_picker">
+            <DatePickerInput placeholder="Start date" id="date-picker-default-id" size="md" />
+            <DatePickerInput placeholder="End date" id="date-picker-default-id" size="md" />
           </DatePicker>
         </NavItem>
       )}
       {filterItems?.map((item, index) => (
         <NavItem key={index}>
           <NavItemTitle> {item.label}:</NavItemTitle>
-          <TextInput
-            type="text"
-            id={item?.key}
-            labelText=""
-            placeholder="type here"
-          />
+          <TextInput type="text" id={item?.key} labelText="" placeholder="type here" />
         </NavItem>
       ))}
       <IconBox>

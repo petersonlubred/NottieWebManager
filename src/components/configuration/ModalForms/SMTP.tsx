@@ -1,20 +1,21 @@
-import { px } from '@/utils';
+import { FormGroup, NumberInput, PasswordInput, TextInput } from '@carbon/react';
+import { Send } from '@carbon/react/icons';
+import { Field, Form, Formik } from 'formik';
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { TextInput, FormGroup, PasswordInput, NumberInput } from '@carbon/react';
-import { Send } from '@carbon/react/icons';
-import { Formik, Form, Field } from 'formik';
-import { SMTPSchema } from '@/schemas/schema';
+
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
-import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Button from '@/components/shared/Button';
-import { FormikRefType } from '@/interfaces/formik.type';
-import Loader from '@/components/shared/Loader';
-import { useCreateSmtpMutation, useEditSmtpMutation, useSendTestMailMutation } from '@/redux/api';
-import { useToast } from '@/context/ToastContext';
-import { IinitialSMTPForm } from '@/schemas/interface';
 import Checkbox from '@/components/shared/Checkbox/Checkbox';
+import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+import Loader from '@/components/shared/Loader';
+import { useToast } from '@/context/ToastContext';
+import { FormikRefType } from '@/interfaces/formik.type';
+import { useCreateSmtpMutation, useEditSmtpMutation, useSendTestMailMutation } from '@/redux/api';
 import { initialSMTPValue } from '@/schemas/dto';
+import { IinitialSMTPForm } from '@/schemas/interface';
+import { SMTPSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 
 interface Props {
   formRef: React.RefObject<FormikRefType<IinitialSMTPForm>>;

@@ -1,7 +1,8 @@
-import React from 'react';
 import { User } from '@carbon/react/icons';
-import { px } from '@/utils';
+import React from 'react';
 import styled from 'styled-components';
+
+import { px } from '@/utils';
 
 const IconAndText = ({ text }: { text: string }) => {
   return (

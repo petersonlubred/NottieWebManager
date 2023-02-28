@@ -1,25 +1,17 @@
-import { px } from '@/utils';
+import { FormGroup, NumberInput, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import {
-  TextInput,
-  FormGroup,
-  Select,
-  SelectItem,
-  NumberInput,
-} from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
-import { AlertProfileSchema } from '@/schemas/schema';
-import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-import { FormContainer } from '../onboard/NewUserLoginForm';
+
 import { initialAlertProfileValue } from '@/schemas/dto';
+import { AlertProfileSchema } from '@/schemas/schema';
+import { px } from '@/utils';
+
+import { FormContainer } from '../onboard/NewUserLoginForm';
 import Checkbox from '../shared/Checkbox/Checkbox';
+import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 
-interface Iprops {
-  isEdit?: boolean;
-}
-
-const ModalContent = ({ isEdit }: Iprops) => {
+const ModalContent = () => {
   return (
     <ModalContentContainer>
       <ModalItem>
@@ -37,38 +29,20 @@ const ModalContent = ({ isEdit }: Iprops) => {
                   <FormContainer>
                     <Field name="name">
                       {({ field }: any) => (
-                        <TextInput
-                          {...field}
-                          type="text"
-                          id="name-input"
-                          labelText="Profile Name"
-                          placeholder="enter name"
-                          onKeyUp={() => setFieldTouched('name', true)}
-                        />
+                        <TextInput {...field} type="text" id="name-input" labelText="Profile Name" placeholder="enter name" onKeyUp={() => setFieldTouched('name', true)} />
                       )}
                     </Field>
                     <Field name="template">
                       {({ field }: any) => (
-                        <Select
-                          id="select-1"
-                          labelText="Template"
-                          {...field}
-                          onKeyUp={() => setFieldTouched('template', true)}
-                        >
+                        <Select id="select-1" labelText="Template" {...field} onKeyUp={() => setFieldTouched('template', true)}>
                           <SelectItem text="Choose option" />
                           <SelectItem text="Option 1" value="option-1" />
                           <SelectItem text="Option 2" value="option-2" />
                         </Select>
                       )}
                     </Field>
-                    <ErrorMessage
-                      invalid={Boolean(touched.name && errors.name)}
-                      invalidText={errors.name}
-                    />
-                    <ErrorMessage
-                      invalid={Boolean(touched.template && errors.template)}
-                      invalidText={errors.template}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.name && errors.name)} invalidText={errors.name} />
+                    <ErrorMessage invalid={Boolean(touched.template && errors.template)} invalidText={errors.template} />
                   </FormContainer>
                 </FormField>
                 <FormField>
@@ -87,10 +61,7 @@ const ModalContent = ({ isEdit }: Iprops) => {
                       )}
                     </Field>
                   </FormEmailContainer>
-                  <ErrorMessage
-                    invalid={Boolean(touched.description && errors.description)}
-                    invalidText={errors.description}
-                  />
+                  <ErrorMessage invalid={Boolean(touched.description && errors.description)} invalidText={errors.description} />
                 </FormField>{' '}
                 <FormField>
                   <FormContainer>
@@ -126,39 +97,24 @@ const ModalContent = ({ isEdit }: Iprops) => {
                         />
                       )}
                     </Field>
-                    <ErrorMessage
-                      invalid={Boolean(
-                        touched.min_threshold && errors.min_threshold
-                      )}
-                      invalidText={errors.min_threshold}
-                    />
-                    <ErrorMessage
-                      invalid={Boolean(
-                        touched.max_threshold && errors.max_threshold
-                      )}
-                      invalidText={errors.max_threshold}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.min_threshold && errors.min_threshold)} invalidText={errors.min_threshold} />
+                    <ErrorMessage invalid={Boolean(touched.max_threshold && errors.max_threshold)} invalidText={errors.max_threshold} />
                     <ModalItem>
-                      <ModalLabel>Hide Balance?</ModalLabel>{' '}
-                      <Checkbox name="checked" label="Yes" />
+                      <ModalLabel>Hide Balance?</ModalLabel> <Checkbox name="checked" label="Yes" />
                     </ModalItem>
                     <ModalItem>
-                      <ModalLabel>Mask Account?</ModalLabel>{' '}
-                      <Checkbox name="checked-5" label="Yes" />
+                      <ModalLabel>Mask Account?</ModalLabel> <Checkbox name="checked-5" label="Yes" />
                     </ModalItem>{' '}
                     <ModalItem>
-                      <ModalLabel>Enable Email?</ModalLabel>{' '}
-                      <Checkbox name="checked-2" label="Yes" />
+                      <ModalLabel>Enable Email?</ModalLabel> <Checkbox name="checked-2" label="Yes" />
                     </ModalItem>{' '}
                     <ModalItem>
-                      <ModalLabel>Enable SMS?</ModalLabel>{' '}
-                      <Checkbox name="checked-4" label="Yes" />
+                      <ModalLabel>Enable SMS?</ModalLabel> <Checkbox name="checked-4" label="Yes" />
                     </ModalItem>
                   </FormContainer>
                 </FormField>
                 <ModalItem>
-                  <ModalLabel>Status</ModalLabel>{' '}
-                  <Checkbox name="checked-3" label="Yes" />
+                  <ModalLabel>Status</ModalLabel> <Checkbox name="checked-3" label="Yes" />
                 </ModalItem>
               </FormGroup>
             </Form>

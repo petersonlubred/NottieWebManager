@@ -1,15 +1,18 @@
-import type { AppProps } from 'next/app';
-import { GlobalStyles } from '../shared/globals';
 import './index.scss';
-import { Provider } from 'react-redux';
-import { persistor, wrapper } from '../redux/store';
-import { FC } from 'react';
-import ThemeProvider from '@/providers';
-import { PersistGate } from 'redux-persist/integration/react';
 import '@carbon/charts/styles.css';
-import { AppContextProvider } from '@/context';
-import Toast from '@/components/shared/Notification/Toast';
+
+import type { AppProps } from 'next/app';
+import { FC } from 'react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
 import Loader from '@/components/shared/Loader';
+import Toast from '@/components/shared/Notification/Toast';
+import { AppContextProvider } from '@/context';
+import ThemeProvider from '@/providers';
+
+import { persistor, wrapper } from '../redux/store';
+import { GlobalStyles } from '../shared/globals';
 
 const MyApp: FC<AppProps> = ({ Component, ...rest }: AppProps) => {
   const { store, props } = wrapper.useWrappedStore(rest);

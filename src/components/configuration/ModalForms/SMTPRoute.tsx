@@ -1,12 +1,13 @@
-import { px } from '@/utils';
+import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import { TextInput, FormGroup, Select, SelectItem } from '@carbon/react';
-import { Formik, Form, Field } from 'formik';
-import { SMSRouteConfigSchema } from '@/schemas/schema';
-import { initialSMSRouteConfigValue } from '@/schemas/schema';
+
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+import { SMSRouteConfigSchema } from '@/schemas/schema';
+import { initialSMSRouteConfigValue } from '@/schemas/schema';
+import { px } from '@/utils';
 
 const SMTPRoute = () => {
   return (
@@ -93,7 +94,14 @@ const SMTPRoute = () => {
                     <FormContainer>
                       <Field name="productCode">
                         {({ field }: any) => (
-                          <TextInput {...field} type="text" id="productCode-input" labelText="Product Code" placeholder="enter code" onKeyUp={() => setFieldTouched('productCode', true)} />
+                          <TextInput
+                            {...field}
+                            type="text"
+                            id="productCode-input"
+                            labelText="Product Code"
+                            placeholder="enter code"
+                            onKeyUp={() => setFieldTouched('productCode', true)}
+                          />
                         )}
                       </Field>
                       <ErrorMessage invalid={Boolean(touched.productCode && errors.productCode)} invalidText={errors.productCode} />

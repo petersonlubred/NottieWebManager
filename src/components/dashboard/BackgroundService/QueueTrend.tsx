@@ -1,6 +1,7 @@
-import { px } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
+
+import { px } from '@/utils';
 
 const socialItems = [
   {
@@ -45,9 +46,7 @@ const QueueTrend = ({ heading }: { heading: string }) => {
         ))}
         <GraphContainer></GraphContainer>
         {socialItems?.map((item, index) => (
-          <MonitorSubHeaderTitle key={index}>
-            {item?.time}
-          </MonitorSubHeaderTitle>
+          <MonitorSubHeaderTitle key={index}>{item?.time}</MonitorSubHeaderTitle>
         ))}
       </MonitorContentBox>
     </MonitorContainerBox>

@@ -1,12 +1,13 @@
-import { px } from '@/utils';
+import { CaretRight } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
-import { CaretRight } from '@carbon/react/icons';
+
+import { px } from '@/utils';
 
 type Iprops = {
   title: string;
   index: number;
-  toggleDropdown: Function;
+  toggleDropdown: (_index: number) => void;
   opened: boolean;
 };
 
@@ -46,10 +47,8 @@ const AccordionHeader = styled.div<AccordionHeaderProps>`
   line-height: ${px(18)};
   gap: ${px(6)};
   font-weight: 600;
-  border-left: ${({ opened, theme }) =>
-    opened ? `2px solid ${theme.colors.button}` : 'none'};
-  background-color: ${({ opened, theme }) =>
-    opened ? theme.colors.bgPrimaryLight : 'none'};
+  border-left: ${({ opened, theme }) => (opened ? `2px solid ${theme.colors.button}` : 'none')};
+  background-color: ${({ opened, theme }) => (opened ? theme.colors.bgPrimaryLight : 'none')};
 
   svg {
     transform: ${({ opened }) => (opened ? 'rotate(90deg)' : 'rotate(0deg)')};
