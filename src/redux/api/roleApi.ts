@@ -1,10 +1,10 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 import { isEmpty } from 'lodash';
 
-import { IPrivilege,IRole, PrivilegesResponse, RoleResponse, RolesResponse } from '@/interfaces/role';
+import { IPrivilege, IRole, PrivilegesResponse, RoleResponse, RolesResponse } from '@/interfaces/role';
 
 import { APIResponse } from './../../interfaces/auth';
-import { baseQueryWithReauth, createRequest,CustomError } from './shared';
+import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
 export const roleApi = createApi({
   reducerPath: 'roleApi',

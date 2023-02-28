@@ -1,13 +1,4 @@
-import {
-  DataTable,
-  Pagination,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@carbon/react';
+import { DataTable, Pagination, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@carbon/react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -89,14 +80,7 @@ type IProps = {
 const AlertTableModal = ({ open, toggleModal }: IProps) => {
   return (
     <InputModalContainer>
-      <Modal
-        buttonLabel="Close"
-        heading="Account no: 3910793817"
-        open={open}
-        toggleModal={toggleModal}
-        secondaryButtonText=""
-        extent="md"
-      >
+      <Modal buttonLabel="Close" heading="Account no: 3910793817" open={open} toggleModal={toggleModal} secondaryButtonText="" extent="md">
         <ModalContainer>
           <SubHeader>
             <Header>Customer ID: COMP1502 </Header>
@@ -107,7 +91,7 @@ const AlertTableModal = ({ open, toggleModal }: IProps) => {
               <Table {...getTableProps()}>
                 <TableHead>
                   <TableRow>
-                    {headers.map((header: any, index:number) => (
+                    {headers.map((header: any, index: number) => (
                       <TableHeader {...getHeaderProps({ header })} key={index}>
                         {header.header}
                       </TableHeader>
@@ -209,7 +193,6 @@ const Header = styled.div`
   font-weight: 400;
   font-size: ${px(18)};
   line-height: ${px(20)};
-
 
   letter-spacing: 0.16px;
 

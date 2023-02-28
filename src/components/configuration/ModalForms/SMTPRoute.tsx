@@ -1,5 +1,5 @@
-import { FormGroup, Select, SelectItem,TextInput } from '@carbon/react';
-import { Field,Form, Formik } from 'formik';
+import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -94,7 +94,14 @@ const SMTPRoute = () => {
                     <FormContainer>
                       <Field name="productCode">
                         {({ field }: any) => (
-                          <TextInput {...field} type="text" id="productCode-input" labelText="Product Code" placeholder="enter code" onKeyUp={() => setFieldTouched('productCode', true)} />
+                          <TextInput
+                            {...field}
+                            type="text"
+                            id="productCode-input"
+                            labelText="Product Code"
+                            placeholder="enter code"
+                            onKeyUp={() => setFieldTouched('productCode', true)}
+                          />
                         )}
                       </Field>
                       <ErrorMessage invalid={Boolean(touched.productCode && errors.productCode)} invalidText={errors.productCode} />

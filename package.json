@@ -34,7 +34,6 @@
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "formik": "^2.2.9",
-    "husky": "^8.0.3",
     "install": "^0.13.0",
     "iron-session": "^6.3.1",
     "is-hotkey": "^0.2.0",
@@ -76,7 +75,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-simple-import-sort": "^7.0.0"
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^8.0.3"
   },
   "lint-staged": {
     "*.{js,jsx, scss,css}": [

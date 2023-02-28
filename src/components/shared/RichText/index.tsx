@@ -2,14 +2,9 @@ import isHotkey from 'is-hotkey';
 import React, { useCallback, useMemo, useState } from 'react';
 import { CompactPicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  createEditor,
-  Editor,
-  Element as SlateElement,
-  Transforms,
-} from 'slate';
+import { createEditor, Editor, Element as SlateElement, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
-import { Editable, ReactEditor,Slate, useSlate, withReact } from 'slate-react';
+import { Editable, ReactEditor, Slate, useSlate, withReact } from 'slate-react';
 
 import { setSelectedColor } from '@/redux/slices/util';
 import { RootState } from '@/redux/store';
@@ -33,25 +28,17 @@ const RichTextExample = () => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   return (
-    <Slate editor={editor} value={initialValue} >
+    <Slate editor={editor} value={initialValue}>
       <Toolbar>
         <MarkButton format="bold" icon="format_bold" />
         <MarkButton format="italic" icon="format_italic" />
         <MarkButton format="underline" icon="format_underlined" />
-        <MarkButton format="strikethrough" icon="strikethrough_s" />{' '}
-        <BlockButton format="left" icon="format_align_left" />{' '}
-        <BlockButton format="justify" icon="format_align_justify" />{' '}
-        <BlockButton format="center" icon="format_align_center" />
+        <MarkButton format="strikethrough" icon="strikethrough_s" /> <BlockButton format="left" icon="format_align_left" />{' '}
+        <BlockButton format="justify" icon="format_align_justify" /> <BlockButton format="center" icon="format_align_center" />
         <BlockButton format="right" icon="format_align_right" />
         <BlockButton format="format-size" icon="format_size" />
         <BlockButton format="font-download" icon="font_download" />
-        <ColorToggleButton
-          style={{ position: 'relative' }}
-          format="format-color"
-          icon="format_color_text"
-          open={open}
-          setOpen={setOpen}
-        />
+        <ColorToggleButton style={{ position: 'relative' }} format="format-color" icon="format_color_text" open={open} setOpen={setOpen} />
       </Toolbar>
       <Editable
         renderElement={renderElement}
@@ -75,19 +62,11 @@ const RichTextExample = () => {
 };
 
 const toggleBlock = (editor: ReactEditor, format: any) => {
-  const isActive = isBlockActive(
-    editor,
-    format,
-    TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
-  );
+  const isActive = isBlockActive(editor, format, TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type');
   const isList = LIST_TYPES.includes(format);
 
   Transforms.unwrapNodes(editor, {
-    match: (n: any) =>
-      !Editor.isEditor(n) &&
-      SlateElement.isElement(n) &&
-      LIST_TYPES.includes(n['type']) &&
-      !TEXT_ALIGN_TYPES.includes(format),
+    match: (n: any) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n['type']) && !TEXT_ALIGN_TYPES.includes(format),
     split: true,
   });
   let newProperties: any;
@@ -118,21 +97,14 @@ const toggleMark = (editor: ReactEditor, format: any) => {
   }
 };
 
-const isBlockActive = (
-  editor: ReactEditor,
-  format: any,
-  blockType = 'type'
-) => {
+const isBlockActive = (editor: ReactEditor, format: any, blockType = 'type') => {
   const { selection } = editor;
   if (!selection) return false;
 
   const [match] = Array.from(
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
-      match: (n) =>
-        !Editor.isEditor(n) &&
-        SlateElement.isElement(n) &&
-        n[blockType] === format,
+      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n[blockType] === format,
     })
   );
 
@@ -175,16 +147,12 @@ const Element = ({ attributes, children, element }: any) => {
 };
 
 const Leaf = ({ attributes, children, leaf }: any) => {
-  const { selectedColor } = useSelector(
-    (state: RootState) => state.sharedReducer
-  );
+  const { selectedColor } = useSelector((state: RootState) => state.sharedReducer);
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }
   if (leaf.strikethrough) {
-    children = (
-      <span style={{ textDecoration: 'line-through' }}>{children}</span>
-    );
+    children = <span style={{ textDecoration: 'line-through' }}>{children}</span>;
   }
   if (leaf['format-color']) {
     children = <span style={{ color: selectedColor }}>{children}</span>;
@@ -202,11 +170,7 @@ const BlockButton = ({ format, icon }: any) => {
   const editor = useSlate();
   return (
     <Button
-      active={isBlockActive(
-        editor,
-        format,
-        TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
-      )}
+      active={isBlockActive(editor, format, TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type')}
       onMouseDown={(event: MouseEvent) => {
         event.preventDefault();
         toggleBlock(editor, format);
@@ -234,16 +198,11 @@ const MarkButton = ({ format, icon }: any) => {
 
 const ColorToggleButton = ({ format, icon, open, setOpen }: any) => {
   const editor = useSlate();
-  const { selectedColor } = useSelector(
-    (state: RootState) => state.sharedReducer
-  );
+  const { selectedColor } = useSelector((state: RootState) => state.sharedReducer);
   const dispatch = useDispatch();
 
   return (
-    <Button
-      active={isMarkActive(editor, format)}
-      onClick={() => setOpen(!open)}
-    >
+    <Button active={isMarkActive(editor, format)} onClick={() => setOpen(!open)}>
       {open && (
         <CompactPicker
           color={selectedColor}

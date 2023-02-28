@@ -22,9 +22,7 @@ const PageHeader = ({ title, subtitle, isDashboard }: Iprops) => {
       {isDashboard && (
         <HeaderStatisticsSection>
           <HeaderStatisticsBox>
-            <HeaderStatisticsTitle style={{ visibility: 'hidden' }}>
-              Header
-            </HeaderStatisticsTitle>
+            <HeaderStatisticsTitle style={{ visibility: 'hidden' }}>Header</HeaderStatisticsTitle>
             <HeaderStatisticsTitle>OTP</HeaderStatisticsTitle>
             <HeaderStatisticsValue>Transaction</HeaderStatisticsValue>
             <HeaderStatisticsValue>Non-transaction</HeaderStatisticsValue>

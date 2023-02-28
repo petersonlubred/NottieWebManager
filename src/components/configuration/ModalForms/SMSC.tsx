@@ -1,5 +1,5 @@
-import { Checkbox, FormGroup, NumberInput,Select, SelectItem, TextInput } from '@carbon/react';
-import { Field,Form, Formik } from 'formik';
+import { Checkbox, FormGroup, NumberInput, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -26,10 +26,14 @@ const SMSCForm = () => {
                 <FormField>
                   <FormContainer>
                     <Field name="smsc_name">
-                      {({ field }: any) => <TextInput {...field} type="text" id="smsc_name-input" labelText="SMSC Name" placeholder="enter name" onKeyUp={() => setFieldTouched('smsc_name', true)} />}
+                      {({ field }: any) => (
+                        <TextInput {...field} type="text" id="smsc_name-input" labelText="SMSC Name" placeholder="enter name" onKeyUp={() => setFieldTouched('smsc_name', true)} />
+                      )}
                     </Field>
                     <Field name="server">
-                      {({ field }: any) => <TextInput {...field} type="text" id="server-input" labelText="Server/IP" placeholder="enter text" onKeyUp={() => setFieldTouched('server', true)} />}
+                      {({ field }: any) => (
+                        <TextInput {...field} type="text" id="server-input" labelText="Server/IP" placeholder="enter text" onKeyUp={() => setFieldTouched('server', true)} />
+                      )}
                     </Field>
                     <ErrorMessage invalid={Boolean(touched.smsc_name && errors.smsc_name)} invalidText={errors.smsc_name} />
                     <ErrorMessage invalid={Boolean(touched.server && errors.server)} invalidText={errors.server} />

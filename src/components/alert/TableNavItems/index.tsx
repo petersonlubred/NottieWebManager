@@ -16,33 +16,16 @@ const TableNavItem = ({ filterItems, noDateRange }: Iprops) => {
       {!noDateRange && (
         <NavItem>
           <NavItemTitle>Date Range:</NavItemTitle>
-          <DatePicker
-            dateFormat="m/d/Y"
-            datePickerType="range"
-            className="date_picker"
-          >
-            <DatePickerInput
-              placeholder="Start date"
-              id="date-picker-default-id"
-              size="md"
-            />
-            <DatePickerInput
-              placeholder="End date"
-              id="date-picker-default-id"
-              size="md"
-            />
+          <DatePicker dateFormat="m/d/Y" datePickerType="range" className="date_picker">
+            <DatePickerInput placeholder="Start date" id="date-picker-default-id" size="md" />
+            <DatePickerInput placeholder="End date" id="date-picker-default-id" size="md" />
           </DatePicker>
         </NavItem>
       )}
       {filterItems?.map((item, index) => (
         <NavItem key={index}>
           <NavItemTitle> {item.label}:</NavItemTitle>
-          <TextInput
-            type="text"
-            id={item?.key}
-            labelText=""
-            placeholder="type here"
-          />
+          <TextInput type="text" id={item?.key} labelText="" placeholder="type here" />
         </NavItem>
       ))}
       <IconBox>

@@ -21,11 +21,8 @@ const QueueMonitor = ({ heading }: { heading: string }) => {
           </BoxContainer>
           SMS
         </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={2870232}>
-          2,870,232
-        </MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={287}>287</MonitorSubHeaderParagraph>{' '}
-        <Divider></Divider>{' '}
+        <MonitorSubHeaderParagraph value={2870232}>2,870,232</MonitorSubHeaderParagraph>
+        <MonitorSubHeaderParagraph value={287}>287</MonitorSubHeaderParagraph> <Divider></Divider>{' '}
         <MonitorSubHeaderTitle>
           <BoxContainer>
             <Box value={129030}></Box>
@@ -33,11 +30,8 @@ const QueueMonitor = ({ heading }: { heading: string }) => {
           </BoxContainer>
           Email
         </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={129030}>
-          129,030{' '}
-        </MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={123}>123</MonitorSubHeaderParagraph>{' '}
-        <Divider></Divider>{' '}
+        <MonitorSubHeaderParagraph value={129030}>129,030 </MonitorSubHeaderParagraph>
+        <MonitorSubHeaderParagraph value={123}>123</MonitorSubHeaderParagraph> <Divider></Divider>{' '}
         <MonitorSubHeaderTitle>
           <BoxContainer>
             <Box value={1287029}></Box>
@@ -45,11 +39,8 @@ const QueueMonitor = ({ heading }: { heading: string }) => {
           </BoxContainer>
           Facebook
         </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={1287029}>
-          1,287,029{' '}
-        </MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={29}>29</MonitorSubHeaderParagraph>{' '}
-        <Divider></Divider>{' '}
+        <MonitorSubHeaderParagraph value={1287029}>1,287,029 </MonitorSubHeaderParagraph>
+        <MonitorSubHeaderParagraph value={29}>29</MonitorSubHeaderParagraph> <Divider></Divider>{' '}
         <MonitorSubHeaderTitle>
           <BoxContainer>
             <Box value={10123}></Box>
@@ -57,11 +48,8 @@ const QueueMonitor = ({ heading }: { heading: string }) => {
           </BoxContainer>
           Twitter
         </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={10123}>
-          10,123{' '}
-        </MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={6}>6</MonitorSubHeaderParagraph>{' '}
-        <Divider></Divider>{' '}
+        <MonitorSubHeaderParagraph value={10123}>10,123 </MonitorSubHeaderParagraph>
+        <MonitorSubHeaderParagraph value={6}>6</MonitorSubHeaderParagraph> <Divider></Divider>{' '}
         <MonitorSubHeaderTitle>
           {' '}
           <BoxContainer>
@@ -70,9 +58,7 @@ const QueueMonitor = ({ heading }: { heading: string }) => {
           </BoxContainer>
           Whatsapp
         </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={28914}>
-          28,914{' '}
-        </MonitorSubHeaderParagraph>
+        <MonitorSubHeaderParagraph value={28914}>28,914 </MonitorSubHeaderParagraph>
         <MonitorSubHeaderParagraph value={876}>876</MonitorSubHeaderParagraph>{' '}
       </MonitorContentBox>
     </MonitorContainerBox>
@@ -137,17 +123,7 @@ const Box = styled.div<MonitorSubHeaderParagraphProps>`
   width: ${px(16)};
   height: ${px(16)};
   background-color: ${({ value }) =>
-    value < 100
-      ? '#FA4D56'
-      : value < 200
-      ? '#FEC526'
-      : value < 10000
-      ? '#42BE65'
-      : value < 100000
-      ? '#FEC526'
-      : value < 1000000
-      ? '#FA4D56'
-      : '#42BE65'};
+    value < 100 ? '#FA4D56' : value < 200 ? '#FEC526' : value < 10000 ? '#42BE65' : value < 100000 ? '#FEC526' : value < 1000000 ? '#FA4D56' : '#42BE65'};
 `;
 
 const MonitorSubHeaderParagraph = styled.p<MonitorSubHeaderParagraphProps>`
@@ -157,27 +133,6 @@ const MonitorSubHeaderParagraph = styled.p<MonitorSubHeaderParagraphProps>`
   font-weight: 600;
   padding: ${px(16)};
   background-color: ${({ value }) =>
-    value < 100
-      ? '#3B1A1A'
-      : value < 200
-      ? '#232016'
-      : value < 10000
-      ? '#171e19'
-      : value < 100000
-      ? '#232016'
-      : value < 1000000
-      ? '#3B1A1A'
-      : '#171e19'};
-  color: ${({ value }) =>
-    value < 100
-      ? '#F39698'
-      : value < 200
-      ? '#F1C21B'
-      : value < 10000
-      ? '#37D263'
-      : value < 100000
-      ? '#F1C21B'
-      : value < 1000000
-      ? '#F39698'
-      : '#37D263'};
+    value < 100 ? '#3B1A1A' : value < 200 ? '#232016' : value < 10000 ? '#171e19' : value < 100000 ? '#232016' : value < 1000000 ? '#3B1A1A' : '#171e19'};
+  color: ${({ value }) => (value < 100 ? '#F39698' : value < 200 ? '#F1C21B' : value < 10000 ? '#37D263' : value < 100000 ? '#F1C21B' : value < 1000000 ? '#F39698' : '#37D263')};
 `;

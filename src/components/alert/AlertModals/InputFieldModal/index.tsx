@@ -30,14 +30,7 @@ type IProps = {
 const AlertInputFieldModal = ({ open, toggleModal }: IProps) => {
   return (
     <InputModalContainer>
-      <Modal
-        buttonLabel="Save Chnages"
-        heading="Map custom tags"
-        open={open}
-        toggleModal={toggleModal}
-        secondaryButtonText="Cancel"
-        extent="sm"
-      >
+      <Modal buttonLabel="Save Chnages" heading="Map custom tags" open={open} toggleModal={toggleModal} secondaryButtonText="Cancel" extent="sm">
         {dummpData.map((item: any) => (
           <InputFieldContainer key={item.id}>
             <TagBox>{item.tagName}</TagBox>
@@ -45,11 +38,7 @@ const AlertInputFieldModal = ({ open, toggleModal }: IProps) => {
               <Link />
             </IconBox>
             <InputBox>
-              <TextInput
-                type="text"
-                id={item.inputId}
-                placeholder={item.inputName}
-              />
+              <TextInput type="text" id={item.inputId} placeholder={item.inputName} />
             </InputBox>
           </InputFieldContainer>
         ))}
@@ -68,7 +57,7 @@ const InputModalContainer = styled.div`
 
 const InputFieldContainer = styled.div`
   display: flex;
-  gap:33px;
+  gap: 33px;
   align-items: center;
   margin-bottom: 14px;
 `;

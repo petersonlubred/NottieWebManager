@@ -1,5 +1,5 @@
-import { FormGroup, Select, SelectItem,TextInput } from '@carbon/react';
-import { Field,Form, Formik } from 'formik';
+import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -28,12 +28,7 @@ const SMSRouteConfig = () => {
                   <FormEmailContainer>
                     <Field name="route">
                       {({ field }: any) => (
-                        <Select
-                          id="select-1"
-                          labelText=""
-                          {...field}
-                          onKeyUp={() => setFieldTouched('route', true)}
-                        >
+                        <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('route', true)}>
                           <SelectItem text="Choose option" />
                           <SelectItem text="Option 1" value="option-1" />
                           <SelectItem text="Option 2" value="option-2" />
@@ -41,21 +36,13 @@ const SMSRouteConfig = () => {
                       )}
                     </Field>
                   </FormEmailContainer>
-                  <ErrorMessage
-                    invalid={Boolean(touched.route && errors.route)}
-                    invalidText={errors.route}
-                  />
+                  <ErrorMessage invalid={Boolean(touched.route && errors.route)} invalidText={errors.route} />
                 </FormField>{' '}
                 <FormField>
                   <FormContainer>
                     <Field name="aggregator">
                       {({ field }: any) => (
-                        <Select
-                          id="select-1"
-                          labelText="Aggregator/SMSC"
-                          {...field}
-                          onKeyUp={() => setFieldTouched('aggregator', true)}
-                        >
+                        <Select id="select-1" labelText="Aggregator/SMSC" {...field} onKeyUp={() => setFieldTouched('aggregator', true)}>
                           <SelectItem text="Choose option" />
                           <SelectItem text="Option 1" value="option-1" />
                           <SelectItem text="Option 2" value="option-2" />
@@ -64,12 +51,7 @@ const SMSRouteConfig = () => {
                     </Field>
                     <Field name="routeType">
                       {({ field }: any) => (
-                        <Select
-                          id="select-1"
-                          labelText="Route Type"
-                          {...field}
-                          onKeyUp={() => setFieldTouched('routeType', true)}
-                        >
+                        <Select id="select-1" labelText="Route Type" {...field} onKeyUp={() => setFieldTouched('routeType', true)}>
                           <SelectItem text="Choose an option" />
                           <SelectItem text="Network" value="network" />
                           <SelectItem text="Product code" value="productCode" />
@@ -78,14 +60,8 @@ const SMSRouteConfig = () => {
                         </Select>
                       )}
                     </Field>
-                    <ErrorMessage
-                      invalid={Boolean(touched.aggregator && errors.aggregator)}
-                      invalidText={errors.aggregator}
-                    />
-                    <ErrorMessage
-                      invalid={Boolean(touched.routeType && errors.routeType)}
-                      invalidText={errors.routeType}
-                    />
+                    <ErrorMessage invalid={Boolean(touched.aggregator && errors.aggregator)} invalidText={errors.aggregator} />
+                    <ErrorMessage invalid={Boolean(touched.routeType && errors.routeType)} invalidText={errors.routeType} />
                   </FormContainer>
                 </FormField>{' '}
                 {values?.routeType === 'network' ? (
@@ -93,12 +69,7 @@ const SMSRouteConfig = () => {
                     <FormContainer>
                       <Field name="country">
                         {({ field }: any) => (
-                          <Select
-                            id="select-1"
-                            labelText="Country"
-                            {...field}
-                            onKeyUp={() => setFieldTouched('country', true)}
-                          >
+                          <Select id="select-1" labelText="Country" {...field} onKeyUp={() => setFieldTouched('country', true)}>
                             <SelectItem text="Choose option" />
                             <SelectItem text="Option 1" value="option-1" />
                             <SelectItem text="Option 2" value="option-2" />
@@ -107,26 +78,15 @@ const SMSRouteConfig = () => {
                       </Field>
                       <Field name="network">
                         {({ field }: any) => (
-                          <Select
-                            id="select-1"
-                            labelText="Route Type"
-                            {...field}
-                            onKeyUp={() => setFieldTouched('network', true)}
-                          >
+                          <Select id="select-1" labelText="Route Type" {...field} onKeyUp={() => setFieldTouched('network', true)}>
                             <SelectItem text="Choose a network" />
                             <SelectItem text="Option 1" value="option-1" />
                             <SelectItem text="Option 2" value="option-2" />
                           </Select>
                         )}
                       </Field>
-                      <ErrorMessage
-                        invalid={Boolean(touched.country && errors.country)}
-                        invalidText={errors.country}
-                      />
-                      <ErrorMessage
-                        invalid={Boolean(touched.network && errors.network)}
-                        invalidText={errors.network}
-                      />
+                      <ErrorMessage invalid={Boolean(touched.country && errors.country)} invalidText={errors.country} />
+                      <ErrorMessage invalid={Boolean(touched.network && errors.network)} invalidText={errors.network} />
                     </FormContainer>
                   </FormField>
                 ) : values?.routeType === 'productCode' ? (
@@ -144,12 +104,7 @@ const SMSRouteConfig = () => {
                           />
                         )}
                       </Field>
-                      <ErrorMessage
-                        invalid={Boolean(
-                          touched.productCode && errors.productCode
-                        )}
-                        invalidText={errors.productCode}
-                      />
+                      <ErrorMessage invalid={Boolean(touched.productCode && errors.productCode)} invalidText={errors.productCode} />
                     </FormContainer>
                   </FormField>
                 ) : values.routeType === 'account' ? (
@@ -157,24 +112,14 @@ const SMSRouteConfig = () => {
                     <FormContainer>
                       <Field name="accountType">
                         {({ field }: any) => (
-                          <Select
-                            id="select-1"
-                            labelText="Account Type"
-                            {...field}
-                            onKeyUp={() => setFieldTouched('accountType', true)}
-                          >
+                          <Select id="select-1" labelText="Account Type" {...field} onKeyUp={() => setFieldTouched('accountType', true)}>
                             <SelectItem text="Choose option" />
                             <SelectItem text="Option 1" value="option-1" />
                             <SelectItem text="Option 2" value="option-2" />
                           </Select>
                         )}
                       </Field>
-                      <ErrorMessage
-                        invalid={Boolean(
-                          touched.accountType && errors.accountType
-                        )}
-                        invalidText={errors.accountType}
-                      />
+                      <ErrorMessage invalid={Boolean(touched.accountType && errors.accountType)} invalidText={errors.accountType} />
                     </FormContainer>
                   </FormField>
                 ) : (
@@ -183,14 +128,7 @@ const SMSRouteConfig = () => {
                       <FormContainer>
                         <Field name="transactionType">
                           {({ field }: any) => (
-                            <Select
-                              id="select-1"
-                              labelText="Transaction Type"
-                              {...field}
-                              onKeyUp={() =>
-                                setFieldTouched('transactionType', true)
-                              }
-                            >
+                            <Select id="select-1" labelText="Transaction Type" {...field} onKeyUp={() => setFieldTouched('transactionType', true)}>
                               <SelectItem text="Choose option" />
                               <SelectItem text="Option 1" value="option-1" />
                               <SelectItem text="Option 2" value="option-2" />
@@ -198,12 +136,7 @@ const SMSRouteConfig = () => {
                           )}
                         </Field>
 
-                        <ErrorMessage
-                          invalid={Boolean(
-                            touched.transactionType && errors.transactionType
-                          )}
-                          invalidText={errors.transactionType}
-                        />
+                        <ErrorMessage invalid={Boolean(touched.transactionType && errors.transactionType)} invalidText={errors.transactionType} />
                       </FormContainer>
                     </FormField>
                   )

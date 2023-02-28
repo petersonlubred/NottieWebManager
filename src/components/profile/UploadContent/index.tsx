@@ -9,14 +9,8 @@ const UploadContent = () => {
   return (
     <Container>
       <Label>Upload file</Label>
-      <Description>
-        Max file size is 5mb. Supported file types are csv or excel.
-      </Description>
-      <Button
-        renderIcon={null}
-        handleClick={() => null}
-        buttonLabel="Add file"
-      />{' '}
+      <Description>Max file size is 5mb. Supported file types are csv or excel.</Description>
+      <Button renderIcon={null} handleClick={() => null} buttonLabel="Add file" />{' '}
       <PreviewName>
         <Paragraph>name.txt</Paragraph>
         <Close size={16} />

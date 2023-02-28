@@ -1,6 +1,6 @@
-import { FormGroup, NumberInput,PasswordInput, TextInput } from '@carbon/react';
+import { FormGroup, NumberInput, PasswordInput, TextInput } from '@carbon/react';
 import { Send } from '@carbon/react/icons';
-import { Field,Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 

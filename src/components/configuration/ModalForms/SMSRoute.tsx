@@ -1,5 +1,5 @@
-import { FormGroup, Select, SelectItem,TextInput } from '@carbon/react';
-import { Field,Form, Formik } from 'formik';
+import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
+import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -27,12 +27,26 @@ const SMSRoute = () => {
                   <FormContainer>
                     <Field name="route_name">
                       {({ field }: any) => (
-                        <TextInput {...field} type="text" id="route_name-input" labelText="SMS Route Name" placeholder="enter name" onKeyUp={() => setFieldTouched('route_name', true)} />
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="route_name-input"
+                          labelText="SMS Route Name"
+                          placeholder="enter name"
+                          onKeyUp={() => setFieldTouched('route_name', true)}
+                        />
                       )}
                     </Field>
                     <Field name="aggregator">
                       {({ field }: any) => (
-                        <TextInput {...field} type="text" id="aggregator-input" labelText="Aggregator/SMSC" placeholder="enter text" onKeyUp={() => setFieldTouched('aggregator', true)} />
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="aggregator-input"
+                          labelText="Aggregator/SMSC"
+                          placeholder="enter text"
+                          onKeyUp={() => setFieldTouched('aggregator', true)}
+                        />
                       )}
                     </Field>
                     <ErrorMessage invalid={Boolean(touched.route_name && errors.route_name)} invalidText={errors.route_name} />

@@ -91,9 +91,7 @@ const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
         <EmailDeliveryHeaderParagraph>{heading} </EmailDeliveryHeaderParagraph>
       </EmailDeliveryHeader>
       <StatusContainer>
-        <ChartContainer>
-          {isMounted && <DonutChart data={data} options={options}></DonutChart>}
-        </ChartContainer>
+        <ChartContainer>{isMounted && <DonutChart data={data} options={options}></DonutChart>}</ChartContainer>
         <BoxContainerSection>
           <BoxContainer>
             <Box value="#F9444C" />

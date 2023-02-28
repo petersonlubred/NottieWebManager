@@ -4,7 +4,7 @@ import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { persistStore } from 'redux-persist';
-import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER,REHYDRATE } from 'redux-persist';
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
 import { databaseApi, roleApi, smtpApi, userApi } from '../api';

@@ -12,14 +12,7 @@ type IProps = {
 const EmailAlertModal = ({ open, toggleModal }: IProps) => {
   return (
     <EmailModalContainer>
-      <Modal
-        buttonLabel="Close"
-        heading="Email address: usman.yak@mail.com"
-        open={open}
-        toggleModal={toggleModal}
-        secondaryButtonText=""
-        extent="sm"
-      >
+      <Modal buttonLabel="Close" heading="Email address: usman.yak@mail.com" open={open} toggleModal={toggleModal} secondaryButtonText="" extent="sm">
         <Container>
           <Content>
             <Title>Subject</Title>
@@ -28,12 +21,9 @@ const EmailAlertModal = ({ open, toggleModal }: IProps) => {
           <Content>
             <Title>Message</Title>
             <Paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur.{' '}
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+              pariatur.{' '}
             </Paragraph>
           </Content>
         </Container>

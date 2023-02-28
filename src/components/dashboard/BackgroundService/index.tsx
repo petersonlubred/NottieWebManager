@@ -10,28 +10,10 @@ import ProgressStatusTable from './ProgressStatusTable';
 import QueueMonitor from './QueueMonitor';
 import QueueTrend from './QueueTrend';
 
-const queueMonitors = [
-  'OTP Queue monitor',
-  'Transaction Queue monitor',
-  'Non-transaction Queue monitor',
-];
-const queueTrends = [
-  'OTP Queue & TPS trend',
-  'Transaction Queue & TPS trend',
-  'Non-transaction Queue & TPS trend',
-];
+const queueMonitors = ['OTP Queue monitor', 'Transaction Queue monitor', 'Non-transaction Queue monitor'];
+const queueTrends = ['OTP Queue & TPS trend', 'Transaction Queue & TPS trend', 'Non-transaction Queue & TPS trend'];
 
-const microservices = [
-  'Transaction',
-  'Transaction SMS',
-  'Transaction Email',
-  'Non-Transaction',
-  'Non-Transaction SMS',
-  'Non-Transaction Email',
-  'OTP',
-  'OTP-SMS',
-  'OTP-Email',
-];
+const microservices = ['Transaction', 'Transaction SMS', 'Transaction Email', 'Non-Transaction', 'Non-Transaction SMS', 'Non-Transaction Email', 'OTP', 'OTP-SMS', 'OTP-Email'];
 const progressStatus = ['SLA progress status', 'SLA progress status'];
 const BackgroundService = () => {
   return (
