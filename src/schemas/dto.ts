@@ -41,35 +41,34 @@ export const initialUserLoginValue: IinitialUserLogin = {
 };
 
 export const initialAlertProfileValue: IinitialAlertProfile = {
-  description: '',
-  name: '',
-  template: '',
-  min_threshold: '',
-  max_threshold: '',
+  profileName: '',
+  templateId: '',
+  emailMinThreshhold: 0,
+  smsMinThreshhold: 0,
+  status: false
 };
 
 export const initialAlertException: IinitialAlertException = {
   customerId: '',
   accountNo: '',
-  profile: '',
-  alertMedium: '',
+  alertProfileId: '',
+  alertType: '',
   recipient: '',
-  status: '',
+  status: false,
 };
 
 export const initialSubscription: IinitialSubscription = {
   customerId: '',
   accountNo: '',
-  profile: '',
-  alertMedium: '',
+  alertProfileId: '',
+  alertType: '',
   recipient: '',
-  status: '',
 };
 
 export const initialAlertExclude: IinitialAlertExclude = {
-  label: '',
-  operator: '',
-  textToExclude: '',
+  excludeType: '',
+  excludeOperator: '',
+  excludeValue: '',
 };
 
 export const initialDataSource: IinitialDataSourceType = {

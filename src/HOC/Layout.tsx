@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import PageHeader from '@/components/accounts/PageHeader';
@@ -20,6 +20,10 @@ interface Iprops {
   currentTab?: any;
 }
 const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle, isDashboard, noPagination, currentTab }: Iprops) => {
+  useEffect(() => {
+    handleSetIndex(navItem.findIndex((nav) => nav?.tabName === currentTab));
+  }, [currentTab]);
+
   return (
     <LayoutContainer>
       <Seo title={routename} />
