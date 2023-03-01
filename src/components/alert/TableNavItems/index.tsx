@@ -7,10 +7,16 @@ import { px } from '@/utils';
 
 interface Iprops {
   filterItems: { key: string; label: string; value: string }[];
+  setFilterData?: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: unknown;
+    }>
+  >;
+  filterData?: { [key: string]: any[] };
   noDateRange?: boolean;
 }
 
-const TableNavItem = ({ filterItems, noDateRange }: Iprops) => {
+const TableNavItem = ({ filterItems, setFilterData, noDateRange, filterData }: Iprops) => {
   return (
     <ItemContainer>
       {!noDateRange && (
@@ -25,7 +31,20 @@ const TableNavItem = ({ filterItems, noDateRange }: Iprops) => {
       {filterItems?.map((item, index) => (
         <NavItem key={index}>
           <NavItemTitle> {item.label}:</NavItemTitle>
-          <TextInput type="text" id={item?.key} labelText="" placeholder="type here" />
+          <TextInput
+            type="text"
+            id={item?.key}
+            labelText=""
+            placeholder="type here"
+            value={filterData ? filterData[item.key] : ''}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setFilterData &&
+                setFilterData({
+                  ...filterData,
+                  [item.key]: event.target.value,
+                });
+            }}
+          />
         </NavItem>
       ))}
       <IconBox>

@@ -1,7 +1,16 @@
 import { useState } from 'react';
 
 import { useToast } from '@/context/ToastContext';
-import { useDeleteRoleMutation, useDeleteUserMutation, useDeleteUsersMutation, useResendPasswordMutation } from '@/redux/api';
+import {
+  useDeleteExceptionMutation,
+  useDeleteExclusionMutation,
+  useDeleteProfileMutation,
+  useDeleteRoleMutation,
+  useDeleteSubscriptionMutation,
+  useDeleteUserMutation,
+  useDeleteUsersMutation,
+  useResendPasswordMutation,
+} from '@/redux/api';
 
 type DataProps = {
   id?: string;
@@ -16,6 +25,10 @@ const useNetworkRequest = (toggleActionModal: () => void) => {
   const [deleteUser] = useDeleteUserMutation();
   const [deleteRole] = useDeleteRoleMutation();
   const [deleteUsers] = useDeleteUsersMutation();
+  const [deleteProfile] = useDeleteProfileMutation();
+  const [deleteException] = useDeleteExceptionMutation();
+  const [deleteExclusion] = useDeleteExclusionMutation();
+  const [deleteSubscription] = useDeleteSubscriptionMutation();
 
   const handleRequest = async (data: DataProps, context: string) => {
     const { id, ids } = data;
@@ -39,6 +52,18 @@ const useNetworkRequest = (toggleActionModal: () => void) => {
       } else if (context === 'delete-roles') {
         // await deleteUsers({ userIds: ids, status: data?.status }).unwrap();
         toast('success', 'Roles deleted successfully');
+      } else if (context === 'delete-alert-profile') {
+        await deleteProfile({ id: id });
+        toast('success', 'Profile deleted successfully');
+      } else if (context === 'delete-exception') {
+        await deleteException({ id: id });
+        toast('success', 'Exception deleted successfully');
+      } else if (context === 'delete-exclusion') {
+        await deleteExclusion({ id: id });
+        toast('success', 'Exclusion deleted successfully');
+      } else if (context === 'delete-subscription') {
+        await deleteSubscription({ id: id });
+        toast('success', 'Subscription deleted successfully');
       }
       setLoading(false);
       toggleActionModal();

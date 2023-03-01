@@ -51,35 +51,34 @@ export const EmailSchema = Yup.object({
 });
 
 export const AlertProfileSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
-  description: Yup.string().required('Description is required'),
-  template: Yup.string().required('Template is required'),
-  min_threshold: Yup.string().required('Min Threshold is required'),
-  max_threshold: Yup.string().required('Max Threshold is required'),
+  profileName: Yup.string().required('Name is required'),
+  templateId: Yup.string().required('Template is required'),
+  emailMinThreshhold: Yup.number().required('Email Min Threshold is required'),
+  smsMinThreshhold: Yup.number().required('Sms Min Threshold is required'),
+  status: Yup.boolean()
 });
 
 export const AlertExceptionSchema = Yup.object({
   customerId: Yup.string().required('Customer Id is required'),
   accountNo: Yup.string().required('Account No is required'),
-  alertMedium: Yup.string().required('Alert Medium is required'),
+  alertType: Yup.string().required('Alert Medium is required'),
   recipient: Yup.string().required('Recipient is required'),
-  profile: Yup.string().required('Profile is required'),
-  status: Yup.string().required('Status is required'),
+  alertProfileId: Yup.string().required('Alert Profile is required'),
+  status: Yup.boolean()
 });
 
 export const AlertExcludeSchema = Yup.object({
-  label: Yup.string().required('Label is required'),
-  operator: Yup.string().required('Operator is required'),
-  textToExclude: Yup.string().required('Text to Exclude is required'),
+  excludeType: Yup.string().required('Exclude type is required'),
+  excludeValue: Yup.string().required('Exclude value is required'),
+  excludeOperator: Yup.string().required('Exclude operator is required'),
 });
 
 export const SubscriptionSchema = Yup.object({
   customerId: Yup.string().required('Customer Id is required'),
   accountNo: Yup.string().required('Account No is required'),
-  alertMedium: Yup.string().required('Alert Medium is required'),
+  alertType: Yup.string().required('Alert Medium is required'),
   recipient: Yup.string().required('Recipient is required'),
-  profile: Yup.string().required('Profile is required'),
-  status: Yup.string().required('Status is required'),
+  alertProfileId: Yup.string().required('Alert Profile is required'),
 });
 
 export const DataSourceSchema = Yup.object({
