@@ -85,18 +85,23 @@ export const initialDataSource: IinitialDataSourceType = {
 };
 
 export const initialSMSCValue: IinitialSMSCForm = {
-  smsc_name: '',
-  server: '',
-  TXPort: '',
-  noOfSessions: '',
+  smscName: '',
+  hostAddress: '',
   dataEncoding: '',
-  npi: '',
-  onpi: '',
-  ton: '',
-  otin: '',
-  dnpi: '',
-  dton: '',
-  activate: '',
+  connectionMode: 1,
+  port: 0,
+  sessions: 0,
+  username: '',
+  password: '',
+  useSsl: false,
+  systemType: '',
+  npi: 0,
+  ton: 0,
+  oNpi: 0,
+  oTon: 0,
+  dNpi: 0,
+  dTon: 0,
+  status: true,
 };
 
 export const initialSMSRouteValue: IinitialSMSRouteForm = {

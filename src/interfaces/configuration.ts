@@ -1,4 +1,4 @@
-import { IinitialSMTPForm, IinitialSMSCForm } from './../schemas/interface';
+import { IinitialSMSCForm, IinitialSMTPForm } from './../schemas/interface';
 import { APIResponse } from './auth';
 
 export interface Ismtp extends IinitialSMTPForm {
@@ -7,7 +7,7 @@ export interface Ismtp extends IinitialSMTPForm {
 }
 export interface Smsc extends IinitialSMSCForm {
   smscId: string;
-  smscRouteId:string;
+  smscRouteId: string;
 }
 
 export interface SmtpsResponse extends APIResponse<Ismtp[]> {}

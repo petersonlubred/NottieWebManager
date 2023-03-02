@@ -5,11 +5,13 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { ConfigurationTable, DataSource, ServiceMapping, SystemSettings, Template } from '@/components/configuration';
-import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
 import ActionIconsSmsc from '@/components/configuration/ActionIcons/Smsc';
+import { StatusIcon } from '@/components/configuration/ActionIcons/Smsc';
+import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
 import Modal from '@/components/shared/Modal';
 import Layout from '@/HOC/Layout';
 import useHeaders from '@/hooks/useHeaders';
+import { Ismtp, Smsc } from '@/interfaces/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { IHeader } from '@/interfaces/role';
 import { useGetSmtpserversQuery } from '@/redux/api';
@@ -18,9 +20,6 @@ import { px } from '@/utils';
 import { protectedRouteProps } from '@/utils/withSession';
 
 import ModalContent from '../../components/configuration/ModalContent';
-import { Ismtp, Smsc } from '@/interfaces/configuration';
-
-
 
 const SystemConfiguration = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);
@@ -29,10 +28,10 @@ const SystemConfiguration = () => {
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const formRef = useRef<FormikRefType<any>>(null);
-  
+
   const { data, isFetching: isLoading } = useGetSmtpserversQuery();
-  const { data:smscData, isFetching: isRetrieving } = useGetSmscQuery();
-  
+  const { data: smscData, isFetching: isRetrieving } = useGetSmscQuery();
+
   const [tabIndex, setTabIndex] = useState<number>(0);
   const router = useRouter();
   const { tab } = router.query;
@@ -91,16 +90,15 @@ const SystemConfiguration = () => {
         const row: any = {};
         const tabHeaders = headers.find((header) => header.tabName === currentTab)?.data || [];
         tabHeaders.forEach((item2: { key: string; header: string }) => {
-          console.log('item2',item2)
           row[item2.key] = item[item2.key];
-          console.log('row', row)
           if (currentTab === 'smtp') {
             row.id = item['smtpId'];
             row['others'] = <ActionIcons data={item} />;
             row['useSslTls'] = item['useSslTls'] ? 'Yes' : 'No';
-          }else if(currentTab === 'smsc'){
+          } else if (currentTab === 'smsc') {
             row.id = item['smscId'];
-            row['others'] = <ActionIconsSmsc data={item} />
+            row['others'] = <ActionIconsSmsc data={item} />;
+            row['status'] = item['status'] ? <StatusIcon status="Active" /> : <StatusIcon status="Inactive" />;
           }
         });
         return row;
@@ -112,13 +110,13 @@ const SystemConfiguration = () => {
   useEffect(() => {
     if (currentTab === 'smtp') {
       !isEmpty(data?.data) && setResponseData(data?.data as Ismtp[]);
-    }else if(currentTab === 'smsc'){
+    } else if (currentTab === 'smsc') {
       !isEmpty(smscData?.data) && setResponseData(smscData?.data as Smsc[]);
     } else {
       // setResponseData([])
       setResponseData([]);
     }
-  }, [data?.data, currentTab]);
+  }, [data?.data, currentTab, smscData?.data]);
 
   return (
     <Layout
