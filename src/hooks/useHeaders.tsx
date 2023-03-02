@@ -12,7 +12,7 @@ const useHeaders = () => {
         header: 'lastName',
       },
       {
-        key: 'email',
+        key: 'emailAddress',
         header: 'Email Address',
       },
       {
@@ -231,39 +231,39 @@ const useHeaders = () => {
   const profileheader = useMemo(() => {
     return [
       {
-        key: 'profile_name',
+        key: 'profileName',
         header: 'Profile Name',
       },
       {
-        key: 'description',
-        header: 'Description',
-      },
-      {
-        key: 'template',
+        key: 'templateName',
         header: 'Template',
       },
       {
-        key: 'min_threshold',
+        key: 'emailMinThreshhold',
         header: 'Email Min Threshold',
+      },
+      {
+        key: 'smsMinThreshhold',
+        header: 'Sms Min Threshold',
       },
       {
         key: 'status',
         header: 'Status',
       },
       {
-        key: 'hide_balance',
+        key: 'hideBalance',
         header: 'Hide Balance',
       },
       {
-        key: 'mask_account',
+        key: 'maskAccount',
         header: 'Mask Account',
       },
       {
-        key: 'enable_email',
+        key: 'enableEmail',
         header: 'Enable Email',
       },
       {
-        key: 'enable_sms',
+        key: 'enableSms',
         header: 'Enable SMS',
       },
       {
@@ -276,11 +276,11 @@ const useHeaders = () => {
   const alertexceptionheader = useMemo(() => {
     return [
       {
-        key: 'customer_id',
+        key: 'customerId',
         header: 'Customer ID',
       },
       {
-        key: 'account_no',
+        key: 'accountNo',
         header: 'Account No',
       },
       {
@@ -288,11 +288,11 @@ const useHeaders = () => {
         header: 'Recipient',
       },
       {
-        key: 'alert_medium',
+        key: 'alertType',
         header: 'Alert Medium',
       },
       {
-        key: 'alert_profile',
+        key: 'alertProfile',
         header: 'Transaction Alert Profile',
       },
       {
@@ -309,15 +309,15 @@ const useHeaders = () => {
   const alertexcludeheader = useMemo(() => {
     return [
       {
-        key: 'exclusion_type',
+        key: 'excludeType',
         header: 'Exclusion Type',
       },
       {
-        key: 'text_to_exclude',
+        key: 'excludeValue',
         header: 'Text to exclude',
       },
       {
-        key: 'operator',
+        key: 'excludeOperator',
         header: 'Operator',
       },
       {

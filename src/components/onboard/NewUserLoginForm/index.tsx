@@ -1,59 +1,79 @@
-import { FormGroup, PasswordInput, TextInput } from '@carbon/react';
+import { FormGroup, Loading, PasswordInput, TextInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { useToast } from '@/context/ToastContext';
+import { useLazyGetAUserQuery, useOnboardUserMutation } from '@/redux/api';
+import { initialUserLoginValue } from '@/schemas/dto';
+import { IinitialUserLogin } from '@/schemas/interface';
 import { userLoginSchema } from '@/schemas/schema';
-import { initialUserLoginValue } from '@/schemas/schema';
 import { px } from '@/utils';
 
 import Button from '../../shared/Button';
 
-type IProps = {
-  toggleLogin: () => void;
-};
+const SetupNewUserLoginForm = () => {
+  const router = useRouter();
+  const { userid } = router.query;
+  const [loading, setLoading] = useState(false);
+  const [onboard] = useOnboardUserMutation();
+  const [trigger] = useLazyGetAUserQuery();
 
-const SetupNewUserLoginForm = ({ toggleLogin }: IProps) => {
+  const { toast } = useToast();
+
+  const handleSubmit = async (values: IinitialUserLogin) => {
+    const formvalues = { ...values, id: userid as string };
+    try {
+      setLoading(true);
+      await onboard(formvalues);
+      setLoading(false);
+    } catch (error: any) {
+      toast('error', error?.data?.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (userid) {
+      trigger({ id: userid as string });
+    }
+  }, [trigger, userid]);
+
   return (
     <SignInContainer>
       <HeaderTitle>Almost done, please set your password and name.</HeaderTitle>
-      <Formik
-        initialValues={initialUserLoginValue}
-        validationSchema={userLoginSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(false);
-        }}
-      >
-        {({ errors, touched, isSubmitting, isValid, values, setFieldTouched }) => (
+      <Formik initialValues={initialUserLoginValue} validationSchema={userLoginSchema} onSubmit={handleSubmit}>
+        {({ errors, touched, isValid, values, setFieldTouched, handleSubmit }) => (
           <Form>
             <FormGroup legendText="">
               <FormContainer>
-                <Field name="firstname">
+                <Field name="firstName">
                   {({ field }: any) => (
                     <TextInput
                       {...field}
                       type="text"
-                      id="firstname-input"
+                      id="firstName-input"
                       labelText="First Name"
                       placeholder="input text"
-                      onKeyUp={() => setFieldTouched('firstname', true)}
-                      invalid={Boolean(touched.firstname && errors.firstname)}
-                      invalidText={errors.firstname}
+                      onKeyUp={() => setFieldTouched('firstName', true)}
+                      invalid={Boolean(touched.firstName && errors.firstName)}
+                      invalidText={errors.firstName}
                     />
                   )}
                 </Field>
-                <Field name="lastname">
+                <Field name="lastName">
                   {({ field }: any) => (
                     <TextInput
                       {...field}
                       type="text"
-                      id="lastname-input"
+                      id="lastName-input"
                       labelText="Last Name"
                       placeholder="input text"
-                      onKeyUp={() => setFieldTouched('lastname', true)}
-                      invalid={Boolean(touched.lastname && errors.lastname)}
-                      invalidText={errors.lastname}
+                      onKeyUp={() => setFieldTouched('lastName', true)}
+                      invalid={Boolean(touched.lastName && errors.lastName)}
+                      invalidText={errors.lastName}
                     />
                   )}
                 </Field>
@@ -101,11 +121,13 @@ const SetupNewUserLoginForm = ({ toggleLogin }: IProps) => {
                 </RoleContainer>
               </ContentContainer>
               <Button
-                renderIcon={(props: any) => <ArrowRight size={24} {...props} />}
-                disabled={isSubmitting || !isValid || !values?.password}
-                handleClick={toggleLogin}
                 buttonLabel="Continue"
                 fullWidth
+                renderIcon={(props: any) =>
+                  loading ? <Loading size={24} {...props} small description="Active loading indicator" withOverlay={false} /> : <ArrowRight {...props} size={24} />
+                }
+                disabled={!isValid || !values?.firstName || loading}
+                handleClick={handleSubmit}
               />
             </FormGroup>
           </Form>
@@ -249,10 +271,4 @@ const CurvedBox = styled.div`
   color: ${({ theme }) => theme.colors.lightBackgroundtext};
   padding: ${px(5)} ${px(8)};
   border-radius: 24px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.button};
-    color: #161616;
-  }
 `;

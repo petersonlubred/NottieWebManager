@@ -2,7 +2,6 @@ import type { GetServerSideProps, NextPage } from 'next';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import SetupNewUserLoginForm from '@/components/onboard/NewUserLoginForm';
 import SetDatabase from '@/components/onboard/SetDatabase';
 import SetDatabaseForm from '@/components/onboard/SetDatabaseForm/SetDatabaseForm';
 import SetupProcess from '@/components/onboard/SetupProcess/SetupProcess';
@@ -51,10 +50,8 @@ const Home: NextPage = () => {
           <SetDatabaseForm handleSetStep={handleSetStep} registerDb={registerDb} isLoading={isLoading} />
         ) : step === 2 ? (
           <SetupProcess handleSetStep={handleSetStep} isLoading={isLoading} isSuccess={isSuccess} setLoginDetails={setLoginDetails} />
-        ) : step === 3 ? (
-          <SetUpSuccess toggleLogin={setIsLogin} loginDetails={loginDetails} />
         ) : (
-          step === 4 && <SetupNewUserLoginForm toggleLogin={toggleLogin} />
+          step === 3 && <SetUpSuccess toggleLogin={setIsLogin} loginDetails={loginDetails} />
         )}
       </Main>
     </Body>
@@ -64,8 +61,8 @@ const Home: NextPage = () => {
 export const getServerSideProps: GetServerSideProps = protectedRouteProps(true);
 
 //TODO: sticky doesn't work with overflow
-const Body = styled.div``;
-const Main = styled.main`
+export const Body = styled.div``;
+export const Main = styled.main`
   /* overflow: hidden; */
   background-color: ${({ theme }) => theme.colors.bgPrimary};
   min-height: 100vh;
@@ -77,12 +74,12 @@ const Main = styled.main`
   }
 `;
 
-const LogoContainer = styled.div`
+export const LogoContainer = styled.div`
   margin-top: ${px(34)};
   cursor: pointer;
 `;
 
-const NavbarSection = styled.div`
+export const NavbarSection = styled.div`
   margin-left: ${px(62.2)};
   display: flex;
   align-items: flex-start;

@@ -19,37 +19,46 @@ import {
   TableToolbar,
   TableToolbarContent,
   TableToolbarProps,
-  TableToolbarSearch,
 } from '@carbon/react';
-import { Add, Password, TrashCan } from '@carbon/react/icons';
+import { Add, TrashCan, Upload } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 
+import TableNavItem from '@/components/alert/TableNavItems';
 import Button from '@/components/shared/Button';
 import useNetworkRequest from '@/hooks/useNetworkRequest';
 import { IHeader } from '@/interfaces/role';
-import { BulkResetPassword } from '@/interfaces/user';
 
 import ActionModal from '../../ActionModals';
 
 type Props = {
   Rows: any[];
   Headers: IHeader[];
-  tab: number;
   toggleModal: () => void;
   isLoading: boolean;
+  currentTab: string | string[] | undefined;
+  tabIndex: number;
+  filterItems: any[];
+  navItems: any[];
+  setFilterData: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: unknown;
+    }>
+  >;
+  filterData: { [key: string]: any[] };
+  toggleBulkModal: () => void;
 };
 
-const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => {
+const ProfileTable = ({ Rows, Headers, toggleModal, isLoading, currentTab, tabIndex, filterItems, toggleBulkModal, navItems, setFilterData, filterData }: Props) => {
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [action, setAction] = useState<string>('');
-  const [context, setContext] = useState<any>('');
 
   const toggleActionModal = () => {
     setAction('');
   };
 
   const { handleRequest, loading } = useNetworkRequest(toggleActionModal);
+
   return isLoading ? (
     <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
   ) : (
@@ -74,53 +83,16 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
           getSelectionProps: (_props?: { row: string }) => TableSelectRowProps;
           getToolbarProps: () => TableToolbarProps;
           getBatchActionProps: () => TableBatchActionProps;
-          selectedRows: { id: string; value: string; cells: any[] }[];
+          selectedRows: { id: string }[];
         }) => (
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
-                {tab === 0 && (
-                  <>
-                    <TableBatchAction
-                      renderIcon={Password}
-                      iconDescription="Reset password for the selected rows"
-                      onClick={() => {
-                        const result: BulkResetPassword = [];
-                        selectedRows.forEach((obj: { id: string; value: string; cells: any }) => {
-                          const emailCell = obj?.cells.find((cell: any) => cell.id.endsWith(':emailAddress'));
-                          if (emailCell) {
-                            result.push({
-                              userId: obj.id,
-                              emailAddress: emailCell.value,
-                            });
-                          }
-                        });
-                        setSelectedRows(result);
-                        setAction('reset');
-                        setContext('user');
-                      }}
-                    >
-                      Reset Password
-                    </TableBatchAction>
-                    <TableBatchAction
-                      renderIcon={TrashCan}
-                      iconDescription="Activate the selected rows"
-                      onClick={() => {
-                        setAction('activate');
-                        setContext('user');
-                        setSelectedRows(selectedRows?.map((row) => row.id));
-                      }}
-                    >
-                      Activate
-                    </TableBatchAction>
-                  </>
-                )}
                 <TableBatchAction
                   renderIcon={TrashCan}
                   iconDescription="Delete the selected rows"
                   onClick={() => {
                     setAction('delete');
-                    setContext(tab === 0 ? 'user' : 'role');
                     setSelectedRows(selectedRows?.map((row) => row.id));
                   }}
                 >
@@ -128,22 +100,35 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
                 </TableBatchAction>
               </TableBatchActions>
               <TableToolbarContent>
-                <TableToolbarSearch onChange={() => null} />
-                <Button renderIcon={(props: any) => <Add size={20} {...props} />} handleClick={toggleModal} buttonLabel={tab === 0 ? 'Create new user' : 'Create new role'} />
+                {tabIndex != 0 && tabIndex != 2 && <TableNavItem filterItems={filterItems} setFilterData={setFilterData} filterData={filterData} noDateRange />}
+                <Button
+                  renderIcon={(props: any) => <Add size={20} {...props} />}
+                  buttonLabel={`Create ${navItems[tabIndex]?.title.split(' ')[navItems[tabIndex]?.title.split(' ').length - 1]}`}
+                  handleClick={toggleModal}
+                />
+                {tabIndex !== 0 && (
+                  <Button renderIcon={(props: any) => <Upload size={20} {...props} />} handleClick={toggleBulkModal} buttonLabel={`Bulk Upload`} className={'transparent-button'} />
+                )}
               </TableToolbarContent>
             </TableToolbar>
             <Table {...getTableProps()}>
               <TableHead>
                 <TableRow>
                   <TableSelectAll {...getSelectionProps()} />
-                  {headers.map((header: IHeader, index: number) => (
-                    <TableHeader {...getHeaderProps({ ...header })} key={index}>
+                  {headers.map((header: any, index: number) => (
+                    <TableHeader
+                      {...getHeaderProps({
+                        header,
+                        key: '',
+                      })}
+                      key={index}
+                    >
                       {header.header}
                     </TableHeader>
                   ))}
                 </TableRow>
               </TableHead>
-              {!isEmpty(Rows) && !isLoading && (
+              {!isEmpty(Rows) && (
                 <TableBody>
                   {rows.map((row: any) => (
                     <TableRow key={row.id} {...getRowProps({ row })}>
@@ -162,21 +147,18 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
       <ActionModal
         action={action}
         isLoading={loading}
-        context={context}
+        context={currentTab as string}
         setAction={setAction}
         toggleModal={toggleActionModal}
-        handleAction={() =>
-          action === 'delete' && context === 'user'
-            ? handleRequest({ status: false, ids: selectedRows }, 'delete-users')
-            : action === 'delete' && context === 'role'
-            ? handleRequest({ ids: selectedRows }, 'delete-roles')
-            : action === 'activate'
-            ? handleRequest({ status: true, ids: selectedRows }, 'activate-users')
-            : handleRequest({ reqBody: selectedRows }, 'reset-passwords')
-        }
+        handleAction={() => {
+          action === 'delete' && currentTab === 'alert-profile' && handleRequest({ ids: selectedRows }, 'delete-alert-profiles');
+          action === 'delete' && currentTab === 'exception' && handleRequest({ ids: selectedRows }, 'delete-exceptions');
+          action === 'delete' && currentTab === 'exclude' && handleRequest({ ids: selectedRows }, 'delete-exclusions');
+          action === 'delete' && currentTab === 'subscription' && handleRequest({ ids: selectedRows }, 'delete-subscriptions');
+        }}
       />
     </>
   );
 };
 
-export default AccountTable;
+export default ProfileTable;
