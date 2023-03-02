@@ -1,89 +1,55 @@
-import { GroupedBarChartOptions } from '@carbon/charts/interfaces';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { DonutChartOptions } from '@carbon/charts/interfaces';
+import { DonutChart } from '@carbon/charts-react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { px } from '@/utils';
 
 const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
-  const chartRef = useRef<any>();
-  const [isMounted, setIsMounted] = useState(false);
+  const data = [
+    {
+      group: 'MTN',
+      value: 65000,
+    },
+    {
+      group: 'Airtel',
+      value: 29123,
+    },
+    {
+      group: '9Mobile',
+      value: 35213,
+    },
+    {
+      group: 'Glo',
+      value: 32432,
+    },
+    {
+      group: 'Others',
+      value: 21312,
+    },
+  ];
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  const { DonutChart } = chartRef.current || {};
-
-  useEffect(() => {
-    chartRef.current = {
-      DonutChart: require('@carbon/charts-react').DonutChart,
-    };
-  }, []);
-
-  const [data, setData] = React.useState<any>([]);
-  const [options, setOptions] = React.useState<any>({});
-
-  const Data = useMemo(() => {
-    return [
-      {
-        group: 'MTN',
-        value: 65000,
+  const options: DonutChartOptions = {
+    toolbar: {
+      enabled: false,
+    },
+    resizable: true,
+    donut: {
+      center: {
+        label: 'Total SMS',
       },
-      {
-        group: 'Airtel',
-        value: 29123,
+    },
+    color: {
+      scale: {
+        MTN: '#F9444C',
+        Airtel: '#00726E',
+        '9Mobile': '#2DA8FF',
+        Glo: '#D4BBFF',
+        Others: '#FF73AD',
       },
-      {
-        group: '9Mobile',
-        value: 35213,
-      },
-      {
-        group: 'Glo',
-        value: 32432,
-      },
-      {
-        group: 'Others',
-        value: 21312,
-      },
-    ];
-  }, []);
-
-  const Options: GroupedBarChartOptions = useMemo(() => {
-    return {
-      toolbar: {
-        enabled: false,
-      },
-
-      color: {
-        scale: {
-          MTN: '#F9444C',
-          Airtel: '#00726E',
-          '9Mobile': '#2DA8FF',
-          Glo: '#D4BBFF',
-          Others: '#FF73AD',
-        },
-      },
-      resizable: true,
-      donut: {
-        center: {
-          label: 'Total SMS',
-        },
-      },
-      height: '100%',
-      width: '100%',
-      legend: {
-        enabled: false,
-        position: 'top',
-        truncation: {
-          numCharacter: 150,
-        },
-      },
-    };
-  }, []);
-
-  useEffect(() => {
-    setData(Data);
-    setOptions(Options);
-  }, [Data, Options]);
+    },
+    height: '280px',
+  };
 
   return (
     <EmailDeliveryContainerBox>
@@ -91,7 +57,10 @@ const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
         <EmailDeliveryHeaderParagraph>{heading} </EmailDeliveryHeaderParagraph>
       </EmailDeliveryHeader>
       <StatusContainer>
-        <ChartContainer>{isMounted && <DonutChart data={data} options={options}></DonutChart>}</ChartContainer>
+        <ChartContainer>
+          {' '}
+          <DonutChart data={data} options={options}></DonutChart>
+        </ChartContainer>
         <BoxContainerSection>
           <BoxContainer>
             <Box value="#F9444C" />
@@ -128,6 +97,7 @@ const EmailDeliveryContainerBox = styled.div`
 
 const EmailDeliveryHeader = styled.div`
   padding: ${px(15)};
+  padding-bottom: ${px(0)};
   background: ${({ theme }) => theme.colors.bgPrimary};
 `;
 
@@ -139,7 +109,6 @@ const EmailDeliveryHeaderParagraph = styled.div`
 
 const StatusContainer = styled.div`
   display: flex;
-  gap: ${px(26)};
   align-items: center;
 `;
 
@@ -165,9 +134,6 @@ const ChartContainer = styled.div`
   padding: ${px(16)};
   height: ${px(280)};
   overflow: hidden;
-  .cds--cc--layout-column:nth-child(1) {
-    display: none;
-  }
   text {
     fill: ${({ theme }) => theme.colors.white} !important;
   }

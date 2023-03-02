@@ -14,8 +14,8 @@ type Iprops = {
 
 const AccordionBox = ({ title, index, opened, toggleDropdown, itemsOnExpand }: Iprops) => {
   return (
-    <AccordionContainer onClick={() => toggleDropdown(index)}>
-      <AccordionHeader opened={opened}>
+    <AccordionContainer>
+      <AccordionHeader opened={opened} onClick={() => toggleDropdown(index)}>
         <CaretRight />
         {title}
       </AccordionHeader>

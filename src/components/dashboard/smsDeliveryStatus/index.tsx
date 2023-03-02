@@ -104,12 +104,13 @@ const IndicatorTitle = styled.span`
 const PercentageBarContainer = styled.div`
   display: flex;
   gap: ${px(48)};
-  align-items: center;
+  align-items: stretch;
   margin-bottom: ${px(18)};
 `;
 
 const PercentageBox = styled.div`
   width: 100%;
+  flex-grow: 1;
   padding: 0;
 `;
 const PercentageHeader = styled.p`
