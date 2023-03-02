@@ -28,6 +28,30 @@ export interface TransactionData {
   entryDate: string;
   currencyCode: string;
 }
+
+export interface NonTransaction {
+  noneTransactionId: string;
+  accountNo: string;
+  customerId: string;
+  email: string;
+  mobile: string;
+  sendReceipt: boolean;
+  processRemark: string;
+  processedDate: string;
+  entryDate: string;
+}
+
+export interface OtpData {
+  otpId: string;
+  accountNo: string;
+  customerId: string;
+  email: string;
+  mobile: string;
+  useTemplate: boolean;
+  processRemark: string;
+  processedDate: string;
+  entryDate: string;
+}
 export type PathType = {
   start: string;
   end: string;
@@ -66,3 +90,5 @@ export interface APIResponseWithMeta<T> {
 }
 
 export interface TransactionResponse extends APIResponseWithMeta<TransactionData[]> {}
+export interface OtpResponse extends APIResponseWithMeta<OtpData[]> {}
+export interface NonTransactionResponse extends APIResponseWithMeta<NonTransaction[]> {}
