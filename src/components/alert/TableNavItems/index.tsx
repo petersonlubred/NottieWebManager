@@ -1,26 +1,30 @@
 import { DatePicker, DatePickerInput, TextInput } from '@carbon/react';
 import { Filter } from '@carbon/react/icons';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
+import { IPageQuery } from '@/interfaces/notification';
 import { px } from '@/utils';
 
 interface Iprops {
   filterItems: { key: string; label: string; value: string }[];
-  setFilterData?: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: unknown;
-    }>
-  >;
-  filterData?: { [key: string]: any[] };
   noDateRange?: boolean;
   setStart?: React.Dispatch<React.SetStateAction<string>>;
   setEnd?: React.Dispatch<React.SetStateAction<string>>;
   startDate?: string;
+  endDate?: string;
+  setQuery?: React.Dispatch<React.SetStateAction<IPageQuery>>;
+  query?: IPageQuery;
 }
 
-const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, setFilterData, filterData }: Iprops) => {
+const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, endDate, setQuery, query }: Iprops) => {
+  const [date, setDate] = React.useState([startDate, endDate]);
+
+  useEffect(() => {
+    setDate([startDate, endDate]);
+  }, [endDate, startDate]);
+
   return (
     <ItemContainer>
       {!noDateRange && (
@@ -30,6 +34,7 @@ const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, s
             dateFormat="d/m/Y"
             datePickerType="range"
             className="date_picker"
+            value={date}
             onChange={(e: Date[]) => {
               setStart && setStart(moment(e[0]).format('YYYY-MM-DD'));
               setEnd && setEnd(moment(e[1]).format('YYYY-MM-DD'));
@@ -49,11 +54,13 @@ const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, s
             id={item?.key}
             labelText=""
             placeholder="type here"
-            value={filterData ? filterData[item.key] : ''}
+            value={query ? query[item.key as keyof IPageQuery] : ''}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setFilterData &&
-                setFilterData({
-                  ...filterData,
+              setQuery &&
+                setQuery({
+                  ...query,
+                  pageNumber: 1,
+                  pageSize: 10,
                   [item.key]: event.target.value,
                 });
             }}

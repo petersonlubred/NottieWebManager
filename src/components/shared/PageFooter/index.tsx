@@ -2,7 +2,32 @@ import { Pagination } from '@carbon/react';
 import React from 'react';
 import styled from 'styled-components';
 
-const PageFooter = () => {
+import { ISetState } from '@/interfaces/formik.type';
+import { IPageQuery } from '@/interfaces/notification';
+
+export type IPaginationData = {
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+};
+
+export const initialPaginationData: IPaginationData = {
+  pageNumber: 1,
+  pageSize: 10,
+  totalCount: 0,
+};
+
+interface Iprops {
+  paginationData?: {
+    pageNumber: number;
+    pageSize: number;
+    totalCount: number;
+  };
+  setQuery?: ISetState<IPageQuery>;
+}
+const PageFooter = ({ paginationData, setQuery }: Iprops) => {
+  const { pageNumber, pageSize, totalCount } = paginationData || initialPaginationData;
+
   return (
     <FooterContainer>
       <Pagination
@@ -10,11 +35,18 @@ const PageFooter = () => {
         backwardText="Previous page"
         forwardText="Next page"
         itemsPerPageText="Items per page:"
-        page={1}
+        page={pageNumber}
         pageNumberText="Page Number"
-        pageSize={10}
+        pageSize={pageSize}
         pageSizes={[10, 20, 30, 40, 50]}
-        totalItems={103}
+        totalItems={totalCount}
+        onChange={({ page, pageSize }: { page: number; pageSize: number }) => {
+          setQuery &&
+            setQuery({
+              pageNumber: page,
+              pageSize,
+            });
+        }}
       />
     </FooterContainer>
   );

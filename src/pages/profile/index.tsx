@@ -20,6 +20,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import useHeaders from '@/hooks/useHeaders';
 import { AlertExceptionData, AlertExclusionData, AlertProfileData, AlertSubscriptionData } from '@/interfaces/alert';
 import { FormikRefType } from '@/interfaces/formik.type';
+import { initialPageQuery, IPageQuery } from '@/interfaces/notification';
 import { useGetExceptionQuery, useGetExclusionQuery, useGetProfileQuery, useGetSubscriptionQuery } from '@/redux/api';
 import { initialAlertException, initialAlertExclude, initialAlertProfileValue, initialSubscription } from '@/schemas/dto';
 import { protectedRouteProps } from '@/utils/withSession';
@@ -61,8 +62,8 @@ const Profile = () => {
     },
   ]);
 
-  const [filterData, setFilterData] = useState({});
-  const debounceFilter = useDebounce(filterData, 500);
+  const [query, setQuery] = useState<IPageQuery>(initialPageQuery);
+  const debounceFilter = useDebounce(query, 500);
 
   const { data: profiles, isFetching: isFetchingProfiles } = useGetProfileQuery({}, { skip: currentTab !== 'alert-profile' });
   const { data: exceptions, isFetching: isFetchingExceptions } = useGetExceptionQuery({ ...debounceFilter }, { skip: currentTab !== 'exception' });
@@ -113,7 +114,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    setFilterData({});
+    setQuery(initialPageQuery);
   }, [currentTab]);
 
   useEffect(() => {
@@ -209,6 +210,7 @@ const Profile = () => {
       currentTab={currentTab}
       handleSetIndex={handleSetIndex}
       title={'Profile & Subscriptions'}
+      // paginationData={data?.data?.meta}
       subtitle={'Create and manage profile and permissions and subscription'}
     >
       <Modal
@@ -237,8 +239,8 @@ const Profile = () => {
         Headers={Headers}
         toggleModal={toggleModal}
         toggleBulkModal={toggleBulkModal}
-        setFilterData={setFilterData}
-        filterData={filterData}
+        setQuery={setQuery}
+        query={query}
         isLoading={isFetchingProfiles || isFetchingExceptions || isFetchingExclusions || isFetchingSubscriptions}
         currentTab={currentTab}
         filterItems={filterItems}

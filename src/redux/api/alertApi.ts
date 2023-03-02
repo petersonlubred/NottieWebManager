@@ -1,7 +1,6 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 import { isEmpty } from 'lodash';
 
-import { PathType } from '@/interfaces/alert';
 import {
   AlertExceptionData,
   AlertExceptionResponse,
@@ -22,15 +21,6 @@ export const alertApi = createApi({
   baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
 
   endpoints: (builder) => ({
-    getTransaction: builder.query<any, string>({
-      query: (extraPath) => createRequest(`AlertNotification/Transaction/${extraPath}`),
-    }),
-    getNonTransaction: builder.query<any, PathType>({
-      query: ({ start, end }) => createRequest(`AlertNotification/NoneTransaction${start}/${end}`),
-    }),
-    getOtp: builder.query<any, PathType>({
-      query: ({ start, end }) => createRequest(`AlertNotification/Otp/${start}/${end}`),
-    }),
     getProfile: builder.query<any, { pageNumber?: number; pageSize?: number }>({
       query: ({ pageNumber, pageSize }) => createRequest(`AlertProfile?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}`),
       providesTags: (result, _error, _arg) =>
@@ -206,7 +196,6 @@ export const alertApi = createApi({
 });
 
 export const {
-  useGetTransactionQuery,
   useGetProfileQuery,
   useCreateProfileMutation,
   useDeleteProfileMutation,
@@ -227,6 +216,4 @@ export const {
   useDeleteSubscriptionMutation,
   useUpdateSubscriptionMutation,
   useGetSubscriptionQuery,
-  useGetNonTransactionQuery,
-  useGetOtpQuery,
 } = alertApi;
