@@ -67,6 +67,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                 <ModalItem>
                   <ModalLabel>Authentication Type</ModalLabel>
                   <RadioButton
+                    name="authenticationType"
                     items={[
                       { value: 'Classic', label: 'Classic' },
                       { value: 'AD', label: 'AD' },

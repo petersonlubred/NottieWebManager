@@ -1,5 +1,7 @@
 import _ from 'lodash';
 
+import { PathType } from '@/interfaces/alert';
+
 export const pickValues = <T extends Record<string, any>>(obj: T): Partial<T> => {
   const pickedObj: Partial<T> = {};
   for (const key in obj) {
@@ -8,4 +10,19 @@ export const pickValues = <T extends Record<string, any>>(obj: T): Partial<T> =>
     }
   }
   return pickedObj;
+};
+
+export const getExtraPath = (extraPath?: string | string[]): string => {
+  if (typeof extraPath === 'string') {
+    return extraPath;
+  } else if (Array.isArray(extraPath)) {
+    return extraPath.join('/');
+  } else {
+    return '';
+  }
+};
+
+export const getPath = (data: PathType): string => {
+  const validPath = pickValues(data);
+  return Object.values(validPath).join('/');
 };
