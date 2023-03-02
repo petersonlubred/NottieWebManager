@@ -6,6 +6,7 @@ import { FC } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import ErrorBoundary from '@/components/shared/ErrorBoundary';
 import Loader from '@/components/shared/Loader';
 import Toast from '@/components/shared/Notification/Toast';
 import { AppContextProvider } from '@/context';
@@ -24,8 +25,10 @@ const MyApp: FC<AppProps> = ({ Component, ...rest }: AppProps) => {
         <GlobalStyles />
         <PersistGate loading={<Loader />} persistor={persistor}>
           <AppContextProvider>
-            <Toast />
-            <Component {...pageProps} />
+            <ErrorBoundary>
+              <Toast />
+              <Component {...pageProps} />
+            </ErrorBoundary>
           </AppContextProvider>
         </PersistGate>
       </ThemeProvider>

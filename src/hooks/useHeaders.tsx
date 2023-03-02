@@ -161,32 +161,33 @@ const useHeaders = () => {
         header: 'Customer ID',
       },
       {
-        key: 'account_no',
+        key: 'accountNo',
         header: 'Account No',
       },
       {
-        key: 'narration',
-        header: 'Narration',
+        key: 'email',
+        header: 'Email Address',
       },
       {
-        key: 'access_status',
-        header: 'Access Status',
+        key: 'mobile',
+        header: 'Mobile No',
       },
+
       {
-        key: 'transaction_date',
-        header: 'Transaction Date',
-      },
-      {
-        key: 'entry_time',
+        key: 'entryDate',
         header: 'Entry Time',
       },
       {
-        key: 'amount',
-        header: 'Amount',
+        key: 'processedDate',
+        header: 'Processed Date',
       },
       {
-        key: 'process_status',
-        header: 'Process Status',
+        key: 'processRemark',
+        header: 'Processed Remark',
+      },
+      {
+        key: 'sendReceipt',
+        header: 'Send Receipt',
       },
       {
         key: 'others',
@@ -198,24 +199,37 @@ const useHeaders = () => {
   const otpheader = useMemo(() => {
     return [
       {
-        key: 'mobile_no',
+        key: 'customerId',
+        header: 'Customer ID',
+      },
+      {
+        key: 'mobile',
         header: 'Mobile No',
       },
       {
-        key: 'account_no',
+        key: 'email',
+        header: 'Email Address',
+      },
+      {
+        key: 'accountNo',
         header: 'Account No',
       },
       {
-        key: 'entry_time',
+        key: 'entryDate',
         header: 'Entry Time',
       },
       {
-        key: 'amount',
-        header: 'Amount',
+        key: 'processedDate',
+        header: 'Processed Date',
+      },
+
+      {
+        key: 'processRemark',
+        header: 'Process Remark',
       },
       {
-        key: 'process_status',
-        header: 'Process Status',
+        key: 'useTemplate',
+        header: 'Use Template',
       },
       {
         key: 'others',

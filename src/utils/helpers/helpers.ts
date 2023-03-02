@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 
-import { PathType } from '@/interfaces/alert';
+import { PathType } from '@/interfaces/notification';
 
 export const pickValues = <T extends Record<string, any>>(obj: T): Partial<T> => {
   const pickedObj: Partial<T> = {};

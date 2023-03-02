@@ -10,7 +10,7 @@ import Loader from '@/components/shared/Loader';
 import { initialPaginationData, IPaginationData } from '@/components/shared/PageFooter';
 import Layout from '@/HOC/Layout';
 import useHeaders from '@/hooks/useHeaders';
-import { initialPageQuery, IPageQuery, TransactionData } from '@/interfaces/notification';
+import { initialPageQuery, IPageQuery, NonTransaction, OtpData, TransactionData } from '@/interfaces/notification';
 import {
   useGetNonTransactionEmailQuery,
   useGetNonTransactionQuery,
@@ -28,7 +28,7 @@ import { protectedRouteProps } from '@/utils/withSession';
 const Alert = () => {
   const [Headers, setHeaders] = useState<any[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
-  const [responseData, setResponseData] = useState<any[]>([]);
+  const [responseData, setResponseData] = useState<OtpData[] | TransactionData[] | NonTransaction[]>([]);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const router = useRouter();
   const { tab } = router.query;
@@ -125,11 +125,12 @@ const Alert = () => {
 
         tabHeaders.forEach((item2: { key: string; header: string }) => {
           row[item2.key] = item[item2.key];
-          row.id = item.transactionId;
+          row.id = item.transactionId ?? item.otpId ?? item.noneTransactionId;
+          row.useTemplate = item?.useTemplate ? 'Yes' : 'No';
+          row.sendReceipt = item?.sendReceipt ? 'Yes' : 'No';
         });
         return row;
       });
-
       !rows.some((row) => row.id === undefined) && setRows(rows);
     });
 
@@ -181,7 +182,7 @@ const Alert = () => {
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'non-txn') {
       !isEmpty(NTransaction?.data?.data)
-        ? (setResponseData(NTransaction?.data?.data as TransactionData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(NTransaction?.data?.data as NonTransaction[]), setPaginationData(data?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'non-txn-sms') {
       !isEmpty(NTransactionSms?.data?.data)
@@ -193,15 +194,15 @@ const Alert = () => {
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'otp') {
       !isEmpty(otp?.data?.data)
-        ? (setResponseData(otp?.data?.data as TransactionData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(otp?.data?.data as OtpData[]), setPaginationData(data?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'otp-sms') {
       !isEmpty(otpsms?.data?.data)
-        ? (setResponseData(otpsms?.data?.data as TransactionData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(otpsms?.data?.data as OtpData[]), setPaginationData(data?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'otp-email') {
       !isEmpty(otpemail?.data?.data)
-        ? (setResponseData(otpemail?.data?.data as TransactionData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(otpemail?.data?.data as OtpData[]), setPaginationData(data?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else {
       setResponseData([]);
@@ -219,6 +220,7 @@ const Alert = () => {
     otpsms?.data?.data,
     otpemail?.data?.data,
     data?.data?.meta,
+    tabIndex,
   ]);
 
   return (

@@ -1,6 +1,6 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 
-import { IPageQuery } from '@/interfaces/notification';
+import { IPageQuery, NonTransactionResponse, OtpResponse } from '@/interfaces/notification';
 
 import { TransactionResponse } from './../../interfaces/notification';
 import { baseQueryWithReauth, createRequestWithParams, CustomError } from './shared';
@@ -20,7 +20,7 @@ export const notificationApi = createApi({
     getTransactionEmail: builder.query<TransactionResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}/Email`, { ...rest }),
     }),
-    getNonTransaction: builder.query<any, IPageQuery & { extraPath: string }>({
+    getNonTransaction: builder.query<NonTransactionResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}`, { ...rest }),
     }),
     getNonTransactionSMS: builder.query<any, IPageQuery & { extraPath: string }>({
@@ -29,13 +29,13 @@ export const notificationApi = createApi({
     getNonTransactionEmail: builder.query<any, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}/Email`, { ...rest }),
     }),
-    getOtp: builder.query<any, IPageQuery & { extraPath: string }>({
+    getOtp: builder.query<OtpResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}`, { ...rest }),
     }),
-    getOtpSMS: builder.query<any, IPageQuery & { extraPath: string }>({
+    getOtpSMS: builder.query<OtpResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}/Sms`, { ...rest }),
     }),
-    getOtpEmail: builder.query<any, IPageQuery & { extraPath: string }>({
+    getOtpEmail: builder.query<OtpResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}/Email`, { ...rest }),
     }),
   }),

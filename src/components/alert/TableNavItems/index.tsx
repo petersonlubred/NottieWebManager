@@ -20,6 +20,7 @@ interface Iprops {
 
 const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, endDate, setQuery, query }: Iprops) => {
   const [date, setDate] = React.useState([startDate, endDate]);
+  const [max, setMax] = React.useState(new Date());
 
   useEffect(() => {
     setDate([startDate, endDate]);
@@ -38,8 +39,9 @@ const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, e
             onChange={(e: Date[]) => {
               setStart && setStart(moment(e[0]).format('YYYY-MM-DD'));
               setEnd && setEnd(moment(e[1]).format('YYYY-MM-DD'));
+              setMax(new Date(e[1]));
             }}
-            maxDate={moment(startDate).endOf('month').format('DD/MM/YYYY')}
+            maxDate={max.toString()}
           >
             <DatePickerInput placeholder="Start date" id="date-picker-default-id" size="md" labelText="" />
             <DatePickerInput placeholder="End date" id="date-picker-default-id" size="md" labelText="" />
