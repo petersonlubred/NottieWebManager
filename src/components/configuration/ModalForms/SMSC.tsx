@@ -1,19 +1,19 @@
-import React,{useEffect} from 'react';
-import { Checkbox, FormGroup, NumberInput, Select, SelectItem, TextInput } from '@carbon/react';
+import { FormGroup, NumberInput, PasswordInput, RadioButton, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import Loader from '@/components/shared/Loader';
-
-import { useCreateSmscMutation, useEditSmscMutation } from '@/redux/api';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
+import Checkbox from '@/components/shared/Checkbox/Checkbox';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
-import { SMSCSchema } from '@/schemas/schema';
+import Loader from '@/components/shared/Loader';
+import { useToast } from '@/context/ToastContext';
+import { FormikRefType } from '@/interfaces/formik.type';
+import { useCreateSmscMutation, useEditSmscMutation } from '@/redux/api';
 import { initialSMSCValue } from '@/schemas/dto';
 import { IinitialSMSCForm } from '@/schemas/interface';
-import { FormikRefType } from '@/interfaces/formik.type';
+import { SMSCSchema } from '@/schemas/schema';
 import { px } from '@/utils';
-import { useToast } from '@/context/ToastContext';
 
 interface Props {
   formRef: React.RefObject<FormikRefType<IinitialSMSCForm>>;
@@ -21,11 +21,17 @@ interface Props {
   toggleModal: () => void;
 }
 
-const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
-  const [createSmsc,{isLoading, isSuccess, isError, error}]=useCreateSmscMutation()
-  const [editSmsc,{isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError}]=useEditSmscMutation()
+const RadioData = [
+  { label: 'Transmitter', val: 'transmitter', id: 'transmitter' },
+  { label: 'Receiver', val: 'receiver', id: 'receiver' },
+  { label: 'Transceiver', val: 'transceiver', id: 'transceiver' },
+];
 
-  const {toast} =useToast()
+const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
+  const [createSmsc, { isLoading, isSuccess, isError, error }] = useCreateSmscMutation();
+  const [editSmsc, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditSmscMutation();
+
+  const { toast } = useToast();
 
   useEffect(() => {
     if (isSuccess) {
@@ -49,86 +55,129 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editError, editSuccess, isEditError]);
 
-
   const handleSubmit = (values: IinitialSMSCForm) => {
-    console.log('clicked');
-    const formvalues = values as IinitialSMSCForm & { smscId: string };
+    const payload: any = {
+      ...values,
+      dataEncoding: parseInt(values.dataEncoding),
+    };
+    // console.log('clicked', payload);
+    // return;
+    const formvalues = payload as IinitialSMSCForm & { smscId: string };
     formdata?.smscId ? editSmsc(formvalues) : createSmsc(formvalues);
   };
 
-
-
   return (
     <ModalContentContainer>
-      {(isLoading  || editLoading) && <Loader />}
+      {(isLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik
-          initialValues={formdata?.smscId? formdata: initialSMSCValue}
-          validationSchema={SMSCSchema}
-          onSubmit={handleSubmit}
-          innerRef={formRef}
-        >
+        <Formik initialValues={formdata?.smscId ? formdata : initialSMSCValue} validationSchema={SMSCSchema} onSubmit={handleSubmit} innerRef={formRef}>
           {({ errors, touched, setFieldValue, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">
                 <FormField>
                   <FormContainer>
-                    <Field name="smsc_name">
+                    <Field name="username">
                       {({ field }: any) => (
-                        <TextInput {...field} type="text" id="smsc_name-input" labelText="SMSC Name" placeholder="enter name"  onKeyUp={() => setFieldTouched('smsc_name', true)} />
+                        <TextInput {...field} type="text" id="username-input" labelText="Username" placeholder="enter username" onKeyUp={() => setFieldTouched('username', true)} />
                       )}
                     </Field>
-                    <Field name="server">
+                    <Field name="password">
                       {({ field }: any) => (
-                        <TextInput {...field} type="text" id="server-input" labelText="Server/IP" placeholder="enter text" onKeyUp={() => setFieldTouched('server', true)} />
+                        <PasswordInput
+                          {...field}
+                          type="password"
+                          id="password-input"
+                          labelText="Password"
+                          placeholder="enter password"
+                          onKeyUp={() => setFieldTouched('password', true)}
+                        />
                       )}
                     </Field>
-                    <ErrorMessage invalid={Boolean(touched.smsc_name && errors.smsc_name)} invalidText={errors.smsc_name} />
-                    <ErrorMessage invalid={Boolean(touched.server && errors.server)} invalidText={errors.server} />
+                    <ErrorMessage invalid={Boolean(touched.username && errors.username)} invalidText={errors.username} />
+                    <ErrorMessage invalid={Boolean(touched.password && errors.password)} invalidText={errors.password} />
                   </FormContainer>
                 </FormField>{' '}
                 <FormField>
                   <FormContainer>
-                    <Field name="TXPort">
+                    <Field name="smscName">
+                      {({ field }: any) => (
+                        <TextInput {...field} type="text" id="smscName-input" labelText="SMSC Name" placeholder="enter name" onKeyUp={() => setFieldTouched('smscName', true)} />
+                      )}
+                    </Field>
+                    <Field name="hostAddress">
+                      {({ field }: any) => (
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="hostAddress-input"
+                          labelText="Host address"
+                          placeholder="enter text"
+                          onKeyUp={() => setFieldTouched('hostAddress', true)}
+                        />
+                      )}
+                    </Field>
+                    <ErrorMessage invalid={Boolean(touched.smscName && errors.smscName)} invalidText={errors.smscName} />
+                    <ErrorMessage invalid={Boolean(touched.hostAddress && errors.hostAddress)} invalidText={errors.hostAddress} />
+                  </FormContainer>
+                </FormField>{' '}
+                <FormField>
+                  <ModalLabel>System type</ModalLabel>{' '}
+                  <RadioContainer>
+                    {RadioData.map((item: any) => (
+                      <RadioButton
+                        key={item.id}
+                        labelText={item.label}
+                        value={item.val}
+                        id={item.id}
+                        labelPosition="right"
+                        onClick={(e: any) => setFieldValue('systemType', e.target.id)}
+                      />
+                    ))}
+                  </RadioContainer>
+                  <ErrorMessage invalid={Boolean(touched.systemType && errors.systemType)} invalidText={errors.systemType} />
+                </FormField>
+                <FormField>
+                  <FormContainer>
+                    <Field name="port">
                       {({ field }: any) => (
                         <NumberInput
                           {...field}
-                          id="TXPort-input"
+                          id="port-input"
                           label="TX port"
                           max={10000}
                           min={0}
                           step={10}
                           className="number-input"
-                          value={0}
+                          // value={0}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
-                            setFieldValue('TXPort', value);
+                            setFieldValue('port', value);
                           }}
-                          onKeyUp={() => setFieldTouched('TXPort', true)}
+                          onKeyUp={() => setFieldTouched('port', true)}
                         />
                       )}
                     </Field>
-                    <Field name="noOfSessions">
+                    <Field name="sessions">
                       {({ field }: any) => (
                         <NumberInput
                           {...field}
-                          id="noOfSessions-input"
+                          id="sessions-input"
                           label="Number of Sessions"
                           max={10000}
                           min={0}
                           step={10}
                           className="number-input"
-                          value={0}
+                          // value={0}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
-                            setFieldValue('noOfSessions', value);
+                            setFieldValue('sessions', value);
                           }}
-                          onKeyUp={() => setFieldTouched('noOfSessions', true)}
+                          onKeyUp={() => setFieldTouched('sessions', true)}
                         />
                       )}
                     </Field>
-                    <ErrorMessage invalid={Boolean(touched.TXPort && errors.TXPort)} invalidText={errors.TXPort} />
-                    <ErrorMessage invalid={Boolean(touched.noOfSessions && errors.noOfSessions)} invalidText={errors.noOfSessions} />
+                    <ErrorMessage invalid={Boolean(touched.port && errors.port)} invalidText={errors.port} />
+                    <ErrorMessage invalid={Boolean(touched.sessions && errors.sessions)} invalidText={errors.sessions} />
                   </FormContainer>
                 </FormField>
                 <FormField>
@@ -136,10 +185,10 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                   <FormEmailContainer>
                     <Field name="dataEncoding">
                       {({ field }: any) => (
-                        <Select id="select-1" labelText="dataEncoding" {...field} onKeyUp={() => setFieldTouched('dataEncoding', true)}>
+                        <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('dataEncoding', true)}>
                           <SelectItem text="Choose option" />
-                          <SelectItem text="Option 1" value="option-1" />
-                          <SelectItem text="Option 2" value="option-2" />
+                          <SelectItem text="Option 1" value={1} />
+                          <SelectItem text="Option 2" value={2} />
                         </Select>
                       )}
                     </Field>
@@ -158,7 +207,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          value={0}
+                          // value={0}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('npi', value);
@@ -167,27 +216,27 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                         />
                       )}
                     </Field>
-                    <Field name="onpi">
+                    <Field name="oNpi">
                       {({ field }: any) => (
                         <NumberInput
                           {...field}
-                          id="onpi-input"
+                          id="oNpi-input"
                           label="ONPI"
                           max={10000}
                           min={0}
                           step={10}
                           className="number-input"
-                          value={0}
+                          // value={0}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
-                            setFieldValue('onpi', value);
+                            setFieldValue('oNpi', value);
                           }}
-                          onKeyUp={() => setFieldTouched('onpi', true)}
+                          onKeyUp={() => setFieldTouched('oNpi', true)}
                         />
                       )}
                     </Field>
                     <ErrorMessage invalid={Boolean(touched.npi && errors.npi)} invalidText={errors.npi} />
-                    <ErrorMessage invalid={Boolean(touched.onpi && errors.onpi)} invalidText={errors.onpi} />
+                    <ErrorMessage invalid={Boolean(touched.oNpi && errors.oNpi)} invalidText={errors.oNpi} />
                   </FormContainer>
                 </FormField>{' '}
                 <FormField>
@@ -202,7 +251,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          value={0}
+                          // value={0}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('ton', value);
@@ -211,83 +260,105 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                         />
                       )}
                     </Field>
-                    <Field name="otin">
+                    <Field name="oTon">
                       {({ field }: any) => (
                         <NumberInput
                           {...field}
-                          id="otin-input"
-                          label="otin"
+                          id="oTon-input"
+                          label="oTon"
                           max={10000}
                           min={0}
                           step={10}
                           className="number-input"
-                          value={0}
+                          // value={0}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
-                            setFieldValue('otin', value);
+                            setFieldValue('oTon', value);
                           }}
-                          onKeyUp={() => setFieldTouched('otin', true)}
+                          onKeyUp={() => setFieldTouched('oTon', true)}
                         />
                       )}
                     </Field>
                     <ErrorMessage invalid={Boolean(touched.ton && errors.ton)} invalidText={errors.ton} />
-                    <ErrorMessage invalid={Boolean(touched.otin && errors.otin)} invalidText={errors.otin} />
+                    <ErrorMessage invalid={Boolean(touched.oTon && errors.oTon)} invalidText={errors.oTon} />
                   </FormContainer>
                 </FormField>{' '}
                 <FormField>
                   <FormContainer>
-                    <Field name="dnpi">
+                    <Field name="dNpi">
                       {({ field }: any) => (
                         <NumberInput
                           {...field}
-                          id="dnpi-input"
-                          label="dnpi"
+                          id="dNpi-input"
+                          label="dNpi"
                           max={10000}
                           min={0}
                           step={10}
                           className="number-input"
-                          value={0}
+                          // value={0}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
-                            setFieldValue('dnpi', value);
+                            setFieldValue('dNpi', value);
                           }}
-                          onKeyUp={() => setFieldTouched('dnpi', true)}
+                          onKeyUp={() => setFieldTouched('dNpi', true)}
                         />
                       )}
                     </Field>
-                    <Field name="dton">
+                    <Field name="dTon">
                       {({ field }: any) => (
                         <NumberInput
                           {...field}
-                          id="dton-input"
-                          label="dton"
+                          id="dTon-input"
+                          label="dTon"
                           max={10000}
                           min={0}
                           step={10}
                           className="number-input"
-                          value={0}
+                          // value={0}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
-                            setFieldValue('dton', value);
+                            setFieldValue('dTon', value);
                           }}
-                          onKeyUp={() => setFieldTouched('dton', true)}
+                          onKeyUp={() => setFieldTouched('dTon', true)}
                         />
                       )}
                     </Field>
-                    <ErrorMessage invalid={Boolean(touched.dnpi && errors.dnpi)} invalidText={errors.dnpi} />
-                    <ErrorMessage invalid={Boolean(touched.dton && errors.dton)} invalidText={errors.dton} />
+                    <ErrorMessage invalid={Boolean(touched.dNpi && errors.dNpi)} invalidText={errors.dNpi} />
+                    <ErrorMessage invalid={Boolean(touched.dTon && errors.dTon)} invalidText={errors.dTon} />
                   </FormContainer>
                 </FormField>
                 <FormField>
-                  <ModalLabel>Activate SMSC?</ModalLabel>{' '}
-                  <ModalItemBox>
+                  <FormContainer>
+                    <Field name="connectionMode">
+                      {({ field }: any) => (
+                        <NumberInput
+                          {...field}
+                          id="connectionMode-input"
+                          label="Connection mode"
+                          max={10000}
+                          min={1}
+                          step={1}
+                          className="number-input"
+                          // value={1}
+                          placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('connectionMode', value);
+                          }}
+                          onKeyUp={() => setFieldTouched('connectionMode', true)}
+                        />
+                      )}
+                    </Field>
                     <ModalItem>
-                      <Checkbox id="checked" labelText="Yes" />
+                      <ModalLabel>Use SSL/TLS</ModalLabel>
+                      <Checkbox label="Yes" name="useSsl" />
                     </ModalItem>
-                    <ModalItem>
-                      <Checkbox id="checked-5" labelText="No" />
-                    </ModalItem>{' '}
-                  </ModalItemBox>
+                    <ErrorMessage invalid={Boolean(touched.connectionMode && errors.connectionMode)} invalidText={errors.connectionMode} />
+                    <ErrorMessage invalid={Boolean(touched.useSsl && errors.useSsl)} invalidText={errors.useSsl} />
+                  </FormContainer>
+                </FormField>{' '}
+                <FormField>
+                  <ModalLabel>Activate SMSC?</ModalLabel>
+                  <Checkbox label="Yes" name="status" />
                 </FormField>
               </FormGroup>
             </Form>
@@ -329,9 +400,15 @@ const FormEmailContainer = styled.div`
   gap: ${px(16)};
 `;
 
-const ModalItemBox = styled.div`
+const RadioContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: start;
   gap: ${px(16)};
 `;
+
+// const ModalItemBox = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: start;
+//   gap: ${px(16)};
+// `;

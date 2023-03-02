@@ -1,9 +1,11 @@
-import { Smsc, SmscResponsez } from './../../interfaces/configuration';
-import { baseQueryWithReauth, CustomError, createRequest } from './shared';
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
-import { SmscResponse } from '@/interfaces/configuration';
-import { APIResponse } from '@/interfaces/auth';
 import { isEmpty } from 'lodash';
+
+import { APIResponse } from '@/interfaces/auth';
+import { SmscResponse } from '@/interfaces/configuration';
+
+import { Smsc, SmscResponsez } from './../../interfaces/configuration';
+import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
 export const smscApi = createApi({
   reducerPath: 'smscApi',
@@ -24,8 +26,8 @@ export const smscApi = createApi({
 
     getSmsc: builder.query<SmscResponsez, void>({
       query: () => createRequest('Smsc'),
-      providesTags: (result, _error, _arg) => (result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc']),
-      // providesTags: (result, _error, _arg) => (result?.data && !isEmpty(result?.data) ? [...result.data].map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })) : ['smsc']),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc'],
     }),
 
     getSmscRoutes: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscRouteId'>>({
@@ -71,19 +73,20 @@ export const smscApi = createApi({
       invalidatesTags: (_result, _error, { smscId }) => [{ type: 'smsc', smscId }],
     }),
 
-    deleteSmscRoute: builder.mutation<APIResponse<object>, { smscRouteId: string }>({
-      query: ({ smscRouteId }) => {
+    deleteSmscRoute: builder.mutation<APIResponse<object>, { smscId: string }>({
+      query: ({ smscId }) => {
         return {
-          url: `Smsc/Route/${smscRouteId}`,
+          url: `Smsc/Route/${smscId}`,
           method: 'DELETE',
         };
       },
-      invalidatesTags: (_result, _error, { smscRouteId }) => [{ type: 'smsc', smscRouteId }],
+      invalidatesTags: (_result, _error, { smscId }) => [{ type: 'smsc', smscId }],
     }),
 
     getSmscRoute: builder.query<SmscResponsez, void>({
       query: () => createRequest('Smsc/Route'),
-      providesTags: (result, _error, _arg) => (result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc']),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc'],
     }),
 
     postSmscRouteConfig: builder.mutation<APIResponse<object>, Partial<Smsc>>({

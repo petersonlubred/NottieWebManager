@@ -10,13 +10,14 @@ import { useDeleteSmscRouteMutation } from '@/redux/api';
 import { IinitialSMSCForm } from '@/schemas/interface';
 import { px } from '@/utils';
 
-import  SMSC  from '../../ModalForms/SMSC';
+import SMSC from '../../ModalForms/SMSC';
 
 type Props = {
-  data: IinitialSMSCForm & { smscRouteId: string };
+  data: IinitialSMSCForm & { smscId: string };
 };
+type Prop = { status: string };
 
-const ActionIcons = ({ data }: Props) => {
+const ActionIconsSmsc = ({ data }: Props) => {
   const formRef = useRef<FormikRefType<any>>(null);
   const [edit, setEdit] = useState(false);
   const [opendeleteModal, setOpenDeleteModal] = useState(false);
@@ -34,7 +35,7 @@ const ActionIcons = ({ data }: Props) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast('success', 'SMTP deleted successfully');
+      toast('success', 'SMSC deleted successfully');
       setOpenDeleteModal(!opendeleteModal);
     }
     if (isError && error && 'status' in error) {
@@ -44,7 +45,7 @@ const ActionIcons = ({ data }: Props) => {
   }, [error, isError, isSuccess]);
 
   const handleDelete = () => {
-    deleteSmscRoute({ smscRouteId: data?.smscRouteId });
+    deleteSmscRoute({ smscId: data?.smscId });
   };
 
   return (
@@ -74,7 +75,18 @@ const ActionIcons = ({ data }: Props) => {
   );
 };
 
-export default ActionIcons;
+export const StatusIcon = ({ status }: Prop) => {
+  const bgColor: string = status === 'Active' ? '#42BE65' : '#DA1E28';
+
+  return (
+    <StatusBox>
+      <StatusIndicator bgColor={bgColor}></StatusIndicator>
+      <StatusText>{status}</StatusText>
+    </StatusBox>
+  );
+};
+
+export default ActionIconsSmsc;
 
 const NavSectionTwo = styled.div`
   display: flex;
@@ -96,4 +108,37 @@ const NavSectionTwo = styled.div`
 export const IconBox = styled.div`
   padding: ${px(12)};
   cursor: pointer;
+`;
+
+const StatusBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+const StatusIndicator = styled.div<{ bgColor: string }>`
+  width: 10px;
+  height: 10px;
+
+  background-color: ${(props) => props.bgColor};
+  border-radius: 50%;
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+`;
+const StatusText = styled.div`
+  font-family: ${({ theme }) => theme.fontFamilies.default};
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+
+  letter-spacing: 0.16px;
+
+  color: ${({ theme }) => theme.colors.lightBackground};
+
+  flex: none;
+  order: 2;
+  flex-grow: 0;
 `;

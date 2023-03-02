@@ -7,11 +7,7 @@ import { persistStore } from 'redux-persist';
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 
-<<<<<<< HEAD
-import { databaseApi, roleApi, smtpApi, userApi, smscApi } from '../api';
-=======
-import { alertApi, databaseApi, roleApi, smtpApi, userApi } from '../api';
->>>>>>> 7bd1e48e08b7c9539b30488701f6b38734fdaf9b
+import { alertApi, databaseApi, roleApi, smscApi, smtpApi, userApi } from '../api';
 import { rootReducer } from '../root-reducer';
 import rootSaga from '../sagas';
 
@@ -33,11 +29,8 @@ export const store = configureStore({
     smscApi.middleware,
     roleApi.middleware,
     userApi.middleware,
-<<<<<<< HEAD
     smtpApi.middleware,
-=======
     alertApi.middleware,
->>>>>>> 7bd1e48e08b7c9539b30488701f6b38734fdaf9b
   ],
   enhancers: [reduxBatch],
 });

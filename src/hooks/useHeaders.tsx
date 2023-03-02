@@ -379,43 +379,43 @@ const useHeaders = () => {
   const smscheader = useMemo(() => {
     return [
       {
-        key: 'smsc_name',
+        key: 'smscName',
         header: 'SMSC Name',
       },
       {
-        key: 'seerver',
-        header: 'Server/IP',
+        key: 'hostAddress',
+        header: 'Host Address',
       },
       {
-        key: 'connectionType',
-        header: 'Connection Type',
+        key: 'systemType',
+        header: 'System Type',
       },
       {
-        key: 'connectionSockets',
+        key: 'connectionMode',
         header: 'Connection Sockets',
       },
       {
-        key: 'data_encoding',
+        key: 'dataEncoding',
         header: 'Data Encoding',
       },
       {
-        key: 'nip',
-        header: 'NIP',
+        key: 'npi',
+        header: 'NPI',
       },
       {
         key: 'ton',
         header: 'TON',
       },
       {
-        key: 'onpi',
+        key: 'oNpi',
         header: 'ONPI',
       },
       {
-        key: 'dnpi',
+        key: 'dNpi',
         header: 'DNPI',
       },
       {
-        key: 'dton',
+        key: 'dTon',
         header: 'DTON',
       },
       {
