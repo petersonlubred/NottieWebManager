@@ -28,6 +28,7 @@ import React, { useState } from 'react';
 import Button from '@/components/shared/Button';
 import useNetworkRequest from '@/hooks/useNetworkRequest';
 import { IHeader } from '@/interfaces/role';
+import { BulkResetPassword } from '@/interfaces/user';
 
 import ActionModal from '../../ActionModals';
 
@@ -49,7 +50,6 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
   };
 
   const { handleRequest, loading } = useNetworkRequest(toggleActionModal);
-
   return isLoading ? (
     <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
   ) : (
@@ -74,7 +74,7 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
           getSelectionProps: (_props?: { row: string }) => TableSelectRowProps;
           getToolbarProps: () => TableToolbarProps;
           getBatchActionProps: () => TableBatchActionProps;
-          selectedRows: { id: string }[];
+          selectedRows: { id: string; value: string; cells: any[] }[];
         }) => (
           <>
             <TableToolbar {...getToolbarProps()}>
@@ -85,9 +85,19 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
                       renderIcon={Password}
                       iconDescription="Reset password for the selected rows"
                       onClick={() => {
+                        const result: BulkResetPassword = [];
+                        selectedRows.forEach((obj: { id: string; value: string; cells: any }) => {
+                          const emailCell = obj?.cells.find((cell: any) => cell.id.endsWith(':emailAddress'));
+                          if (emailCell) {
+                            result.push({
+                              userId: obj.id,
+                              emailAddress: emailCell.value,
+                            });
+                          }
+                        });
+                        setSelectedRows(result);
                         setAction('reset');
                         setContext('user');
-                        setSelectedRows(selectedRows?.map((row) => row.id));
                       }}
                     >
                       Reset Password
@@ -162,7 +172,7 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
             ? handleRequest({ ids: selectedRows }, 'delete-roles')
             : action === 'activate'
             ? handleRequest({ status: true, ids: selectedRows }, 'activate-users')
-            : handleRequest({ ids: selectedRows }, 'reset-passwords')
+            : handleRequest({ reqBody: selectedRows }, 'reset-passwords')
         }
       />
     </>

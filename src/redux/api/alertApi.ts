@@ -1,28 +1,42 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
+import { isEmpty } from 'lodash';
+
+import { PathType } from '@/interfaces/alert';
+import {
+  AlertExceptionData,
+  AlertExceptionResponse,
+  AlertExclusionData,
+  AlertExclusionResponse,
+  AlertProfileData,
+  AlertProfileResponse,
+  AlertSubscriptionData,
+  AlertSubscriptionResponse,
+} from '@/interfaces/alert';
+import { APIResponse } from '@/interfaces/auth';
 
 import { baseQueryWithReauth, createRequest, CustomError } from './shared';
-import { AlertProfileResponse, AlertProfileData, AlertExceptionResponse, AlertExceptionData, AlertExclusionData, AlertExclusionResponse, AlertSubscriptionData, AlertSubscriptionResponse } from '@/interfaces/alert';
-import { APIResponse } from '@/interfaces/auth';
-import { isEmpty } from 'lodash';
 
 export const alertApi = createApi({
   reducerPath: 'alertApi',
   tagTypes: ['alertProfile', 'alertNotification', 'alertException', 'alertExclusion', 'alertSubscription'],
   baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
+
   endpoints: (builder) => ({
-    getTransaction: builder.query<any, { start: Date; end: Date }>({
-      query: ({ start, end }) => createRequest(`AlertNotification/Transaction/${start}/${end}`),
+    getTransaction: builder.query<any, string>({
+      query: (extraPath) => createRequest(`AlertNotification/Transaction/${extraPath}`),
     }),
-    getNonTransaction: builder.query<any, { start: Date; end: Date }>({
+    getNonTransaction: builder.query<any, PathType>({
       query: ({ start, end }) => createRequest(`AlertNotification/NoneTransaction${start}/${end}`),
     }),
-    getOtp: builder.query<any, { start: Date; end: Date }>({
+    getOtp: builder.query<any, PathType>({
       query: ({ start, end }) => createRequest(`AlertNotification/Otp/${start}/${end}`),
     }),
     getProfile: builder.query<any, { pageNumber?: number; pageSize?: number }>({
       query: ({ pageNumber, pageSize }) => createRequest(`AlertProfile?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}`),
       providesTags: (result, _error, _arg) =>
-        result?.data?.data && !isEmpty(result?.data?.data) ? [...result.data.data.map(({ alertProfileId }: any) => ({ type: 'alertProfile' as const, alertProfileId })), 'alertProfile'] : ['alertProfile'],
+        result?.data?.data && !isEmpty(result?.data?.data)
+          ? [...result.data.data.map(({ alertProfileId }: any) => ({ type: 'alertProfile' as const, alertProfileId })), 'alertProfile']
+          : ['alertProfile'],
     }),
     lookupAlertProfile: builder.query({
       query: () => createRequest('Lookup/AlertProfile'),
@@ -65,10 +79,17 @@ export const alertApi = createApi({
       },
       invalidatesTags: (_result, _error, { alertProfileId }) => [{ type: 'alertProfile', alertProfileId }],
     }),
-    getException: builder.query<any, { customerId?: string, accountNo?: string, alertType?: string, recipient?: string, pageNumber?: number; pageSize?: number }>({
-      query: ({ pageNumber, pageSize, customerId, accountNo, alertType, recipient }) => createRequest(`AlertException?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${customerId ? `&customerId=${customerId}` : ''}${accountNo ? `&accountNo=${accountNo}` : ''}${alertType ? `&alertType=${alertType}` : ''}${recipient ? `&recipient=${recipient}` : ''}`),
+    getException: builder.query<any, { customerId?: string; accountNo?: string; alertType?: string; recipient?: string; pageNumber?: number; pageSize?: number }>({
+      query: ({ pageNumber, pageSize, customerId, accountNo, alertType, recipient }) =>
+        createRequest(
+          `AlertException?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${customerId ? `&customerId=${customerId}` : ''}${accountNo ? `&accountNo=${accountNo}` : ''}${
+            alertType ? `&alertType=${alertType}` : ''
+          }${recipient ? `&recipient=${recipient}` : ''}`
+        ),
       providesTags: (result, _error, _arg) =>
-        result?.data?.data && !isEmpty(result?.data?.data) ? [...result.data.data.map(({ alertExceptionId }: any) => ({ type: 'alertException' as const, alertExceptionId })), 'alertException'] : ['alertException'],
+        result?.data?.data && !isEmpty(result?.data?.data)
+          ? [...result.data.data.map(({ alertExceptionId }: any) => ({ type: 'alertException' as const, alertExceptionId })), 'alertException']
+          : ['alertException'],
     }),
     createException: builder.mutation<AlertExceptionResponse, Partial<AlertExceptionData>>({
       query: (data) => {
@@ -99,10 +120,17 @@ export const alertApi = createApi({
       },
       invalidatesTags: (_result, _error, { alertExceptionId }) => [{ type: 'alertException', alertExceptionId }],
     }),
-    getExclusion: builder.query<any, { excludeValue?: string, excludeType?: string, pageNumber?: number; pageSize?: number }>({
-      query: ({ pageNumber, pageSize, excludeValue, excludeType }) => createRequest(`AlertExclusion?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${excludeValue ? `&excludeValue=${excludeValue}` : ''}${excludeType ? `&excludeType=${excludeType}` : ''}`),
+    getExclusion: builder.query<any, { excludeValue?: string; excludeType?: string; pageNumber?: number; pageSize?: number }>({
+      query: ({ pageNumber, pageSize, excludeValue, excludeType }) =>
+        createRequest(
+          `AlertExclusion?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${excludeValue ? `&excludeValue=${excludeValue}` : ''}${
+            excludeType ? `&excludeType=${excludeType}` : ''
+          }`
+        ),
       providesTags: (result, _error, _arg) =>
-        result?.data?.data && !isEmpty(result?.data?.data) ? [...result.data.data.map(({ alertExcludeId }: any) => ({ type: 'alertExclusion' as const, alertExcludeId })), 'alertExclusion'] : ['alertExclusion'],
+        result?.data?.data && !isEmpty(result?.data?.data)
+          ? [...result.data.data.map(({ alertExcludeId }: any) => ({ type: 'alertExclusion' as const, alertExcludeId })), 'alertExclusion']
+          : ['alertExclusion'],
     }),
     createExclusion: builder.mutation<AlertExclusionResponse, Partial<AlertExclusionData>>({
       query: (data) => {
@@ -133,10 +161,17 @@ export const alertApi = createApi({
       },
       invalidatesTags: (_result, _error, { alertExcludeId }) => [{ type: 'alertExclusion', alertExcludeId }],
     }),
-    getSubscription: builder.query<any, { customerId?: string, accountNo?: string, alertType?: string, recipient?: string, pageNumber?: number; pageSize?: number }>({
-      query: ({ pageNumber, pageSize, customerId, accountNo, alertType, recipient }) => createRequest(`AlertSubscription?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${customerId ? `&customerId=${customerId}` : ''}${accountNo ? `&accountNo=${accountNo}` : ''}${alertType ? `&alertType=${alertType}` : ''}${recipient ? `&recipient=${recipient}` : ''}`),
+    getSubscription: builder.query<any, { customerId?: string; accountNo?: string; alertType?: string; recipient?: string; pageNumber?: number; pageSize?: number }>({
+      query: ({ pageNumber, pageSize, customerId, accountNo, alertType, recipient }) =>
+        createRequest(
+          `AlertSubscription?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${customerId ? `&customerId=${customerId}` : ''}${accountNo ? `&accountNo=${accountNo}` : ''}${
+            alertType ? `&alertType=${alertType}` : ''
+          }${recipient ? `&recipient=${recipient}` : ''}`
+        ),
       providesTags: (result, _error, _arg) =>
-        result?.data?.data && !isEmpty(result?.data?.data) ? [...result.data.data.map(({ alertSubscriptionId }: any) => ({ type: 'alertSubscription' as const, alertSubscriptionId })), 'alertSubscription'] : ['alertSubscription'],
+        result?.data?.data && !isEmpty(result?.data?.data)
+          ? [...result.data.data.map(({ alertSubscriptionId }: any) => ({ type: 'alertSubscription' as const, alertSubscriptionId })), 'alertSubscription']
+          : ['alertSubscription'],
     }),
     createSubscription: builder.mutation<AlertSubscriptionResponse, Partial<AlertSubscriptionData>>({
       query: (data) => {
@@ -191,5 +226,7 @@ export const {
   useCreateSubscriptionMutation,
   useDeleteSubscriptionMutation,
   useUpdateSubscriptionMutation,
-  useGetSubscriptionQuery
+  useGetSubscriptionQuery,
+  useGetNonTransactionQuery,
+  useGetOtpQuery,
 } = alertApi;

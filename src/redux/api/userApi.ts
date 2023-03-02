@@ -4,6 +4,8 @@ import { isEmpty } from 'lodash';
 import { UserData, UserResponse, UsersResponse } from '@/interfaces/user';
 
 import { APIResponse } from './../../interfaces/auth';
+import { BulkResetPassword } from './../../interfaces/user';
+import { IinitialResetPassword, IinitialUserLogin } from './../../schemas/interface';
 import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
 export const userApi = createApi({
@@ -55,21 +57,66 @@ export const userApi = createApi({
       invalidatesTags: ['user'],
     }),
 
-    resendPassword: builder.mutation<APIResponse<object>, { id?: string }>({
-      query: (id) => {
-        return {
-          url: `UserAccount/${id}/resendPassword`,
-          method: 'POST',
-          data: {},
-        };
-      },
-    }),
-
     getUsers: builder.query<UsersResponse, void>({
       query: () => createRequest('UserAccount'),
       providesTags: (result, _error, _arg) => (result?.data && !isEmpty(result?.data) ? [...result.data.map(({ id }: any) => ({ type: 'user' as const, id })), 'user'] : ['user']),
     }),
+
+    getAUser: builder.query<UserResponse, { id?: string }>({
+      query: (id) => createRequest(`UserAccount/${id}`),
+      providesTags: ['user'],
+    }),
+
+    onboardUser: builder.mutation<APIResponse<object>, IinitialUserLogin & { id?: string }>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `UserAccount/${id}/Onboard`,
+          method: 'PUT',
+          data: rest,
+        };
+      },
+    }),
+
+    resetPassword: builder.mutation<APIResponse<object>, { id?: string; emailAddress: string }>({
+      query: (data) => {
+        return {
+          url: `UserAccount/${data?.id}/ResetPassword`,
+          method: 'PUT',
+          data: { emailAddress: data?.emailAddress },
+        };
+      },
+    }),
+    resetPasswords: builder.mutation<APIResponse<object>, BulkResetPassword | undefined>({
+      query: (data) => {
+        return {
+          url: `UserAccount/ResetPassword/Bulk`,
+          method: 'PUT',
+          data: data,
+        };
+      },
+    }),
+
+    changePassword: builder.mutation<APIResponse<object>, Partial<IinitialResetPassword> & { id: string }>({
+      query: ({ id, ...rest }) => {
+        return {
+          url: `UserAccount/${id}/ChangePassword`,
+          method: 'PUT',
+          data: rest,
+        };
+      },
+    }),
   }),
 });
 
-export const { useCreateUserMutation, useEditUserMutation, useDeleteUserMutation, useGetUsersQuery, useResendPasswordMutation, useDeleteUsersMutation } = userApi;
+export const {
+  useCreateUserMutation,
+  useEditUserMutation,
+  useDeleteUserMutation,
+  useGetUsersQuery,
+  useResetPasswordMutation,
+  useChangePasswordMutation,
+  useDeleteUsersMutation,
+  useOnboardUserMutation,
+  useLazyGetAUserQuery,
+  useResetPasswordsMutation,
+} = userApi;

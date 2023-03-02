@@ -18,6 +18,8 @@ import {
   userLoginSchema,
 } from '@/schemas/schema';
 
+import { resetPassworSchema } from './schema';
+
 export type IinitialSiginin = Yup.InferType<typeof signinSchema>;
 export type IinitialDatabase = Yup.InferType<typeof databaseSchema>;
 export type IinitialUserLogin = Yup.InferType<typeof userLoginSchema>;
@@ -33,3 +35,4 @@ export type IinitialSMTPForm = Yup.InferType<typeof SMTPSchema>;
 export type IinitialSMTPRouteForm = Yup.InferType<typeof SMTPRouteSchema>;
 export type IinitialUserForm = Yup.InferType<typeof userAccountSchema>;
 export type IinitialRoleForm = Yup.InferType<typeof RoleAndProvilegesSchema>;
+export type IinitialResetPassword = Yup.InferType<typeof resetPassworSchema>;

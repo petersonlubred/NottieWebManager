@@ -20,16 +20,16 @@ import {
   TableToolbarContent,
   TableToolbarProps,
 } from '@carbon/react';
-import { Add, Upload, TrashCan } from '@carbon/react/icons';
+import { Add, TrashCan, Upload } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 
+import TableNavItem from '@/components/alert/TableNavItems';
 import Button from '@/components/shared/Button';
 import useNetworkRequest from '@/hooks/useNetworkRequest';
 import { IHeader } from '@/interfaces/role';
 
 import ActionModal from '../../ActionModals';
-import TableNavItem from '@/components/alert/TableNavItems';
 
 type Props = {
   Rows: any[];

@@ -3,22 +3,21 @@ import { Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import Loader from '@/components/shared/Loader';
+import { useToast } from '@/context/ToastContext';
+import { FormikRefType } from '@/interfaces/formik.type';
+import { ITemplate } from '@/interfaces/template';
+import { useCreateProfileMutation, useUpdateProfileMutation } from '@/redux/api';
+import { useLookupTemplateQuery } from '@/redux/api/templateApi';
 import { initialAlertProfileValue } from '@/schemas/dto';
+import { IinitialAlertProfile } from '@/schemas/interface';
 import { AlertProfileSchema } from '@/schemas/schema';
 import { px } from '@/utils';
+import { pickValues } from '@/utils/helpers/helpers';
 
 import { FormContainer } from '../onboard/NewUserLoginForm';
 import Checkbox from '../shared/Checkbox/Checkbox';
-import { FormikRefType } from '@/interfaces/formik.type';
-import Loader from '@/components/shared/Loader';
-import { useToast } from '@/context/ToastContext';
 import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-import { useCreateProfileMutation, useUpdateProfileMutation } from '@/redux/api';
-import { IinitialAlertProfile } from '@/schemas/interface';
-
-import { pickValues } from '@/utils/helpers/helpers';
-import { useLookupTemplateQuery } from '@/redux/api/templateApi';
-import { ITemplate } from '@/interfaces/template';
 
 interface Iprops {
   formRef: React.RefObject<FormikRefType<IinitialAlertProfile>>;
@@ -159,11 +158,4 @@ const ModalLabel = styled.div`
 
 const FormField = styled.div`
   margin-bottom: ${px(16)};
-`;
-
-const FormEmailContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${px(16)};
 `;

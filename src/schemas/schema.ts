@@ -38,9 +38,17 @@ export const databaseSchema = Yup.object({
 });
 
 export const userLoginSchema = Yup.object({
-  firstname: Yup.string().required('first name is required'),
-  lastname: Yup.string().required('last name is required'),
+  firstName: Yup.string().required('first name is required'),
+  lastName: Yup.string().required('last name is required'),
   password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Confirm password is required'),
+});
+
+export const resetPassworSchema = Yup.object({
+  tempPassword: Yup.string().required('Temp Password is required'),
+  newPassword: Yup.string().min(8, 'Password must be at least 8 characters').required('New Password is required'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
     .required('Confirm password is required'),
@@ -55,7 +63,7 @@ export const AlertProfileSchema = Yup.object({
   templateId: Yup.string().required('Template is required'),
   emailMinThreshhold: Yup.number().required('Email Min Threshold is required'),
   smsMinThreshhold: Yup.number().required('Sms Min Threshold is required'),
-  status: Yup.boolean()
+  status: Yup.boolean(),
 });
 
 export const AlertExceptionSchema = Yup.object({
@@ -64,7 +72,7 @@ export const AlertExceptionSchema = Yup.object({
   alertType: Yup.string().required('Alert Medium is required'),
   recipient: Yup.string().required('Recipient is required'),
   alertProfileId: Yup.string().required('Alert Profile is required'),
-  status: Yup.boolean()
+  status: Yup.boolean(),
 });
 
 export const AlertExcludeSchema = Yup.object({

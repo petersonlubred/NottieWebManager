@@ -22,6 +22,7 @@ interface Iprops {
 const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle, isDashboard, noPagination, currentTab }: Iprops) => {
   useEffect(() => {
     handleSetIndex(navItem.findIndex((nav) => nav?.tabName === currentTab));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab]);
 
   return (
