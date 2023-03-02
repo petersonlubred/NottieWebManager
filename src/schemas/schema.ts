@@ -69,7 +69,7 @@ export const AlertProfileSchema = Yup.object({
 export const AlertExceptionSchema = Yup.object({
   customerId: Yup.string().required('Customer Id is required'),
   accountNo: Yup.string().required('Account No is required'),
-  alertType: Yup.string().required('Alert Medium is required'),
+  alertType: Yup.string().required('Alert Type is required'),
   recipient: Yup.string().required('Recipient is required'),
   alertProfileId: Yup.string().required('Alert Profile is required'),
   status: Yup.boolean(),
@@ -84,7 +84,7 @@ export const AlertExcludeSchema = Yup.object({
 export const SubscriptionSchema = Yup.object({
   customerId: Yup.string().required('Customer Id is required'),
   accountNo: Yup.string().required('Account No is required'),
-  alertType: Yup.string().required('Alert Medium is required'),
+  alertType: Yup.string().required('Alert Type is required'),
   recipient: Yup.string().required('Recipient is required'),
   alertProfileId: Yup.string().required('Alert Profile is required'),
 });
@@ -150,3 +150,22 @@ export const SMTPRouteSchema = Yup.object({
   smtp_name: Yup.string().required('SMTP name is required'),
   serviceType: Yup.string().required('Service Type is required'),
 });
+
+export const smsTemplateSchema = Yup.object({
+  senderId: Yup.string().required('Sender Id is required'),
+  smsBody: Yup.string().required('Sms Body is required'),
+  smsCharge: Yup.number().required('Sms Charge is required'),
+  serviceTypeId: Yup.string().required('Service Type is required')
+})
+
+export const emailTemplateSchema = Yup.object({
+  subject: Yup.string().required('Subject is required'),
+  emailBodyContent: Yup.string().required('Email Body is required'),
+  emailBodyContainer: Yup.string().required('Email body container is required'),
+  serviceTypeId: Yup.string().required('Service Type is required')
+})
+
+export const templateSchema = Yup.object({
+  serviceTypeId: Yup.string().required('Service Type is required'),
+  templateName: Yup.string().required('Template Name is required'),
+})

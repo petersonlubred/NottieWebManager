@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
+import { setIntervals, setLastSync, setNumber } from '@/redux/slices/dashboard';
 import { setMode } from '@/redux/slices/util';
 import { RootState } from '@/redux/store';
 import theme, { lightTheme } from '@/theme';
@@ -20,6 +21,14 @@ const Provider = ({ children }: PropsWithChildren) => {
     } else if (prefersDark) {
       setMode('dark');
     }
+
+    const savedintervals = localStorage.getItem('dashboard_intervals');
+    const savedNumber = localStorage.getItem('dashboard_intervals_number');
+    const savedLastSync = localStorage.getItem('dashboard_lastSync');
+
+    setIntervals(savedintervals);
+    setNumber(savedNumber);
+    setLastSync(savedLastSync);
   }, []);
 
   React.useEffect(() => {

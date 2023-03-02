@@ -1,4 +1,5 @@
 import './index.scss';
+import '@carbon/styles/css/styles.css';
 import '@carbon/charts/styles.css';
 
 import type { AppProps } from 'next/app';

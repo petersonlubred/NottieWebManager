@@ -4,15 +4,18 @@ import {
   IinitialAlertProfile,
   IinitialDatabase,
   IinitialDataSourceType,
+  IinitialEmailTemplate,
   IinitialResetPassword,
   IinitialRoleForm,
   IinitialSiginin,
   IinitialSMSCForm,
   IinitialSMSRouteConfigForm,
   IinitialSMSRouteForm,
+  IinitialSmsTemplate,
   IinitialSMTPForm,
   IinitialSMTPRouteForm,
   IinitialSubscription,
+  IinitialTemplate,
   IinitialUserForm,
   IinitialUserLogin,
 } from './interface';
@@ -35,8 +38,8 @@ export const initialDatabaseValue: IinitialDatabase = {
 };
 
 export const initialUserLoginValue: IinitialUserLogin = {
-  firstname: '',
-  lastname: '',
+  firstName: '',
+  lastName: '',
   password: '',
   confirmPassword: '',
 };
@@ -153,3 +156,22 @@ export const initialResetValue: IinitialResetPassword = {
   tempPassword: '',
   confirmPassword: '',
 };
+
+export const initialSmsTemplate: IinitialSmsTemplate = {
+  senderId: '',
+  smsBody: '',
+  serviceTypeId: '',
+  smsCharge: 0
+}
+
+export const initialEmailTemplate: IinitialEmailTemplate = {
+  serviceTypeId: '',
+  emailBodyContainer: '',
+  emailBodyContent: '',
+  subject: ''
+}
+
+export const initialTemplate: IinitialTemplate = {
+  serviceTypeId: '',
+  templateName: ''
+}
