@@ -1,6 +1,8 @@
+import { isEmpty } from 'lodash';
 import { useState } from 'react';
 
 import { useToast } from '@/context/ToastContext';
+import { BulkResetPassword } from '@/interfaces/user';
 import {
   useDeleteExceptionMutation,
   useDeleteExclusionMutation,
@@ -9,19 +11,23 @@ import {
   useDeleteSubscriptionMutation,
   useDeleteUserMutation,
   useDeleteUsersMutation,
-  useResendPasswordMutation,
+  useResetPasswordMutation,
+  useResetPasswordsMutation,
 } from '@/redux/api';
 
 type DataProps = {
   id?: string;
   status?: boolean;
   ids?: string[];
+  emailAddress?: string;
+  reqBody?: BulkResetPassword;
 };
 
 const useNetworkRequest = (toggleActionModal: () => void) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [sendResetPassword] = useResendPasswordMutation();
+  const [sendResetPassword] = useResetPasswordMutation();
+  const [sendResetPasswords] = useResetPasswordsMutation();
   const [deleteUser] = useDeleteUserMutation();
   const [deleteRole] = useDeleteRoleMutation();
   const [deleteUsers] = useDeleteUsersMutation();
@@ -32,13 +38,14 @@ const useNetworkRequest = (toggleActionModal: () => void) => {
 
   const handleRequest = async (data: DataProps, context: string) => {
     const { id, ids } = data;
+
     try {
       setLoading(true);
       if (context === 'reset') {
-        await sendResetPassword({ id: id }).unwrap();
+        await sendResetPassword({ id: id, emailAddress: data?.emailAddress as string }).unwrap();
         toast('success', 'Password reset link sent successfully');
-      } else if (context === 'reset-passwords') {
-        // await deleteUser({ status: data?.status, id: id }).unwrap();
+      } else if (context === 'reset-passwords' && !isEmpty(data?.reqBody)) {
+        await sendResetPasswords(data?.reqBody).unwrap();
         toast('success', 'Password reset links sent successfully');
       } else if (context === 'delete-user' || context === 'activate-user') {
         await deleteUser({ status: data?.status, id: id }).unwrap();

@@ -1,5 +1,6 @@
 import { DatePicker, DatePickerInput, TextInput } from '@carbon/react';
 import { Filter } from '@carbon/react/icons';
+import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -14,17 +15,29 @@ interface Iprops {
   >;
   filterData?: { [key: string]: any[] };
   noDateRange?: boolean;
+  setStart?: React.Dispatch<React.SetStateAction<string>>;
+  setEnd?: React.Dispatch<React.SetStateAction<string>>;
+  startDate?: string;
 }
 
-const TableNavItem = ({ filterItems, setFilterData, noDateRange, filterData }: Iprops) => {
+const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, setFilterData, filterData }: Iprops) => {
   return (
     <ItemContainer>
       {!noDateRange && (
         <NavItem>
           <NavItemTitle>Date Range:</NavItemTitle>
-          <DatePicker dateFormat="m/d/Y" datePickerType="range" className="date_picker">
-            <DatePickerInput placeholder="Start date" id="date-picker-default-id" size="md" />
-            <DatePickerInput placeholder="End date" id="date-picker-default-id" size="md" />
+          <DatePicker
+            dateFormat="d/m/Y"
+            datePickerType="range"
+            className="date_picker"
+            onChange={(e: Date[]) => {
+              setStart && setStart(moment(e[0]).format('YYYY-MM-DD'));
+              setEnd && setEnd(moment(e[1]).format('YYYY-MM-DD'));
+            }}
+            maxDate={moment(startDate).endOf('month').format('DD/MM/YYYY')}
+          >
+            <DatePickerInput placeholder="Start date" id="date-picker-default-id" size="md" labelText="" />
+            <DatePickerInput placeholder="End date" id="date-picker-default-id" size="md" labelText="" />
           </DatePicker>
         </NavItem>
       )}

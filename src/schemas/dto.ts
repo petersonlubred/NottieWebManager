@@ -4,6 +4,7 @@ import {
   IinitialAlertProfile,
   IinitialDatabase,
   IinitialDataSourceType,
+  IinitialResetPassword,
   IinitialRoleForm,
   IinitialSiginin,
   IinitialSMSCForm,
@@ -45,7 +46,7 @@ export const initialAlertProfileValue: IinitialAlertProfile = {
   templateId: '',
   emailMinThreshhold: 0,
   smsMinThreshhold: 0,
-  status: false
+  status: false,
 };
 
 export const initialAlertException: IinitialAlertException = {
@@ -143,4 +144,10 @@ export const initialRoleValue: IinitialRoleForm = {
   roleName: '',
   description: '',
   rolePrivileges: [],
+};
+
+export const initialResetValue: IinitialResetPassword = {
+  newPassword: '',
+  tempPassword: '',
+  confirmPassword: '',
 };

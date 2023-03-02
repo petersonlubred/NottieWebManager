@@ -3,21 +3,20 @@ import { Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { initialSubscription } from '@/schemas/dto';
-import { SubscriptionSchema } from '@/schemas/schema';
-import { px } from '@/utils';
-
-import { FormContainer } from '../onboard/NewUserLoginForm';
-import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
-import Checkbox from '../shared/Checkbox/Checkbox';
-
-import { IinitialSubscription } from '@/schemas/interface';
+import { useToast } from '@/context/ToastContext';
+import { ILookupAlertProfile } from '@/interfaces/alert';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { useCreateSubscriptionMutation, useLookupAlertProfileQuery, useUpdateSubscriptionMutation } from '@/redux/api';
-import { useToast } from '@/context/ToastContext';
+import { initialSubscription } from '@/schemas/dto';
+import { IinitialSubscription } from '@/schemas/interface';
+import { SubscriptionSchema } from '@/schemas/schema';
+import { px } from '@/utils';
 import { pickValues } from '@/utils/helpers/helpers';
+
+import { FormContainer } from '../onboard/NewUserLoginForm';
+import Checkbox from '../shared/Checkbox/Checkbox';
+import ErrorMessage from '../shared/ErrorMessage/ErrorMessage';
 import Loader from '../shared/Loader';
-import { ILookupAlertProfile } from '@/interfaces/alert';
 import RadioButton from '../shared/RadioButton';
 
 interface Iprops {

@@ -12,7 +12,7 @@ const useHeaders = () => {
         header: 'lastName',
       },
       {
-        key: 'email',
+        key: 'emailAddress',
         header: 'Email Address',
       },
       {

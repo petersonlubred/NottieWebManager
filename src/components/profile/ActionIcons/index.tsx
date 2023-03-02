@@ -9,9 +9,9 @@ import { FormikRefType } from '@/interfaces/formik.type';
 import { px } from '@/utils';
 
 import ActionModal from '../ActionModals';
-import ProfileModalContent from '../ProfileModalContent';
-import ExcludeModalContent from '../ExcludeContent';
 import ExceptionModalContent from '../ExceptionModalContent';
+import ExcludeModalContent from '../ExcludeContent';
+import ProfileModalContent from '../ProfileModalContent';
 import SubscriptionModalContent from '../SubscriptionContent';
 
 type Props = {
