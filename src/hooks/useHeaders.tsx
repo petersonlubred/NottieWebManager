@@ -62,7 +62,7 @@ const useHeaders = () => {
         header: 'Customer ID',
       },
       {
-        key: 'account_no',
+        key: 'accountNo',
         header: 'Account No',
       },
       {
@@ -70,23 +70,19 @@ const useHeaders = () => {
         header: 'Narration',
       },
       {
-        key: 'access_status',
-        header: 'Access Status',
-      },
-      {
-        key: 'transaction_date',
+        key: 'transactionDate',
         header: 'Transaction Date',
       },
       {
-        key: 'entry_time',
+        key: 'entryDate',
         header: 'Entry Time',
       },
       {
-        key: 'process_remark',
+        key: 'processRemark',
         header: 'Process Remark',
       },
       {
-        key: 'amount',
+        key: 'transactionAmount',
         header: 'Amount',
       },
       {

@@ -4,10 +4,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useToast } from '@/context/ToastContext';
+import { ISetState } from '@/interfaces/formik.type';
 import { px } from '@/utils';
 
 type IProps = {
-  toggleLogin: () => void;
+  toggleLogin: ISetState<boolean>;
   loginDetails: {
     username: string;
     password: string;

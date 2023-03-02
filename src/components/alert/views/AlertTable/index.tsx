@@ -17,6 +17,7 @@ import {
 import { isEmpty } from 'lodash';
 import React from 'react';
 
+import { IPageQuery } from '@/interfaces/notification';
 import { IHeader } from '@/interfaces/role';
 
 import TableNavItem from '../../TableNavItems';
@@ -35,9 +36,11 @@ type Props = {
     value: string;
     label: string;
   }[];
+  setQuery: React.Dispatch<React.SetStateAction<IPageQuery>>;
+  query: IPageQuery;
 };
 
-const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, start, end }: Props) => {
+const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, start, setQuery, query }: Props) => {
   return (
     <>
       <DataTable rows={Rows} headers={Headers}>
@@ -59,7 +62,7 @@ const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, s
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableToolbarContent>
-                <TableNavItem filterItems={filterItems} setStart={setStart} setEnd={setEnd} startDate={start} endDate={end} />
+                <TableNavItem filterItems={filterItems} setStart={setStart} setEnd={setEnd} startDate={start} setQuery={setQuery} query={query} />
               </TableToolbarContent>
             </TableToolbar>
             {isLoading ? (

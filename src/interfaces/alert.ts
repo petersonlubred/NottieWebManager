@@ -72,8 +72,3 @@ export interface AlertExclusionsResponse extends APIResponse<AlertExclusionData[
 export interface AlertExclusionResponse extends APIResponse<AlertExclusionData> {}
 export interface AlertSubscriptionsResponse extends APIResponse<AlertSubscriptionData[]> {}
 export interface AlertSubscriptionResponse extends APIResponse<AlertSubscriptionData> {}
-export type PathType = {
-  start: string;
-  end: string;
-  extraPath?: string;
-};
