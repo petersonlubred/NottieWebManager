@@ -1,7 +1,7 @@
 import { DatePicker, DatePickerInput, TextInput } from '@carbon/react';
 import { Filter } from '@carbon/react/icons';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { IPageQuery } from '@/interfaces/notification';
@@ -13,11 +13,18 @@ interface Iprops {
   setStart?: React.Dispatch<React.SetStateAction<string>>;
   setEnd?: React.Dispatch<React.SetStateAction<string>>;
   startDate?: string;
+  endDate?: string;
   setQuery?: React.Dispatch<React.SetStateAction<IPageQuery>>;
   query?: IPageQuery;
 }
 
-const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, setQuery, query }: Iprops) => {
+const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, endDate, setQuery, query }: Iprops) => {
+  const [date, setDate] = React.useState([startDate, endDate]);
+
+  useEffect(() => {
+    setDate([startDate, endDate]);
+  }, [endDate, startDate]);
+
   return (
     <ItemContainer>
       {!noDateRange && (
@@ -27,6 +34,7 @@ const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, s
             dateFormat="d/m/Y"
             datePickerType="range"
             className="date_picker"
+            value={date}
             onChange={(e: Date[]) => {
               setStart && setStart(moment(e[0]).format('YYYY-MM-DD'));
               setEnd && setEnd(moment(e[1]).format('YYYY-MM-DD'));

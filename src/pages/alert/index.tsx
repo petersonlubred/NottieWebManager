@@ -1,5 +1,4 @@
 import { isEmpty } from 'lodash';
-import moment from 'moment';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -23,7 +22,7 @@ import {
   useGetTransactionQuery,
   useGetTransactionSMSQuery,
 } from '@/redux/api';
-import { getPath, pickValues } from '@/utils/helpers/helpers';
+import { getPath, initialAlertEndDate, initialAlertStartDate, pickValues } from '@/utils/helpers/helpers';
 import { protectedRouteProps } from '@/utils/withSession';
 
 const Alert = () => {
@@ -54,8 +53,8 @@ const Alert = () => {
 
   const currentTab = navItems.some((item) => item.tabName === tab) ? tab : 'txn';
   const { inflowheader, smsheader, emailheader, nontransactionheader, otpheader } = useHeaders();
-  const [start, setStart] = useState<string>(moment().format('YYYY-MM-DD'));
-  const [end, setEnd] = useState<string>(moment().endOf('month').format('YYYY-MM-DD'));
+  const [start, setStart] = useState<string>(initialAlertStartDate);
+  const [end, setEnd] = useState<string>(initialAlertEndDate);
   const [query, setQuery] = useState<IPageQuery>(initialPageQuery);
   const [paginationData, setPaginationData] = useState<IPaginationData>(initialPaginationData);
   const { data, isFetching: isLoading } = useGetTransactionQuery({ extraPath: getPath({ start, end }), ...pickValues(query) }, { skip: currentTab !== 'txn' });
@@ -98,6 +97,8 @@ const Alert = () => {
 
   useEffect(() => {
     setQuery(initialPageQuery);
+    setStart(initialAlertStartDate);
+    setEnd(initialAlertEndDate);
   }, [currentTab]);
 
   const handleSetIndex = (index: number) => {

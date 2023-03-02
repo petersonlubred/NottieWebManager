@@ -40,7 +40,7 @@ type Props = {
   query: IPageQuery;
 };
 
-const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, start, setQuery, query }: Props) => {
+const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, start, end, setQuery, query }: Props) => {
   return (
     <>
       <DataTable rows={Rows} headers={Headers}>
@@ -62,7 +62,7 @@ const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, s
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableToolbarContent>
-                <TableNavItem filterItems={filterItems} setStart={setStart} setEnd={setEnd} startDate={start} setQuery={setQuery} query={query} />
+                <TableNavItem filterItems={filterItems} setStart={setStart} setEnd={setEnd} startDate={start} setQuery={setQuery} query={query} endDate={end} />
               </TableToolbarContent>
             </TableToolbar>
             {isLoading ? (
