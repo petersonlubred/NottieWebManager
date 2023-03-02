@@ -10,7 +10,17 @@ interface Props {
 }
 
 const ModalContent = ({ tab, formRef, toggleModal }: Props) => {
-  return tab === 3 ? <SMSC formRef={formRef} toggleModal={toggleModal} /> : tab === 4 ? <SMSRoute /> : tab === 5 ? <SMSRouteConfig /> : tab === 6 ? <SMTP formRef={formRef} toggleModal={toggleModal} /> : <SMTPRoute />;
+  return tab === 3 ? (
+    <SMSC formRef={formRef} toggleModal={toggleModal} />
+  ) : tab === 4 ? (
+    <SMSRoute />
+  ) : tab === 5 ? (
+    <SMSRouteConfig />
+  ) : tab === 6 ? (
+    <SMTP formRef={formRef} toggleModal={toggleModal} />
+  ) : (
+    <SMTPRoute />
+  );
 };
 
 export default ModalContent;
