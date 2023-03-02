@@ -5,6 +5,8 @@ import PageHeader from '@/components/accounts/PageHeader';
 import Navbar from '@/components/shared/Navbar';
 import NavbarRoute from '@/components/shared/NavbarRoute';
 import PageFooter from '@/components/shared/PageFooter';
+import { ISetState } from '@/interfaces/formik.type';
+import { IPageQuery } from '@/interfaces/notification';
 import Seo from '@/providers/seo';
 import { px } from '@/utils';
 
@@ -18,8 +20,14 @@ interface Iprops {
   isDashboard?: boolean;
   noPagination?: boolean;
   currentTab?: any;
+  setQuery?: ISetState<IPageQuery>;
+  paginationData?: {
+    pageNumber: number;
+    pageSize: number;
+    totalCount: number;
+  };
 }
-const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle, isDashboard, noPagination, currentTab }: Iprops) => {
+const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle, isDashboard, noPagination, currentTab, paginationData, setQuery }: Iprops) => {
   useEffect(() => {
     handleSetIndex(navItem.findIndex((nav) => nav?.tabName === currentTab));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,7 +51,7 @@ const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle,
         ))}
       </HeaderNav>
       <LayoutChildren>{children}</LayoutChildren>
-      {!noPagination && <PageFooter />}{' '}
+      {!noPagination && <PageFooter paginationData={paginationData} setQuery={setQuery} />}{' '}
     </LayoutContainer>
   );
 };
