@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 import { PathType } from '@/interfaces/alert';
 
@@ -26,3 +27,6 @@ export const getPath = (data: PathType): string => {
   const validPath = pickValues(data);
   return Object.values(validPath).join('/');
 };
+
+export const initialAlertStartDate = moment().format('YYYY-MM-DD');
+export const initialAlertEndDate = moment().endOf('month').format('YYYY-MM-DD');

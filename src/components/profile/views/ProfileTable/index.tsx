@@ -27,6 +27,7 @@ import React, { useState } from 'react';
 import TableNavItem from '@/components/alert/TableNavItems';
 import Button from '@/components/shared/Button';
 import useNetworkRequest from '@/hooks/useNetworkRequest';
+import { IPageQuery } from '@/interfaces/notification';
 import { IHeader } from '@/interfaces/role';
 
 import ActionModal from '../../ActionModals';
@@ -40,16 +41,12 @@ type Props = {
   tabIndex: number;
   filterItems: any[];
   navItems: any[];
-  setFilterData: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: unknown;
-    }>
-  >;
-  filterData: { [key: string]: any[] };
+  setQuery: React.Dispatch<React.SetStateAction<IPageQuery>>;
+  query: IPageQuery;
   toggleBulkModal: () => void;
 };
 
-const ProfileTable = ({ Rows, Headers, toggleModal, isLoading, currentTab, tabIndex, filterItems, toggleBulkModal, navItems, setFilterData, filterData }: Props) => {
+const ProfileTable = ({ Rows, Headers, toggleModal, isLoading, currentTab, tabIndex, filterItems, toggleBulkModal, navItems, setQuery, query }: Props) => {
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [action, setAction] = useState<string>('');
 
@@ -100,7 +97,7 @@ const ProfileTable = ({ Rows, Headers, toggleModal, isLoading, currentTab, tabIn
                 </TableBatchAction>
               </TableBatchActions>
               <TableToolbarContent>
-                {tabIndex != 0 && tabIndex != 2 && <TableNavItem filterItems={filterItems} setFilterData={setFilterData} filterData={filterData} noDateRange />}
+                {tabIndex != 0 && tabIndex != 2 && <TableNavItem filterItems={filterItems} setQuery={setQuery} query={query} noDateRange />}
                 <Button
                   renderIcon={(props: any) => <Add size={20} {...props} />}
                   buttonLabel={`Create ${navItems[tabIndex]?.title.split(' ')[navItems[tabIndex]?.title.split(' ').length - 1]}`}

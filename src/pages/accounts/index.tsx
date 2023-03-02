@@ -25,12 +25,16 @@ const Accounts = () => {
   const [responseData, setResponseData] = useState<UserData[] | IRole[]>([]);
   const formRef = useRef<FormikRefType<any>>(null);
   const [isUpdatedMultiselect, setIsUpdatedMultiselect] = useState(false);
-  const { data, isFetching: isLoading } = useGetRolesQuery();
-  const { data: users, isFetching: isLoadingUser } = useGetUsersQuery();
   const [tabIndex, setTabIndex] = useState<number>(0);
   const router = useRouter();
   const { tab } = router.query;
   const currentTab = ['user', 'role'].includes(tab as string) ? tab : 'user';
+  const { data: users, isFetching: isLoadingUser } = useGetUsersQuery(undefined, {
+    skip: currentTab !== 'user',
+  });
+  const { data, isFetching: isLoading } = useGetRolesQuery(undefined, {
+    skip: currentTab !== 'role',
+  });
 
   const navItems = useMemo(() => {
     return [
