@@ -38,9 +38,17 @@ export const databaseSchema = Yup.object({
 });
 
 export const userLoginSchema = Yup.object({
-  firstname: Yup.string().required('first name is required'),
-  lastname: Yup.string().required('last name is required'),
+  firstName: Yup.string().required('first name is required'),
+  lastName: Yup.string().required('last name is required'),
   password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Confirm password is required'),
+});
+
+export const resetPassworSchema = Yup.object({
+  tempPassword: Yup.string().required('Temp Password is required'),
+  newPassword: Yup.string().min(8, 'Password must be at least 8 characters').required('New Password is required'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
     .required('Confirm password is required'),
@@ -51,35 +59,34 @@ export const EmailSchema = Yup.object({
 });
 
 export const AlertProfileSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
-  description: Yup.string().required('Description is required'),
-  template: Yup.string().required('Template is required'),
-  min_threshold: Yup.string().required('Min Threshold is required'),
-  max_threshold: Yup.string().required('Max Threshold is required'),
+  profileName: Yup.string().required('Name is required'),
+  templateId: Yup.string().required('Template is required'),
+  emailMinThreshhold: Yup.number().required('Email Min Threshold is required'),
+  smsMinThreshhold: Yup.number().required('Sms Min Threshold is required'),
+  status: Yup.boolean(),
 });
 
 export const AlertExceptionSchema = Yup.object({
   customerId: Yup.string().required('Customer Id is required'),
   accountNo: Yup.string().required('Account No is required'),
-  alertMedium: Yup.string().required('Alert Medium is required'),
+  alertType: Yup.string().required('Alert Medium is required'),
   recipient: Yup.string().required('Recipient is required'),
-  profile: Yup.string().required('Profile is required'),
-  status: Yup.string().required('Status is required'),
+  alertProfileId: Yup.string().required('Alert Profile is required'),
+  status: Yup.boolean(),
 });
 
 export const AlertExcludeSchema = Yup.object({
-  label: Yup.string().required('Label is required'),
-  operator: Yup.string().required('Operator is required'),
-  textToExclude: Yup.string().required('Text to Exclude is required'),
+  excludeType: Yup.string().required('Exclude type is required'),
+  excludeValue: Yup.string().required('Exclude value is required'),
+  excludeOperator: Yup.string().required('Exclude operator is required'),
 });
 
 export const SubscriptionSchema = Yup.object({
   customerId: Yup.string().required('Customer Id is required'),
   accountNo: Yup.string().required('Account No is required'),
-  alertMedium: Yup.string().required('Alert Medium is required'),
+  alertType: Yup.string().required('Alert Medium is required'),
   recipient: Yup.string().required('Recipient is required'),
-  profile: Yup.string().required('Profile is required'),
-  status: Yup.string().required('Status is required'),
+  alertProfileId: Yup.string().required('Alert Profile is required'),
 });
 
 export const DataSourceSchema = Yup.object({
@@ -121,14 +128,15 @@ export const SMSRouteSchema = Yup.object({
 });
 
 export const SMSRouteConfigSchema = Yup.object({
-  route: Yup.string().required('Route is required'),
-  aggregator: Yup.string().required('Aggregator is required'),
   routeType: Yup.string().required('Route Type is required'),
   country: Yup.string().required('Country is required'),
   network: Yup.string().required('Network is required'),
   accountType: Yup.string().required('Account Type is required'),
   transactionType: Yup.string().required('Transaction Type is required'),
-  productCode: Yup.string().required('Product Code is required'),
+  productCode: Yup.string().when('routeType', {
+    is: (val: string) => val === 'productCode',
+    then: Yup.string().required('product code field is required'),
+  }),
 });
 
 export const SMTPSchema = Yup.object({

@@ -13,9 +13,9 @@ const ModalContent = ({ tab, formRef, toggleModal }: Props) => {
   return tab === 3 ? (
     <SMSC formRef={formRef} toggleModal={toggleModal} />
   ) : tab === 4 ? (
-    <SMSRoute />
+    <SMSRoute formRef={formRef} toggleModal={toggleModal} />
   ) : tab === 5 ? (
-    <SMSRouteConfig />
+    <SMSRouteConfig formRef={formRef} toggleModal={toggleModal} />
   ) : tab === 6 ? (
     <SMTP formRef={formRef} toggleModal={toggleModal} />
   ) : (

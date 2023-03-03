@@ -71,7 +71,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
       {(isLoading || editLoading) && <Loader />}
       <ModalItem>
         <Formik initialValues={formdata?.smscId ? formdata : initialSMSCValue} validationSchema={SMSCSchema} onSubmit={handleSubmit} innerRef={formRef}>
-          {({ errors, touched, setFieldValue, setFieldTouched }) => (
+          {({ values, errors, touched, setFieldValue, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">
                 <FormField>
@@ -89,6 +89,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           id="password-input"
                           labelText="Password"
                           placeholder="enter password"
+                          value={values.password == null ? '' : values.password}
                           onKeyUp={() => setFieldTouched('password', true)}
                         />
                       )}
@@ -148,7 +149,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          // value={0}
+                          value={values.port}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('port', value);
@@ -167,7 +168,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          // value={0}
+                          value={values.sessions}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('sessions', value);
@@ -207,7 +208,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          // value={0}
+                          value={values.npi}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('npi', value);
@@ -226,7 +227,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          // value={0}
+                          value={values.oNpi}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('oNpi', value);
@@ -251,7 +252,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          // value={0}
+                          value={values.ton}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('ton', value);
@@ -270,7 +271,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          // value={0}
+                          value={values.oTon}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('oTon', value);
@@ -295,7 +296,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          // value={0}
+                          value={values.dNpi}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('dNpi', value);
@@ -314,7 +315,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={0}
                           step={10}
                           className="number-input"
-                          // value={0}
+                          value={values.dTon}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('dTon', value);
@@ -339,7 +340,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                           min={1}
                           step={1}
                           className="number-input"
-                          // value={1}
+                          value={values.connectionMode}
                           placeholder="0"
                           onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
                             setFieldValue('connectionMode', value);
