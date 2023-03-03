@@ -1,25 +1,68 @@
 import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+import Loader from '@/components/shared/Loader';
+import { useToast } from '@/context/ToastContext';
+import { FormikRefType } from '@/interfaces/formik.type';
+import { useCreateSmscRouteMutation, useEditSmscRouteMutation } from '@/redux/api';
+import { initialSMSRouteValue } from '@/schemas/dto';
+import { IinitialSMSRouteForm } from '@/schemas/interface';
 import { SMSRouteSchema } from '@/schemas/schema';
-import { initialSMSRouteValue } from '@/schemas/schema';
 import { px } from '@/utils';
+interface Props {
+  formRef: React.RefObject<FormikRefType<IinitialSMSRouteForm>>;
+  formdata?: IinitialSMSRouteForm & { smscRouteId: string };
+  toggleModal: () => void;
+}
 
-const SMSRoute = () => {
+const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
+  const [createSmscRoute, { isLoading, isSuccess, isError, error }] = useCreateSmscRouteMutation();
+  const [editSmscRoute, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditSmscRouteMutation();
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast('success', 'SMSC ROUTE configuration saved successfully');
+      toggleModal();
+    }
+    if (isError && error && 'status' in error) {
+      toast('error', error?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, isError, isSuccess]);
+
+  useEffect(() => {
+    if (editSuccess) {
+      toast('success', 'SMSC ROUTE edited successfully');
+      toggleModal();
+    }
+    if (isEditError && editError && 'status' in editError) {
+      toast('error', editError?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editError, editSuccess, isEditError]);
+
+  const handleSubmit = (values: IinitialSMSRouteForm) => {
+    const payload: any = {
+      smscRouteName: values.route_name,
+      ...values,
+    };
+    // console.log('clicked', payload);
+    return;
+    const formvalues = payload as IinitialSMSRouteForm & { smscRouteId: string };
+    formdata?.smscRouteId ? editSmscRoute(formvalues) : createSmscRoute(formvalues);
+  };
+
   return (
     <ModalContentContainer>
+      {(isLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik
-          initialValues={initialSMSRouteValue}
-          validationSchema={SMSRouteSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
-          }}
-        >
+        <Formik initialValues={formdata?.smscRouteId ? formdata : initialSMSRouteValue} validationSchema={SMSRouteSchema} onSubmit={handleSubmit} innerRef={formRef}>
           {({ errors, touched, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">

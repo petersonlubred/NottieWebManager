@@ -1,4 +1,4 @@
-import { Edit, TrashCan } from '@carbon/react/icons';
+import { Checkbox, CheckboxChecked, Edit } from '@carbon/react/icons';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
@@ -6,7 +6,7 @@ import Modal from '@/components/shared/Modal';
 import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
 import { useToast } from '@/context/ToastContext';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { useDeleteSmscRouteMutation } from '@/redux/api';
+import { useEditSmscStatusMutation } from '@/redux/api';
 import { IinitialSMSCForm } from '@/schemas/interface';
 import { px } from '@/utils';
 
@@ -22,7 +22,7 @@ const ActionIconsSmsc = ({ data }: Props) => {
   const [edit, setEdit] = useState(false);
   const [opendeleteModal, setOpenDeleteModal] = useState(false);
   const { toast } = useToast();
-  const [deleteSmscRoute, { isLoading, isSuccess, isError, error }] = useDeleteSmscRouteMutation();
+  const [editSmscStatus, { isLoading, isSuccess, isError, error }] = useEditSmscStatusMutation();
 
   const toggleModal = () => {
     formRef.current?.resetForm();
@@ -35,7 +35,7 @@ const ActionIconsSmsc = ({ data }: Props) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast('success', 'SMSC deleted successfully');
+      toast('success', 'Status changed');
       setOpenDeleteModal(!opendeleteModal);
     }
     if (isError && error && 'status' in error) {
@@ -43,30 +43,27 @@ const ActionIconsSmsc = ({ data }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, isError, isSuccess]);
-
-  const handleDelete = () => {
-    deleteSmscRoute({ smscId: data?.smscId });
+  const changeStatus = () => {
+    editSmscStatus({ smscId: data?.smscId, status: data?.status ? false : true });
   };
 
   return (
     <NavSectionTwo>
-      <IconBox onClick={() => setOpenDeleteModal(!opendeleteModal)}>
-        <TrashCan size={20} />
-      </IconBox>
+      <IconBox onClick={() => setOpenDeleteModal(!opendeleteModal)}>{data?.status ? <CheckboxChecked size={20} /> : <Checkbox size={20} />}</IconBox>
       <IconBox onClick={() => setEdit(!edit)}>
         <Edit size={20} />
       </IconBox>
       <Modal
-        heading="Confirm delete"
-        buttonLabel="Delete"
+        heading="Change status"
+        buttonLabel="Change status"
         secondaryButtonText="Cancel"
         danger={true}
         open={opendeleteModal}
         toggleModal={() => setOpenDeleteModal(!opendeleteModal)}
         extent="sm"
-        onRequestSubmit={handleDelete}
+        onRequestSubmit={changeStatus}
       >
-        <SimpleModalcontent content="Are you sure you want to delete this SMSC." isLoading={isLoading} />
+        <SimpleModalcontent content="Are you sure you want to change STATUS ." isLoading={isLoading} />
       </Modal>
       <Modal heading="Edit SMTP" buttonLabel="Save changes" extent="sm" open={edit} toggleModal={toggleModal} onRequestSubmit={handleSubmit}>
         <SMSC formRef={formRef} formdata={data} toggleModal={toggleModal} />

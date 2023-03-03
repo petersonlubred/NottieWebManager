@@ -1,29 +1,71 @@
 import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+import Loader from '@/components/shared/Loader';
+import { useToast } from '@/context/ToastContext';
+import { FormikRefType } from '@/interfaces/formik.type';
+import { useCreateSmscRouteConfigMutation, useEditSmscRouteConfigMutation } from '@/redux/api';
 import { initialSMSRouteConfigValue } from '@/schemas/dto';
+import { IinitialSMSRouteConfigForm } from '@/schemas/interface';
 import { SMSRouteConfigSchema } from '@/schemas/schema';
 import { px } from '@/utils';
 
-const SMSRouteConfig = () => {
+interface Props {
+  formRef: React.RefObject<FormikRefType<IinitialSMSRouteConfigForm>>;
+  formdata?: IinitialSMSRouteConfigForm & { smscRouteConfigId: string };
+  toggleModal: () => void;
+}
+
+const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
+  const [createSmscRouteConfig, { isLoading, isSuccess, isError, error }] = useCreateSmscRouteConfigMutation();
+  const [editSmscRouteConfig, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditSmscRouteConfigMutation();
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast('success', 'SMSC configuration saved successfully');
+      toggleModal();
+    }
+    if (isError && error && 'status' in error) {
+      toast('error', error?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, isError, isSuccess]);
+
+  useEffect(() => {
+    if (editSuccess) {
+      toast('success', 'SMSC edited successfully');
+      toggleModal();
+    }
+    if (isEditError && editError && 'status' in editError) {
+      toast('error', editError?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editError, editSuccess, isEditError]);
+
+  const handleSubmit = (values: IinitialSMSRouteConfigForm) => {
+    const payload: any = {
+      ...values,
+    };
+    // console.log('clicked', payload);
+    // return;
+    const formvalues = payload as IinitialSMSRouteConfigForm & { smscRouteConfigId: string };
+    formdata?.smscRouteConfigId ? editSmscRouteConfig(formvalues) : createSmscRouteConfig(formvalues);
+  };
   return (
     <ModalContentContainer>
+      {(isLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik
-          initialValues={initialSMSRouteConfigValue}
-          validationSchema={SMSRouteConfigSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
-          }}
-        >
+        <Formik initialValues={initialSMSRouteConfigValue} validationSchema={SMSRouteConfigSchema} onSubmit={handleSubmit} innerRef={formRef}>
           {({ errors, touched, setFieldTouched, values }) => (
             <Form>
               <FormGroup legendText="">
-                <FormField>
+                {/* <FormField>
                   <ModalLabel>SMS Route</ModalLabel>{' '}
                   <FormEmailContainer>
                     <Field name="route">
@@ -37,7 +79,7 @@ const SMSRouteConfig = () => {
                     </Field>
                   </FormEmailContainer>
                   <ErrorMessage invalid={Boolean(touched.route && errors.route)} invalidText={errors.route} />
-                </FormField>{' '}
+                </FormField>{' '} */}
                 <FormField>
                   <FormContainer>
                     <Field name="aggregator">
@@ -161,22 +203,6 @@ const ModalContentContainer = styled.div`
 
 const ModalItem = styled.div``;
 
-const ModalLabel = styled.div`
-  color: ${({ theme }) => theme.colors.lightText} !important;
-  font-size: ${({ theme }) => theme.fontSizes.s};
-  font-weight: 400;
-  line-height: ${px(12)};
-  margin-bottom: ${px(9)};
-  margin-top: ${px(16)};
-`;
-
 const FormField = styled.div`
   margin-bottom: ${px(16)};
-`;
-
-const FormEmailContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${px(16)};
 `;

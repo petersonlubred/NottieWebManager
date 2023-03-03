@@ -15,5 +15,7 @@ export interface UserData {
   username: string;
 }
 
+export interface BulkResetPassword extends Array<{ userId: string; emailAddress: string }> {}
+
 export interface UsersResponse extends APIResponse<UserData[]> {}
 export interface UserResponse extends APIResponse<UserData> {}

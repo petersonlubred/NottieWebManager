@@ -1,7 +1,7 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 import { isEmpty } from 'lodash';
 
-import { APIResponse } from '@/interfaces/auth';
+// import { APIResponse } from '@/interfaces/auth';
 import { SmscResponse } from '@/interfaces/configuration';
 
 import { Smsc, SmscResponsez } from './../../interfaces/configuration';
@@ -30,16 +30,6 @@ export const smscApi = createApi({
         result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc'],
     }),
 
-    getSmscRoutes: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscRouteId'>>({
-      query: ({ smscRouteId }) => {
-        return {
-          url: `Smsc/Route/${smscRouteId}`,
-          method: 'GET',
-        };
-      },
-      invalidatesTags: (_result, _error, { smscRouteId }) => [{ type: 'smsc', smscRouteId }],
-    }),
-
     editSmsc: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscId'>>({
       query: (data) => {
         return {
@@ -56,81 +46,12 @@ export const smscApi = createApi({
         return {
           url: `Smsc/${data.smscId}/Status`,
           method: 'PUT',
-          body: data,
+          body: { status: data.status },
         };
       },
       invalidatesTags: (_result, _error, { smscId }) => [{ type: 'smsc', smscId }],
-    }),
-
-    editSmscRoute: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscId'>>({
-      query: (data) => {
-        return {
-          url: `Smsc/Route/${data.smscId}`,
-          method: 'PUT',
-          body: data,
-        };
-      },
-      invalidatesTags: (_result, _error, { smscId }) => [{ type: 'smsc', smscId }],
-    }),
-
-    deleteSmscRoute: builder.mutation<APIResponse<object>, { smscId: string }>({
-      query: ({ smscId }) => {
-        return {
-          url: `Smsc/Route/${smscId}`,
-          method: 'DELETE',
-        };
-      },
-      invalidatesTags: (_result, _error, { smscId }) => [{ type: 'smsc', smscId }],
-    }),
-
-    getSmscRoute: builder.query<SmscResponsez, void>({
-      query: () => createRequest('Smsc/Route'),
-      providesTags: (result, _error, _arg) =>
-        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc'],
-    }),
-
-    postSmscRouteConfig: builder.mutation<APIResponse<object>, Partial<Smsc>>({
-      query: (data) => {
-        return {
-          url: `Smsc/Route/Config`,
-          method: 'POST',
-          body: data,
-        };
-      },
-      invalidatesTags: ['smsc'],
-    }),
-
-    editSmscRouteConfig: builder.mutation<SmscResponse, { smscRouteConfigId: string }>({
-      query: (data) => {
-        return {
-          url: `Smsc/Route/Config/${data.smscRouteConfigId}`,
-          method: 'PUT',
-          body: data,
-        };
-      },
-      invalidatesTags: (_result, _error, { smscRouteConfigId }) => [{ type: 'smsc', smscRouteConfigId }],
-    }),
-
-    deleteSmscRouteConfig: builder.mutation<APIResponse<object>, { smscRouteConfigId: string }>({
-      query: ({ smscRouteConfigId }) => {
-        return {
-          url: `Smsc/Route/Config/${smscRouteConfigId}`,
-          method: 'DELETE',
-        };
-      },
-      invalidatesTags: (_result, _error, { smscRouteConfigId }) => [{ type: 'smsc', smscRouteConfigId }],
     }),
   }),
 });
 
-export const {
-  useCreateSmscMutation,
-  useGetSmscQuery,
-  useEditSmscMutation,
-  useGetSmscRoutesMutation,
-  useEditSmscStatusMutation,
-  useEditSmscRouteMutation,
-  useDeleteSmscRouteMutation,
-  usePostSmscRouteConfigMutation,
-  useEditSmscRouteConfigMutation,
-} = smscApi;
+export const { useCreateSmscMutation, useGetSmscQuery, useEditSmscMutation, useEditSmscStatusMutation } = smscApi;
