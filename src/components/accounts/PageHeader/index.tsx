@@ -134,7 +134,7 @@ const HeaderDashboardTitleBox = styled.div`
   position: relative;
 `;
 
-const HeaderTitle = styled.h1`
+const HeaderTitle = styled.div`
   font-size: ${px(26)};
   line-height: ${px(34)};
   font-weight: 400;

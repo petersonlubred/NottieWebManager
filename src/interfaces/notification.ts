@@ -1,3 +1,4 @@
+import { APIResponse } from '@/interfaces/auth';
 export interface TransactionData {
   transactionId: string;
   accountNo: string;
@@ -28,7 +29,39 @@ export interface TransactionData {
   entryDate: string;
   currencyCode: string;
 }
+export interface SmsData {
+  entryDate: string;
+  messageId: string;
+  accountNo: string;
+  customerId: string;
+  mobile: string;
+  retryCount: string;
+  processRemark: string;
+  precessedDate: string;
+  messageStatus: boolean;
+  sentDate: string;
+  natworkName: string;
+  country: string;
+  aggrigator: string;
+  outboundMessageId: string;
+  deliveryStatus: string;
+  deliveryStatusCode: string;
+  deliveryDate: string;
+  networkSentDate: string;
+}
 
+export interface EmailData {
+  entryDate: string;
+  messageId: string;
+  accountNo: string;
+  customerId: string;
+  email: string;
+  retryCount: string;
+  processRemark: string;
+  precessedDate: string;
+  sentDate: string;
+  subject: string;
+}
 export interface NonTransaction {
   noneTransactionId: string;
   accountNo: string;
@@ -52,9 +85,10 @@ export interface OtpData {
   processedDate: string;
   entryDate: string;
 }
+
 export type PathType = {
-  start: string;
-  end: string;
+  start?: string;
+  end?: string;
   extraPath?: string;
 };
 
@@ -65,6 +99,7 @@ export type IPageQuery = {
   accountNo?: string;
   email?: string;
   mobile?: string;
+  notArchive?: boolean | string;
 };
 
 export const initialPageQuery: IPageQuery = {
@@ -74,6 +109,7 @@ export const initialPageQuery: IPageQuery = {
   accountNo: '',
   email: '',
   mobile: '',
+  notArchive: true,
 };
 
 export interface APIResponseWithMeta<T> {
@@ -88,7 +124,21 @@ export interface APIResponseWithMeta<T> {
     };
   };
 }
+export interface SingleEmailResponse
+  extends APIResponse<{
+    subject: string;
+    email: string;
+  }> {}
+export interface SingleSmsResponse
+  extends APIResponse<{
+    sms: string;
+  }> {}
 
 export interface TransactionResponse extends APIResponseWithMeta<TransactionData[]> {}
+export interface SmsResponse extends APIResponseWithMeta<SmsData[]> {}
+export interface SmsResponses extends APIResponse<SmsData[]> {}
+export interface EmailResponses extends APIResponse<EmailData[]> {}
+export interface EmailResponse extends APIResponseWithMeta<EmailData[]> {}
+export interface EmailResponseById extends APIResponse<EmailData[]> {}
 export interface OtpResponse extends APIResponseWithMeta<OtpData[]> {}
 export interface NonTransactionResponse extends APIResponseWithMeta<NonTransaction[]> {}
