@@ -6,7 +6,7 @@ import { px } from '@/utils';
 import Loader from '../Loader';
 
 interface Iprops {
-  content: string | JSX.Element;
+  content?: string | JSX.Element;
   isLoading?: boolean;
 }
 const SimpleModalcontent = ({ content, isLoading }: Iprops) => {

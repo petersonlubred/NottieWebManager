@@ -1,130 +1,174 @@
-import { Edit, Password, TrashCan, UserAdmin } from '@carbon/react/icons';
-import { useRef, useState } from 'react';
+import { At, Email, View } from '@carbon/react/icons';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import { IconBox } from '@/components/configuration/ActionIcons/Smtp';
+import EmailContent from '@/components/shared/EmailContent';
 import Modal from '@/components/shared/Modal';
-import useNetworkRequest from '@/hooks/useNetworkRequest';
-import { FormikRefType, ISetState } from '@/interfaces/formik.type';
-import { useGetPrivilegesQuery } from '@/redux/api';
-import { IinitialRoleForm, IinitialUserForm } from '@/schemas/interface';
+import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
+import { EmailData, NonTransaction, OtpData, TransactionData } from '@/interfaces/notification';
+import {
+  useGetNonTransactionEmailByIdQuery,
+  useGetNonTransactionSMSByIdQuery,
+  useGetOtpEmailByIdQuery,
+  useGetOtpSMSByIdQuery,
+  useGetSingleNonTransactionEmailQuery,
+  useGetSingleNonTransactionSMSQuery,
+  useGetSingleOtpEmailQuery,
+  useGetSingleOtpSMSQuery,
+  useGetSingleTransactionEmailQuery,
+  useGetSingleTransactionSMSQuery,
+  useGetTransactionEmailByIdQuery,
+  useGetTransactionSMSByIdQuery,
+} from '@/redux/api';
 import { px } from '@/utils';
+import { getExtraPath, getPath } from '@/utils/helpers/helpers';
 
-import ActionModal from '../ActionModals';
-import RolesAndProvileges from '../ModalForms/CreateRolesForm';
-import CreateUserForm from '../ModalForms/CreateUserForm';
+import AlertTableModal from '../AlertModals/TableModal';
 
 type Props = {
-  data?: IinitialUserForm & { id: string; status: boolean };
-  roleData?: IinitialRoleForm & { roleId: string };
-  isUpdatedMultiselect?: boolean;
-  setIsUpdatedMultiselect?: ISetState<boolean>;
+  data?: TransactionData & EmailData & NonTransaction & OtpData;
+  currentTab?: string;
+  start?: string;
+  end?: string;
+  tabNames?: string[];
 };
 
-const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultiselect }: Props) => {
-  const formRef = useRef<FormikRefType<any>>(null);
-  const { data: privileges, isFetching } = useGetPrivilegesQuery(roleData?.roleId as string);
+const ActionIcons = ({ data, start, currentTab, end, tabNames }: Props) => {
   const [action, setAction] = useState('');
-  const [context, setContext] = useState('');
-
-  const toggleActionModal = () => {
-    setAction('');
-  };
-  const { handleRequest, loading } = useNetworkRequest(toggleActionModal);
+  const { data: emails, isFetching: isLoadingEmails } = useGetTransactionEmailByIdQuery(
+    { extraPath: getPath({ start, extraPath: getExtraPath(['Email', data?.transactionId as string]) }), notArchive: true },
+    { skip: (!start || !data?.transactionId) && action !== 'txnemail' }
+  );
+  const { data: sms, isFetching: isLoadingSms } = useGetTransactionSMSByIdQuery(
+    { extraPath: getPath({ start, extraPath: getExtraPath(['Sms', data?.transactionId as string]) }), notArchive: true },
+    { skip: (!start || !data?.transactionId) && action !== 'txnsms' }
+  );
+  const { data: NEmails, isFetching: isLoadingNEmails } = useGetNonTransactionEmailByIdQuery(
+    { extraPath: getPath({ start, extraPath: getExtraPath(['Email', data?.noneTransactionId as string]) }), notArchive: true },
+    { skip: (!start || !data?.noneTransactionId) && action !== 'nontxnmail' }
+  );
+  const { data: NSms, isFetching: isLoadingNSms } = useGetNonTransactionSMSByIdQuery(
+    { extraPath: getPath({ start, extraPath: getExtraPath(['Sms', data?.noneTransactionId as string]) }), notArchive: true },
+    { skip: (!start || !data?.noneTransactionId) && action !== 'nontxnsms' }
+  );
+  const { data: OtpEmails, isFetching: isLoadingOtpEmails } = useGetOtpEmailByIdQuery(
+    { extraPath: getPath({ start, extraPath: getExtraPath(['Email', data?.otpId as string]) }), notArchive: true },
+    { skip: (!start || !data?.otpId) && action !== 'otpemail' }
+  );
+  const { data: Otpsms, isFetching: isLoadingOtpSms } = useGetOtpSMSByIdQuery(
+    { extraPath: getPath({ start, extraPath: getExtraPath(['Sms', data?.otpId as string]) }), notArchive: true },
+    { skip: (!start || !data?.otpId) && action !== 'otpsms' }
+  );
+  const { data: singleEmail, isFetching: isLoadingSingleEmail } = useGetSingleTransactionEmailQuery(
+    { extraPath: getPath({ start, end, extraPath: getExtraPath(['Email', data?.messageId as string]) }), notArchive: true },
+    { skip: (!start || !end) && (action !== 'previewtxnemail' || !data?.messageId) }
+  );
+  const { data: singleSms, isFetching: isLoadingSingleSms } = useGetSingleTransactionSMSQuery(
+    { extraPath: getPath({ start, end, extraPath: getExtraPath(['Sms', data?.messageId as string]) }), notArchive: true },
+    { skip: (!start || !end) && (action !== 'previewtxnsms' || !data?.messageId) }
+  );
+  const { data: singleNEmail, isFetching: isLoadingSingleNEmail } = useGetSingleNonTransactionEmailQuery(
+    { extraPath: getPath({ start, end, extraPath: getExtraPath(['Email', data?.messageId as string]) }), notArchive: true },
+    { skip: (!start || !end) && (action !== 'previewnontxnemail' || !data?.messageId) }
+  );
+  const { data: singleNSms, isFetching: isLoadingSingleNSms } = useGetSingleNonTransactionSMSQuery(
+    { extraPath: getPath({ start, end, extraPath: getExtraPath(['Sms', data?.messageId as string]) }), notArchive: true },
+    { skip: (!start || !end) && (action !== 'previewnontxnsms' || !data?.messageId) }
+  );
+  const { data: singleOtpEmail, isFetching: isLoadingSingleOtpEmail } = useGetSingleOtpEmailQuery(
+    { extraPath: getPath({ start, end, extraPath: getExtraPath(['Email', data?.messageId as string]) }), notArchive: true },
+    { skip: (!start || !end) && (action !== 'previewotpemail' || !data?.messageId) }
+  );
+  const { data: singleOtpSms, isFetching: isLoadingSingleOtpSms } = useGetSingleOtpSMSQuery(
+    { extraPath: getPath({ start, end, extraPath: getExtraPath(['Sms', data?.messageId as string]) }), notArchive: true },
+    { skip: (!start || !end) && (action !== 'previewotpsms' || !data?.messageId) }
+  );
 
   const toggleModal = () => {
-    formRef.current?.resetForm();
-    setIsUpdatedMultiselect && setIsUpdatedMultiselect(false);
-    if (!isUpdatedMultiselect) {
-      setIsUpdatedMultiselect && setIsUpdatedMultiselect(true);
-    }
     setAction('');
   };
-
-  function handleSubmit() {
-    formRef.current?.handleSubmit();
-  }
 
   return (
     <NavSectionTwo>
-      {(data?.status || roleData?.roleId) && (
+      {currentTab === 'txn' || currentTab === 'non-txn' || currentTab === 'otp' ? (
+        <>
+          <IconBox
+            onClick={() => {
+              tabNames?.includes(currentTab as string) && setAction(`${currentTab?.split('-').join('')}sms`);
+            }}
+          >
+            <Email size={20} />
+          </IconBox>
+          <IconBox
+            onClick={() => {
+              tabNames?.includes(currentTab as string) && setAction(`${currentTab?.split('-').join('')}email`);
+            }}
+          >
+            <At size={20} />
+          </IconBox>
+        </>
+      ) : (
         <IconBox
           onClick={() => {
-            setAction('delete');
-            setContext(roleData?.roleId ? 'role' : 'user');
+            tabNames?.includes(currentTab as string) && setAction(`preview${currentTab?.split('-').join('')}`);
           }}
         >
-          <TrashCan size={20} />
+          <View size={20} />
         </IconBox>
       )}
 
-      {!data?.status && data?.id && (
-        <IconBox
-          onClick={() => {
-            setAction('activate');
-            setContext('user');
-          }}
-        >
-          <UserAdmin size={20} />
-        </IconBox>
-      )}
-
-      {data?.id && (
-        <IconBox
-          onClick={() => {
-            setAction('reset');
-            setContext('user');
-          }}
-        >
-          <Password size={20} />{' '}
-        </IconBox>
-      )}
-
-      <IconBox
-        onClick={() => {
-          setAction('edit');
-        }}
-      >
-        <Edit size={20} />
-      </IconBox>
-
-      <Modal
-        heading={data?.id ? 'Edit User' : 'Edit Role'}
-        buttonLabel="Save changes"
-        extent="sm"
-        open={action === 'edit'}
-        toggleModal={toggleModal}
-        onRequestSubmit={handleSubmit}
-      >
-        {data?.id ? (
-          <CreateUserForm
-            formRef={formRef}
-            formdata={data}
-            toggleModal={toggleModal}
-            isUpdatedMultiselect={isUpdatedMultiselect}
-            setIsUpdatedMultiselect={setIsUpdatedMultiselect}
-          />
-        ) : (
-          <RolesAndProvileges formRef={formRef} formdata={roleData} toggleModal={toggleModal} data={privileges?.data} loadPrivileges={isFetching} />
-        )}
+      <Modal heading={`Mobile No: ${data?.mobile}`} buttonLabel={'Close'} open={action?.endsWith('sms')} toggleModal={toggleModal} extent="sm" onRequestSubmit={toggleModal}>
+        <SimpleModalcontent
+          content={
+            action === 'previewtxnsms' ? singleSms?.data?.sms : action === 'previewnontxnsms' ? singleNSms?.data?.sms : action === 'previewotpsms' ? singleOtpSms?.data?.sms : ''
+          }
+          isLoading={isLoadingSingleSms || isLoadingSingleSms || isLoadingSingleNSms || isLoadingSingleOtpSms}
+        />
       </Modal>
-      <ActionModal
-        action={action}
-        isLoading={loading}
-        id={data?.id}
-        setAction={setAction}
-        toggleModal={toggleActionModal}
-        context={context}
-        handleAction={() => {
-          action === 'reset'
-            ? handleRequest({ id: data?.id, emailAddress: data?.emailAddress }, 'reset')
-            : action === 'delete' && context === 'user'
-            ? handleRequest({ id: data?.id, status: !data?.status }, 'delete-user')
-            : action === 'delete' && context === 'role'
-            ? handleRequest({ id: roleData?.roleId }, 'delete-role')
-            : action === 'activate' && handleRequest({ id: data?.id, status: true }, 'activate-user');
-        }}
-      />
+
+      <Modal heading={`Email address: ${data?.email}`} buttonLabel={'Close'} open={action?.endsWith('email')} toggleModal={toggleModal} extent="md" onRequestSubmit={toggleModal}>
+        <EmailContent
+          content={
+            action === 'previewtxnemail'
+              ? singleEmail?.data?.email
+              : action === 'previewnontxnemail'
+              ? singleNEmail?.data?.email
+              : action === 'previewotpemail'
+              ? singleOtpEmail?.data?.email
+              : ''
+          }
+          isLoading={isLoadingSingleEmail || isLoadingSingleEmail || isLoadingSingleNEmail || isLoadingSingleOtpEmail}
+          subject={singleEmail?.data?.subject}
+        />
+      </Modal>
+      <Modal
+        buttonLabel="Close"
+        heading={`Account no: ${data?.accountNo}`}
+        extent="md"
+        open={action === `${currentTab?.split('-').join('')}sms` || action === `${currentTab?.split('-').join('')}email`}
+        toggleModal={toggleModal}
+        onRequestSubmit={toggleModal}
+      >
+        <AlertTableModal
+          transactionData={data}
+          action={action}
+          data={
+            action === 'txnemail'
+              ? emails?.data
+              : action === 'txnsms'
+              ? sms?.data
+              : action === 'nontxnemail'
+              ? NEmails?.data
+              : action === 'nontxnsms'
+              ? NSms?.data
+              : action === 'otpemail'
+              ? OtpEmails?.data
+              : Otpsms?.data
+          }
+          isLoading={isLoadingEmails || isLoadingSms || isLoadingNEmails || isLoadingNSms || isLoadingOtpEmails || isLoadingOtpSms}
+        />
+      </Modal>
     </NavSectionTwo>
   );
 };
