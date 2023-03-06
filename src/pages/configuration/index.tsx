@@ -25,6 +25,7 @@ const SystemConfiguration = () => {
   const [open, setOpen] = useState<boolean>(false);
   const formRef = useRef<FormikRefType<any>>(null);
   const { data, isFetching: isLoading } = useGetSmtpserversQuery();
+
   const [tabIndex, setTabIndex] = useState<number>(0);
   const router = useRouter();
   const { tab } = router.query;

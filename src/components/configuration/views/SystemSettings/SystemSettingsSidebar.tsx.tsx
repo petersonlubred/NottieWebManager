@@ -1,21 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { ISetState } from '@/interfaces/formik.type';
+import { ISystemConfig } from '@/interfaces/systemConfig';
 import { px } from '@/utils';
 
-const AccordionItems = ['Batch processing', 'Service description', 'AD details', 'SSO details', 'Seg Log App Config', 'Auto fetch account details'];
-
-const SystemSettingSideBar = () => {
+type IProps = {
+  data?: ISystemConfig[];
+  setMenuCode: ISetState<string>;
+  menuCode: string;
+};
+const SystemSettingSideBar = ({ data, setMenuCode, menuCode }: IProps) => {
   return (
     <TemplateContainer>
       <TemplateHeader>
         <HeaderParagraph>System setting</HeaderParagraph>
       </TemplateHeader>
-      {AccordionItems.map((item, index) => (
-        <AccordionContainer key={index}>
-          <AccordionHeader>{item}</AccordionHeader>
-        </AccordionContainer>
-      ))}
+      {data?.map(
+        (item: ISystemConfig, index) =>
+          item?.configMenuItem && (
+            <AccordionContainer key={index}>
+              <AccordionHeader clicked={item?.configMenuItemCode === menuCode} onClick={() => setMenuCode(item?.configMenuItemCode)}>
+                {item?.configMenuItem}
+              </AccordionHeader>
+            </AccordionContainer>
+          )
+      )}
     </TemplateContainer>
   );
 };
@@ -50,13 +60,15 @@ const AccordionContainer = styled.div`
   margin-top: ${px(12)};
 `;
 
-const AccordionHeader = styled.div`
+const AccordionHeader = styled.div<{ clicked: boolean }>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: ${px(7)} ${px(16)};
+  padding: ${px(9)} ${px(16)};
   font-size: ${px(14)};
   line-height: ${px(18)};
   gap: ${px(6)};
   font-weight: 600;
+  width: fit-content;
+  border-left: ${({ clicked, theme }) => (clicked ? `2px solid ${theme.colors.normalText}` : 'none')};
 `;
