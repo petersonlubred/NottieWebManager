@@ -27,10 +27,10 @@ type Props = {
   Headers: IHeader[];
   tab: number;
   isLoading: boolean;
-  setStart: React.Dispatch<React.SetStateAction<string>>;
-  setEnd: React.Dispatch<React.SetStateAction<string>>;
-  start: string;
-  end: string;
+  setStart: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setEnd: React.Dispatch<React.SetStateAction<string | undefined>>;
+  start?: string;
+  end?: string;
   filterItems: {
     key: string;
     value: string;
@@ -38,9 +38,13 @@ type Props = {
   }[];
   setQuery: React.Dispatch<React.SetStateAction<IPageQuery>>;
   query: IPageQuery;
+  renderDate?: boolean;
+  notArchive?: boolean;
+  setNotArchive?: React.Dispatch<React.SetStateAction<boolean>>;
+  displayToday?: boolean;
 };
 
-const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, start, end, setQuery, query }: Props) => {
+const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, start, end, setQuery, query, renderDate, notArchive, setNotArchive, displayToday }: Props) => {
   return (
     <>
       <DataTable rows={Rows} headers={Headers}>
@@ -62,7 +66,19 @@ const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, s
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableToolbarContent>
-                <TableNavItem filterItems={filterItems} setStart={setStart} setEnd={setEnd} startDate={start} setQuery={setQuery} query={query} endDate={end} />
+                <TableNavItem
+                  renderDate={renderDate}
+                  filterItems={filterItems}
+                  setStart={setStart}
+                  setEnd={setEnd}
+                  startDate={start}
+                  setQuery={setQuery}
+                  query={query}
+                  endDate={end}
+                  displayToday={displayToday}
+                  notArchive={notArchive}
+                  setNotArchive={setNotArchive}
+                />
               </TableToolbarContent>
             </TableToolbar>
             {isLoading ? (
