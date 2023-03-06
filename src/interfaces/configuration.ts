@@ -17,6 +17,7 @@ export interface SmscRoute extends IinitialSMSRouteForm {
 
 export interface SmscRouteConfig extends IinitialSMSRouteConfigForm {
   smscRouteConfigId: string;
+  countryId: string;
 }
 
 export interface SmtpsResponse extends APIResponse<Ismtp[]> {}

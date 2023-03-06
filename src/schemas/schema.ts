@@ -128,11 +128,25 @@ export const SMSRouteSchema = Yup.object({
 });
 
 export const SMSRouteConfigSchema = Yup.object({
+  smscRoute: Yup.string().required('Smsc route Type is required'),
+  aggregator: Yup.string().required('Aggregator smsc is required'),
   routeType: Yup.string().required('Route Type is required'),
-  country: Yup.string().required('Country is required'),
-  network: Yup.string().required('Network is required'),
-  accountType: Yup.string().required('Account Type is required'),
-  transactionType: Yup.string().required('Transaction Type is required'),
+  country: Yup.string().when('routeType', {
+    is: (val: string) => val === 'network',
+    then: Yup.string().required('Country is required'),
+  }),
+  network: Yup.string().when('routeType', {
+    is: (val: string) => val === 'network',
+    then: Yup.string().required('Network is required'),
+  }),
+  accountType: Yup.string().when('routeType', {
+    is: (val: string) => val === 'accountType',
+    then: Yup.string().required('Account Type is required'),
+  }),
+  transactionType: Yup.string().when('routeType', {
+    is: (val: string) => val === 'transactionType',
+    then: Yup.string().required('Transaction Type is required'),
+  }),
   productCode: Yup.string().when('routeType', {
     is: (val: string) => val === 'productCode',
     then: Yup.string().required('product code field is required'),

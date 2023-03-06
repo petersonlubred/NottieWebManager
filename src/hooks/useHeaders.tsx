@@ -428,15 +428,15 @@ const useHeaders = () => {
   const smsrouteheader = useMemo(() => {
     return [
       {
-        key: 'route_name',
+        key: 'smscRouteName',
         header: 'SMS Route Name',
       },
       {
-        key: 'aggregator',
+        key: 'smscName',
         header: 'Aggregator/SMSC',
       },
       {
-        key: 'serviceType',
+        key: 'seviceType',
         header: 'Service Type',
       },
       {
@@ -449,11 +449,11 @@ const useHeaders = () => {
   const smsrouteconfigheader = useMemo(() => {
     return [
       {
-        key: 'route_name',
+        key: 'routeName',
         header: 'SMS Route Name',
       },
       {
-        key: 'aggregator',
+        key: 'smscName',
         header: 'Aggregator/SMSC',
       },
       {

@@ -111,6 +111,8 @@ export const initialSMSRouteValue: IinitialSMSRouteForm = {
 };
 
 export const initialSMSRouteConfigValue: IinitialSMSRouteConfigForm = {
+  smscRoute: '',
+  aggregator: '',
   routeType: '',
   country: '',
   network: '',

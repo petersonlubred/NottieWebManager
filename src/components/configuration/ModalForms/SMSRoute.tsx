@@ -1,14 +1,16 @@
 import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
-import React, { useEffect } from 'react';
+import { isEmpty } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Loader from '@/components/shared/Loader';
 import { useToast } from '@/context/ToastContext';
+import { SmscRoute } from '@/interfaces/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { useCreateSmscRouteMutation, useEditSmscRouteMutation } from '@/redux/api';
+import { useCreateSmscRouteMutation, useEditSmscRouteMutation, useLookupServiceTypeIdQuery, useLookupSmscIdQuery } from '@/redux/api';
 import { initialSMSRouteValue } from '@/schemas/dto';
 import { IinitialSMSRouteForm } from '@/schemas/interface';
 import { SMSRouteSchema } from '@/schemas/schema';
@@ -20,10 +22,19 @@ interface Props {
 }
 
 const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
+  const [smscLookup, setSmscLookup] = useState<SmscRoute[]>([]);
+  const [serviceTypeLookup, setServiceTypeLookup] = useState<SmscRoute[]>([]);
   const [createSmscRoute, { isLoading, isSuccess, isError, error }] = useCreateSmscRouteMutation();
   const [editSmscRoute, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditSmscRouteMutation();
+  const { data: smscLookupData } = useLookupSmscIdQuery();
+  const { data: serviceTypeLookupData } = useLookupServiceTypeIdQuery();
 
   const { toast } = useToast();
+
+  useEffect(() => {
+    !isEmpty(smscLookupData?.data) && setSmscLookup(smscLookupData?.data as SmscRoute[]);
+    !isEmpty(serviceTypeLookupData?.data) && setServiceTypeLookup(serviceTypeLookupData?.data as SmscRoute[]);
+  }, [smscLookupData?.data, serviceTypeLookupData?.data]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -50,10 +61,10 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
   const handleSubmit = (values: IinitialSMSRouteForm) => {
     const payload: any = {
       smscRouteName: values.route_name,
-      ...values,
+      smscId: values.aggregator,
+      serviceTypeId: values.serviceType,
     };
-    // console.log('clicked', payload);
-    return;
+
     const formvalues = payload as IinitialSMSRouteForm & { smscRouteId: string };
     formdata?.smscRouteId ? editSmscRoute(formvalues) : createSmscRoute(formvalues);
   };
@@ -63,7 +74,7 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
       {(isLoading || editLoading) && <Loader />}
       <ModalItem>
         <Formik initialValues={formdata?.smscRouteId ? formdata : initialSMSRouteValue} validationSchema={SMSRouteSchema} onSubmit={handleSubmit} innerRef={formRef}>
-          {({ errors, touched, setFieldTouched }) => (
+          {({ errors, touched, setFieldValue, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">
                 <FormField>
@@ -82,14 +93,20 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
                     </Field>
                     <Field name="aggregator">
                       {({ field }: any) => (
-                        <TextInput
-                          {...field}
-                          type="text"
+                        <Select
                           id="aggregator-input"
                           labelText="Aggregator/SMSC"
-                          placeholder="enter text"
+                          {...field}
                           onKeyUp={() => setFieldTouched('aggregator', true)}
-                        />
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setFieldValue('aggregator', e.target.value);
+                          }}
+                        >
+                          <SelectItem text="Choose service type" />
+                          {smscLookup.map((item: any) => (
+                            <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                          ))}
+                        </Select>
                       )}
                     </Field>
                     <ErrorMessage invalid={Boolean(touched.route_name && errors.route_name)} invalidText={errors.route_name} />
@@ -101,10 +118,19 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
                   <FormEmailContainer>
                     <Field name="serviceType">
                       {({ field }: any) => (
-                        <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('serviceType', true)}>
-                          <SelectItem text="Choose option" />
-                          <SelectItem text="Option 1" value="option-1" />
-                          <SelectItem text="Option 2" value="option-2" />
+                        <Select
+                          id="serviceType-input"
+                          labelText=""
+                          {...field}
+                          onKeyUp={() => setFieldTouched('serviceType', true)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setFieldValue('serviceType', e.target.value);
+                          }}
+                        >
+                          <SelectItem text="Choose service type" />
+                          {serviceTypeLookup.map((item: any) => (
+                            <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                          ))}
                         </Select>
                       )}
                     </Field>
