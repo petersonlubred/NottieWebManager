@@ -66,7 +66,7 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
     };
 
     const formvalues = payload as IinitialSMSRouteForm & { smscRouteId: string };
-    formdata?.smscRouteId ? editSmscRoute(formvalues) : createSmscRoute(formvalues);
+    formdata?.smscRouteId ? editSmscRoute(formdata) : createSmscRoute(formvalues);
   };
 
   return (

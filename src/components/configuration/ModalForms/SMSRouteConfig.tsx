@@ -112,7 +112,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
     };
 
     const formvalues = payload as IinitialSMSRouteConfigForm & { smscRouteConfigId: string };
-    formdata?.smscRouteConfigId ? editSmscRouteConfig(formvalues) : createSmscRouteConfig(formvalues);
+    formdata?.smscRouteConfigId ? editSmscRouteConfig(formdata) : createSmscRouteConfig(formvalues);
   };
   return (
     <ModalContentContainer>

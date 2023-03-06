@@ -67,7 +67,7 @@ const ActionIconsSmscConfig = ({ data }: Props) => {
       >
         <SimpleModalcontent content="Are you sure you want to delete this SMSC ROUTE CONFIG." isLoading={isLoading} />
       </Modal>
-      <Modal heading="Edit SMTP" buttonLabel="Save changes" extent="sm" open={edit} toggleModal={toggleModal} onRequestSubmit={handleSubmit}>
+      <Modal heading="Edit SMSC ROUTE CONFIG" buttonLabel="Save changes" extent="sm" open={edit} toggleModal={toggleModal} onRequestSubmit={handleSubmit}>
         <SMSRouteConfig formRef={formRef} formdata={data} toggleModal={toggleModal} />
       </Modal>
     </NavSectionTwo>
