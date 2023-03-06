@@ -51,6 +51,36 @@ export const smscRouteConfigApi = createApi({
       invalidatesTags: (_result, _error, { smscRouteConfigId }) => [{ type: 'smscRouteConfig', smscRouteConfigId }],
     }),
 
+    lookupRouteType: builder.query<SmscRouteConfigResponsez, void>({
+      query: () => createRequest('Lookup/RouteType'),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smscRouteConfig' as const, smscId })), 'smscRouteConfig'] : ['smscRouteConfig'],
+    }),
+
+    lookupCountry: builder.query<SmscRouteConfigResponsez, void>({
+      query: () => createRequest('Lookup/Country'),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smscRouteConfig' as const, smscId })), 'smscRouteConfig'] : ['smscRouteConfig'],
+    }),
+
+    lookupAccountType: builder.query<SmscRouteConfigResponsez, void>({
+      query: () => createRequest('Lookup/AccountType'),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smscRouteConfig' as const, smscId })), 'smscRouteConfig'] : ['smscRouteConfig'],
+    }),
+
+    lookupTransactionType: builder.query<SmscRouteConfigResponsez, void>({
+      query: () => createRequest('Lookup/TransactionType'),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smscRouteConfig' as const, smscId })), 'smscRouteConfig'] : ['smscRouteConfig'],
+    }),
+
+    lookupSmscRoute: builder.query<SmscRouteConfigResponsez, void>({
+      query: () => createRequest('Lookup/SmsRoute'),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smscRouteConfig' as const, smscId })), 'smscRouteConfig'] : ['smscRouteConfig'],
+    }),
+
     // getSmscRoutes: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscRouteId'>>({
     //   query: ({ smscRouteId }) => {
     //     return {
@@ -63,4 +93,14 @@ export const smscRouteConfigApi = createApi({
   }),
 });
 
-export const { useGetSmscRouteConfigQuery, useDeleteSmscRouteConfigMutation, useCreateSmscRouteConfigMutation, useEditSmscRouteConfigMutation } = smscRouteConfigApi;
+export const {
+  useGetSmscRouteConfigQuery,
+  useLookupRouteTypeQuery,
+  useLookupCountryQuery,
+  useLookupAccountTypeQuery,
+  useLookupTransactionTypeQuery,
+  useLookupSmscRouteQuery,
+  useDeleteSmscRouteConfigMutation,
+  useCreateSmscRouteConfigMutation,
+  useEditSmscRouteConfigMutation,
+} = smscRouteConfigApi;

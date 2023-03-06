@@ -57,8 +57,8 @@ const SystemConfiguration = () => {
 
   const { data, isFetching: isLoading } = useGetSmtpserversQuery({ ...debounceFilter }, { skip: currentTab !== 'smtp' });
   const { data: smscData, isFetching: isRetrieving } = useGetSmscQuery({ ...debounceFilter }, { skip: currentTab !== 'smsc' });
-  const { data: smscRouteData, isFetching: isLoadingRoute } = useGetSmscRouteQuery({ ...debounceFilter }, { skip: currentTab !== 'smsc-route' });
-  const { data: smscConfigData, isFetching: isLoadingConfig } = useGetSmscRouteConfigQuery({ ...debounceFilter }, { skip: currentTab !== 'smsc-route-config' });
+  const { data: smscRouteData, isFetching: isLoadingRoute } = useGetSmscRouteQuery(undefined, { skip: currentTab !== 'sms-route' });
+  const { data: smscConfigData, isFetching: isLoadingConfig } = useGetSmscRouteConfigQuery({ ...debounceFilter }, { skip: currentTab !== 'sms-route-config' });
 
   const { datasourceheader, smscheader, smsrouteheader, smsrouteconfigheader, smtpheader, smtprouteconfigheader } = useHeaders();
 
@@ -112,10 +112,10 @@ const SystemConfiguration = () => {
             row.id = item['smscId'];
             row['others'] = <ActionIconsSmsc data={item} />;
             row['status'] = item['status'] ? <StatusIcon status="Active" /> : <StatusIcon status="Inactive" />;
-          } else if (currentTab === 'smsc-route') {
+          } else if (currentTab === 'sms-route') {
             row.id = item['smscRouteId'];
             row['others'] = <ActionIconsSmscRoute data={item}></ActionIconsSmscRoute>;
-          } else if (currentTab === 'smsc-route-config') {
+          } else if (currentTab === 'sms-route-config') {
             row.id = item['smscRouteConfigId'];
             row['others'] = <ActionIconsSmscConfig data={item}></ActionIconsSmscConfig>;
           }
@@ -131,9 +131,9 @@ const SystemConfiguration = () => {
       !isEmpty(data?.data) && setResponseData(data?.data as Ismtp[]);
     } else if (currentTab === 'smsc') {
       !isEmpty(smscData?.data) && setResponseData(smscData?.data as Smsc[]);
-    } else if (currentTab === 'smsc-route') {
+    } else if (currentTab === 'sms-route') {
       !isEmpty(smscRouteData?.data) && setResponseData(smscRouteData?.data as SmscRoute[]);
-    } else if (currentTab === 'smsc-route-config') {
+    } else if (currentTab === 'sms-route-config') {
       !isEmpty(smscConfigData?.data) && setResponseData(smscConfigData?.data as SmscRouteConfig[]);
     } else {
       setResponseData([]);

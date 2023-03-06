@@ -1,14 +1,26 @@
 import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
+import axios from 'axios';
 import { Field, Form, Formik } from 'formik';
-import React, { useEffect } from 'react';
+import { isEmpty } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Loader from '@/components/shared/Loader';
 import { useToast } from '@/context/ToastContext';
+import { SmscRoute, SmscRouteConfig } from '@/interfaces/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { useCreateSmscRouteConfigMutation, useEditSmscRouteConfigMutation } from '@/redux/api';
+import {
+  useCreateSmscRouteConfigMutation,
+  useEditSmscRouteConfigMutation,
+  useLookupAccountTypeQuery,
+  useLookupCountryQuery,
+  useLookupRouteTypeQuery,
+  useLookupSmscIdQuery,
+  useLookupSmscRouteQuery,
+  useLookupTransactionTypeQuery,
+} from '@/redux/api';
 import { initialSMSRouteConfigValue } from '@/schemas/dto';
 import { IinitialSMSRouteConfigForm } from '@/schemas/interface';
 import { SMSRouteConfigSchema } from '@/schemas/schema';
@@ -21,10 +33,49 @@ interface Props {
 }
 
 const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
+  const [countryLookup, setCountryLookup] = useState<SmscRouteConfig[]>([]);
+  const [routeTypeLookup, setRouteTypeLookup] = useState<SmscRouteConfig[]>([]);
+  const [smscLookup, setSmscLookup] = useState<SmscRoute[]>([]);
+  const [accountTypeLookup, setAccountTypeLookup] = useState<SmscRouteConfig[]>([]);
+  const [countryId, setCountryId] = useState<any>('');
+  const [networkLookup, setNetworkLookup] = useState<SmscRouteConfig[]>([]);
+  const [transactionTypeLookup, setTransactionTypeLookup] = useState<SmscRouteConfig[]>([]);
+  const [smscRouteLookup, setSmscRouteLookup] = useState<SmscRouteConfig[]>([]);
+
   const [createSmscRouteConfig, { isLoading, isSuccess, isError, error }] = useCreateSmscRouteConfigMutation();
   const [editSmscRouteConfig, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditSmscRouteConfigMutation();
+  const { data: lookupCountryData } = useLookupCountryQuery();
+  const { data: lookupRouteTypeData } = useLookupRouteTypeQuery();
+  const { data: smscLookupData } = useLookupSmscIdQuery();
+  const { data: lookupAccountTypeData } = useLookupAccountTypeQuery();
+  const { data: lookupTransactionTypeData } = useLookupTransactionTypeQuery();
+  const { data: lookupSmscRouteData } = useLookupSmscRouteQuery();
 
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!countryId) {
+      return;
+    }
+    const getNetwork = async () => {
+      const networkData = await axios.get(`https://api-test.nottie.net/api/Lookup/Network/${countryId}`);
+      if (networkData) {
+        const { data } = networkData;
+        setNetworkLookup(data.data ? data.data : []);
+      }
+    };
+
+    getNetwork();
+  }, [countryId]);
+
+  useEffect(() => {
+    !isEmpty(smscLookupData?.data) && setSmscLookup(smscLookupData?.data as SmscRoute[]);
+    !isEmpty(lookupCountryData?.data) && setCountryLookup(lookupCountryData?.data as SmscRouteConfig[]);
+    !isEmpty(lookupRouteTypeData?.data) && setRouteTypeLookup(lookupRouteTypeData?.data as SmscRouteConfig[]);
+    !isEmpty(lookupAccountTypeData?.data) && setAccountTypeLookup(lookupAccountTypeData?.data as SmscRouteConfig[]);
+    !isEmpty(lookupTransactionTypeData?.data) && setTransactionTypeLookup(lookupTransactionTypeData?.data as SmscRouteConfig[]);
+    !isEmpty(lookupSmscRouteData?.data) && setSmscRouteLookup(lookupSmscRouteData?.data as SmscRouteConfig[]);
+  }, [lookupCountryData?.data, lookupRouteTypeData?.data, smscLookupData?.data, lookupAccountTypeData?.data, lookupTransactionTypeData?.data, lookupSmscRouteData?.data]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -50,10 +101,16 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
 
   const handleSubmit = (values: IinitialSMSRouteConfigForm) => {
     const payload: any = {
-      ...values,
+      smscRouteId: values.smscRoute,
+      smscId: values.aggregator,
+      routeTypeId: values.routeType,
+      countryId: values.country,
+      networkId: values.network,
+      productCode: values.productCode,
+      accountType: values.accountType,
+      transactionType: values.transactionType,
     };
-    // console.log('clicked', payload);
-    // return;
+
     const formvalues = payload as IinitialSMSRouteConfigForm & { smscRouteConfigId: string };
     formdata?.smscRouteConfigId ? editSmscRouteConfig(formvalues) : createSmscRouteConfig(formvalues);
   };
@@ -62,43 +119,68 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
       {(isLoading || editLoading) && <Loader />}
       <ModalItem>
         <Formik initialValues={initialSMSRouteConfigValue} validationSchema={SMSRouteConfigSchema} onSubmit={handleSubmit} innerRef={formRef}>
-          {({ errors, touched, setFieldTouched, values }) => (
+          {({ errors, touched, setFieldTouched, values, setFieldValue }) => (
             <Form>
               <FormGroup legendText="">
-                {/* <FormField>
+                <FormField>
                   <ModalLabel>SMS Route</ModalLabel>{' '}
                   <FormEmailContainer>
-                    <Field name="route">
+                    <Field name="smscRoute">
                       {({ field }: any) => (
-                        <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('route', true)}>
-                          <SelectItem text="Choose option" />
-                          <SelectItem text="Option 1" value="option-1" />
-                          <SelectItem text="Option 2" value="option-2" />
+                        <Select
+                          id="smscRoute-1"
+                          labelText="Smsc Route"
+                          {...field}
+                          onKeyUp={() => setFieldTouched('smscRoute', true)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setFieldValue('smscRoute', e.target.value);
+                          }}
+                        >
+                          <SelectItem text="Choose smsc route" />
+                          {smscRouteLookup.map((item: any) => (
+                            <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                          ))}
                         </Select>
                       )}
                     </Field>
                   </FormEmailContainer>
-                  <ErrorMessage invalid={Boolean(touched.route && errors.route)} invalidText={errors.route} />
-                </FormField>{' '} */}
+                  <ErrorMessage invalid={Boolean(touched.smscRoute && errors.smscRoute)} invalidText={errors.smscRoute} />
+                </FormField>{' '}
                 <FormField>
                   <FormContainer>
                     <Field name="aggregator">
                       {({ field }: any) => (
-                        <Select id="select-1" labelText="Aggregator/SMSC" {...field} onKeyUp={() => setFieldTouched('aggregator', true)}>
-                          <SelectItem text="Choose option" />
-                          <SelectItem text="Option 1" value="option-1" />
-                          <SelectItem text="Option 2" value="option-2" />
+                        <Select
+                          id="aggregator-1"
+                          labelText="Aggregator/SMSC"
+                          {...field}
+                          onKeyUp={() => setFieldTouched('aggregator', true)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setFieldValue('aggregator', e.target.value);
+                          }}
+                        >
+                          <SelectItem text="Choose aggregator" />
+                          {smscLookup.map((item: any) => (
+                            <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                          ))}
                         </Select>
                       )}
                     </Field>
                     <Field name="routeType">
                       {({ field }: any) => (
-                        <Select id="select-1" labelText="Route Type" {...field} onKeyUp={() => setFieldTouched('routeType', true)}>
-                          <SelectItem text="Choose an option" />
-                          <SelectItem text="Network" value="network" />
-                          <SelectItem text="Product code" value="productCode" />
-                          <SelectItem text="Account" value="account" />
-                          <SelectItem text="Transaction" value="transaction" />
+                        <Select
+                          id="routeType-1"
+                          labelText="Route Type"
+                          {...field}
+                          onKeyUp={() => setFieldTouched('routeType', true)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setFieldValue('routeType', e.target.value);
+                          }}
+                        >
+                          <SelectItem text="Choose route type" />
+                          {routeTypeLookup.map((item: any) => (
+                            <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                          ))}
                         </Select>
                       )}
                     </Field>
@@ -106,24 +188,44 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                     <ErrorMessage invalid={Boolean(touched.routeType && errors.routeType)} invalidText={errors.routeType} />
                   </FormContainer>
                 </FormField>{' '}
-                {values?.routeType === 'network' ? (
+                {values?.routeType === '1' ? (
                   <FormField>
                     <FormContainer>
                       <Field name="country">
                         {({ field }: any) => (
-                          <Select id="select-1" labelText="Country" {...field} onKeyUp={() => setFieldTouched('country', true)}>
-                            <SelectItem text="Choose option" />
-                            <SelectItem text="Option 1" value="option-1" />
-                            <SelectItem text="Option 2" value="option-2" />
+                          <Select
+                            id="country-1"
+                            labelText="Country"
+                            {...field}
+                            onKeyUp={() => setFieldTouched('country', true)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              setCountryId(e.target.value);
+                              setFieldValue('country', e.target.value);
+                            }}
+                          >
+                            <SelectItem text="Choose country" />
+                            {countryLookup.map((item: any) => (
+                              <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                            ))}
                           </Select>
                         )}
                       </Field>
                       <Field name="network">
                         {({ field }: any) => (
-                          <Select id="select-1" labelText="Route Type" {...field} onKeyUp={() => setFieldTouched('network', true)}>
-                            <SelectItem text="Choose a network" />
-                            <SelectItem text="Option 1" value="option-1" />
-                            <SelectItem text="Option 2" value="option-2" />
+                          <Select
+                            id="network-1"
+                            labelText="Network"
+                            {...field}
+                            disabled={networkLookup.length === 0}
+                            onKeyUp={() => setFieldTouched('network', true)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              setFieldValue('network', e.target.value);
+                            }}
+                          >
+                            <SelectItem text="Choose network service" />
+                            {networkLookup.map((item: any) => (
+                              <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                            ))}
                           </Select>
                         )}
                       </Field>
@@ -131,7 +233,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                       <ErrorMessage invalid={Boolean(touched.network && errors.network)} invalidText={errors.network} />
                     </FormContainer>
                   </FormField>
-                ) : values?.routeType === 'productCode' ? (
+                ) : values?.routeType === '2' ? (
                   <FormField>
                     <FormContainer>
                       <Field name="productCode">
@@ -149,15 +251,24 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                       <ErrorMessage invalid={Boolean(touched.productCode && errors.productCode)} invalidText={errors.productCode} />
                     </FormContainer>
                   </FormField>
-                ) : values.routeType === 'account' ? (
+                ) : values.routeType === '3' ? (
                   <FormField>
                     <FormContainer>
                       <Field name="accountType">
                         {({ field }: any) => (
-                          <Select id="select-1" labelText="Account Type" {...field} onKeyUp={() => setFieldTouched('accountType', true)}>
-                            <SelectItem text="Choose option" />
-                            <SelectItem text="Option 1" value="option-1" />
-                            <SelectItem text="Option 2" value="option-2" />
+                          <Select
+                            id="accountType-1"
+                            labelText="Account Type"
+                            {...field}
+                            onKeyUp={() => setFieldTouched('accountType', true)}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              setFieldValue('accountType', e.target.value);
+                            }}
+                          >
+                            <SelectItem text="Choose service type" />
+                            {accountTypeLookup.map((item: any) => (
+                              <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                            ))}
                           </Select>
                         )}
                       </Field>
@@ -165,15 +276,24 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                     </FormContainer>
                   </FormField>
                 ) : (
-                  values?.routeType === 'transaction' && (
+                  values?.routeType === '4' && (
                     <FormField>
                       <FormContainer>
                         <Field name="transactionType">
                           {({ field }: any) => (
-                            <Select id="select-1" labelText="Transaction Type" {...field} onKeyUp={() => setFieldTouched('transactionType', true)}>
-                              <SelectItem text="Choose option" />
-                              <SelectItem text="Option 1" value="option-1" />
-                              <SelectItem text="Option 2" value="option-2" />
+                            <Select
+                              id="transactionType-1"
+                              labelText="Transaction Type"
+                              {...field}
+                              onKeyUp={() => setFieldTouched('accountType', true)}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                setFieldValue('transactionType', e.target.value);
+                              }}
+                            >
+                              <SelectItem text="Choose transaction type" />
+                              {transactionTypeLookup.map((item: any) => (
+                                <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                              ))}
                             </Select>
                           )}
                         </Field>
@@ -205,4 +325,20 @@ const ModalItem = styled.div``;
 
 const FormField = styled.div`
   margin-bottom: ${px(16)};
+`;
+
+const FormEmailContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${px(16)};
+`;
+
+const ModalLabel = styled.div`
+  color: ${({ theme }) => theme.colors.lightText} !important;
+  font-size: ${({ theme }) => theme.fontSizes.s};
+  font-weight: 400;
+  line-height: ${px(12)};
+  margin-bottom: ${px(9)};
+  margin-top: ${px(16)};
 `;

@@ -30,6 +30,18 @@ export const smscRouteApi = createApi({
         result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscRouteId }: any) => ({ type: 'smscRoute' as const, smscRouteId })), 'smscRoute'] : ['smscRoute'],
     }),
 
+    lookupSmscId: builder.query<SmscRouteResponsez, void>({
+      query: () => createRequest('Lookup/Smsc'),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscRouteId }: any) => ({ type: 'smscRoute' as const, smscRouteId })), 'smscRoute'] : ['smscRoute'],
+    }),
+
+    lookupServiceTypeId: builder.query<SmscRouteResponsez, void>({
+      query: () => createRequest('Lookup/ServiceType'),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscRouteId }: any) => ({ type: 'smscRoute' as const, smscRouteId })), 'smscRoute'] : ['smscRoute'],
+    }),
+
     // getSmscRoutez: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscRouteId'>>({
     //   query: ({ smscRouteId }) => {
     //     return {
@@ -63,4 +75,5 @@ export const smscRouteApi = createApi({
   }),
 });
 
-export const { useCreateSmscRouteMutation, useGetSmscRouteQuery, useEditSmscRouteMutation, useDeleteSmscRouteMutation } = smscRouteApi;
+export const { useCreateSmscRouteMutation, useGetSmscRouteQuery, useLookupSmscIdQuery, useLookupServiceTypeIdQuery, useEditSmscRouteMutation, useDeleteSmscRouteMutation } =
+  smscRouteApi;
