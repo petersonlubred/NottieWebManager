@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 
+import Button from '../Button';
+
 const ErrorContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   margin: auto;
-  margin-top: 12px;
-  max-width: 320px;
+  margin-top: 120px;
+  button {
+    padding: calc(0.875rem - 4px) 27px calc(0.875rem - 4px) 15px !important;
+  }
 `;
 
 const ErrorIcon = styled.svg`
@@ -22,22 +26,17 @@ const ErrorIcon = styled.svg`
 const ErrorMessage = styled.p`
   font-size: 2rem;
   margin-top: 8px;
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 const ErrorDescription = styled.p`
   margin-top: 4px;
+  color: ${({ theme }) => theme.colors.white};
+  width: 500px;
 `;
 
-const ReloadButton = styled.button`
-  margin-top: 10px;
-  padding: 8px 16px;
-  background-color: #fff;
-  border: 1px solid #000;
-  cursor: pointer;
-  &:hover {
-    background-color: #000;
-    color: #fff;
-  }
+const ReloadButton = styled(Button)`
+  margin-top: 20px;
 `;
 
 const ErrorFallback = ({ message }: { message?: string }) => {
@@ -50,7 +49,7 @@ const ErrorFallback = ({ message }: { message?: string }) => {
       </ErrorIcon>
       <ErrorMessage>Something went wrong</ErrorMessage>
       <ErrorDescription>{message}</ErrorDescription>
-      <ReloadButton onClick={handleReload}>Reload Page</ReloadButton>
+      <ReloadButton renderIcon={null} handleClick={handleReload} buttonLabel="Reload Page" />
     </ErrorContainer>
   );
 };
