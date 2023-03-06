@@ -60,8 +60,6 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
       ...values,
       dataEncoding: parseInt(values.dataEncoding),
     };
-    // console.log('clicked', payload);
-    // return;
     const formvalues = payload as IinitialSMSCForm & { smscId: string };
     formdata?.smscId ? editSmsc(formvalues) : createSmsc(formvalues);
   };
