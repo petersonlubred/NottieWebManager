@@ -1,8 +1,8 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 
-import { IPageQuery } from '@/interfaces/notification';
+import { EmailResponse, EmailResponses, IPageQuery, NonTransactionResponse, OtpResponse, SmsResponse, SmsResponses, TransactionResponse } from '@/interfaces/notification';
 
-import { TransactionResponse } from './../../interfaces/notification';
+import { SingleEmailResponse, SingleSmsResponse } from './../../interfaces/notification';
 import { baseQueryWithReauth, createRequestWithParams, CustomError } from './shared';
 
 export const notificationApi = createApi({
@@ -14,29 +14,65 @@ export const notificationApi = createApi({
     getTransaction: builder.query<TransactionResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}`, { ...rest }),
     }),
-    getTransactionSMS: builder.query<TransactionResponse, IPageQuery & { extraPath: string }>({
+    getTransactionSMS: builder.query<SmsResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}/Sms`, { ...rest }),
     }),
-    getTransactionEmail: builder.query<TransactionResponse, IPageQuery & { extraPath: string }>({
-      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}/Email`, { ...rest }),
+    getTransactionSMSById: builder.query<SmsResponses, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}`, { ...rest }),
     }),
-    getNonTransaction: builder.query<any, IPageQuery & { extraPath: string }>({
+    getTransactionEmail: builder.query<EmailResponse, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}/Email`, rest),
+    }),
+    getTransactionEmailById: builder.query<EmailResponses, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}`, { ...rest }),
+    }),
+    getSingleTransactionEmail: builder.query<SingleEmailResponse, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}`, { ...rest }),
+    }),
+    getSingleTransactionSMS: builder.query<SingleSmsResponse, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Transaction/${extraPath}`, { ...rest }),
+    }),
+    getNonTransaction: builder.query<NonTransactionResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}`, { ...rest }),
     }),
-    getNonTransactionSMS: builder.query<any, IPageQuery & { extraPath: string }>({
+    getNonTransactionSMS: builder.query<SmsResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}/Sms`, { ...rest }),
     }),
-    getNonTransactionEmail: builder.query<any, IPageQuery & { extraPath: string }>({
+    getNonTransactionSMSById: builder.query<SmsResponses, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}`, { ...rest }),
+    }),
+    getNonTransactionEmail: builder.query<EmailResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}/Email`, { ...rest }),
     }),
-    getOtp: builder.query<any, IPageQuery & { extraPath: string }>({
+    getNonTransactionEmailById: builder.query<EmailResponses, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}`, { ...rest }),
+    }),
+    getSingleNonTransactionEmail: builder.query<SingleEmailResponse, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}`, { ...rest }),
+    }),
+    getSingleNonTransactionSMS: builder.query<SingleSmsResponse, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/NoneTransaction/${extraPath}`, { ...rest }),
+    }),
+    getOtp: builder.query<OtpResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}`, { ...rest }),
     }),
-    getOtpSMS: builder.query<any, IPageQuery & { extraPath: string }>({
+    getOtpSMS: builder.query<SmsResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}/Sms`, { ...rest }),
     }),
-    getOtpEmail: builder.query<any, IPageQuery & { extraPath: string }>({
+    getOtpSMSById: builder.query<SmsResponses, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}`, { ...rest }),
+    }),
+    getOtpEmail: builder.query<EmailResponse, IPageQuery & { extraPath: string }>({
       query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}/Email`, { ...rest }),
+    }),
+    getOtpEmailById: builder.query<EmailResponses, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}`, { ...rest }),
+    }),
+    getSingleOtpEmail: builder.query<SingleEmailResponse, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}`, { ...rest }),
+    }),
+    getSingleOtpSMS: builder.query<SingleSmsResponse, IPageQuery & { extraPath: string }>({
+      query: ({ extraPath, ...rest }) => createRequestWithParams(`AlertNotification/Otp/${extraPath}`, { ...rest }),
     }),
   }),
 });
@@ -51,4 +87,16 @@ export const {
   useGetNonTransactionSMSQuery,
   useGetOtpEmailQuery,
   useGetOtpSMSQuery,
+  useGetTransactionEmailByIdQuery,
+  useGetTransactionSMSByIdQuery,
+  useGetSingleTransactionEmailQuery,
+  useGetSingleTransactionSMSQuery,
+  useGetSingleNonTransactionEmailQuery,
+  useGetSingleNonTransactionSMSQuery,
+  useGetSingleOtpEmailQuery,
+  useGetSingleOtpSMSQuery,
+  useGetNonTransactionEmailByIdQuery,
+  useGetNonTransactionSMSByIdQuery,
+  useGetOtpEmailByIdQuery,
+  useGetOtpSMSByIdQuery,
 } = notificationApi;
