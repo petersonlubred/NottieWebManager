@@ -95,31 +95,32 @@ const useHeaders = () => {
   const smsheader = useMemo(() => {
     return [
       {
-        key: 'mobile_no',
+        key: 'customerId',
+        header: 'Customer ID',
+      },
+      {
+        key: 'mobile',
         header: 'Mobile No',
       },
       {
-        key: 'network',
+        key: 'natworkName',
         header: 'Network',
       },
       {
-        key: 'sent_time',
+        key: 'sentDate',
         header: 'Sent Time',
       },
       {
-        key: 'delivery_time',
+        key: 'deliveryDate',
         header: 'Delivery Time',
       },
       {
-        key: 'entry_time',
+        key: 'entryDate',
         header: 'Entry Time',
       },
+
       {
-        key: 'smsc_route',
-        header: 'SMSC Route',
-      },
-      {
-        key: 'delivery_status',
+        key: 'deliveryStatus',
         header: 'Delivery Status',
       },
       {
@@ -132,19 +133,31 @@ const useHeaders = () => {
   const emailheader = useMemo(() => {
     return [
       {
+        key: 'customerId',
+        header: 'Customer ID',
+      },
+      {
+        key: 'accountNo',
+        header: 'Account No',
+      },
+      {
         key: 'email',
         header: 'Email Address',
       },
       {
-        key: 'remark',
+        key: 'subject',
+        header: 'Subject',
+      },
+      {
+        key: 'processRemark',
         header: 'Remark',
       },
       {
-        key: 'sent_time',
+        key: 'sentTime',
         header: 'Sent Time',
       },
       {
-        key: 'entry_time',
+        key: 'entryDate',
         header: 'Entry Time',
       },
       {
@@ -161,32 +174,33 @@ const useHeaders = () => {
         header: 'Customer ID',
       },
       {
-        key: 'account_no',
+        key: 'accountNo',
         header: 'Account No',
       },
       {
-        key: 'narration',
-        header: 'Narration',
+        key: 'email',
+        header: 'Email Address',
       },
       {
-        key: 'access_status',
-        header: 'Access Status',
+        key: 'mobile',
+        header: 'Mobile No',
       },
+
       {
-        key: 'transaction_date',
-        header: 'Transaction Date',
-      },
-      {
-        key: 'entry_time',
+        key: 'entryDate',
         header: 'Entry Time',
       },
       {
-        key: 'amount',
-        header: 'Amount',
+        key: 'processedDate',
+        header: 'Processed Date',
       },
       {
-        key: 'process_status',
-        header: 'Process Status',
+        key: 'processRemark',
+        header: 'Processed Remark',
+      },
+      {
+        key: 'sendReceipt',
+        header: 'Send Receipt',
       },
       {
         key: 'others',
@@ -198,24 +212,37 @@ const useHeaders = () => {
   const otpheader = useMemo(() => {
     return [
       {
-        key: 'mobile_no',
+        key: 'customerId',
+        header: 'Customer ID',
+      },
+      {
+        key: 'mobile',
         header: 'Mobile No',
       },
       {
-        key: 'account_no',
+        key: 'email',
+        header: 'Email Address',
+      },
+      {
+        key: 'accountNo',
         header: 'Account No',
       },
       {
-        key: 'entry_time',
+        key: 'entryDate',
         header: 'Entry Time',
       },
       {
-        key: 'amount',
-        header: 'Amount',
+        key: 'processedDate',
+        header: 'Processed Date',
+      },
+
+      {
+        key: 'processRemark',
+        header: 'Process Remark',
       },
       {
-        key: 'process_status',
-        header: 'Process Status',
+        key: 'useTemplate',
+        header: 'Use Template',
       },
       {
         key: 'others',
@@ -525,6 +552,23 @@ const useHeaders = () => {
     ];
   }, []);
 
+  const emailmodalheader = useMemo(() => {
+    return [
+      {
+        key: 'email',
+        header: 'Email Address',
+      },
+      {
+        key: 'subject',
+        header: 'Subject',
+      },
+      {
+        key: 'sentTime',
+        header: 'Sent Time',
+      },
+    ];
+  }, []);
+
   return {
     inflowheader,
     smsheader,
@@ -542,6 +586,7 @@ const useHeaders = () => {
     smtprouteconfigheader,
     usersheader,
     rolesheader,
+    emailmodalheader,
   };
 };
 

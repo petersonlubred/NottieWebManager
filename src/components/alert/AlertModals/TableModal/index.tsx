@@ -1,93 +1,72 @@
-import { DataTable, Pagination, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@carbon/react';
-import React from 'react';
+import { DataTable, DataTableSkeleton, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@carbon/react';
+import { isEmpty } from 'lodash';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import Modal from '@/components/shared/Modal';
+import Empty from '@/components/shared/Empty';
+import Loader from '@/components/shared/Loader';
+import useHeaders from '@/hooks/useHeaders';
+import { EmailData, SmsData, TransactionData } from '@/interfaces/notification';
 import { px } from '@/utils';
 
-const dummyData: any = [
-  [
-    { key: 'mobile_no', header: 'Mobile No' },
-    { key: 'network', header: 'Network' },
-    { key: 'sent_item', header: 'Sent Item' },
-    { key: 'delivery_time', header: 'Delivery Time' },
-    { key: 'entry_time', header: 'Entry Time' },
-    { key: 'status', header: 'Status' },
-  ],
-  [
-    {
-      id: 'a',
-      mobile_no: '0907865437',
-      network: 'Airtel',
-      sent_item: '15 May 2020 9:00 am',
-      delivery_time: '15 May 2020 9:00 am',
-      entry_time: '7 May 2020 1:00 pm',
-      status: 'Pending',
-    },
-    {
-      id: 'b',
-      mobile_no: '0907865437',
-      network: 'MTN',
-      sent_item: '15 May 2020 9:00 am',
-      delivery_time: '15 May 2020 9:00 am',
-      entry_time: '7 May 2020 1:00 pm',
-      status: 'Pending',
-    },
-    {
-      id: 'c',
-      mobile_no: '0907865437',
-      network: 'Glo',
-      sent_item: '15 May 2020 9:00 am',
-      delivery_time: '15 May 2020 9:00 am',
-      entry_time: '7 May 2020 1:00 pm',
-      status: 'Delivered',
-    },
-    {
-      id: 'd',
-      mobile_no: '0907865437',
-      network: 'Starlink',
-      sent_item: '15 May 2020 9:00 am',
-      delivery_time: '15 May 2020 9:00 am',
-      entry_time: '7 May 2020 1:00 pm',
-      status: 'Delivered',
-    },
-    {
-      id: 'e',
-      mobile_no: '0907865437',
-      network: 'Starlink',
-      sent_item: '15 May 2020 9:00 am',
-      delivery_time: '15 May 2020 9:00 am',
-      entry_time: '7 May 2020 1:00 pm',
-      status: 'Delivered',
-    },
-    {
-      id: 'f',
-      mobile_no: '0907865437',
-      network: 'Starlink',
-      sent_item: '15 May 2020 9:00 am',
-      delivery_time: '15 May 2020 9:00 am',
-      entry_time: '7 May 2020 1:00 pm',
-      status: 'Delivered',
-    },
-  ],
-];
-
 type IProps = {
-  open?: boolean;
-  toggleModal: () => void;
+  transactionData?: Partial<TransactionData>;
+  data?: EmailData[] | SmsData[];
+  isLoading?: boolean;
+  action?: string;
 };
 
-const AlertTableModal = ({ open, toggleModal }: IProps) => {
+const AlertTableModal = ({ data, isLoading, action, transactionData }: IProps) => {
+  const [responseData, setResponseData] = React.useState<EmailData[] | SmsData[]>([]);
+  const [Rows, setRows] = React.useState<any>([]);
+  const { emailmodalheader, smsheader } = useHeaders();
+  const [Headers, setHeaders] = React.useState<any>([]);
+
+  useEffect(() => {
+    const headers = [emailmodalheader, smsheader];
+
+    headers?.forEach(() => {
+      if (action?.endsWith('mail')) {
+        setHeaders(emailmodalheader);
+      } else {
+        setHeaders(smsheader?.filter((item: { key: string; header: string }) => item?.key !== 'customerId'));
+      }
+      const rows = responseData?.map((item: any) => {
+        const row: any = {};
+
+        const tabHeaders = action?.endsWith('mail') ? emailmodalheader : smsheader;
+        tabHeaders.forEach((item2: { key: string; header: string }) => {
+          row[item2.key] = item[item2.key];
+          row.id = item.messageId;
+        });
+        return row;
+      });
+      !rows.some((row: any) => row.id === undefined) && setRows(rows);
+    });
+  }, [action, emailmodalheader, responseData, smsheader]);
+
+  useEffect(() => {
+    if (action?.endsWith('mail')) {
+      !isEmpty(data) ? setResponseData(data as EmailData[]) : setResponseData([]);
+    } else if (action?.endsWith('sms')) {
+      !isEmpty(data) ? setResponseData(data as SmsData[]) : setResponseData([]);
+    } else {
+      setResponseData([]);
+    }
+  }, [action, data]);
+
   return (
     <InputModalContainer>
-      <Modal buttonLabel="Close" heading="Account no: 3910793817" open={open} toggleModal={toggleModal} secondaryButtonText="" extent="md">
-        <ModalContainer>
-          <SubHeader>
-            <Header>Customer ID: COMP1502 </Header>
-            <Header>Narration: Thanks for being great! ❤️</Header>
-          </SubHeader>
-          <DataTable rows={dummyData[1]} headers={dummyData[0]}>
-            {({ rows, headers, getHeaderProps, getTableProps }: any) => (
+      <ModalContainer>
+        <SubHeader>
+          <Header>Customer ID: {transactionData?.customerId}</Header>
+          <Header>Narration: {transactionData?.narration}</Header>
+        </SubHeader>
+        <DataTable rows={Rows} headers={Headers}>
+          {({ rows, headers, getHeaderProps, getTableProps }: any) =>
+            isLoading ? (
+              <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
+            ) : (
               <Table {...getTableProps()}>
                 <TableHead>
                   <TableRow>
@@ -108,22 +87,33 @@ const AlertTableModal = ({ open, toggleModal }: IProps) => {
                   ))}
                 </TableBody>
               </Table>
-            )}
-          </DataTable>
-        </ModalContainer>
+            )
+          }
+        </DataTable>{' '}
+        {isLoading ? <Loader /> : isEmpty(Rows) && <Empty title={action === 'mail' ? 'No Email found' : 'No SMS found'} />}{' '}
+      </ModalContainer>
+      {/* {!isEmpty(Rows) && (
         <PaginationContainer>
           <Pagination
             backwardText="Previous page"
             forwardText="Next page"
             itemsPerPageText="Items per page:"
-            page={1}
+            className="pagination"
+            page={pageNumber}
             pageNumberText="Page Number"
-            pageSize={10}
+            pageSize={pageSize}
             pageSizes={[10, 20, 30, 40, 50]}
-            totalItems={103}
-          />
+            totalItems={totalCount}
+            onChange={({ page, pageSize }: { page: number; pageSize: number }) => {
+              setQuery &&
+                setQuery({
+                  pageNumber: page,
+                  pageSize,
+                });
+            }}
+          />{' '}
         </PaginationContainer>
-      </Modal>
+      )} */}
     </InputModalContainer>
   );
 };
@@ -131,53 +121,47 @@ const AlertTableModal = ({ open, toggleModal }: IProps) => {
 export default AlertTableModal;
 
 const InputModalContainer = styled.div`
-  .cds--modal-container--md {
-    width: 926px !important;
+  .cds--data-table-content {
+    position: relative;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
-  .cds--modal .cds--pagination,
-  .cds--modal .cds--pagination__control-buttons,
-  .cds--modal .cds--text-input,
-  .cds--modal .cds--text-area,
-  .cds--modal .cds--search-input,
-  .cds--modal .cds--select-input,
-  .cds--modal .cds--dropdown,
-  .cds--modal .cds--dropdown-list,
-  .cds--modal .cds--number input[type='number'],
-  .cds--modal .cds--date-picker__input,
-  .cds--modal .cds--multi-select,
-  .cds--modal .cds--number__control-btn::before,
-  .cds--modal .cds--number__control-btn::after {
-    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
-    color: ${({ theme }) => theme.colors.lightText} !important;
-  }
+  table {
+    width: 100%;
 
-  .cds--pagination__right .cds--pagination__text {
-    color: ${({ theme }) => theme.colors.lightText} !important;
-  }
+    thead {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000 !important;
+    }
 
-  span.cds--pagination__text.cds--pagination__items-count {
-    color: ${({ theme }) => theme.colors.lightText} !important;
-  }
+    thead,
+    th {
+      background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+      color: ${({ theme }) => theme.colors.white} !important;
+    }
 
-  .cds--btn--ghost:not([disabled]) svg {
-    fill: ${({ theme }) => theme.colors.lightText} !important;
+    td {
+      background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+      color: ${({ theme }) => theme.colors.white} !important;
+      border-top: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
+    }
+
+    tr:hover td {
+      background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+      color: ${({ theme }) => theme.colors.white} !important;
+      border-top: 1px solid ${({ theme }) => theme.colors.bgHover} !important;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover} !important;
+    }
   }
 `;
 
-const ModalContainer = styled.div`
-  .cds--data-table th {
-    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
-    color: ${({ theme }) => theme.colors.lightBackground} !important;
-  }
-
-  .cds--data-table tbody tr,
-  .cds--data-table tbody tr td,
-  .cds--data-table tbody tr th {
-    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
-    color: ${({ theme }) => theme.colors.lightBackground} !important;
-  }
-`;
+const ModalContainer = styled.div``;
 
 const SubHeader = styled.div`
   display: flex;
@@ -186,24 +170,123 @@ const SubHeader = styled.div`
   width: 100%;
   margin-bottom: 2rem;
 `;
-const Header = styled.div`
-  position: sticky;
-  font-family: ${({ theme }) => theme.fontFamilies.default};
-  font-style: normal;
-  font-weight: 400;
-  font-size: ${px(18)};
-  line-height: ${px(20)};
+const Header = styled.div``;
 
-  letter-spacing: 0.16px;
+// const PaginationContainer = styled.div`
+//   bottom: 0;
+//   width: 100%;
 
-  color: ${({ theme }) => theme.colors.lightText};
+//   .pagination {
+//     background-color: ${({ theme }) => theme.colors.bgPrimary};
+//     border-top: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
+//     color: ${({ theme }) => theme.colors.white};
 
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0;
-`;
+//     & > div {
+//       border: none;
 
-const PaginationContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-`;
+//       span:nth-child(3) {
+//         color: ${({ theme }) => theme.colors.lightText};
+//       }
+
+//       span:nth-child(2) {
+//         color: ${({ theme }) => theme.colors.white};
+//       }
+
+//       select {
+//         color: ${({ theme }) => theme.colors.white} !important;
+//         background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+//         border: none !important;
+//         &:focus,
+//         &:active,
+//         &:hover {
+//           outline: none;
+//           background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+//         }
+//       }
+
+//       #cds-pagination-select-id-10-right {
+//         border-left: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
+//       }
+//       #cds-pagination-select-id-10 {
+//         border-right: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
+//       }
+
+//       .cds--select-input:focus {
+//         outline: none;
+//         background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+//       }
+
+//       svg {
+//         fill: ${({ theme }) => theme.colors.white};
+//       }
+
+//       button {
+//         border-left: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
+//         &:focus,
+//         &:hover {
+//           outline: none;
+//           border: none;
+//           background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+//         }
+//       }
+//     }
+//   }
+//   .pagination {
+//     background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+//     border-top: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
+//     color: ${({ theme }) => theme.colors.white};
+
+//     & > div {
+//       border: none;
+
+//       span:nth-child(3) {
+//         color: ${({ theme }) => theme.colors.lightText};
+//       }
+
+//       span:nth-child(2) {
+//         color: ${({ theme }) => theme.colors.white};
+//       }
+
+//       select {
+//         color: ${({ theme }) => theme.colors.white} !important;
+//         background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
+//         border: none !important;
+//         &:focus,
+//         &:active,
+//         &:hover {
+//           outline: none;
+//           background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+//         }
+//       }
+
+//       #cds-pagination-select-id-10-right {
+//         border-left: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
+//       }
+//       #cds-pagination-select-id-10 {
+//         border-right: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
+//       }
+
+//       .cds--select-input:focus {
+//         outline: none;
+//         background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+//       }
+
+//       svg {
+//         fill: ${({ theme }) => theme.colors.white};
+//       }
+
+//       button {
+//         border-left: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
+//         &:focus,
+//         &:hover {
+//           outline: none;
+//           border: none;
+//           background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+//         }
+//       }
+//     }
+//   }
+//   .cds--pagination__control-buttons {
+//     background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
+//   }
+// `;
