@@ -86,21 +86,22 @@ const ModalContent = ({ formRef, formdata, toggleModal }: Iprops) => {
                       {({ field }: any) => (
                         <ModalItem>
                           <ModalLabel>Alert Type</ModalLabel>
-                          <RadioButton
-                            {...field}
-                            name="alertType"
-                            items={
-                              alertTypes?.data
-                                ? alertTypes.data.map((alertType: ILookupAlertType) => {
-                                    return {
-                                      value: alertType.id,
-                                      label: alertType.name,
-                                    };
-                                  })
-                                : []
-                            }
-                          />
-                          <ErrorMessage invalid={Boolean(touched.alertType && errors.alertType)} invalidText={errors.alertType} />
+                          <RadioButtonContainer>
+                            <RadioButton
+                              {...field}
+                              name="alertType"
+                              items={
+                                alertTypes?.data
+                                  ? alertTypes.data.map((alertType: ILookupAlertType) => {
+                                      return {
+                                        value: alertType.id,
+                                        label: alertType.name,
+                                      };
+                                    })
+                                  : []
+                              }
+                            />
+                          </RadioButtonContainer>
                         </ModalItem>
                       )}
                     </Field>{' '}
@@ -109,6 +110,7 @@ const ModalContent = ({ formRef, formdata, toggleModal }: Iprops) => {
                         <TextInput {...field} type="text" id="recipient-input" labelText="Recipient" placeholder="enter name" onKeyUp={() => setFieldTouched('recipient', true)} />
                       )}
                     </Field>{' '}
+                    <ErrorMessage invalid={Boolean(touched.alertType && errors.alertType)} invalidText={errors.alertType} />
                     <ErrorMessage invalid={Boolean(touched.recipient && errors.recipient)} invalidText={errors.recipient} />
                   </FormContainer>
                 </FormField>
@@ -147,7 +149,9 @@ const ModalContentContainer = styled.div`
   justify-content: center;
 `;
 
-const ModalItem = styled.div``;
+const ModalItem = styled.div`
+  height: 100%;
+`;
 
 const ModalLabel = styled.div`
   color: ${({ theme }) => theme.colors.lightText} !important;
@@ -155,7 +159,6 @@ const ModalLabel = styled.div`
   font-weight: 400;
   line-height: ${px(12)};
   margin-bottom: ${px(6)};
-  // margin-top: ${px(16)};
 `;
 
 const FormField = styled.div`
@@ -167,4 +170,11 @@ const FormEmailContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${px(16)};
+`;
+
+const RadioButtonContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: ${px(-6)};
 `;

@@ -1,15 +1,6 @@
-const customMediaQuery = (maxWidth: number) => `@media (max-width: ${maxWidth}px)`;
+import { ITheme, Media } from '@/interfaces/theme';
 
-interface Media {
-  // eslint-disable-next-line no-unused-vars
-  custom: (maxNumber: number) => string;
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
-  xxl: string;
-  xxxl: string;
-}
+const customMediaQuery = (maxWidth: number) => `@media (max-width: ${maxWidth}px)`;
 
 const media: Media = {
   custom: customMediaQuery,
@@ -36,7 +27,7 @@ const fontFamilies = {
   default: 'IBM Plex Sans, sans-serif',
 };
 
-const theme: any = {
+const theme: ITheme = {
   colors: {
     deepBlack: ' #0D0D0D',
     bgPrimary: '#161616',
@@ -67,7 +58,7 @@ const theme: any = {
   fontSizes,
 };
 
-export const lightTheme: any = {
+export const lightTheme: ITheme = {
   colors: {
     deepBlack: '#fff',
     bgPrimary: '#ffffff',

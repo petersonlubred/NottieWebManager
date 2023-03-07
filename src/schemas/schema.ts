@@ -69,7 +69,7 @@ export const AlertProfileSchema = Yup.object({
 export const AlertExceptionSchema = Yup.object({
   customerId: Yup.string().required('Customer Id is required'),
   accountNo: Yup.string().required('Account No is required'),
-  alertType: Yup.string().required('Alert Medium is required'),
+  alertType: Yup.string().required('Alert Type is required'),
   recipient: Yup.string().required('Recipient is required'),
   alertProfileId: Yup.string().required('Alert Profile is required'),
   status: Yup.boolean(),
@@ -84,21 +84,23 @@ export const AlertExcludeSchema = Yup.object({
 export const SubscriptionSchema = Yup.object({
   customerId: Yup.string().required('Customer Id is required'),
   accountNo: Yup.string().required('Account No is required'),
-  alertType: Yup.string().required('Alert Medium is required'),
+  alertType: Yup.string().required('Alert Type is required'),
   recipient: Yup.string().required('Recipient is required'),
   alertProfileId: Yup.string().required('Alert Profile is required'),
 });
 
 export const DataSourceSchema = Yup.object({
-  source_name: Yup.string().required('Source name is required'),
+  databaseName: Yup.string().required('Source name is required'),
   databaseType: Yup.string().required('Database type is required'),
   server: Yup.string().required('server is required'),
   port: Yup.string().required('port is required'),
   maxPoolSize: Yup.string().required('server is required'),
   connectionTimeout: Yup.string().required('connection timeout is required'),
-  username: Yup.string().required('username is required'),
+  commandTimeout: Yup.string().required('command timeout is required'),
+  userId: Yup.string().required('username is required'),
   password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
-  status: Yup.string().required('Status is required'),
+  status: Yup.boolean(),
+  description: Yup.string().required('description is required'),
 });
 
 export const SMSCSchema = Yup.object({
@@ -167,4 +169,23 @@ export const SMTPRouteSchema = Yup.object({
   route_name: Yup.string().required('Route name is required'),
   smtp_name: Yup.string().required('SMTP name is required'),
   serviceType: Yup.string().required('Service Type is required'),
+});
+
+export const smsTemplateSchema = Yup.object({
+  senderId: Yup.string().required('Sender Id is required'),
+  smsBody: Yup.string().required('Sms Body is required'),
+  smsCharge: Yup.number().required('Sms Charge is required'),
+  serviceTypeId: Yup.string().required('Service Type is required'),
+});
+
+export const emailTemplateSchema = Yup.object({
+  subject: Yup.string().required('Subject is required'),
+  emailBodyContent: Yup.string().required('Email Body is required'),
+  emailBodyContainer: Yup.string().required('Email body container is required'),
+  serviceTypeId: Yup.string().required('Service Type is required'),
+});
+
+export const templateSchema = Yup.object({
+  serviceTypeId: Yup.string().required('Service Type is required'),
+  templateName: Yup.string().required('Template Name is required'),
 });

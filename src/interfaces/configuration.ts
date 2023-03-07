@@ -20,6 +20,30 @@ export interface SmscRouteConfig extends IinitialSMSRouteConfigForm {
   countryId: string;
 }
 
+export interface IDatabaseType {
+  description: string;
+  id: string;
+  name: string;
+}
+
+export interface IDataSourceType {
+  dataSourceId: string;
+  description: string;
+  status: boolean;
+  databaseType: string;
+  server: string;
+  databaseName: string;
+  userId: string;
+  password: string;
+  port: number;
+  maxPoolSize: number;
+  connectionTimeout: number;
+  commandTimeout: number;
+}
+
+export interface SingleDataSourceResponse extends APIResponse<IDataSourceType> {}
+export interface DataSourceResponse extends APIResponse<IDataSourceType[]> {}
+export interface DatabaseTypeResponse extends APIResponse<IDatabaseType[]> {}
 export interface SmtpsResponse extends APIResponse<Ismtp[]> {}
 export interface SmtpResponse extends APIResponse<Ismtp> {}
 
