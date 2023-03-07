@@ -1,5 +1,6 @@
 export * from './alertApi';
 export * from './databaseApi';
+export * from './dataSourceApi';
 export * from './notificationApi';
 export * from './roleApi';
 export * from './smtpApi';

@@ -1,4 +1,4 @@
-import { FormGroup, NumberInput } from '@carbon/react';
+import { FormGroup, NumberInput, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import React, { useMemo } from 'react';
@@ -9,61 +9,63 @@ import Checkbox from '@/components/shared/Checkbox/Checkbox';
 import Empty from '@/components/shared/Empty';
 import Loader from '@/components/shared/Loader';
 import { ConfigurationContainer } from '@/pages/configuration';
-import { useGetSystemConfigsMenuQuery, useGetSystemConfigsQuery } from '@/redux/api';
+import { useGetSystemConfigsMenuQuery, useGetSystemConfigsQuery, useUpdateConfigMutation } from '@/redux/api';
 import { px } from '@/utils';
 
 import SystemSettingSideBar from './SystemSettingsSidebar.tsx';
 
 const SystemSettings = () => {
-  const { data, isFetching: isLoading } = useGetSystemConfigsQuery();
+  const { data, isFetching } = useGetSystemConfigsQuery();
   const [menuCode, setMenuCode] = React.useState<string>('');
   const { data: configMenu, isFetching: isLoadingMenu } = useGetSystemConfigsMenuQuery({ id: menuCode }, { skip: !menuCode });
+  const [saveChanges, { isLoading }] = useUpdateConfigMutation();
 
   const initialValues = useMemo(
     () =>
-      configMenu?.data.reduce(
-        (
-          acc: {
-            [key: string]: string;
-          },
-          obj
-        ) => {
-          acc[obj.configId] = obj.configValue;
-          return acc;
-        },
-        {}
-      ) || {},
+      configMenu?.data.reduce((acc: { [key: string]: string | boolean }, obj) => {
+        obj.fieldType === 'CHECKBOX' ? (acc[obj.configId] = obj.configValue === 'YES') : (acc[obj.configId] = obj.configValue);
+        return acc;
+      }, {}) || {},
     [configMenu]
   );
 
-  const handleSubmit = () => {
-    // console.log('submitting');
+  const handleSubmit = (values: typeof initialValues) => {
+    const newValues = Object.keys(values).reduce((acc: { [key: string]: string | boolean }, key) => {
+      if (typeof values[key] === 'boolean') {
+        acc[key] = values[key] ? 'YES' : 'NO';
+      } else {
+        acc[key] = values[key];
+      }
+      return acc;
+    }, {});
+    saveChanges(newValues);
   };
 
   return (
     <ConfigurationContainer>
       <SystemSettingSideBar data={data?.data} setMenuCode={setMenuCode} menuCode={menuCode} />
       <Container>
-        <MailNav>
-          <ActionContainer>
-            <Button renderIcon={null} handleClick={() => null} buttonLabel="Save changes" disabled={true} />
-          </ActionContainer>
-        </MailNav>
-        <ModalItem>
-          <Formik initialValues={initialValues} validationSchema={{}} onSubmit={handleSubmit}>
-            {({ setFieldTouched }) => (
-              <Form>
-                <FormGroup legendText="">
-                  <FormField>
-                    <FormContainer>
-                      {configMenu?.data?.map((item, index) => (
-                        <React.Fragment key={index}>
-                          {item?.fieldType === 'CHECKBOX' ? (
-                            <ModalItem>
-                              <ModalLabel>{item?.fieldLable}</ModalLabel> <Checkbox label={'Yes'} name={item?.configId} value={item?.configValue} />
-                            </ModalItem>
-                          ) : (
-                            item?.fieldType === 'NUMBER' && (
+        <Formik initialValues={initialValues} validationSchema={''} onSubmit={handleSubmit} enableReinitialize>
+          {({ setFieldValue, handleSubmit, values }) => (
+            <>
+              <MailNav>
+                <ActionContainer>
+                  <Button renderIcon={null} handleClick={handleSubmit} buttonLabel="Save changes" />
+                </ActionContainer>
+              </MailNav>
+              <ModalItem>
+                <Form>
+                  <FormGroup legendText="">
+                    <FormField>
+                      <FormContainer>
+                        {configMenu?.data?.map((item, index: number) => (
+                          <React.Fragment key={index}>
+                            {item?.fieldType === 'CHECKBOX' ? (
+                              <ModalItem>
+                                <ModalLabel>{item?.fieldLable}</ModalLabel>
+                                <Checkbox label={'Yes'} name={item?.configId} />
+                              </ModalItem>
+                            ) : item?.fieldType === 'NUMBER' ? (
                               <Field name={item?.configId}>
                                 {({ field }: any) => (
                                   <NumberInput
@@ -74,25 +76,28 @@ const SystemSettings = () => {
                                     min={0}
                                     step={10}
                                     className="number-input"
-                                    value={0}
                                     placeholder="0"
-                                    onKeyUp={() => setFieldTouched('min_threshold', true)}
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                                      setFieldValue(item?.configId, value);
+                                    }}
                                   />
                                 )}
                               </Field>
-                            )
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </FormContainer>
-                  </FormField>
+                            ) : (
+                              item?.fieldType === 'TEXT' && (
+                                <Field name={item?.configId}>
+                                  {({ field }: any) => (
+                                    <TextInput {...field} type="text" id={`${item?.configId}-input`} labelText={item?.fieldLable} value={values[item?.configId] || ''} />
+                                  )}
+                                </Field>
+                              )
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </FormContainer>
+                    </FormField>
 
-                  {/* <Field name="name">
-                    {({ field }: any) => (
-                      <TextInput {...field} type="text" id="name-input" labelText="Profile Name" placeholder="enter name" onKeyUp={() => setFieldTouched('name', true)} />
-                    )}
-                  </Field> */}
-                  {/* <Field name="template">
+                    {/* <Field name="template">
                     {({ field }: any) => (
                       <Select id="select-1" labelText="Template" {...field} onKeyUp={() => setFieldTouched('template', true)}>
                         <SelectItem text="Choose option" />
@@ -101,7 +106,7 @@ const SystemSettings = () => {
                       </Select>
                     )}
                   </Field> */}
-                  {/* <FormField>
+                    {/* <FormField>
                     <FormContainer>
                       <Field name="min_threshold">
                         {({ field }: any) => (
@@ -153,13 +158,14 @@ const SystemSettings = () => {
                       </Field>
                     </FormContainer>
                   </FormField> */}
-                </FormGroup>
-              </Form>
-            )}
-          </Formik>
-        </ModalItem>
+                  </FormGroup>
+                </Form>
+              </ModalItem>
+            </>
+          )}
+        </Formik>
       </Container>
-      {isLoading || isLoadingMenu ? <Loader /> : isEmpty(data) && <Empty title={'No system configuration found'} />}
+      {isFetching || isLoadingMenu || isLoading ? <Loader /> : isEmpty(data) && <Empty title={'No system configuration found'} />}
     </ConfigurationContainer>
   );
 };
@@ -207,7 +213,7 @@ const ModalItem = styled.div``;
 
 const ModalLabel = styled.div`
   color: ${({ theme }) => theme.colors.lightText} !important;
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme }) => theme.fontSizes.s};
   font-weight: 400;
   line-height: ${px(12)};
   margin-bottom: ${px(9)};
@@ -221,7 +227,7 @@ const FormField = styled.div`
 export const FormContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: ${px(16)};
+  grid-gap: ${px(16)} ${px(40)};
   margin-bottom: ${px(16)};
   place-items: start;
   > div {
