@@ -73,15 +73,17 @@ export const initialAlertExclude: IinitialAlertExclude = {
 };
 
 export const initialDataSource: IinitialDataSourceType = {
-  source_name: '',
+  databaseName: '',
   databaseType: '',
   server: '',
   port: '',
   maxPoolSize: '',
   connectionTimeout: '',
-  username: '',
+  commandTimeout: '',
+  userId: '',
   password: '',
-  status: '',
+  status: true,
+  description: '',
 };
 
 export const initialSMSCValue: IinitialSMSCForm = {

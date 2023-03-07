@@ -15,7 +15,16 @@ export const systemConfigApi = createApi({
     getSystemConfigsMenu: builder.query<ConfigMenuResponse, { id?: string }>({
       query: ({ id }) => createRequest(`SystemConfig/${id}`),
     }),
+    updateConfig: builder.mutation({
+      query: (data) => {
+        return {
+          url: `SystemConfig`,
+          method: 'post',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetSystemConfigsQuery, useGetSystemConfigsMenuQuery } = systemConfigApi;
+export const { useGetSystemConfigsQuery, useGetSystemConfigsMenuQuery, useUpdateConfigMutation } = systemConfigApi;
