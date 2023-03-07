@@ -72,7 +72,7 @@ export const userApi = createApi({
         return {
           url: `UserAccount/${id}/Onboard`,
           method: 'PUT',
-          data: rest,
+          body: rest,
         };
       },
     }),
@@ -82,16 +82,18 @@ export const userApi = createApi({
         return {
           url: `UserAccount/${data?.id}/ResetPassword`,
           method: 'PUT',
-          data: { emailAddress: data?.emailAddress },
+          body: { emailAddress: data?.emailAddress },
         };
       },
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'user', id }],
     }),
+
     resetPasswords: builder.mutation<APIResponse<object>, BulkResetPassword | undefined>({
       query: (data) => {
         return {
           url: `UserAccount/ResetPassword/Bulk`,
           method: 'PUT',
-          data: data,
+          body: data,
         };
       },
     }),
@@ -101,7 +103,7 @@ export const userApi = createApi({
         return {
           url: `UserAccount/${id}/ChangePassword`,
           method: 'PUT',
-          data: rest,
+          body: rest,
         };
       },
     }),
