@@ -23,7 +23,7 @@ const PercentageBar: React.FC<IProp> = () => {
       <Bar size="7%" color="#BA1B23">
         7%
       </Bar>
-      <Bar size="6%" color="#4C4C4C">
+      <Bar size="10%" color="#4C4C4C">
         6%
       </Bar>
     </BarContainer>
@@ -34,6 +34,7 @@ export default PercentageBar;
 
 const BarContainer = styled.div`
   display: flex;
+  width: 100%;
   align-items: center;
 `;
 const Bar = styled.div<{ size?: string; color?: string }>`

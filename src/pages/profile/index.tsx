@@ -14,6 +14,7 @@ import ProfileTable from '@/components/profile/views/ProfileTable';
 import Empty from '@/components/shared/Empty';
 import Loader from '@/components/shared/Loader';
 import Modal from '@/components/shared/Modal';
+import { initialPaginationData, IPaginationData } from '@/components/shared/PageFooter';
 import SimpleModalcontent from '@/components/shared/SimpleModalContent/SimpleModalContent';
 import Layout from '@/HOC/Layout';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -63,9 +64,10 @@ const Profile = () => {
   ]);
 
   const [query, setQuery] = useState<IPageQuery>(initialPageQuery);
+  const [paginationData, setPaginationData] = useState<IPaginationData>(initialPaginationData);
   const debounceFilter = useDebounce(query, 500);
 
-  const { data: profiles, isFetching: isFetchingProfiles } = useGetProfileQuery({}, { skip: currentTab !== 'alert-profile' });
+  const { data: profiles, isFetching: isFetchingProfiles } = useGetProfileQuery({ ...debounceFilter }, { skip: currentTab !== 'alert-profile' });
   const { data: exceptions, isFetching: isFetchingExceptions } = useGetExceptionQuery({ ...debounceFilter }, { skip: currentTab !== 'exception' });
   const { data: exclusions, isFetching: isFetchingExclusions } = useGetExclusionQuery({ ...debounceFilter }, { skip: currentTab !== 'exclude' });
   const { data: subscriptions, isFetching: isFetchingSubscriptions } = useGetSubscriptionQuery({ ...debounceFilter }, { skip: currentTab !== 'subscription' });
@@ -193,15 +195,34 @@ const Profile = () => {
 
   useEffect(() => {
     if (currentTab === 'alert-profile') {
-      !isEmpty(profiles?.data?.data) && setResponseData(profiles?.data?.data as AlertProfileData[]);
+      !isEmpty(profiles?.data?.data)
+        ? (setResponseData(profiles?.data?.data as AlertProfileData[]), setPaginationData(profiles?.data?.meta))
+        : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'exception') {
-      !isEmpty(exceptions?.data?.data) ? setResponseData(exceptions?.data?.data as AlertExceptionData[]) : setResponseData([]);
+      !isEmpty(exceptions?.data?.data)
+        ? (setResponseData(exceptions?.data?.data as AlertExceptionData[]), setPaginationData(exceptions?.data?.meta))
+        : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'exclude') {
-      !isEmpty(exclusions?.data?.data) ? setResponseData(exclusions?.data?.data as AlertExclusionData[]) : setResponseData([]);
+      !isEmpty(exclusions?.data?.data)
+        ? (setResponseData(exclusions?.data?.data as AlertExclusionData[]), setPaginationData(exclusions?.data?.meta))
+        : (setResponseData([]), setPaginationData(initialPaginationData));
     } else {
-      !isEmpty(subscriptions?.data?.data) ? setResponseData(subscriptions?.data?.data as AlertSubscriptionData[]) : setResponseData([]);
+      !isEmpty(subscriptions?.data?.data)
+        ? (setResponseData(subscriptions?.data?.data as AlertExceptionData[]), setPaginationData(subscriptions?.data?.meta))
+        : (setResponseData([]), setPaginationData(initialPaginationData));
     }
-  }, [currentTab, profiles?.data?.data, exceptions?.data.data, exclusions?.data.data, subscriptions?.data?.data, tabIndex]);
+  }, [
+    currentTab,
+    profiles?.data?.data,
+    profiles?.data?.meta,
+    exceptions?.data.data,
+    exceptions?.data.meta,
+    exclusions?.data.data,
+    exclusions?.data.meta,
+    subscriptions?.data?.data,
+    subscriptions?.data?.meta,
+    tabIndex,
+  ]);
 
   return (
     <Layout
@@ -210,8 +231,9 @@ const Profile = () => {
       currentTab={currentTab}
       handleSetIndex={handleSetIndex}
       title={'Profile & Subscriptions'}
-      // paginationData={data?.data?.meta}
       subtitle={'Create and manage profile and permissions and subscription'}
+      paginationData={paginationData}
+      setQuery={setQuery}
     >
       <Modal
         heading={`Create ${tabIndex === 3 ? 'New' : 'Alert'} ${navItems[tabIndex]?.title.split(' ')[navItems[tabIndex]?.title.split(' ').length - 1]}`}

@@ -22,7 +22,7 @@ export const alertApi = createApi({
 
   endpoints: (builder) => ({
     getProfile: builder.query<any, { pageNumber?: number; pageSize?: number }>({
-      query: ({ pageNumber, pageSize }) => createRequest(`AlertProfile?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}`),
+      query: ({ pageNumber, pageSize }) => createRequest(`AlertProfile?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 10}`),
       providesTags: (result, _error, _arg) =>
         result?.data?.data && !isEmpty(result?.data?.data)
           ? [...result.data.data.map(({ alertProfileId }: any) => ({ type: 'alertProfile' as const, alertProfileId })), 'alertProfile']

@@ -171,10 +171,6 @@ const ChartContainer = styled.div`
   height: ${px(200)};
   overflow: hidden;
 
-  .cds--cc--layout-column:nth-child(1) {
-    display: none;
-  }
-
   .cds--cc--grid rect.chart-grid-backdrop {
     fill: ${({ theme }) => theme.colors.bgPrimary};
     stroke: transparent;

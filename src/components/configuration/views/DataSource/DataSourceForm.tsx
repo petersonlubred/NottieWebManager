@@ -1,157 +1,248 @@
-import { Checkbox, FormGroup, NumberInput, PasswordInput, Select, SelectItem, TextInput } from '@carbon/react';
+import { FormGroup, NumberInput, PasswordInput, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import Button from '@/components/shared/Button';
+import Checkbox from '@/components/shared/Checkbox/Checkbox';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+import { useToast } from '@/context/ToastContext';
+import { IDatabaseType, IDataSourceType } from '@/interfaces/configuration';
+import { ISetState } from '@/interfaces/formik.type';
+import { useCreateDatasourceMutation, useEditDatasourceMutation } from '@/redux/api';
 import { initialDataSource } from '@/schemas/dto';
 import { DataSourceSchema } from '@/schemas/schema';
 import { px } from '@/utils';
 
-const DataSourceForm = () => {
+type Iprops = {
+  databaseType?: IDatabaseType[];
+  setLoading: ISetState<boolean>;
+  data?: IDataSourceType;
+};
+const DataSourceForm = ({ databaseType, setLoading, data }: Iprops) => {
+  const [create] = useCreateDatasourceMutation();
+  const [edit] = useEditDatasourceMutation();
+  const { toast } = useToast();
+
+  const handleSubmit = async (
+    values: any,
+    {
+      resetForm,
+    }: {
+      resetForm: () => void;
+    }
+  ) => {
+    try {
+      setLoading(true);
+      data?.dataSourceId ? await edit(values).unwrap() : (await create(values).unwrap(), resetForm());
+      setLoading(false);
+      toast('success', 'Data Source created successfully');
+    } catch (error: any) {
+      setLoading(false);
+      toast('error', error?.data?.message || 'Something went wrong');
+    }
+  };
+
   return (
     <Container>
-      <MailNav>
-        <ActionContainer>
-          <Button renderIcon={null} handleClick={() => null} buttonLabel="Create source" />
-        </ActionContainer>
-      </MailNav>{' '}
-      <Formik
-        initialValues={initialDataSource}
-        validationSchema={DataSourceSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(false);
-        }}
-      >
-        {({ errors, touched, setFieldTouched }) => (
-          <Form>
-            <FormGroup legendText="">
-              <FormField>
-                <FormContainer>
-                  <Field name="source_name">
-                    {({ field }: any) => (
-                      <TextInput
-                        {...field}
-                        type="text"
-                        id="source_name-input"
-                        labelText="Data source name"
-                        placeholder="enter name"
-                        onKeyUp={() => setFieldTouched('source_name', true)}
-                      />
-                    )}
-                  </Field>{' '}
-                  <Field name="databaseType">
-                    {({ field }: any) => (
-                      <Select id="select-1" labelText="Database Type" {...field} onKeyUp={() => setFieldTouched('profile', true)}>
-                        <SelectItem text="Choose option" />
-                        <SelectItem text="Option 1" value="option-1" />
-                        <SelectItem text="Option 2" value="option-2" />
-                      </Select>
-                    )}
-                  </Field>
-                  <ErrorMessage invalid={Boolean(touched.source_name && errors.source_name)} invalidText={errors.source_name} />
-                  <ErrorMessage invalid={Boolean(touched.databaseType && errors.databaseType)} invalidText={errors.databaseType} />
-                </FormContainer>
-              </FormField>
-              <FormField>
-                <FormContainer>
-                  <Field name="server">
-                    {({ field }: any) => (
-                      <TextInput {...field} type="text" id="server-input" labelText="Server/IP" placeholder="input text" onKeyUp={() => setFieldTouched('server', true)} />
-                    )}
-                  </Field>{' '}
-                  <Field name="port">
-                    {({ field }: any) => (
-                      <NumberInput
-                        {...field}
-                        id="port-input"
-                        label="Port"
-                        max={10000}
-                        min={0}
-                        step={10}
-                        className="number-input"
-                        value={0}
-                        placeholder="0"
-                        onKeyUp={() => setFieldTouched('port', true)}
-                      />
-                    )}
-                  </Field>
-                  <ErrorMessage invalid={Boolean(touched.server && errors.server)} invalidText={errors.server} />
-                  <ErrorMessage invalid={Boolean(touched.port && errors.port)} invalidText={errors.port} />
-                </FormContainer>
-              </FormField>
-              <FormField>
-                <FormContainer>
-                  <Field name="maxPoolSize">
-                    {({ field }: any) => (
-                      <NumberInput
-                        {...field}
-                        id="maxPoolSize"
-                        label="Max pool size"
-                        max={10000}
-                        min={0}
-                        step={10}
-                        className="number-input"
-                        value={0}
-                        placeholder="0"
-                        onKeyUp={() => setFieldTouched('maxPoolSize', true)}
-                      />
-                    )}
-                  </Field>{' '}
-                  <Field name="connectionTimeout">
-                    {({ field }: any) => (
-                      <NumberInput
-                        {...field}
-                        id="connectionTimeout"
-                        label="Connection timeout"
-                        max={10000}
-                        min={0}
-                        step={10}
-                        className="number-input"
-                        value={0}
-                        placeholder="0"
-                        onKeyUp={() => setFieldTouched('connectionTimeout', true)}
-                      />
-                    )}
-                  </Field>{' '}
-                  <ErrorMessage invalid={Boolean(touched.maxPoolSize && errors.maxPoolSize)} invalidText={errors.maxPoolSize} />
-                  <ErrorMessage invalid={Boolean(touched.connectionTimeout && errors.connectionTimeout)} invalidText={errors.connectionTimeout} />
-                </FormContainer>
-              </FormField>
-              <FormField>
-                <FormContainer>
-                  <Field name="username">
-                    {({ field }: any) => (
-                      <TextInput {...field} type="text" id="username-input" labelText="Username" placeholder="enter name" onKeyUp={() => setFieldTouched('username', true)} />
-                    )}
-                  </Field>{' '}
-                  <PasswordContainer>
-                    <Field name="password">
+      <Formik initialValues={{ ...initialDataSource, ...data }} validationSchema={DataSourceSchema} onSubmit={handleSubmit} enableReinitialize>
+        {({ errors, touched, setFieldTouched, handleSubmit, setFieldValue, values }) => (
+          <>
+            <MailNav>
+              <ActionContainer>
+                <Button renderIcon={null} handleClick={handleSubmit} buttonLabel={data?.dataSourceId ? 'Edit source' : 'Create source'} />
+              </ActionContainer>
+            </MailNav>{' '}
+            <Form>
+              <FormGroup legendText="">
+                <FormField>
+                  <FormContainer>
+                    <Field name="databaseName">
                       {({ field }: any) => (
-                        <PasswordInput
+                        <TextInput
                           {...field}
-                          type="password"
-                          id="password-input"
-                          labelText="Password"
-                          placeholder="Password"
-                          onKeyUp={() => setFieldTouched('password', true)}
-                          invalid={Boolean(touched.password && errors.password)}
-                          invalidText={errors.password}
+                          type="text"
+                          id="databaseName-input"
+                          labelText="Data source name"
+                          placeholder="enter name"
+                          onKeyUp={() => setFieldTouched('databaseName', true)}
+                          value={values?.databaseName ?? ''}
+                        />
+                      )}
+                    </Field>{' '}
+                    <Field name="databaseType">
+                      {({ field }: any) => (
+                        <Select id="select-1" labelText="Database Type" {...field} onKeyUp={() => setFieldTouched('databaseType', true)}>
+                          <SelectItem text="Choose option" />
+                          {databaseType?.map((item: IDatabaseType) => (
+                            <SelectItem key={item?.id} text={item?.name} value={item?.name} />
+                          ))}
+                        </Select>
+                      )}
+                    </Field>
+                    <ErrorMessage invalid={Boolean(touched.databaseName && errors.databaseName)} invalidText={errors.databaseName} />
+                    <ErrorMessage invalid={Boolean(touched.databaseType && errors.databaseType)} invalidText={errors.databaseType} />
+                  </FormContainer>
+                </FormField>
+                <FormField>
+                  <FormContainer>
+                    <Field name="server">
+                      {({ field }: any) => (
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="server-input"
+                          labelText="Server/IP"
+                          placeholder="input text"
+                          onKeyUp={() => setFieldTouched('server', true)}
+                          value={values?.server ?? ''}
+                        />
+                      )}
+                    </Field>{' '}
+                    <Field name="port">
+                      {({ field }: any) => (
+                        <NumberInput
+                          {...field}
+                          id="port-input"
+                          label="Port"
+                          max={10000}
+                          min={0}
+                          step={10}
+                          className="number-input"
+                          placeholder="0"
+                          onKeyUp={() => setFieldTouched('port', true)}
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('port', value);
+                          }}
                         />
                       )}
                     </Field>
-                  </PasswordContainer>
-                  <ErrorMessage invalid={Boolean(touched.source_name && errors.source_name)} invalidText={errors.source_name} />
-                  <ErrorMessage invalid={Boolean(touched.databaseType && errors.databaseType)} invalidText={errors.databaseType} />
-                </FormContainer>
-              </FormField>
-              <ModalItem>
-                <ModalLabel>Status</ModalLabel> <Checkbox id="checked-3" labelText="Yes" />
-              </ModalItem>
-            </FormGroup>
-          </Form>
+                    <ErrorMessage invalid={Boolean(touched.server && errors.server)} invalidText={errors.server} />
+                    <ErrorMessage invalid={Boolean(touched.port && errors.port)} invalidText={errors.port} />
+                  </FormContainer>
+                </FormField>
+                <FormField>
+                  <FormContainer>
+                    <Field name="maxPoolSize">
+                      {({ field }: any) => (
+                        <NumberInput
+                          {...field}
+                          id="maxPoolSize"
+                          label="Max pool size"
+                          max={10000}
+                          min={0}
+                          step={10}
+                          className="number-input"
+                          placeholder="0"
+                          onKeyUp={() => setFieldTouched('maxPoolSize', true)}
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('maxPoolSize', value);
+                          }}
+                        />
+                      )}
+                    </Field>{' '}
+                    <Field name="connectionTimeout">
+                      {({ field }: any) => (
+                        <NumberInput
+                          {...field}
+                          id="connectionTimeout"
+                          label="Connection timeout"
+                          max={10000}
+                          min={0}
+                          step={10}
+                          className="number-input"
+                          placeholder="0"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('connectionTimeout', value);
+                          }}
+                          onKeyUp={() => setFieldTouched('connectionTimeout', true)}
+                        />
+                      )}
+                    </Field>{' '}
+                    <ErrorMessage invalid={Boolean(touched.maxPoolSize && errors.maxPoolSize)} invalidText={errors.maxPoolSize} />
+                    <ErrorMessage invalid={Boolean(touched.connectionTimeout && errors.connectionTimeout)} invalidText={errors.connectionTimeout} />
+                  </FormContainer>
+                </FormField>
+                <FormField>
+                  <FormContainer>
+                    <Field name="commandTimeout">
+                      {({ field }: any) => (
+                        <NumberInput
+                          {...field}
+                          id="commandTimeout"
+                          label="Connection timeout"
+                          max={10000}
+                          min={0}
+                          step={10}
+                          className="number-input"
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                            setFieldValue('commandTimeout', value);
+                          }}
+                          placeholder="0"
+                          onKeyUp={() => setFieldTouched('commandTimeout', true)}
+                        />
+                      )}
+                    </Field>{' '}
+                    <Field name="description">
+                      {({ field }: any) => (
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="description-input"
+                          labelText="Description"
+                          placeholder="enter name"
+                          onKeyUp={() => setFieldTouched('description', true)}
+                          value={values?.description ?? ''}
+                        />
+                      )}
+                    </Field>{' '}
+                    <ErrorMessage invalid={Boolean(touched.commandTimeout && errors.commandTimeout)} invalidText={errors.commandTimeout} />
+                    <ErrorMessage invalid={Boolean(touched.description && errors.description)} invalidText={errors.description} />
+                  </FormContainer>
+                </FormField>
+                <FormField>
+                  <FormContainer>
+                    <Field name="userId">
+                      {({ field }: any) => (
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="userId-input"
+                          labelText="Username"
+                          placeholder="enter name"
+                          onKeyUp={() => setFieldTouched('userId', true)}
+                          invalid={Boolean(touched.userId && errors.userId)}
+                          invalidText={errors.userId}
+                          value={values?.userId ?? ''}
+                        />
+                      )}
+                    </Field>{' '}
+                    <PasswordContainer>
+                      <Field name="password">
+                        {({ field }: any) => (
+                          <PasswordInput
+                            {...field}
+                            type="password"
+                            id="password-input"
+                            labelText="Password"
+                            placeholder="Password"
+                            onKeyUp={() => setFieldTouched('password', true)}
+                            invalid={Boolean(touched.password && errors.password)}
+                            invalidText={errors.password}
+                            value={values?.password ?? ''}
+                          />
+                        )}
+                      </Field>
+                    </PasswordContainer>
+                  </FormContainer>
+                </FormField>
+                <ModalItem>
+                  <ModalLabel>Status</ModalLabel> <Checkbox name="status" label="Yes" />
+                </ModalItem>
+              </FormGroup>
+            </Form>
+          </>
         )}
       </Formik>
     </Container>
