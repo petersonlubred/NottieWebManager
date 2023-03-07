@@ -2,6 +2,7 @@ import { Select, SelectItem } from '@carbon/react';
 import React from 'react';
 import styled from 'styled-components';
 
+import { useGetDatasourcesQuery } from '@/redux/api';
 import { px } from '@/utils';
 
 import MicroService from './MicroService';
@@ -16,6 +17,8 @@ const queueTrends = ['OTP Queue & TPS trend', 'Transaction Queue & TPS trend', '
 const microservices = ['Transaction', 'Transaction SMS', 'Transaction Email', 'Non-Transaction', 'Non-Transaction SMS', 'Non-Transaction Email', 'OTP', 'OTP-SMS', 'OTP-Email'];
 const progressStatus = ['SLA progress status', 'SLA progress status'];
 const BackgroundService = () => {
+  const { data } = useGetDatasourcesQuery();
+
   return (
     <>
       <DataSourceBox>
@@ -23,8 +26,9 @@ const BackgroundService = () => {
         <SelectContainer>
           <Select id="select-1" labelText="">
             <SelectItem text="Choose option" />
-            <SelectItem text="Option 1" value="option-1" />
-            <SelectItem text="Option 2" value="option-2" />
+            {data?.data.map((item, index) => (
+              <SelectItem key={index} text={item?.databaseName} value={item} />
+            ))}
           </Select>
         </SelectContainer>
       </DataSourceBox>

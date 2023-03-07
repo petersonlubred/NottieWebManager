@@ -89,11 +89,4 @@ const Paragraph = styled.div`
       border-bottom: none !important;
     }
   }
-
-  html {
-    font-family: ${({ theme }) => theme.fontFamilies.default} !important;
-    body {
-      font-family: ${({ theme }) => theme.fontFamilies.default} !important;
-    }
-  }
 `;
