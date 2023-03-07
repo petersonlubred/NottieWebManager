@@ -113,7 +113,7 @@ const SystemConfiguration = () => {
       handleSetIndex={handleSetIndex}
       title={'System Configuration'}
       subtitle={'Manage System Configuration'}
-      noPagination={currentTab === 'data-source'}
+      noPagination={currentTab === 'data-source' || currentTab === 'template'}
     >
       <Modal
         heading={`Create New ${navItems[tabIndex]?.title.split(' ').join(' ')}`}
