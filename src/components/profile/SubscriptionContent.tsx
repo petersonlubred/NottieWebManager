@@ -96,18 +96,18 @@ const SubscriptionModalContent = ({ formRef, formdata, toggleModal }: Iprops) =>
                           />
                         </ModalItem>
                       )}
-                    </Field>{' '}
+                    </Field>
                     <Field name="recipient">
                       {({ field }: any) => (
                         <TextInput {...field} type="text" id="recipient-input" labelText="Recipient" placeholder="enter name" onKeyUp={() => setFieldTouched('recipient', true)} />
                       )}
-                    </Field>{' '}
+                    </Field>
                     <ErrorMessage invalid={Boolean(touched.alertType && errors.alertType)} invalidText={errors.alertType} />
                     <ErrorMessage invalid={Boolean(touched.recipient && errors.recipient)} invalidText={errors.recipient} />
                   </FormContainer>
                 </FormField>
                 <FormField>
-                  <ModalLabel> Transaction Alert Profile</ModalLabel>{' '}
+                  <ModalLabel> Transaction Alert Profile</ModalLabel>
                   <FormEmailContainer>
                     <Field name="alertProfileId">
                       {({ field }: any) => (
@@ -151,7 +151,7 @@ export const ModalLabel = styled.div`
   font-weight: 400;
   line-height: ${px(12)};
   margin-bottom: ${px(6)};
-  margin-top: ${px(16)};
+  // margin-top: ${px(16)};
 `;
 
 const FormField = styled.div`
