@@ -17,7 +17,7 @@ export const templateApi = createApi({
     }),
     getTemplateConfig: builder.query({
       query: () => createRequest('TemplateConfig'),
-      providesTags: ['templateConfig']
+      providesTags: ['templateConfig'],
     }),
     createTemplateConfig: builder.mutation({
       query: (data) => {
@@ -27,21 +27,15 @@ export const templateApi = createApi({
           body: data,
         };
       },
-      invalidatesTags: ['templateConfig']
+      invalidatesTags: ['templateConfig'],
     }),
-    getTemplateConfigSms: builder.query<{ data: ITemplateConfigSms, status: boolean }, { templateId: string; serviceTypeId: string }>({
-      query: ({ templateId, serviceTypeId }) =>
-        createRequest(
-          `TemplateConfig/${templateId}/Sms/${serviceTypeId}`
-        ),
-      providesTags: ['templateConfigSms']
+    getTemplateConfigSms: builder.query<{ data: ITemplateConfigSms; status: boolean }, { templateId: string; serviceTypeId: string }>({
+      query: ({ templateId, serviceTypeId }) => createRequest(`TemplateConfig/${templateId}/Sms/${serviceTypeId}`),
+      providesTags: ['templateConfigSms'],
     }),
-    getTemplateConfigEmail: builder.query<{ data: ITemplateConfigEmail, status: boolean }, { templateId: string; serviceTypeId: string }>({
-      query: ({ templateId, serviceTypeId }) =>
-        createRequest(
-          `TemplateConfig/${templateId}/Email/${serviceTypeId}`
-        ),
-      providesTags: ['templateConfigEmail']
+    getTemplateConfigEmail: builder.query<{ data: ITemplateConfigEmail; status: boolean }, { templateId: string; serviceTypeId: string }>({
+      query: ({ templateId, serviceTypeId }) => createRequest(`TemplateConfig/${templateId}/Email/${serviceTypeId}`),
+      providesTags: ['templateConfigEmail'],
     }),
     updateTemplateConfigSms: builder.mutation<TemplateConfigSmsResponse, Partial<ITemplateConfigSms & { templateId: string }>>({
       query: ({ templateId, ...data }) => {
@@ -51,7 +45,7 @@ export const templateApi = createApi({
           body: data,
         };
       },
-      invalidatesTags: ['templateConfigSms']
+      invalidatesTags: ['templateConfigSms'],
     }),
     updateTemplateConfigEmail: builder.mutation<TemplateConfigSmsResponse, Partial<ITemplateConfigEmail & { templateId: string }>>({
       query: ({ templateId, ...data }) => {
@@ -61,9 +55,18 @@ export const templateApi = createApi({
           body: data,
         };
       },
-      invalidatesTags: ['templateConfigEmail']
+      invalidatesTags: ['templateConfigEmail'],
     }),
   }),
 });
 
-export const { useLookupTemplateQuery, useLookupServiceTypeQuery, useGetTemplateConfigQuery, useCreateTemplateConfigMutation, useGetTemplateConfigEmailQuery, useGetTemplateConfigSmsQuery, useUpdateTemplateConfigEmailMutation, useUpdateTemplateConfigSmsMutation } = templateApi;
+export const {
+  useLookupTemplateQuery,
+  useLookupServiceTypeQuery,
+  useGetTemplateConfigQuery,
+  useCreateTemplateConfigMutation,
+  useGetTemplateConfigEmailQuery,
+  useGetTemplateConfigSmsQuery,
+  useUpdateTemplateConfigEmailMutation,
+  useUpdateTemplateConfigSmsMutation,
+} = templateApi;

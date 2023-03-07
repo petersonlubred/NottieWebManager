@@ -161,17 +161,17 @@ export const initialSmsTemplate: IinitialSmsTemplate = {
   senderId: '',
   smsBody: '',
   serviceTypeId: '',
-  smsCharge: 0
-}
+  smsCharge: 0,
+};
 
 export const initialEmailTemplate: IinitialEmailTemplate = {
   serviceTypeId: '',
   emailBodyContainer: '',
   emailBodyContent: '',
-  subject: ''
-}
+  subject: '',
+};
 
 export const initialTemplate: IinitialTemplate = {
   serviceTypeId: '',
-  templateName: ''
-}
+  templateName: '',
+};

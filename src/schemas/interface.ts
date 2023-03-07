@@ -18,7 +18,7 @@ import {
   SubscriptionSchema,
   templateSchema,
   userAccountSchema,
-  userLoginSchema
+  userLoginSchema,
 } from '@/schemas/schema';
 
 import { resetPassworSchema } from './schema';
@@ -42,4 +42,4 @@ export type IinitialResetPassword = Yup.InferType<typeof resetPassworSchema>;
 export type IDatasourceForm = Yup.InferType<typeof DataSourceSchema>;
 export type IinitialSmsTemplate = Yup.InferType<typeof smsTemplateSchema>;
 export type IinitialEmailTemplate = Yup.InferType<typeof emailTemplateSchema>;
-export type IinitialTemplate = Yup.InferType<typeof templateSchema>
+export type IinitialTemplate = Yup.InferType<typeof templateSchema>;
