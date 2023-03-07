@@ -155,17 +155,17 @@ export const smsTemplateSchema = Yup.object({
   senderId: Yup.string().required('Sender Id is required'),
   smsBody: Yup.string().required('Sms Body is required'),
   smsCharge: Yup.number().required('Sms Charge is required'),
-  serviceTypeId: Yup.string().required('Service Type is required')
-})
+  serviceTypeId: Yup.string().required('Service Type is required'),
+});
 
 export const emailTemplateSchema = Yup.object({
   subject: Yup.string().required('Subject is required'),
   emailBodyContent: Yup.string().required('Email Body is required'),
   emailBodyContainer: Yup.string().required('Email body container is required'),
-  serviceTypeId: Yup.string().required('Service Type is required')
-})
+  serviceTypeId: Yup.string().required('Service Type is required'),
+});
 
 export const templateSchema = Yup.object({
   serviceTypeId: Yup.string().required('Service Type is required'),
   templateName: Yup.string().required('Template Name is required'),
-})
+});

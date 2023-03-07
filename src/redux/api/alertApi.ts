@@ -72,7 +72,8 @@ export const alertApi = createApi({
     getException: builder.query<any, { customerId?: string; accountNo?: string; alertType?: string; recipient?: string; pageNumber?: number; pageSize?: number }>({
       query: ({ pageNumber, pageSize, customerId, accountNo, alertType, recipient }) =>
         createRequest(
-          `AlertException?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${customerId ? `&customerId=${customerId}` : ''}${accountNo ? `&accountNo=${accountNo}` : ''}${alertType ? `&alertType=${alertType}` : ''
+          `AlertException?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${customerId ? `&customerId=${customerId}` : ''}${accountNo ? `&accountNo=${accountNo}` : ''}${
+            alertType ? `&alertType=${alertType}` : ''
           }${recipient ? `&recipient=${recipient}` : ''}`
         ),
       providesTags: (result, _error, _arg) =>
@@ -112,7 +113,8 @@ export const alertApi = createApi({
     getExclusion: builder.query<any, { excludeValue?: string; excludeType?: string; pageNumber?: number; pageSize?: number }>({
       query: ({ pageNumber, pageSize, excludeValue, excludeType }) =>
         createRequest(
-          `AlertExclusion?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${excludeValue ? `&excludeValue=${excludeValue}` : ''}${excludeType ? `&excludeType=${excludeType}` : ''
+          `AlertExclusion?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${excludeValue ? `&excludeValue=${excludeValue}` : ''}${
+            excludeType ? `&excludeType=${excludeType}` : ''
           }`
         ),
       providesTags: (result, _error, _arg) =>
@@ -152,7 +154,8 @@ export const alertApi = createApi({
     getSubscription: builder.query<any, { customerId?: string; accountNo?: string; alertType?: string; recipient?: string; pageNumber?: number; pageSize?: number }>({
       query: ({ pageNumber, pageSize, customerId, accountNo, alertType, recipient }) =>
         createRequest(
-          `AlertSubscription?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${customerId ? `&customerId=${customerId}` : ''}${accountNo ? `&accountNo=${accountNo}` : ''}${alertType ? `&alertType=${alertType}` : ''
+          `AlertSubscription?pageNumber=${pageNumber || 1}&pageSize=${pageSize || 50}${customerId ? `&customerId=${customerId}` : ''}${accountNo ? `&accountNo=${accountNo}` : ''}${
+            alertType ? `&alertType=${alertType}` : ''
           }${recipient ? `&recipient=${recipient}` : ''}`
         ),
       providesTags: (result, _error, _arg) =>
