@@ -36,3 +36,4 @@ export type IinitialSMTPRouteForm = Yup.InferType<typeof SMTPRouteSchema>;
 export type IinitialUserForm = Yup.InferType<typeof userAccountSchema>;
 export type IinitialRoleForm = Yup.InferType<typeof RoleAndProvilegesSchema>;
 export type IinitialResetPassword = Yup.InferType<typeof resetPassworSchema>;
+export type IDatasourceForm = Yup.InferType<typeof DataSourceSchema>;
