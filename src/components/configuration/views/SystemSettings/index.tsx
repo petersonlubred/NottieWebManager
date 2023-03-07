@@ -8,6 +8,7 @@ import Button from '@/components/shared/Button';
 import Checkbox from '@/components/shared/Checkbox/Checkbox';
 import Empty from '@/components/shared/Empty';
 import Loader from '@/components/shared/Loader';
+import RadioButton from '@/components/shared/RadioButton';
 import { ConfigurationContainer } from '@/pages/configuration';
 import { useGetSystemConfigsMenuQuery, useGetSystemConfigsQuery, useUpdateConfigMutation } from '@/redux/api';
 import { px } from '@/utils';
@@ -38,7 +39,25 @@ const SystemSettings = () => {
       }
       return acc;
     }, {});
-    saveChanges(newValues);
+    const updatedValues = configMenu?.data.reduce(
+      (
+        acc: {
+          configId: string;
+          configValue: string | boolean;
+          isCheckbox: boolean;
+        }[],
+        item
+      ) => {
+        if (item.configId in newValues) {
+          const { configId, fieldType } = item;
+          const isCheckbox = fieldType === 'CHECKBOX';
+          acc.push({ configId, configValue: newValues[configId], isCheckbox });
+        }
+        return acc;
+      },
+      []
+    );
+    saveChanges(updatedValues);
   };
 
   return (
@@ -83,13 +102,18 @@ const SystemSettings = () => {
                                   />
                                 )}
                               </Field>
+                            ) : item?.fieldType === 'TEXT' ? (
+                              <Field name={item?.configId}>
+                                {({ field }: any) => (
+                                  <TextInput {...field} type="text" id={`${item?.configId}-input`} labelText={item?.fieldLable} value={values[item?.configId] || ''} />
+                                )}
+                              </Field>
                             ) : (
-                              item?.fieldType === 'TEXT' && (
-                                <Field name={item?.configId}>
-                                  {({ field }: any) => (
-                                    <TextInput {...field} type="text" id={`${item?.configId}-input`} labelText={item?.fieldLable} value={values[item?.configId] || ''} />
-                                  )}
-                                </Field>
+                              item?.fieldType === 'RADIO' && (
+                                <ModalItem>
+                                  <ModalLabel>{item?.fieldLable} </ModalLabel>
+                                  <RadioButton name={item?.configId} items={[]} />
+                                </ModalItem>
                               )
                             )}
                           </React.Fragment>
@@ -107,57 +131,12 @@ const SystemSettings = () => {
                     )}
                   </Field> */}
                     {/* <FormField>
-                    <FormContainer>
-                      <Field name="min_threshold">
-                        {({ field }: any) => (
-                          <NumberInput
-                            {...field}
-                            id="min_threshold-input"
-                            label="Email minimum threshold"
-                            max={10000}
-                            min={0}
-                            step={10}
-                            className="number-input"
-                            value={0}
-                            placeholder="0"
-                            onKeyUp={() => setFieldTouched('min_threshold', true)}
-                          />
-                        )}
-                      </Field>
-                      <Field name="max_threshold">
-                        {({ field }: any) => (
-                          <NumberInput
-                            {...field}
-                            id="max_threshold-input"
-                            label="Email maximum threshold"
-                            max={10000}
-                            min={0}
-                            step={10}
-                            className="number-input"
-                            value={0}
-                            placeholder="0"
-                            onKeyUp={() => setFieldTouched('max_threshold', true)}
-                          />
-                        )}
-                      </Field>
-                      <ModalItem>
-                        <ModalLabel>Radio Button</ModalLabel>{' '}
-                        <RadioButtonGroup>
-                          <RadioButton labelText="Radio button label" value="radio-3" id="radio-3" disabled />
-                        </RadioButtonGroup>
-                      </ModalItem>
-                      <ModalItem>
-                        <ModalLabel>Hide Balance?</ModalLabel> <Checkbox id="checked" labelText="Yes" />
-                      </ModalItem>
-                    </FormContainer>
-                  </FormField>
-                  <FormField>
-                    <FormContainer>
-                      <Field name="password">
-                        {({ field }: any) => <PasswordInput {...field} type="password" id="password-input" labelText="Password" placeholder="Password" />}
-                      </Field>
-                    </FormContainer>
-                  </FormField> */}
+                      <FormContainer>
+                        <Field name="password">
+                          {({ field }: any) => <PasswordInput {...field} type="password" id="password-input" labelText="Password" placeholder="Password" />}
+                        </Field>
+                      </FormContainer>
+                    </FormField> */}
                   </FormGroup>
                 </Form>
               </ModalItem>

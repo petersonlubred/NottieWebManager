@@ -18,7 +18,7 @@ export const systemConfigApi = createApi({
     updateConfig: builder.mutation({
       query: (data) => {
         return {
-          url: `SystemConfig`,
+          url: `SystemConfig/Bulk`,
           method: 'post',
           body: data,
         };
