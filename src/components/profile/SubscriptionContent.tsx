@@ -94,7 +94,6 @@ const SubscriptionModalContent = ({ formRef, formdata, toggleModal }: Iprops) =>
                               { value: 'email', label: 'Email' },
                             ]}
                           />
-                          <ErrorMessage invalid={Boolean(touched.alertType && errors.alertType)} invalidText={errors.alertType} />
                         </ModalItem>
                       )}
                     </Field>{' '}
@@ -103,6 +102,7 @@ const SubscriptionModalContent = ({ formRef, formdata, toggleModal }: Iprops) =>
                         <TextInput {...field} type="text" id="recipient-input" labelText="Recipient" placeholder="enter name" onKeyUp={() => setFieldTouched('recipient', true)} />
                       )}
                     </Field>{' '}
+                    <ErrorMessage invalid={Boolean(touched.alertType && errors.alertType)} invalidText={errors.alertType} />
                     <ErrorMessage invalid={Boolean(touched.recipient && errors.recipient)} invalidText={errors.recipient} />
                   </FormContainer>
                 </FormField>

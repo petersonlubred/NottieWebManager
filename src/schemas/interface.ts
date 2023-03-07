@@ -6,16 +6,19 @@ import {
   AlertProfileSchema,
   databaseSchema,
   DataSourceSchema,
+  emailTemplateSchema,
   RoleAndProvilegesSchema,
   signinSchema,
   SMSCSchema,
   SMSRouteConfigSchema,
   SMSRouteSchema,
+  smsTemplateSchema,
   SMTPRouteSchema,
   SMTPSchema,
   SubscriptionSchema,
+  templateSchema,
   userAccountSchema,
-  userLoginSchema,
+  userLoginSchema
 } from '@/schemas/schema';
 
 import { resetPassworSchema } from './schema';
@@ -37,3 +40,6 @@ export type IinitialUserForm = Yup.InferType<typeof userAccountSchema>;
 export type IinitialRoleForm = Yup.InferType<typeof RoleAndProvilegesSchema>;
 export type IinitialResetPassword = Yup.InferType<typeof resetPassworSchema>;
 export type IDatasourceForm = Yup.InferType<typeof DataSourceSchema>;
+export type IinitialSmsTemplate = Yup.InferType<typeof smsTemplateSchema>;
+export type IinitialEmailTemplate = Yup.InferType<typeof emailTemplateSchema>;
+export type IinitialTemplate = Yup.InferType<typeof templateSchema>
