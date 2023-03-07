@@ -79,6 +79,10 @@ const SelectContainer = styled.div`
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.bgPrimary};
   align-items: center;
+
+  svg {
+    fill: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const RouteText = styled.div`
