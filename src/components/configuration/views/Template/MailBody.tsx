@@ -11,6 +11,7 @@ import { px } from '@/utils';
 
 import EmailForm from './EmailForm';
 import SmsForm from './SmsForm';
+import { useToast } from '@/context/ToastContext';
 
 const navItems = ['SMS Template', 'Email Template'];
 
@@ -26,15 +27,21 @@ interface IMailBody {
 const MailBody = ({ templateId, serviceTypeId, emailData, smsData, formRef, handleSubmit }: IMailBody) => {
   const [selected, setSelected] = React.useState<number>(0);
   const [responseData, setResponseData] = useState<ITemplateConfigEmail | ITemplateConfigSms>();
+  const { toast } = useToast();
 
   const discardChanges = () => {
     let resetData;
     if (selected === 0) {
-      resetData = emailData;
-    } else {
       resetData = smsData;
+    } else {
+      resetData = emailData;
     }
+    setResponseData(resetData);
     formRef.current?.resetForm({ values: { ...resetData, templateId, serviceTypeId } });
+  };
+  const handleCopy = () => {
+    navigator.clipboard.writeText(templateId);
+    toast('info', 'TemplateId copied to clipboard');
   };
 
   useEffect(() => {
@@ -63,7 +70,7 @@ const MailBody = ({ templateId, serviceTypeId, emailData, smsData, formRef, hand
         <CopyDetails>
           <CopyParagraphTitle>Template ID: </CopyParagraphTitle>
           <CopyParagraphValue> {templateId}</CopyParagraphValue>
-          <Copy size={16} />
+          <Copy size={16} onClick={handleCopy} />
         </CopyDetails>
         <ActionContainer>
           <Button renderIcon={null} handleClick={() => discardChanges()} buttonLabel="Discard changes" />
