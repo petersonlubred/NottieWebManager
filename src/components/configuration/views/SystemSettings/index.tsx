@@ -7,9 +7,10 @@ import styled from 'styled-components';
 import Button from '@/components/shared/Button';
 import Checkbox from '@/components/shared/Checkbox/Checkbox';
 import Empty from '@/components/shared/Empty';
+import Icon from '@/components/shared/Icons';
 import Loader from '@/components/shared/Loader';
 import RadioButton from '@/components/shared/RadioButton';
-import { ConfigurationContainer } from '@/pages/configuration';
+import { ConfigurationContainer, NoDataContainer, NoDataTitle } from '@/pages/configuration';
 import { useGetSystemConfigsMenuQuery, useGetSystemConfigsQuery, useUpdateConfigMutation } from '@/redux/api';
 import { px } from '@/utils';
 
@@ -64,64 +65,70 @@ const SystemSettings = () => {
     <ConfigurationContainer>
       <SystemSettingSideBar data={data?.data} setMenuCode={setMenuCode} menuCode={menuCode} />
       <Container>
-        <Formik initialValues={initialValues} validationSchema={''} onSubmit={handleSubmit} enableReinitialize>
-          {({ setFieldValue, handleSubmit, values }) => (
-            <>
-              <MailNav>
-                <ActionContainer>
-                  <Button renderIcon={null} handleClick={handleSubmit} buttonLabel="Save changes" />
-                </ActionContainer>
-              </MailNav>
-              <ModalItem>
-                <Form>
-                  <FormGroup legendText="">
-                    <FormField>
-                      <FormContainer>
-                        {configMenu?.data?.map((item, index: number) => (
-                          <React.Fragment key={index}>
-                            {item?.fieldType === 'CHECKBOX' ? (
-                              <ModalItem>
-                                <ModalLabel>{item?.fieldLable}</ModalLabel>
-                                <Checkbox label={'Yes'} name={item?.configId} />
-                              </ModalItem>
-                            ) : item?.fieldType === 'NUMBER' ? (
-                              <Field name={item?.configId}>
-                                {({ field }: any) => (
-                                  <NumberInput
-                                    {...field}
-                                    id={item?.configId}
-                                    label={item?.fieldLable}
-                                    max={10000}
-                                    min={0}
-                                    step={10}
-                                    className="number-input"
-                                    placeholder="0"
-                                    onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
-                                      setFieldValue(item?.configId, value);
-                                    }}
-                                  />
-                                )}
-                              </Field>
-                            ) : item?.fieldType === 'TEXT' ? (
-                              <Field name={item?.configId}>
-                                {({ field }: any) => (
-                                  <TextInput {...field} type="text" id={`${item?.configId}-input`} labelText={item?.fieldLable} value={values[item?.configId] || ''} />
-                                )}
-                              </Field>
-                            ) : (
-                              item?.fieldType === 'RADIO' && (
+        {isEmpty(configMenu?.data) ? (
+          <NoDataContainer>
+            <Icon id="empty-drawer-icon" width={43} height={51} />
+            <NoDataTitle>Select a system configuration from the left panel.</NoDataTitle>
+          </NoDataContainer>
+        ) : (
+          <Formik initialValues={initialValues} validationSchema={''} onSubmit={handleSubmit} enableReinitialize>
+            {({ setFieldValue, handleSubmit, values }) => (
+              <>
+                <MailNav>
+                  <ActionContainer>
+                    <Button renderIcon={null} handleClick={handleSubmit} buttonLabel="Save changes" />
+                  </ActionContainer>
+                </MailNav>
+                <ModalItem>
+                  <Form>
+                    <FormGroup legendText="">
+                      <FormField>
+                        <FormContainer>
+                          {configMenu?.data?.map((item, index: number) => (
+                            <React.Fragment key={index}>
+                              {item?.fieldType === 'CHECKBOX' ? (
                                 <ModalItem>
-                                  <ModalLabel>{item?.fieldLable} </ModalLabel>
-                                  <RadioButton name={item?.configId} items={[]} />
+                                  <ModalLabel>{item?.fieldLable}</ModalLabel>
+                                  <Checkbox label={'Yes'} name={item?.configId} />
                                 </ModalItem>
-                              )
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </FormContainer>
-                    </FormField>
+                              ) : item?.fieldType === 'NUMBER' ? (
+                                <Field name={item?.configId}>
+                                  {({ field }: any) => (
+                                    <NumberInput
+                                      {...field}
+                                      id={item?.configId}
+                                      label={item?.fieldLable}
+                                      max={10000}
+                                      min={0}
+                                      step={10}
+                                      className="number-input"
+                                      placeholder="0"
+                                      onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }: any) => {
+                                        setFieldValue(item?.configId, value);
+                                      }}
+                                    />
+                                  )}
+                                </Field>
+                              ) : item?.fieldType === 'TEXT' ? (
+                                <Field name={item?.configId}>
+                                  {({ field }: any) => (
+                                    <TextInput {...field} type="text" id={`${item?.configId}-input`} labelText={item?.fieldLable} value={values[item?.configId] || ''} />
+                                  )}
+                                </Field>
+                              ) : (
+                                item?.fieldType === 'RADIO' && (
+                                  <ModalItem>
+                                    <ModalLabel>{item?.fieldLable} </ModalLabel>
+                                    <RadioButton name={item?.configId} items={[]} />
+                                  </ModalItem>
+                                )
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </FormContainer>
+                      </FormField>
 
-                    {/* <Field name="template">
+                      {/* <Field name="template">
                     {({ field }: any) => (
                       <Select id="select-1" labelText="Template" {...field} onKeyUp={() => setFieldTouched('template', true)}>
                         <SelectItem text="Choose option" />
@@ -130,19 +137,20 @@ const SystemSettings = () => {
                       </Select>
                     )}
                   </Field> */}
-                    {/* <FormField>
+                      {/* <FormField>
                       <FormContainer>
                         <Field name="password">
                           {({ field }: any) => <PasswordInput {...field} type="password" id="password-input" labelText="Password" placeholder="Password" />}
                         </Field>
                       </FormContainer>
                     </FormField> */}
-                  </FormGroup>
-                </Form>
-              </ModalItem>
-            </>
-          )}
-        </Formik>
+                    </FormGroup>
+                  </Form>
+                </ModalItem>
+              </>
+            )}
+          </Formik>
+        )}
       </Container>
       {isFetching || isLoadingMenu || isLoading ? <Loader /> : isEmpty(data) && <Empty title={'No system configuration found'} />}
     </ConfigurationContainer>
