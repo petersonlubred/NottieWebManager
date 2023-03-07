@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/shared/Button';
+import { useToast } from '@/context/ToastContext';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { ITemplateConfigEmail, ITemplateConfigSms } from '@/interfaces/template';
 import { initialEmailTemplate, initialSmsTemplate } from '@/schemas/dto';
@@ -11,7 +12,6 @@ import { px } from '@/utils';
 
 import EmailForm from './EmailForm';
 import SmsForm from './SmsForm';
-import { useToast } from '@/context/ToastContext';
 
 const navItems = ['SMS Template', 'Email Template'];
 
