@@ -25,7 +25,7 @@ interface Ifigures {
 }
 
 const PageHeader = ({ title, subtitle, isDashboard }: Iprops) => {
-  const { data, isFetching } = useGetDashboardSmsEmailMessageCountQuery({}, { skip: !isDashboard, pollingInterval: getPollingInterval() });
+  const { data, isFetching } = useGetDashboardSmsEmailMessageCountQuery(undefined, { skip: !isDashboard, pollingInterval: getPollingInterval() });
   const dispatch = useDispatch();
 
   useEffect(() => {
