@@ -29,19 +29,36 @@ export type ITemplateConfigEmail = {
   emailBodyContainer: string;
 };
 
+export type ITemplateConfigTags = {
+  tagId: string,
+  tagName: string,
+  description: string
+}
+
 export type ILookServiceType = {
   id: string;
   description: string;
   name: string;
 };
 
-export interface TemplatesResponse extends APIResponse<ITemplate[]> {}
-export interface TemplateResponse extends APIResponse<ITemplate> {}
-export interface TemplateConfigsResponse extends APIResponse<ITemplateConfig[]> {}
-export interface TemplateConfigResponse extends APIResponse<ITemplateConfig> {}
-export interface TemplateConfigSmsesResponse extends APIResponse<ITemplateConfigSms[]> {}
-export interface TemplateConfigSmsResponse extends APIResponse<ITemplateConfigSms> {}
-export interface TemplateConfigEmailsResponse extends APIResponse<ITemplateConfigEmail[]> {}
-export interface TemplateConfigEmailResponse extends APIResponse<ITemplateConfigEmail> {}
-export interface LookupServicesResponse extends APIResponse<ILookServiceType[]> {}
-export interface LookupServiceResponse extends APIResponse<ILookServiceType> {}
+export type ITemplateNonTransactionCustomTag = {
+  tagId: string,
+  tagName: string,
+  description: string,
+  isMapped: boolean
+  mappedName: string
+}
+
+
+export interface TemplatesResponse extends APIResponse<ITemplate[]> { }
+export interface TemplateResponse extends APIResponse<ITemplate> { }
+export interface TemplateConfigsResponse extends APIResponse<ITemplateConfig[]> { }
+export interface TemplateConfigResponse extends APIResponse<ITemplateConfig> { }
+export interface TemplateConfigSmsesResponse extends APIResponse<ITemplateConfigSms[]> { }
+export interface TemplateConfigSmsResponse extends APIResponse<ITemplateConfigSms> { }
+export interface TemplateConfigEmailsResponse extends APIResponse<ITemplateConfigEmail[]> { }
+export interface TemplateConfigEmailResponse extends APIResponse<ITemplateConfigEmail> { }
+export interface LookupServicesResponse extends APIResponse<ILookServiceType[]> { }
+export interface LookupServiceResponse extends APIResponse<ILookServiceType> { }
+export interface TemplateNonTransactionCustomTagsResponse extends APIResponse<ITemplateNonTransactionCustomTag[]> { }
+export interface TemplateNonTransactionCustomTagResponse extends APIResponse<ITemplateNonTransactionCustomTag> { }

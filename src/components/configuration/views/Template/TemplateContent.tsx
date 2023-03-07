@@ -14,7 +14,7 @@ import CreateTemplateAlertModal from './CreateTemplateModal';
 
 interface ITemplateContent {
   // eslint-disable-next-line no-unused-vars
-  onSelectTemplate: (props: { serviceId: string; templateId: string }) => void;
+  onSelectTemplate: (props: { serviceId: string; templateId: string; shouldGetNonTransactionalTag: boolean }) => void;
   formRef: React.RefObject<FormikRefType<any>>;
   handleSubmit: () => void;
 }
@@ -54,7 +54,16 @@ const TemplateContent = ({ onSelectTemplate, formRef, handleSubmit }: ITemplateC
               itemsOnExpand={
                 <AccordionList>
                   {item.templates?.map((templates: ITemplates) => (
-                    <AccordionListItem key={templates.templateId} onClick={() => onSelectTemplate({ serviceId: item.serviceTypeId, templateId: templates.templateId })}>
+                    <AccordionListItem
+                      key={templates.templateId}
+                      onClick={() =>
+                        onSelectTemplate({
+                          serviceId: item.serviceTypeId,
+                          templateId: templates.templateId,
+                          shouldGetNonTransactionalTag: item.serviceTypeName === 'None-Transaction',
+                        })
+                      }
+                    >
                       {templates.templateName}
                     </AccordionListItem>
                   ))}
