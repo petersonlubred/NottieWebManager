@@ -115,6 +115,17 @@ const HeaderContainer = styled.div`
   padding-top: ${px(21)};
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.bgPrimary};
+
+  table {
+    width: 100%;
+    thead,
+    th,
+    tr,
+    td {
+      background-color: ${({ theme }) => theme.colors.bgPrimary} !important ;
+      border: none !important;
+    }
+  }
 `;
 
 const HeaderStatisticsSection = styled.div`
