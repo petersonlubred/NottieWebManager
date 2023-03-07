@@ -1,17 +1,20 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import BackgroundService from '@/components/dashboard/BackgroundService';
 import SmsandEmail from '@/components/dashboard/SmsAndEmail';
 import Layout from '@/HOC/Layout';
+import { RootState } from '@/redux/store';
 import { px } from '@/utils';
 import { protectedRouteProps } from '@/utils/withSession';
 
 const Dashboard = () => {
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const lastSync = useSelector((state: RootState) => state.dashboardReducer.lastSync);
   const { tab } = router.query;
   const tabNames = ['background-service', 'sms-email'];
   const navItems = useMemo(() => {
@@ -38,7 +41,7 @@ const Dashboard = () => {
       currentTab={currentTab}
       handleSetIndex={handleSetIndex}
       title={'Dashboard'}
-      subtitle={'Last sync: Today 3:09PM'}
+      subtitle={`Last sync: ${lastSync}`}
       isDashboard
       noPagination
     >

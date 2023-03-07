@@ -1,4 +1,5 @@
 export * from './alertApi';
+export * from './dashboardApi';
 export * from './databaseApi';
 export * from './dataSourceApi';
 export * from './notificationApi';

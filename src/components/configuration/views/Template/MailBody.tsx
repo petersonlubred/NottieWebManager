@@ -1,37 +1,56 @@
-import { FormGroup, TextArea, TextInput } from '@carbon/react';
 import { Copy } from '@carbon/react/icons';
-import { Field, Form, Formik } from 'formik';
+import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/shared/Button';
-import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
-import RichTextExample from '@/components/shared/RichText';
+import { FormikRefType } from '@/interfaces/formik.type';
+import { ITemplateConfigEmail, ITemplateConfigSms } from '@/interfaces/template';
+import { initialEmailTemplate, initialSmsTemplate } from '@/schemas/dto';
 import { px } from '@/utils';
+
+import EmailForm from './EmailForm';
+import SmsForm from './SmsForm';
 
 const navItems = ['SMS Template', 'Email Template'];
 
-const MailBody = () => {
-  const [selected, setSelected] = React.useState(0);
-  const [, setEditorLoaded] = useState(false);
+interface IMailBody {
+  templateId: string;
+  serviceTypeId: string;
+  emailData: ITemplateConfigEmail;
+  smsData: ITemplateConfigSms;
+  formRef: React.RefObject<FormikRefType<any>>;
+  handleSubmit: () => void;
+}
+
+const MailBody = ({ templateId, serviceTypeId, emailData, smsData, formRef, handleSubmit }: IMailBody) => {
+  const [selected, setSelected] = React.useState<number>(0);
+  const [responseData, setResponseData] = useState<ITemplateConfigEmail | ITemplateConfigSms>();
+
+  const discardChanges = () => {
+    let resetData;
+    if (selected === 0) {
+      resetData = emailData;
+    } else {
+      resetData = smsData;
+    }
+    formRef.current?.resetForm({ values: { ...resetData, templateId, serviceTypeId } });
+  };
 
   useEffect(() => {
-    setEditorLoaded(true);
-  }, []);
+    if (selected === 0) {
+      !isEmpty(smsData)
+        ? (setResponseData(smsData), formRef.current?.resetForm({ values: { ...smsData, templateId, serviceTypeId } }))
+        : setResponseData({ ...initialSmsTemplate });
+    } else {
+      !isEmpty(emailData)
+        ? (setResponseData(emailData), formRef.current?.resetForm({ values: { ...emailData, templateId, serviceTypeId } }))
+        : setResponseData({ ...initialEmailTemplate });
+    }
+  }, [emailData, smsData, selected, templateId, serviceTypeId, formRef]);
+
   return (
     <Container>
-      {' '}
-      {/* <div>
-        <CKeditor
-          value={data}
-          name="description"
-          onChange={(data) => {
-            setData(data);
-          }}
-          editorLoaded={editorLoaded}
-        />
-        {JSON.stringify(data)}
-      </div> */}
       <MailNav>
         <MailNavToggle>
           {navItems?.map((item, index) => (
@@ -43,74 +62,16 @@ const MailBody = () => {
 
         <CopyDetails>
           <CopyParagraphTitle>Template ID: </CopyParagraphTitle>
-          <CopyParagraphValue> SDFGHJIOGDUD876</CopyParagraphValue>
+          <CopyParagraphValue> {templateId}</CopyParagraphValue>
           <Copy size={16} />
         </CopyDetails>
         <ActionContainer>
-          <Button renderIcon={null} handleClick={() => null} buttonLabel="Discard changes" />
-          <Button renderIcon={null} handleClick={() => null} buttonLabel="Save Changes" />
+          <Button renderIcon={null} handleClick={() => discardChanges()} buttonLabel="Discard changes" />
+          <Button renderIcon={null} handleClick={() => handleSubmit()} buttonLabel="Save Changes" />
         </ActionContainer>
       </MailNav>
-      <Formik
-        initialValues={{
-          templateBody: '',
-          senderId: '',
-          emailcontent: '',
-          emailcontainer: '',
-          templatename: '',
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(!!values);
-        }}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            {selected == 0 ? (
-              <FormGroup legendText="">
-                <FormField>
-                  <FormContainer>
-                    <Field name="senderId">{({ field }: any) => <TextInput {...field} type="text" id="senderId-input" labelText="Sender ID" placeholder="input text" />}</Field>
-                  </FormContainer>
-                  <ErrorMessage invalid={Boolean(touched.senderId && errors.senderId)} invalidText={errors.senderId} />
-                </FormField>{' '}
-                <FormField>
-                  <FormContainer>
-                    <Field name="templateBody">
-                      {({ field }: any) => <TextArea {...field} enableCounter id="text-area-1" labelText="Template body" maxCount={500} placeholder="input text" />}
-                    </Field>
-                  </FormContainer>
-                  <ErrorMessage invalid={Boolean(touched.templateBody && errors.templateBody)} invalidText={errors.templateBody} />
-                </FormField>
-              </FormGroup>
-            ) : (
-              <FormGroup legendText="">
-                <FormField>
-                  <FormContainer>
-                    <Field name="templatename">
-                      {({ field }: any) => <TextInput {...field} type="text" id="templatename-input" labelText="Template Name" placeholder="input name" />}
-                    </Field>
-                  </FormContainer>
-                  <ErrorMessage invalid={Boolean(touched.templatename && errors.templatename)} invalidText={errors.templatename} />
-                </FormField>
-                <FormField>
-                  <FormContainer>
-                    <Field name="emailcontainer">
-                      {({ field }: any) => <TextArea {...field} enableCounter id="text-area-1" labelText="Email container" maxCount={500} placeholder="input text" />}
-                    </Field>
-                  </FormContainer>
-                  <ErrorMessage invalid={Boolean(touched.emailcontainer && errors.emailcontainer)} invalidText={errors.emailcontainer} />
-                </FormField>
-                <FormField>
-                  <FormContainer>
-                    <Field name="emailcontent">{() => <RichTextExample />}</Field>
-                  </FormContainer>
-                  <ErrorMessage invalid={Boolean(touched.emailcontent && errors.emailcontent)} invalidText={errors.emailcontent} />
-                </FormField>
-              </FormGroup>
-            )}
-          </Form>
-        )}
-      </Formik>{' '}
+      {selected === 0 && responseData && <SmsForm formdata={{ ...(responseData as ITemplateConfigSms), templateId, serviceTypeId }} formRef={formRef} />}
+      {selected === 1 && responseData && <EmailForm formdata={{ ...(responseData as ITemplateConfigEmail), templateId, serviceTypeId }} formRef={formRef} />}
     </Container>
   );
 };
@@ -181,9 +142,9 @@ const CopyDetails = styled.div`
   align-items: center;
   background-color: ${({ theme }) => theme.colors.bgHover};
   border-radius: ${px(24)};
-  padding ${px(5)} ${px(8)};
+  padding: ${px(5)} ${px(8)};
 
-  svg{
+  svg {
     fill: ${({ theme }) => theme.colors.white};
     cursor: pointer;
   }
@@ -200,34 +161,4 @@ const CopyParagraphValue = styled.span`
   color: ${({ theme }) => theme.colors.white};
   font-weight: 600;
   margin-right: ${px(8)};
-`;
-
-const FormContainer = styled.div`
-  width: 100%;
-  padding-left: ${px(16)};
-  padding-right: ${px(33)};
-
-  label {
-    color: ${({ theme }) => theme.colors.lightText};
-  }
-  input,
-  textarea {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover} !important;
-  }
-  textarea {
-    min-height: ${px(300)};
-  }
-
-  .editor {
-    color: ${({ theme }) => theme.colors.white} !important;
-    background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
-    min-height: ${px(300)} !important;
-    padding: ${px(11)} ${px(16)};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.bgHover} !important;
-    margin-bottom: ${px(50)};
-  }
-`;
-
-const FormField = styled.div`
-  margin-bottom: ${px(16)};
 `;
