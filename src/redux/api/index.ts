@@ -4,7 +4,7 @@ export * from './databaseApi';
 export * from './dataSourceApi';
 export * from './notificationApi';
 export * from './roleApi';
-export * from './serviceMappingApi'
+export * from './serviceMappingApi';
 export * from './smtpApi';
 export * from './systemConfigApi';
 export * from './templateApi';
