@@ -8,17 +8,20 @@ import { useGetTemplateConfigEmailQuery, useGetTemplateConfigSmsQuery } from '@/
 
 import { ConfigurationContainer, NoDataContainer, NoDataTitle } from '../../../../pages/configuration';
 import MailBody from './MailBody';
+import TagSection from './TagSection';
 
 const Template = () => {
   const [templateId, setTemplateId] = useState<string>('');
   const [serviceTypeId, setServiceTypeId] = useState<string>('');
+  const [getNonTransactionalTag, setGetNonTransactionalTag] = useState(false);
   const formRef = useRef<FormikRefType<any>>();
   const { data: emailConfig, isFetching: isFetchingEmailConfig } = useGetTemplateConfigEmailQuery({ serviceTypeId, templateId }, { skip: !(serviceTypeId && templateId) });
   const { data: smsConfig, isFetching: isFetchingSmsConfig } = useGetTemplateConfigSmsQuery({ serviceTypeId, templateId }, { skip: !(serviceTypeId && templateId) });
 
-  const onSelectTemplate = ({ templateId, serviceId }: { serviceId: string; templateId: string }) => {
+  const onSelectTemplate = ({ templateId, serviceId, shouldGetNonTransactionalTag }: { serviceId: string; templateId: string; shouldGetNonTransactionalTag: boolean }) => {
     setServiceTypeId(serviceId);
     setTemplateId(templateId);
+    setGetNonTransactionalTag(shouldGetNonTransactionalTag);
   };
 
   const handleSubmit = async () => {
@@ -37,7 +40,7 @@ const Template = () => {
           <NoDataTitle>Select or create a template from the left panel and you can see it here.</NoDataTitle>
         </NoDataContainer>
       )}
-
+      {serviceTypeId && <TagSection getNonTransactionalTag={getNonTransactionalTag} templateId={templateId} />}
       {(isFetchingEmailConfig || isFetchingSmsConfig) && <Loader />}
     </ConfigurationContainer>
   );

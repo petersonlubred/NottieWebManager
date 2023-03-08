@@ -54,7 +54,7 @@ const CreateTemplateAlertModal = ({ open, toggleModal, formRef, formdata, handle
                   <FormField>
                     <Field name="serviceTypeId">
                       {({ field }: any) => (
-                        <Select id="select-1" labelText="Template" {...field} onKeyUp={() => setFieldTouched('serviceTypeId', true)}>
+                        <Select id="select-1" labelText="Service Type" {...field} onKeyUp={() => setFieldTouched('serviceTypeId', true)}>
                           <SelectItem text="Choose option" />
                           {data?.data.map((serviceType: ILookServiceType) => (
                             <SelectItem key={serviceType.id} text={serviceType.name} value={serviceType.id} />
