@@ -71,7 +71,6 @@ const AccordionHeader = styled.div<{ clicked: boolean }>`
   line-height: ${px(18)};
   gap: ${px(6)};
   font-weight: 600;
-  width: fit-content;
   background-color: ${({ clicked, theme }) => (clicked ? theme.colors.bgPrimaryLight : 'transparent')};
   border-left: ${({ clicked, theme }) => (clicked ? `2px solid ${theme.colors.normalText}` : 'none')};
 `;
