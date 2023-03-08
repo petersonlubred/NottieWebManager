@@ -2182,19 +2182,19 @@
   "resolved" "https://registry.npmjs.org/csstype/-/csstype-3.1.1.tgz"
   "version" "3.1.1"
 
-"d3-array@^3.2.0", "d3-array@2 - 3", "d3-array@2.10.0 - 3", "d3-array@2.5.0 - 3", "d3-array@3":
-  "integrity" "sha512-yEEyEAbDrF8C6Ob2myOBLjwBLck1Z89jMGFee0oPsn95GqjerpaOA4ch+vc2l0FNFFwMD5N7OCSEN5eAlsUbgQ=="
-  "resolved" "https://registry.npmjs.org/d3-array/-/d3-array-3.2.2.tgz"
-  "version" "3.2.2"
-  dependencies:
-    "internmap" "1 - 2"
-
 "d3-array@1 - 2":
   "integrity" "sha512-B0ErZK/66mHtEsR1TkPEEkwdy+WDesimkM5gpZr5Dsg54BiTA5RXtYW5qTLIAcekaS9xfZrzBLF/OAkB3Qn1YQ=="
   "resolved" "https://registry.npmjs.org/d3-array/-/d3-array-2.12.1.tgz"
   "version" "2.12.1"
   dependencies:
     "internmap" "^1.0.0"
+
+"d3-array@2 - 3", "d3-array@2.10.0 - 3", "d3-array@2.5.0 - 3", "d3-array@3":
+  "integrity" "sha512-yEEyEAbDrF8C6Ob2myOBLjwBLck1Z89jMGFee0oPsn95GqjerpaOA4ch+vc2l0FNFFwMD5N7OCSEN5eAlsUbgQ=="
+  "resolved" "https://registry.npmjs.org/d3-array/-/d3-array-3.2.2.tgz"
+  "version" "3.2.2"
+  dependencies:
+    "internmap" "1 - 2"
 
 "d3-axis@3":
   "integrity" "sha512-IH5tgjV4jE/GhHkRV0HiVYPDtvfjHQlQfJHs0usq7M30XcSBvOotpmH1IgkcXsO/5gEQZD43B//fc7SRT5S+xw=="
@@ -2231,12 +2231,12 @@
   "resolved" "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz"
   "version" "3.1.0"
 
-"d3-contour@4":
-  "integrity" "sha512-4EzFTRIikzs47RGmdxbeUvLWtGedDUNkTcmzoeyg4sP/dvCexO47AaQL7VKy/gul85TOxw+IBgA8US2xwbToNA=="
-  "resolved" "https://registry.npmjs.org/d3-contour/-/d3-contour-4.0.2.tgz"
-  "version" "4.0.2"
+"d3-contour@3":
+  "integrity" "sha512-vV3xtwrYK5p1J4vyukr70m57mtFTEQYqoaDC1ylBfht/hkdUF0nfWZ1b3V2EPBUVkUkoqq5/fbRoBImBWJgOsg=="
+  "resolved" "https://registry.npmjs.org/d3-contour/-/d3-contour-3.1.0.tgz"
+  "version" "3.1.0"
   dependencies:
-    "d3-array" "^3.2.0"
+    "d3-array" "2 - 3"
 
 "d3-delaunay@6":
   "integrity" "sha512-IMLNldruDQScrcfT+MWnazhHbDJhcRJyOEBAJfwQnHle1RPh6WDuLvxNArUju2VSMSUuKlY5BGHRJ2cYyoFLQQ=="
@@ -2429,17 +2429,17 @@
     "d3-selection" "2 - 3"
     "d3-transition" "2 - 3"
 
-"d3@7.x":
-  "integrity" "sha512-WXty7qOGSHb7HR7CfOzwN1Gw04MUOzN8qh9ZUsvwycIMb4DYMpY9xczZ6jUorGtO6bR9BPMPaueIKwiDxu9uiQ=="
-  "resolved" "https://registry.npmjs.org/d3/-/d3-7.8.2.tgz"
-  "version" "7.8.2"
+"d3@^7.0.0", "d3@7.x":
+  "integrity" "sha512-t+jEKGO2jQiSBLJYYq6RFc500tsCeXBB4x41oQaSnZD3Som95nQrlw9XJGrFTMUOQOkwSMauWy9+8Tz1qm9UZw=="
+  "resolved" "https://registry.npmjs.org/d3/-/d3-7.0.0.tgz"
+  "version" "7.0.0"
   dependencies:
     "d3-array" "3"
     "d3-axis" "3"
     "d3-brush" "3"
     "d3-chord" "3"
     "d3-color" "3"
-    "d3-contour" "4"
+    "d3-contour" "3"
     "d3-delaunay" "6"
     "d3-dispatch" "3"
     "d3-drag" "3"
