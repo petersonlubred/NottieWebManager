@@ -29,10 +29,24 @@ export type ITemplateConfigEmail = {
   emailBodyContainer: string;
 };
 
+export type ITemplateConfigTags = {
+  tagId: string;
+  tagName: string;
+  description: string;
+};
+
 export type ILookServiceType = {
   id: string;
   description: string;
   name: string;
+};
+
+export type ITemplateNonTransactionCustomTag = {
+  tagId: string;
+  tagName: string;
+  description: string;
+  isMapped: boolean;
+  mappedName: string;
 };
 
 export interface TemplatesResponse extends APIResponse<ITemplate[]> {}
@@ -45,3 +59,5 @@ export interface TemplateConfigEmailsResponse extends APIResponse<ITemplateConfi
 export interface TemplateConfigEmailResponse extends APIResponse<ITemplateConfigEmail> {}
 export interface LookupServicesResponse extends APIResponse<ILookServiceType[]> {}
 export interface LookupServiceResponse extends APIResponse<ILookServiceType> {}
+export interface TemplateNonTransactionCustomTagsResponse extends APIResponse<ITemplateNonTransactionCustomTag[]> {}
+export interface TemplateNonTransactionCustomTagResponse extends APIResponse<ITemplateNonTransactionCustomTag> {}

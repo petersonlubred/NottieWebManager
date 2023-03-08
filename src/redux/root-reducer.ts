@@ -7,6 +7,7 @@ import {
   dataSourceApi,
   notificationApi,
   roleApi,
+  serviceMappingApi,
   smscApi,
   smscRouteApi,
   smscRouteConfigApi,
@@ -37,6 +38,7 @@ export const reducers = combineReducers({
   [dataSourceApi.reducerPath]: dataSourceApi.reducer,
   [dashboardApi.reducerPath]: dashboardApi.reducer,
   [smtpRouteApi.reducerPath]: smtpRouteApi.reducer,
+  [serviceMappingApi.reducerPath]: serviceMappingApi.reducer,
   sharedReducer: persistReducer(persistConfig, sharedReducer),
   dashboardReducer: persistReducer(dashboardPersistConfig, dashboardReducer),
 });

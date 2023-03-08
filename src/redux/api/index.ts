@@ -4,6 +4,7 @@ export * from './databaseApi';
 export * from './dataSourceApi';
 export * from './notificationApi';
 export * from './roleApi';
+export * from './serviceMappingApi';
 export * from './smscApi';
 export * from './smscRouteApi';
 export * from './smscRouteConfigApi';

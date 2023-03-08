@@ -1,12 +1,18 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 
-import { ITemplateConfigEmail, ITemplateConfigSms, TemplateConfigSmsResponse } from '@/interfaces/template';
+import {
+  ITemplateConfigEmail,
+  ITemplateConfigSms,
+  ITemplateNonTransactionCustomTag,
+  TemplateConfigSmsResponse,
+  TemplateNonTransactionCustomTagsResponse,
+} from '@/interfaces/template';
 
 import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
 export const templateApi = createApi({
   reducerPath: 'templateApi',
-  tagTypes: ['templateConfigSms', 'templateConfigEmail', 'templateConfig'],
+  tagTypes: ['templateConfigSms', 'templateConfigEmail', 'templateConfig', 'templateConfigTags', 'customTags'],
   baseQuery: baseQueryWithReauth as BaseQueryFn<string | FetchArgs, unknown, CustomError, Record<string, any>>,
   endpoints: (builder) => ({
     lookupTemplate: builder.query({
@@ -57,6 +63,28 @@ export const templateApi = createApi({
       },
       invalidatesTags: ['templateConfigEmail'],
     }),
+    getTemplateConfigTags: builder.query({
+      query: () => createRequest('TemplateConfig/Tags'),
+      providesTags: ['templateConfigTags'],
+    }),
+    getNonTransactionTemplateConfigTags: builder.query({
+      query: () => createRequest('TemplateConfig/Tags/NoneTransaction'),
+      providesTags: ['templateConfigTags'],
+    }),
+    getNonTransactionTemplateConfigCustomTags: builder.query<TemplateNonTransactionCustomTagsResponse, { templateId: string }>({
+      query: ({ templateId }) => createRequest(`TemplateConfig/Tags/NoneTransaction/Custom/${templateId}`),
+      providesTags: ['customTags'],
+    }),
+    updateNonTransactionTemplateConfigCustomTags: builder.mutation<any, { templateId: string; data: Partial<ITemplateNonTransactionCustomTag>[] }>({
+      query: ({ templateId, data }) => {
+        return {
+          url: `TemplateConfig/Tags/NoneTransaction/Custom/${templateId}`,
+          method: 'PUT',
+          body: data,
+        };
+      },
+      invalidatesTags: ['templateConfigEmail'],
+    }),
   }),
 });
 
@@ -69,4 +97,8 @@ export const {
   useGetTemplateConfigSmsQuery,
   useUpdateTemplateConfigEmailMutation,
   useUpdateTemplateConfigSmsMutation,
+  useGetTemplateConfigTagsQuery,
+  useGetNonTransactionTemplateConfigTagsQuery,
+  useGetNonTransactionTemplateConfigCustomTagsQuery,
+  useUpdateNonTransactionTemplateConfigCustomTagsMutation,
 } = templateApi;
