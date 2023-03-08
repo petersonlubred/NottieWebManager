@@ -158,7 +158,6 @@ const ModalLabel = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.s};
   font-weight: 400;
   line-height: ${px(12)};
-  margin-bottom: ${px(6)};
 `;
 
 const FormField = styled.div`
