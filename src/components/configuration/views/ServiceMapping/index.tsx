@@ -6,12 +6,12 @@ import Icon from '@/components/shared/Icons';
 import Loader from '@/components/shared/Loader';
 import { IServiceMapping } from '@/interfaces/serviceMapping';
 import { ConfigurationContainer } from '@/pages/configuration';
-import { useGetServiceMappingQuery } from '@/redux/api/serviceMappingApi';
+import { useGetServiceMappingsQuery } from '@/redux/api/serviceMappingApi';
 import { px } from '@/utils';
 
 const ServiceMapping = () => {
   const [opened, setOpened] = useState<number[]>([]);
-  const { data, isFetching } = useGetServiceMappingQuery({});
+  const { data, isFetching } = useGetServiceMappingsQuery();
 
   const toggleDropdown = (index: number) => {
     if (opened.includes(index)) {
