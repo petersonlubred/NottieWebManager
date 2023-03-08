@@ -14,6 +14,7 @@ import {
   dataSourceApi,
   notificationApi,
   roleApi,
+  serviceMappingApi,
   smscApi,
   smscRouteApi,
   smscRouteConfigApi,
@@ -54,6 +55,7 @@ export const store = configureStore({
     dataSourceApi.middleware,
     dashboardApi.middleware,
     smtpRouteApi.middleware,
+    serviceMappingApi.middleware,
   ],
   enhancers: [reduxBatch],
 });
