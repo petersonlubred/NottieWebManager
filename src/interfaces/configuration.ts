@@ -1,9 +1,13 @@
-import { IinitialSMSCForm, IinitialSMSRouteConfigForm, IinitialSMSRouteForm, IinitialSMTPForm } from './../schemas/interface';
+import { IinitialSMSCForm, IinitialSMSRouteConfigForm, IinitialSMSRouteForm, IinitialSMTPForm, IinitialSMTPRouteForm } from './../schemas/interface';
 import { APIResponse } from './auth';
 
 export interface Ismtp extends IinitialSMTPForm {
   smtpId: string;
   status: boolean;
+}
+
+export interface SmtpRoute extends IinitialSMTPRouteForm {
+  smtpRouteId: string;
 }
 export interface Smsc extends IinitialSMSCForm {
   smscId?: string;
@@ -46,6 +50,9 @@ export interface DataSourceResponse extends APIResponse<IDataSourceType[]> {}
 export interface DatabaseTypeResponse extends APIResponse<IDatabaseType[]> {}
 export interface SmtpsResponse extends APIResponse<Ismtp[]> {}
 export interface SmtpResponse extends APIResponse<Ismtp> {}
+
+export interface SmtpRouteResponsez extends APIResponse<SmtpRoute[]> {}
+export interface SmtpRouteResponse extends APIResponse<SmtpRoute> {}
 
 export interface SmscResponse extends APIResponse<Smsc> {}
 export interface SmscResponsez extends APIResponse<Smsc[]> {}

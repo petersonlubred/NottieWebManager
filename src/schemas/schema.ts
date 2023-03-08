@@ -124,20 +124,20 @@ export const SMSCSchema = Yup.object({
 });
 
 export const SMSRouteSchema = Yup.object({
-  route_name: Yup.string().required('Route name is required'),
-  aggregator: Yup.string().required('Aggregator is required'),
-  serviceType: Yup.string().required('Service Type is required'),
+  smscRouteName: Yup.string().required('Route name is required'),
+  smscId: Yup.string().required('Aggregator is required'),
+  serviceTypeId: Yup.string().required('Service Type is required'),
 });
 
 export const SMSRouteConfigSchema = Yup.object({
-  smscRoute: Yup.string().required('Smsc route Type is required'),
-  aggregator: Yup.string().required('Aggregator smsc is required'),
-  routeType: Yup.string().required('Route Type is required'),
-  country: Yup.string().when('routeType', {
+  smscRouteId: Yup.string().required('Smsc route Type is required'),
+  smscId: Yup.string().required('Aggregator smsc is required'),
+  routeTypeId: Yup.string().required('Route Type is required'),
+  countryId: Yup.string().when('routeType', {
     is: (val: string) => val === 'network',
     then: Yup.string().required('Country is required'),
   }),
-  network: Yup.string().when('routeType', {
+  networkId: Yup.string().when('routeType', {
     is: (val: string) => val === 'network',
     then: Yup.string().required('Network is required'),
   }),
@@ -166,9 +166,9 @@ export const SMTPSchema = Yup.object({
 });
 
 export const SMTPRouteSchema = Yup.object({
-  route_name: Yup.string().required('Route name is required'),
-  smtp_name: Yup.string().required('SMTP name is required'),
-  serviceType: Yup.string().required('Service Type is required'),
+  routeName: Yup.string().required('Route name is required'),
+  smtpId: Yup.string().required('SMTP name is required'),
+  serviceTypeId: Yup.string().required('Service Type is required'),
 });
 
 export const smsTemplateSchema = Yup.object({

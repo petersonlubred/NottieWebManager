@@ -60,13 +60,11 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
 
   const handleSubmit = (values: IinitialSMSRouteForm) => {
     const payload: any = {
-      smscRouteName: values.route_name,
-      smscId: values.aggregator,
-      serviceTypeId: values.serviceType,
+      ...values,
     };
 
     const formvalues = payload as IinitialSMSRouteForm & { smscRouteId: string };
-    formdata?.smscRouteId ? editSmscRoute(formdata) : createSmscRoute(formvalues);
+    formdata?.smscRouteId ? editSmscRoute(formvalues) : createSmscRoute(formvalues);
   };
 
   return (
@@ -74,68 +72,52 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
       {(isLoading || editLoading) && <Loader />}
       <ModalItem>
         <Formik initialValues={formdata?.smscRouteId ? formdata : initialSMSRouteValue} validationSchema={SMSRouteSchema} onSubmit={handleSubmit} innerRef={formRef}>
-          {({ errors, touched, setFieldValue, setFieldTouched }) => (
+          {({ errors, touched, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">
                 <FormField>
                   <FormContainer>
-                    <Field name="route_name">
+                    <Field name="smscRouteName">
                       {({ field }: any) => (
                         <TextInput
                           {...field}
                           type="text"
-                          id="route_name-input"
+                          id="smscRouteName-input"
                           labelText="SMS Route Name"
                           placeholder="enter name"
-                          onKeyUp={() => setFieldTouched('route_name', true)}
+                          onKeyUp={() => setFieldTouched('smscRouteName', true)}
                         />
                       )}
                     </Field>
-                    <Field name="aggregator">
+                    <Field name="smscId">
                       {({ field }: any) => (
-                        <Select
-                          id="aggregator-input"
-                          labelText="Aggregator/SMSC"
-                          {...field}
-                          onKeyUp={() => setFieldTouched('aggregator', true)}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setFieldValue('aggregator', e.target.value);
-                          }}
-                        >
+                        <Select id="smscId-input" labelText="Aggregator/SMSC" {...field} onKeyUp={() => setFieldTouched('smscId', true)}>
                           <SelectItem text="Choose service type" />
                           {smscLookup.map((item: any) => (
-                            <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                            <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}
                         </Select>
                       )}
                     </Field>
-                    <ErrorMessage invalid={Boolean(touched.route_name && errors.route_name)} invalidText={errors.route_name} />
-                    <ErrorMessage invalid={Boolean(touched.aggregator && errors.aggregator)} invalidText={errors.aggregator} />
+                    <ErrorMessage invalid={Boolean(touched.smscRouteName && errors.smscRouteName)} invalidText={errors.smscRouteName} />
+                    <ErrorMessage invalid={Boolean(touched.smscId && errors.smscId)} invalidText={errors.smscId} />
                   </FormContainer>
                 </FormField>{' '}
                 <FormField>
                   <ModalLabel>Service Type</ModalLabel>{' '}
                   <FormEmailContainer>
-                    <Field name="serviceType">
+                    <Field name="serviceTypeId">
                       {({ field }: any) => (
-                        <Select
-                          id="serviceType-input"
-                          labelText=""
-                          {...field}
-                          onKeyUp={() => setFieldTouched('serviceType', true)}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setFieldValue('serviceType', e.target.value);
-                          }}
-                        >
+                        <Select id="serviceTypeId-input" labelText="" {...field} onKeyUp={() => setFieldTouched('serviceType', true)}>
                           <SelectItem text="Choose service type" />
                           {serviceTypeLookup.map((item: any) => (
-                            <SelectItem key={item.id} text={item.name} value={item.id} label={item.name} />
+                            <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}
                         </Select>
                       )}
                     </Field>
                   </FormEmailContainer>
-                  <ErrorMessage invalid={Boolean(touched.serviceType && errors.serviceType)} invalidText={errors.serviceType} />
+                  <ErrorMessage invalid={Boolean(touched.serviceTypeId && errors.serviceTypeId)} invalidText={errors.serviceTypeId} />
                 </FormField>{' '}
               </FormGroup>
             </Form>

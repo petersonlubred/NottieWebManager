@@ -65,7 +65,7 @@ const ActionIconsSmsc = ({ data }: Props) => {
       >
         <SimpleModalcontent content="Are you sure you want to change STATUS ." isLoading={isLoading} />
       </Modal>
-      <Modal heading="Edit SMTP" buttonLabel="Save changes" extent="sm" open={edit} toggleModal={toggleModal} onRequestSubmit={handleSubmit}>
+      <Modal heading="Edit SMSC" buttonLabel="Save changes" extent="sm" open={edit} toggleModal={toggleModal} onRequestSubmit={handleSubmit}>
         <SMSC formRef={formRef} formdata={data} toggleModal={toggleModal} />
       </Modal>
     </NavSectionTwo>

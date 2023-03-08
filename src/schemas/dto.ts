@@ -110,17 +110,17 @@ export const initialSMSCValue: IinitialSMSCForm = {
 };
 
 export const initialSMSRouteValue: IinitialSMSRouteForm = {
-  route_name: '',
-  aggregator: '',
-  serviceType: '',
+  smscRouteName: '',
+  smscId: '',
+  serviceTypeId: '',
 };
 
 export const initialSMSRouteConfigValue: IinitialSMSRouteConfigForm = {
-  smscRoute: '',
-  aggregator: '',
-  routeType: '',
-  country: '',
-  network: '',
+  smscRouteId: '',
+  smscId: '',
+  routeTypeId: '',
+  countryId: '',
+  networkId: '',
   accountType: '',
   productCode: '',
   transactionType: '',
@@ -137,9 +137,9 @@ export const initialSMTPValue: IinitialSMTPForm = {
 };
 
 export const initialSMTPRouteValue: IinitialSMTPRouteForm = {
-  route_name: '',
-  smtp_name: '',
-  serviceType: '',
+  routeName: '',
+  smtpId: '',
+  serviceTypeId: '',
 };
 
 export const initialUserValue: IinitialUserForm = {
