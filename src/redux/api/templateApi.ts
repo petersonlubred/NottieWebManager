@@ -1,6 +1,12 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 
-import { ITemplateConfigEmail, ITemplateConfigSms, ITemplateNonTransactionCustomTag, TemplateConfigSmsResponse, TemplateNonTransactionCustomTagsResponse } from '@/interfaces/template';
+import {
+  ITemplateConfigEmail,
+  ITemplateConfigSms,
+  ITemplateNonTransactionCustomTag,
+  TemplateConfigSmsResponse,
+  TemplateNonTransactionCustomTagsResponse,
+} from '@/interfaces/template';
 
 import { baseQueryWithReauth, createRequest, CustomError } from './shared';
 
@@ -59,17 +65,17 @@ export const templateApi = createApi({
     }),
     getTemplateConfigTags: builder.query({
       query: () => createRequest('TemplateConfig/Tags'),
-      providesTags: ['templateConfigTags']
+      providesTags: ['templateConfigTags'],
     }),
     getNonTransactionTemplateConfigTags: builder.query({
       query: () => createRequest('TemplateConfig/Tags/NoneTransaction'),
-      providesTags: ['templateConfigTags']
+      providesTags: ['templateConfigTags'],
     }),
     getNonTransactionTemplateConfigCustomTags: builder.query<TemplateNonTransactionCustomTagsResponse, { templateId: string }>({
       query: ({ templateId }) => createRequest(`TemplateConfig/Tags/NoneTransaction/Custom/${templateId}`),
-      providesTags: ['customTags']
+      providesTags: ['customTags'],
     }),
-    updateNonTransactionTemplateConfigCustomTags: builder.mutation<any, { templateId: string, data: Partial<ITemplateNonTransactionCustomTag>[] }>({
+    updateNonTransactionTemplateConfigCustomTags: builder.mutation<any, { templateId: string; data: Partial<ITemplateNonTransactionCustomTag>[] }>({
       query: ({ templateId, data }) => {
         return {
           url: `TemplateConfig/Tags/NoneTransaction/Custom/${templateId}`,
@@ -94,5 +100,5 @@ export const {
   useGetTemplateConfigTagsQuery,
   useGetNonTransactionTemplateConfigTagsQuery,
   useGetNonTransactionTemplateConfigCustomTagsQuery,
-  useUpdateNonTransactionTemplateConfigCustomTagsMutation
+  useUpdateNonTransactionTemplateConfigCustomTagsMutation,
 } = templateApi;
