@@ -1,15 +1,18 @@
-import { FormGroup, NumberInput, PasswordInput, RadioButton, Select, SelectItem, TextInput } from '@carbon/react';
+import { FormGroup, NumberInput, PasswordInput, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
-import React, { useEffect } from 'react';
+import { isEmpty } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import Checkbox from '@/components/shared/Checkbox/Checkbox';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Loader from '@/components/shared/Loader';
+import RadioButton from '@/components/shared/RadioButton';
 import { useToast } from '@/context/ToastContext';
+import { Smsc } from '@/interfaces/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { useCreateSmscMutation, useEditSmscMutation } from '@/redux/api';
+import { useCreateSmscMutation, useEditSmscMutation, useLookupDataCodingQuery } from '@/redux/api';
 import { initialSMSCValue } from '@/schemas/dto';
 import { IinitialSMSCForm } from '@/schemas/interface';
 import { SMSCSchema } from '@/schemas/schema';
@@ -28,10 +31,17 @@ const RadioData = [
 ];
 
 const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
+  const [dataCodingLookup, setDataCodingLookup] = useState<Smsc[]>([]);
+
   const [createSmsc, { isLoading, isSuccess, isError, error }] = useCreateSmscMutation();
   const [editSmsc, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditSmscMutation();
+  const { data: dataCodingLookupData } = useLookupDataCodingQuery();
 
   const { toast } = useToast();
+
+  useEffect(() => {
+    !isEmpty(dataCodingLookupData?.data) && setDataCodingLookup(dataCodingLookupData?.data as Smsc[]);
+  }, [dataCodingLookupData?.data]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -121,18 +131,13 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                 </FormField>{' '}
                 <FormField>
                   <ModalLabel>System type</ModalLabel>{' '}
-                  <RadioContainer>
-                    {RadioData.map((item: any) => (
-                      <RadioButton
-                        key={item.id}
-                        labelText={item.label}
-                        value={item.val}
-                        id={item.id}
-                        labelPosition="right"
-                        onClick={(e: any) => setFieldValue('systemType', e.target.id)}
-                      />
-                    ))}
-                  </RadioContainer>
+                  <Field name="systemType">
+                    {({ field }: any) => (
+                      <RadioContainer>
+                        <RadioButton {...field} items={RadioData.map((item: any) => ({ value: item.val, label: item.label }))} />
+                      </RadioContainer>
+                    )}
+                  </Field>
                   <ErrorMessage invalid={Boolean(touched.systemType && errors.systemType)} invalidText={errors.systemType} />
                 </FormField>
                 <FormField>
@@ -185,9 +190,10 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="dataEncoding">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('dataEncoding', true)}>
-                          <SelectItem text="Choose option" />
-                          <SelectItem text="Option 1" value={1} />
-                          <SelectItem text="Option 2" value={2} />
+                          <SelectItem text="Choose Data coding" />
+                          {dataCodingLookup.map((item: any) => (
+                            <SelectItem key={item.id} text={item.name} value={item.id} />
+                          ))}
                         </Select>
                       )}
                     </Field>

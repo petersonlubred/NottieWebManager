@@ -2,7 +2,6 @@ import React from 'react';
 
 import { SMSC, SMSRoute, SMSRouteConfig, SMTP, SMTPRoute } from '@/components/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
-
 interface Props {
   tab: number;
   formRef: React.RefObject<FormikRefType<any>>;
@@ -18,9 +17,9 @@ const ModalContent = ({ tab, formRef, toggleModal }: Props) => {
     <SMSRouteConfig formRef={formRef} toggleModal={toggleModal} />
   ) : tab === 6 ? (
     <SMTP formRef={formRef} toggleModal={toggleModal} />
-  ) : (
-    <SMTPRoute />
-  );
+  ) : tab === 7 ? (
+    <SMTPRoute formRef={formRef} toggleModal={toggleModal} />
+  ) : null;
 };
 
 export default ModalContent;

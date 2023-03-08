@@ -30,6 +30,12 @@ export const smscApi = createApi({
         result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc'],
     }),
 
+    lookupDataCoding: builder.query<SmscResponsez, void>({
+      query: () => createRequest('Lookup/DataCoding'),
+      providesTags: (result, _error, _arg) =>
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscId }: any) => ({ type: 'smsc' as const, smscId })), 'smsc'] : ['smsc'],
+    }),
+
     editSmsc: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscId'>>({
       query: (data) => {
         return {
@@ -54,4 +60,4 @@ export const smscApi = createApi({
   }),
 });
 
-export const { useCreateSmscMutation, useGetSmscQuery, useEditSmscMutation, useEditSmscStatusMutation } = smscApi;
+export const { useCreateSmscMutation, useGetSmscQuery, useLookupDataCodingQuery, useEditSmscMutation, useEditSmscStatusMutation } = smscApi;

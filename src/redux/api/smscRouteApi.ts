@@ -35,22 +35,11 @@ export const smscRouteApi = createApi({
       providesTags: (result, _error, _arg) =>
         result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscRouteId }: any) => ({ type: 'smscRoute' as const, smscRouteId })), 'smscRoute'] : ['smscRoute'],
     }),
-
     lookupServiceTypeId: builder.query<SmscRouteResponsez, void>({
       query: () => createRequest('Lookup/ServiceType'),
       providesTags: (result, _error, _arg) =>
         result?.data && !isEmpty(result?.data) ? [...result.data.map(({ smscRouteId }: any) => ({ type: 'smscRoute' as const, smscRouteId })), 'smscRoute'] : ['smscRoute'],
     }),
-
-    // getSmscRoutez: builder.mutation<SmscResponse, Partial<Smsc> & Pick<Smsc, 'smscRouteId'>>({
-    //   query: ({ smscRouteId }) => {
-    //     return {
-    //       url: `Smsc/Route/${smscRouteId}`,
-    //       method: 'GET',
-    //     };
-    //   },
-    //   invalidatesTags: (_result, _error, { smscRouteId }) => [{ type: 'smsc', smscRouteId }],
-    // }),
 
     editSmscRoute: builder.mutation<SmscRouteResponse, Partial<SmscRoute> & Pick<SmscRoute, 'smscRouteId'>>({
       query: (data) => {

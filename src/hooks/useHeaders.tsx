@@ -534,15 +534,15 @@ const useHeaders = () => {
   const smtprouteconfigheader = useMemo(() => {
     return [
       {
-        key: 'route_name',
+        key: 'routeName',
         header: 'SMTP Route Name',
       },
       {
-        key: 'smtp_name',
+        key: 'smtpServer',
         header: 'SMTP Name',
       },
       {
-        key: 'serviceType',
+        key: 'serviceTypeName',
         header: 'Service Type',
       },
       {

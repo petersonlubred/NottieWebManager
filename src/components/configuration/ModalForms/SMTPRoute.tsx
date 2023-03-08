@@ -1,146 +1,130 @@
 import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import { isEmpty } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
-import { SMSRouteConfigSchema } from '@/schemas/schema';
-import { initialSMSRouteConfigValue } from '@/schemas/schema';
+import Loader from '@/components/shared/Loader';
+import { useToast } from '@/context/ToastContext';
+import { SmscRoute, SmtpRoute } from '@/interfaces/configuration';
+import { FormikRefType } from '@/interfaces/formik.type';
+import { useCreateSmtpRouteMutation, useEditSmtpRouteMutation, useLookupServiceTypeIdQuery, useLookupSmtpQuery } from '@/redux/api';
+import { initialSMTPRouteValue } from '@/schemas/dto';
+import { IinitialSMTPRouteForm } from '@/schemas/interface';
+import { SMTPRouteSchema } from '@/schemas/schema';
 import { px } from '@/utils';
 
-const SMTPRoute = () => {
+interface Props {
+  formRef: React.RefObject<FormikRefType<IinitialSMTPRouteForm>>;
+  formdata?: IinitialSMTPRouteForm & { smtpRouteId: string };
+  toggleModal: () => void;
+}
+export type LookupTemp = {
+  id?: string;
+  name: string;
+  description: string;
+};
+
+const SMTPRoute = ({ formRef, formdata, toggleModal }: Props) => {
+  const [serviceTypeLookup, setServiceTypeLookup] = useState<SmscRoute[]>([]);
+  const [smtpLookup, setSmtpLookup] = useState<SmtpRoute[]>([]);
+  const [editSmtpRoute, { isLoading: editLoading, isSuccess: editSuccess, isError: isEditError, error: editError }] = useEditSmtpRouteMutation();
+  const [createSmtpRoute, { isLoading, isSuccess, isError, error }] = useCreateSmtpRouteMutation();
+  const { data: serviceTypeLookupData } = useLookupServiceTypeIdQuery();
+  const { data: smtpLookupData } = useLookupSmtpQuery();
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    !isEmpty(serviceTypeLookupData?.data) && setServiceTypeLookup(serviceTypeLookupData?.data as SmscRoute[]);
+    !isEmpty(smtpLookupData?.data) && setSmtpLookup(smtpLookupData?.data as SmtpRoute[]);
+  }, [serviceTypeLookupData?.data, smtpLookupData?.data]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast('success', 'SMTP ROUTE configuration saved successfully');
+      toggleModal();
+    }
+    if (isError && error && 'status' in error) {
+      toast('error', error?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, isError, isSuccess]);
+
+  useEffect(() => {
+    if (editSuccess) {
+      toast('success', 'SMTP ROUTE edited successfully');
+      toggleModal();
+    }
+    if (isEditError && editError && 'status' in editError) {
+      toast('error', editError?.data?.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editError, editSuccess, isEditError]);
+
+  const handleSubmit = (values: IinitialSMTPRouteForm) => {
+    const payload: any = {
+      ...values,
+    };
+
+    const formvalues = payload as IinitialSMTPRouteForm & { smtpRouteId: string };
+    formdata?.smtpRouteId ? editSmtpRoute(formvalues) : createSmtpRoute(formvalues);
+  };
+
   return (
     <ModalContentContainer>
+      {(isLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik
-          initialValues={initialSMSRouteConfigValue}
-          validationSchema={SMSRouteConfigSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
-          }}
-        >
-          {({ errors, touched, setFieldTouched, values }) => (
+        <Formik initialValues={{ ...initialSMTPRouteValue, ...formdata }} validationSchema={SMTPRouteSchema} onSubmit={handleSubmit} innerRef={formRef}>
+          {({ errors, touched, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">
                 <FormField>
-                  <ModalLabel>SMS Route</ModalLabel>{' '}
-                  <FormEmailContainer>
-                    <Field name="route">
+                  <FormContainer>
+                    <Field name="routeName">
                       {({ field }: any) => (
-                        <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('route', true)}>
-                          <SelectItem text="Choose option" />
-                          <SelectItem text="Option 1" value="option-1" />
-                          <SelectItem text="Option 2" value="option-2" />
+                        <TextInput
+                          {...field}
+                          type="text"
+                          id="routeName-input"
+                          labelText="SMTP Route Name"
+                          placeholder="enter name"
+                          onKeyUp={() => setFieldTouched('routeName', true)}
+                        />
+                      )}
+                    </Field>
+                    <Field name="smtpId">
+                      {({ field }: any) => (
+                        <Select id="select-1" labelText="Smtp Name" {...field} onKeyUp={() => setFieldTouched('smtpId', true)}>
+                          <SelectItem text="Choose smtp name" />
+                          {smtpLookup.map((item: any) => (
+                            <SelectItem key={item.id} text={item.name} value={item.id} />
+                          ))}
+                        </Select>
+                      )}
+                    </Field>
+                    <ErrorMessage invalid={Boolean(touched.routeName && errors.routeName)} invalidText={errors.routeName} />
+                    <ErrorMessage invalid={Boolean(touched.smtpId && errors.smtpId)} invalidText={errors.smtpId} />
+                  </FormContainer>
+                </FormField>{' '}
+                <FormField>
+                  <ModalLabel>Service Type</ModalLabel>{' '}
+                  <FormEmailContainer>
+                    <Field name="serviceTypeId">
+                      {({ field }: any) => (
+                        <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('serviceTypeId', true)}>
+                          <SelectItem text="Choose service type" />
+                          {serviceTypeLookup.map((item: any) => (
+                            <SelectItem key={item.id} text={item.name} value={item.id} />
+                          ))}
                         </Select>
                       )}
                     </Field>
                   </FormEmailContainer>
-                  <ErrorMessage invalid={Boolean(touched.route && errors.route)} invalidText={errors.route} />
+                  <ErrorMessage invalid={Boolean(touched.serviceTypeId && errors.serviceTypeId)} invalidText={errors.serviceTypeId} />
                 </FormField>{' '}
-                <FormField>
-                  <FormContainer>
-                    <Field name="aggregator">
-                      {({ field }: any) => (
-                        <Select id="select-1" labelText="Aggregator/SMSC" {...field} onKeyUp={() => setFieldTouched('aggregator', true)}>
-                          <SelectItem text="Choose option" />
-                          <SelectItem text="Option 1" value="option-1" />
-                          <SelectItem text="Option 2" value="option-2" />
-                        </Select>
-                      )}
-                    </Field>
-                    <Field name="routeType">
-                      {({ field }: any) => (
-                        <Select id="select-1" labelText="Route Type" {...field} onKeyUp={() => setFieldTouched('routeType', true)}>
-                          <SelectItem text="Choose an option" />
-                          <SelectItem text="Network" value="network" />
-                          <SelectItem text="Product code" value="productCode" />
-                          <SelectItem text="Account" value="account" />
-                          <SelectItem text="Transaction" value="transaction" />
-                        </Select>
-                      )}
-                    </Field>
-                    <ErrorMessage invalid={Boolean(touched.aggregator && errors.aggregator)} invalidText={errors.aggregator} />
-                    <ErrorMessage invalid={Boolean(touched.routeType && errors.routeType)} invalidText={errors.routeType} />
-                  </FormContainer>
-                </FormField>{' '}
-                {values?.routeType === 'network' ? (
-                  <FormField>
-                    <FormContainer>
-                      <Field name="country">
-                        {({ field }: any) => (
-                          <Select id="select-1" labelText="Country" {...field} onKeyUp={() => setFieldTouched('country', true)}>
-                            <SelectItem text="Choose option" />
-                            <SelectItem text="Option 1" value="option-1" />
-                            <SelectItem text="Option 2" value="option-2" />
-                          </Select>
-                        )}
-                      </Field>
-                      <Field name="network">
-                        {({ field }: any) => (
-                          <Select id="select-1" labelText="Route Type" {...field} onKeyUp={() => setFieldTouched('network', true)}>
-                            <SelectItem text="Choose a network" />
-                            <SelectItem text="Option 1" value="option-1" />
-                            <SelectItem text="Option 2" value="option-2" />
-                          </Select>
-                        )}
-                      </Field>
-                      <ErrorMessage invalid={Boolean(touched.country && errors.country)} invalidText={errors.country} />
-                      <ErrorMessage invalid={Boolean(touched.network && errors.network)} invalidText={errors.network} />
-                    </FormContainer>
-                  </FormField>
-                ) : values?.routeType === 'productCode' ? (
-                  <FormField>
-                    <FormContainer>
-                      <Field name="productCode">
-                        {({ field }: any) => (
-                          <TextInput
-                            {...field}
-                            type="text"
-                            id="productCode-input"
-                            labelText="Product Code"
-                            placeholder="enter code"
-                            onKeyUp={() => setFieldTouched('productCode', true)}
-                          />
-                        )}
-                      </Field>
-                      <ErrorMessage invalid={Boolean(touched.productCode && errors.productCode)} invalidText={errors.productCode} />
-                    </FormContainer>
-                  </FormField>
-                ) : values?.routeType === 'account' ? (
-                  <FormField>
-                    <FormContainer>
-                      <Field name="accountType">
-                        {({ field }: any) => (
-                          <Select id="select-1" labelText="Account Type" {...field} onKeyUp={() => setFieldTouched('accountType', true)}>
-                            <SelectItem text="Choose option" />
-                            <SelectItem text="Option 1" value="option-1" />
-                            <SelectItem text="Option 2" value="option-2" />
-                          </Select>
-                        )}
-                      </Field>
-                      <ErrorMessage invalid={Boolean(touched.accountType && errors.accountType)} invalidText={errors.accountType} />
-                    </FormContainer>
-                  </FormField>
-                ) : (
-                  values?.routeType === 'transaction' && (
-                    <FormField>
-                      <FormContainer>
-                        <Field name="transactionType">
-                          {({ field }: any) => (
-                            <Select id="select-1" labelText="Transaction Type" {...field} onKeyUp={() => setFieldTouched('transactionType', true)}>
-                              <SelectItem text="Choose option" />
-                              <SelectItem text="Option 1" value="option-1" />
-                              <SelectItem text="Option 2" value="option-2" />
-                            </Select>
-                          )}
-                        </Field>
-
-                        <ErrorMessage invalid={Boolean(touched.transactionType && errors.transactionType)} invalidText={errors.transactionType} />
-                      </FormContainer>
-                    </FormField>
-                  )
-                )}
               </FormGroup>
             </Form>
           )}

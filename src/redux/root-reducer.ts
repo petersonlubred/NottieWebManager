@@ -1,7 +1,21 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 
-import { alertApi, dashboardApi, dataSourceApi, notificationApi, roleApi, smscApi, smscRouteApi, smscRouteConfigApi, smtpApi, systemConfigApi, templateApi, userApi } from './api';
+import {
+  alertApi,
+  dashboardApi,
+  dataSourceApi,
+  notificationApi,
+  roleApi,
+  smscApi,
+  smscRouteApi,
+  smscRouteConfigApi,
+  smtpApi,
+  smtpRouteApi,
+  systemConfigApi,
+  templateApi,
+  userApi,
+} from './api';
 import { databaseApi } from './api/databaseApi';
 import authReducer, { persistConfig } from './slices/auth';
 import dashboardReducer, { dashboardPersistConfig } from './slices/dashboard';
@@ -22,6 +36,7 @@ export const reducers = combineReducers({
   [systemConfigApi.reducerPath]: systemConfigApi.reducer,
   [dataSourceApi.reducerPath]: dataSourceApi.reducer,
   [dashboardApi.reducerPath]: dashboardApi.reducer,
+  [smtpRouteApi.reducerPath]: smtpRouteApi.reducer,
   sharedReducer: persistReducer(persistConfig, sharedReducer),
   dashboardReducer: persistReducer(dashboardPersistConfig, dashboardReducer),
 });

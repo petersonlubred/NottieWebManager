@@ -8,6 +8,7 @@ export * from './smscApi';
 export * from './smscRouteApi';
 export * from './smscRouteConfigApi';
 export * from './smtpApi';
+export * from './smtpRouteApi';
 export * from './systemConfigApi';
 export * from './templateApi';
 export * from './userApi';
