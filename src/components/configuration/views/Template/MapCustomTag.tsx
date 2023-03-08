@@ -51,6 +51,7 @@ const MapCustomTags = ({ open, toggleModal, templateId }: IProps) => {
       }).unwrap();
       toast('success', 'Custom tag added successfully');
       setLoading(false);
+      toggleModal();
     } catch (error: any) {
       toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
       setLoading(false);
