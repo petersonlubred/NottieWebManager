@@ -402,43 +402,43 @@ const useHeaders = () => {
   const smscheader = useMemo(() => {
     return [
       {
-        key: 'smsc_name',
+        key: 'smscName',
         header: 'SMSC Name',
       },
       {
-        key: 'seerver',
-        header: 'Server/IP',
+        key: 'hostAddress',
+        header: 'Host Address',
       },
       {
-        key: 'connectionType',
-        header: 'Connection Type',
+        key: 'systemType',
+        header: 'System Type',
       },
       {
-        key: 'connectionSockets',
+        key: 'connectionMode',
         header: 'Connection Sockets',
       },
       {
-        key: 'data_encoding',
+        key: 'dataEncoding',
         header: 'Data Encoding',
       },
       {
-        key: 'nip',
-        header: 'NIP',
+        key: 'npi',
+        header: 'NPI',
       },
       {
         key: 'ton',
         header: 'TON',
       },
       {
-        key: 'onpi',
+        key: 'oNpi',
         header: 'ONPI',
       },
       {
-        key: 'dnpi',
+        key: 'dNpi',
         header: 'DNPI',
       },
       {
-        key: 'dton',
+        key: 'dTon',
         header: 'DTON',
       },
       {
@@ -455,15 +455,15 @@ const useHeaders = () => {
   const smsrouteheader = useMemo(() => {
     return [
       {
-        key: 'route_name',
+        key: 'smscRouteName',
         header: 'SMS Route Name',
       },
       {
-        key: 'aggregator',
+        key: 'smscName',
         header: 'Aggregator/SMSC',
       },
       {
-        key: 'serviceType',
+        key: 'seviceType',
         header: 'Service Type',
       },
       {
@@ -476,11 +476,11 @@ const useHeaders = () => {
   const smsrouteconfigheader = useMemo(() => {
     return [
       {
-        key: 'route_name',
+        key: 'routeName',
         header: 'SMS Route Name',
       },
       {
-        key: 'aggregator',
+        key: 'smscName',
         header: 'Aggregator/SMSC',
       },
       {
@@ -534,15 +534,15 @@ const useHeaders = () => {
   const smtprouteconfigheader = useMemo(() => {
     return [
       {
-        key: 'route_name',
+        key: 'routeName',
         header: 'SMTP Route Name',
       },
       {
-        key: 'smtp_name',
+        key: 'smtpServer',
         header: 'SMTP Name',
       },
       {
-        key: 'serviceType',
+        key: 'serviceTypeName',
         header: 'Service Type',
       },
       {
