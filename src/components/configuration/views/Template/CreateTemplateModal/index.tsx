@@ -1,7 +1,7 @@
 import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
 import { upperCase } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';

@@ -50,7 +50,19 @@ export const dataSourceApi = createApi({
       providesTags: (result, _error, _arg) =>
         result?.data && !isEmpty(result?.data) ? [...result.data.map(({ dataSourceId }: any) => ({ type: 'datasource' as const, dataSourceId })), 'datasource'] : ['datasource'],
     }),
+
+    updateStatus: builder.mutation<DataSourceResponse, { dataSourceId?: string; status?: boolean }>({
+      query: ({ dataSourceId, status }) => {
+        return {
+          url: `DataSource/${dataSourceId}/Status`,
+          method: 'PUT',
+          body: { status },
+        };
+      },
+      invalidatesTags: (_result, _error, { dataSourceId }) => [{ type: 'datasource', dataSourceId }],
+    }),
   }),
 });
 
-export const { useCreateDatasourceMutation, useGetDatasourcesQuery, useLookupDatabaseTypeQuery, useEditDatasourceMutation, useGetDatasourceQuery } = dataSourceApi;
+export const { useCreateDatasourceMutation, useGetDatasourcesQuery, useLookupDatabaseTypeQuery, useEditDatasourceMutation, useGetDatasourceQuery, useUpdateStatusMutation } =
+  dataSourceApi;

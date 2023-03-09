@@ -1,4 +1,4 @@
-import { Copy, Edit, TrashCan } from '@carbon/react/icons';
+import { Copy } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -28,6 +28,7 @@ interface IMailBody {
 const MailBody = ({ template, serviceTypeId, emailData, smsData, formRef, handleSubmit, handleFormData }: IMailBody) => {
   const [selected, setSelected] = React.useState<number>(0);
   const [responseData, setResponseData] = useState<ITemplateConfigEmail | ITemplateConfigSms>();
+
   const { toast } = useToast();
 
   const discardChanges = () => {
@@ -73,17 +74,10 @@ const MailBody = ({ template, serviceTypeId, emailData, smsData, formRef, handle
           <CopyParagraphValue> {template.templateId}</CopyParagraphValue>
           <Copy size={16} onClick={handleCopy} />
         </CopyDetails>
-        <IconBox>
-          <EditIcon onClick={() => handleFormData()}>
-            <Edit size={20} />
-          </EditIcon>
-          {/* <DeleteIcon>
-            <TrashCan size={20} />
-          </DeleteIcon> */}
-        </IconBox>
         <ActionContainer>
+          <Button renderIcon={null} handleClick={() => handleFormData()} buttonLabel="Edit Template" />
           <Button renderIcon={null} handleClick={() => discardChanges()} buttonLabel="Discard changes" />
-          <Button renderIcon={null} handleClick={() => handleSubmit()} buttonLabel="Save Changes" />
+          <Button renderIcon={null} handleClick={() => handleSubmit()} buttonLabel="Save Changes" />{' '}
         </ActionContainer>
       </MailNav>
       {selected === 0 && responseData && <SmsForm formdata={{ ...(responseData as ITemplateConfigSms), templateId: template?.templateId, serviceTypeId }} formRef={formRef} />}
@@ -146,29 +140,10 @@ const MailNavToggle = styled.div`
 const ActionContainer = styled.div`
   button {
     padding: ${px(10)} ${px(16)};
-    &:first-child {
+    &:nth-child(2) {
       background-color: ${({ theme }) => theme.colors.bgHover};
       color: ${({ theme }) => theme.colors.white} !important;
     }
-  }
-`;
-
-const IconBox = styled.div`
-  display: flex;
-  width: ${px(48)};
-  justify-content: space-between;
-`;
-
-const EditIcon = styled.div`
-  svg {
-    cursor: pointer;
-    fill: ${({ theme }) => theme.colors.white};
-  }
-`;
-const DeleteIcon = styled.div`
-  svg {
-    cursor: pointer;
-    fill: ${({ theme }) => theme.colors.danger};
   }
 `;
 

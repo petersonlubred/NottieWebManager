@@ -53,7 +53,7 @@ const SubscriptionModalContent = ({ formRef, formdata, toggleModal }: Iprops) =>
     <ModalContentContainer>
       {(loading || isFetching) && <Loader />}
       <ModalItem>
-        <Formik initialValues={{ ...initialSubscription, ...formdata }} validationSchema={SubscriptionSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik initialValues={{ ...initialSubscription, ...formdata }} validationSchema={SubscriptionSchema} onSubmit={handleSubmit} innerRef={formRef} enableReinitialize>
           {({ errors, touched, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">

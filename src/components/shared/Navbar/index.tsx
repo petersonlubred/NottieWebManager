@@ -48,7 +48,7 @@ const Navbar = () => {
           <Logo />
         </LogoContainer>
         {Navbaritem.map((item, index) => (
-          <NavList key={index}>
+          <NavList key={index} active={currentRoute === item?.route}>
             {index === 2 ? (
               <Dropdown
                 ariaLabel="Dropdown"
@@ -125,14 +125,15 @@ const NavSectionOne = styled.div`
   justify-content: center;
 `;
 
-const NavList = styled.div`
+const NavList = styled.div<{ active: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   #dropdown {
     max-height: 10rem;
     height: ${px(53)};
-    background-color: ${({ theme }) => theme.colors.bgPrimary};
+    background-color: ${({ theme, active }) => (active ? theme.colors.bgHover : theme.colors.bgPrimary)};
+
     border: none;
     outline: none;
 

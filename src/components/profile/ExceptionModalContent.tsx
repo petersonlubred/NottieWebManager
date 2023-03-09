@@ -7,7 +7,7 @@ import { useToast } from '@/context/ToastContext';
 import { ILookupAlertProfile, ILookupAlertType } from '@/interfaces/alert';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { useCreateExceptionMutation, useLookupAlertProfileQuery, useLookupAlertTypeQuery, useUpdateExceptionMutation } from '@/redux/api';
-import { initialSubscription } from '@/schemas/dto';
+import { initialAlertException } from '@/schemas/dto';
 import { IinitialAlertException } from '@/schemas/interface';
 import { AlertExceptionSchema } from '@/schemas/schema';
 import { px } from '@/utils';
@@ -53,7 +53,7 @@ const ModalContent = ({ formRef, formdata, toggleModal }: Iprops) => {
     <ModalContentContainer>
       {(loading || isFetching || isFetchingAlertTypes) && <Loader />}
       <ModalItem>
-        <Formik initialValues={{ ...initialSubscription, ...formdata }} validationSchema={AlertExceptionSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik initialValues={{ ...initialAlertException, ...formdata }} validationSchema={AlertExceptionSchema} onSubmit={handleSubmit} innerRef={formRef} enableReinitialize>
           {({ errors, touched, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">
