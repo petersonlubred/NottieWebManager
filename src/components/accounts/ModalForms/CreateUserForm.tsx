@@ -60,7 +60,7 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
     <ModalContentContainer>
       {(loading || rolesLoading) && <Loader />}
       <ModalItem>
-        <Formik initialValues={{ ...initialUserValue, ...formdata }} validationSchema={userAccountSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik initialValues={{ ...initialUserValue, ...formdata }} validationSchema={userAccountSchema} onSubmit={handleSubmit} innerRef={formRef} enableReinitialize>
           {({ errors, touched, setFieldTouched, setFieldValue }) => (
             <Form>
               <FormGroup legendText="">

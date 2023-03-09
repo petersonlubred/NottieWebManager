@@ -215,7 +215,7 @@ const Alert = () => {
         return;
       }
       !isEmpty(transactionSms?.data?.data)
-        ? (setResponseData(transactionSms?.data?.data as SmsData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(transactionSms?.data?.data as SmsData[]), setPaginationData(transactionSms?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'txn-email') {
       if (isError && error && 'status' in error) {
@@ -223,11 +223,11 @@ const Alert = () => {
         return;
       }
       !isEmpty(transactionEmail?.data?.data)
-        ? (setResponseData(transactionEmail?.data?.data as EmailData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(transactionEmail?.data?.data as EmailData[]), setPaginationData(transactionEmail?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'non-txn') {
       !isEmpty(NTransaction?.data?.data)
-        ? (setResponseData(NTransaction?.data?.data as NonTransaction[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(NTransaction?.data?.data as NonTransaction[]), setPaginationData(NTransaction?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'non-txn-sms') {
       if (isErrorNTransactionSms && errorNTransactionSms && 'status' in errorNTransactionSms) {
@@ -235,7 +235,7 @@ const Alert = () => {
         return;
       }
       !isEmpty(NTransactionSms?.data?.data)
-        ? (setResponseData(NTransactionSms?.data?.data as SmsData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(NTransactionSms?.data?.data as SmsData[]), setPaginationData(NTransactionSms?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'non-txn-email') {
       if (isErrorNTransactionEmail && errorNTransactionEmail && 'status' in errorNTransactionEmail) {
@@ -243,11 +243,11 @@ const Alert = () => {
         return;
       }
       !isEmpty(NTransactionEmail?.data?.data)
-        ? (setResponseData(NTransactionEmail?.data?.data as EmailData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(NTransactionEmail?.data?.data as EmailData[]), setPaginationData(NTransactionEmail?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'otp') {
       !isEmpty(otp?.data?.data)
-        ? (setResponseData(otp?.data?.data as OtpData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(otp?.data?.data as OtpData[]), setPaginationData(otp?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'otp-sms') {
       if (isErrorOtpSms && errorOtpSms && 'status' in errorOtpSms) {
@@ -255,7 +255,7 @@ const Alert = () => {
         return;
       }
       !isEmpty(otpsms?.data?.data)
-        ? (setResponseData(otpsms?.data?.data as SmsData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(otpsms?.data?.data as SmsData[]), setPaginationData(otpsms?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else if (currentTab === 'otp-email') {
       if (isErrorOtpEmail && errorOtpEmail && 'status' in errorOtpEmail) {
@@ -263,7 +263,7 @@ const Alert = () => {
         return;
       }
       !isEmpty(otpemail?.data?.data)
-        ? (setResponseData(otpemail?.data?.data as EmailData[]), setPaginationData(data?.data.meta as IPaginationData))
+        ? (setResponseData(otpemail?.data?.data as EmailData[]), setPaginationData(otpemail?.data.meta as IPaginationData))
         : (setResponseData([]), setPaginationData(initialPaginationData));
     } else {
       setResponseData([]);
@@ -272,14 +272,14 @@ const Alert = () => {
   }, [
     data?.data?.data,
     currentTab,
-    transactionSms?.data?.data,
-    transactionEmail?.data?.data,
-    NTransaction?.data?.data,
-    NTransactionSms?.data?.data,
-    NTransactionEmail?.data?.data,
-    otp?.data?.data,
-    otpsms?.data?.data,
-    otpemail?.data?.data,
+    transactionSms?.data,
+    transactionEmail?.data,
+    NTransaction?.data,
+    NTransactionSms?.data,
+    NTransactionEmail?.data,
+    otp?.data,
+    otpsms?.data,
+    otpemail?.data,
     data?.data.meta,
     tabIndex,
     isError,

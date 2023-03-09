@@ -90,7 +90,7 @@ const SMTP = ({ formRef, formdata, toggleModal }: Props) => {
     <ModalContentContainer>
       {(isLoading || isTestLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik initialValues={formdata?.smtpId ? formdata : initialSMTPValue} validationSchema={SMTPSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik initialValues={formdata?.smtpId ? formdata : initialSMTPValue} validationSchema={SMTPSchema} onSubmit={handleSubmit} innerRef={formRef} enableReinitialize>
           {({ errors, touched, setFieldTouched, setFieldValue }) => (
             <Form>
               <FormGroup legendText="">

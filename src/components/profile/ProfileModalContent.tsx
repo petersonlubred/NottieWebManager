@@ -53,7 +53,7 @@ const ModalContent = ({ formRef, formdata, toggleModal }: Iprops) => {
     <ModalContentContainer>
       {(loading || isFetching) && <Loader />}
       <ModalItem>
-        <Formik initialValues={{ ...initialAlertProfileValue, ...formdata }} validationSchema={AlertProfileSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik initialValues={{ ...initialAlertProfileValue, ...formdata }} validationSchema={AlertProfileSchema} onSubmit={handleSubmit} innerRef={formRef} enableReinitialize>
           {({ errors, touched, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">

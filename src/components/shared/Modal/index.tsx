@@ -14,7 +14,7 @@ interface Iprops {
   onRequestSubmit?: () => void;
 }
 
-const Modal = ({ buttonLabel, heading, children, secondaryButtonText = '', open, danger, extent = 'md', toggleModal, onRequestSubmit }: Iprops) => {
+const Modal = ({ buttonLabel, heading, children, secondaryButtonText = 'Cancel', open, danger, extent = 'md', toggleModal, onRequestSubmit }: Iprops) => {
   return (
     <ModalContainer
       modalHeading={heading}

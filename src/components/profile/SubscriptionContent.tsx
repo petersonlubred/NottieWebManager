@@ -53,7 +53,7 @@ const SubscriptionModalContent = ({ formRef, formdata, toggleModal }: Iprops) =>
     <ModalContentContainer>
       {(loading || isFetching) && <Loader />}
       <ModalItem>
-        <Formik initialValues={{ ...initialSubscription, ...formdata }} validationSchema={SubscriptionSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik initialValues={{ ...initialSubscription, ...formdata }} validationSchema={SubscriptionSchema} onSubmit={handleSubmit} innerRef={formRef} enableReinitialize>
           {({ errors, touched, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">
@@ -154,7 +154,6 @@ export const ModalLabel = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.s};
   font-weight: 400;
   line-height: ${px(12)};
-  margin-bottom: ${px(6)};
 `;
 
 const FormField = styled.div`
