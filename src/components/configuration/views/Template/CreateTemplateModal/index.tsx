@@ -1,7 +1,7 @@
 import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
 import { Field, Form, Formik } from 'formik';
 import { upperCase } from 'lodash';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
@@ -10,7 +10,7 @@ import Modal from '@/components/shared/Modal';
 import { useToast } from '@/context/ToastContext';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { ILookServiceType } from '@/interfaces/template';
-import { useCreateTemplateConfigMutation, useLookupServiceTypeQuery } from '@/redux/api';
+import { useCreateTemplateConfigMutation, useLookupServiceTypeQuery, useUpdateTemplateConfigMutation } from '@/redux/api';
 import { initialTemplate } from '@/schemas/dto';
 import { IinitialTemplate } from '@/schemas/interface';
 import { templateSchema } from '@/schemas/schema';
@@ -20,33 +20,51 @@ import { pickValues } from '@/utils/helpers/helpers';
 type IProps = {
   open?: boolean;
   formRef: React.RefObject<FormikRefType<IinitialTemplate>>;
-  formdata?: IinitialTemplate;
+  formdata?: IinitialTemplate & { templateId: string };
   handleSubmit: () => void;
   toggleModal: () => void;
 };
 
 const CreateTemplateAlertModal = ({ open, toggleModal, formRef, formdata, handleSubmit }: IProps) => {
   const { data, isFetching } = useLookupServiceTypeQuery({});
-  const [createTemplate] = useCreateTemplateConfigMutation();
+  const [createTemplate, { isLoading: isCreating }] = useCreateTemplateConfigMutation();
+  const [updateTemplate, { isLoading: isUpdating }] = useUpdateTemplateConfigMutation();
 
   const { toast } = useToast();
 
   const handleFormSubmit = async (values: IinitialTemplate) => {
     const formvalues = values as IinitialTemplate;
     try {
-      await createTemplate(pickValues({ ...formvalues, templateCode: upperCase(formvalues.templateName) })).unwrap();
-      toast('success', 'Created successfully');
+      if (formdata?.templateId) {
+        await updateTemplate(pickValues({ ...formvalues, templateCode: upperCase(formvalues.templateName), templateId: formdata.templateId })).unwrap();
+      } else {
+        await createTemplate(pickValues({ ...formvalues, templateCode: upperCase(formvalues.templateName) })).unwrap();
+      }
+      toast('success', 'Saved successfully');
       toggleModal();
     } catch (error: any) {
       toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
     }
   };
+  useEffect(() => {
+    if (formdata?.templateId) {
+      formRef.current?.setValues({ ...formdata });
+    }
+  }, [formRef, formdata, formdata?.templateId]);
 
   return (
     <TemplateModalContainer>
-      {isFetching && <Loader />}
-      <Modal buttonLabel="Create template" heading=" Create template" open={open} toggleModal={toggleModal} secondaryButtonText="Cancel" extent="sm" onRequestSubmit={handleSubmit}>
+      <Modal
+        buttonLabel={`${formdata?.templateId ? 'Edit' : 'Create'} template`}
+        heading={`${formdata?.templateId ? 'Edit' : 'Create'} template`}
+        open={open}
+        toggleModal={toggleModal}
+        secondaryButtonText="Cancel"
+        extent="sm"
+        onRequestSubmit={handleSubmit}
+      >
         <ModalContainer>
+          {(isFetching || isCreating || isUpdating) && <Loader />}
           <Formik initialValues={{ ...initialTemplate, ...formdata }} validationSchema={templateSchema} onSubmit={handleFormSubmit} innerRef={formRef}>
             {({ errors, touched, setFieldTouched }) => (
               <Form>
@@ -67,14 +85,16 @@ const CreateTemplateAlertModal = ({ open, toggleModal, formRef, formdata, handle
                   <FormField>
                     <Field name="templateName">
                       {({ field }: any) => (
-                        <TextInput
-                          {...field}
-                          type="text"
-                          id="name-input"
-                          labelText="Template Name"
-                          placeholder="enter name"
-                          onKeyUp={() => setFieldTouched('templateName', true)}
-                        />
+                        <>
+                          <TextInput
+                            {...field}
+                            type="text"
+                            id="name-input"
+                            labelText="Template Name"
+                            placeholder="enter name"
+                            onKeyUp={() => setFieldTouched('templateName', true)}
+                          />
+                        </>
                       )}
                     </Field>
                     <ErrorMessage invalid={Boolean(touched.templateName && errors.templateName)} invalidText={errors.templateName} />
