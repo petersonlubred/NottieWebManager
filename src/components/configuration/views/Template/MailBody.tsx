@@ -1,4 +1,4 @@
-import { Copy } from '@carbon/react/icons';
+import { Copy, Edit, TrashCan } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -16,15 +16,16 @@ import SmsForm from './SmsForm';
 const navItems = ['SMS Template', 'Email Template'];
 
 interface IMailBody {
-  templateId: string;
+  template: { templateId: string; templateName: string };
   serviceTypeId: string;
   emailData: ITemplateConfigEmail;
   smsData: ITemplateConfigSms;
   formRef: React.RefObject<FormikRefType<any>>;
   handleSubmit: () => void;
+  handleFormData: () => void;
 }
 
-const MailBody = ({ templateId, serviceTypeId, emailData, smsData, formRef, handleSubmit }: IMailBody) => {
+const MailBody = ({ template, serviceTypeId, emailData, smsData, formRef, handleSubmit, handleFormData }: IMailBody) => {
   const [selected, setSelected] = React.useState<number>(0);
   const [responseData, setResponseData] = useState<ITemplateConfigEmail | ITemplateConfigSms>();
   const { toast } = useToast();
@@ -37,24 +38,24 @@ const MailBody = ({ templateId, serviceTypeId, emailData, smsData, formRef, hand
       resetData = emailData;
     }
     setResponseData(resetData);
-    formRef.current?.resetForm({ values: { ...resetData, templateId, serviceTypeId } });
+    formRef.current?.resetForm({ values: { ...resetData, templateId: template?.templateId, serviceTypeId } });
   };
   const handleCopy = () => {
-    navigator.clipboard.writeText(templateId);
+    navigator.clipboard.writeText(template?.templateId);
     toast('info', 'TemplateId copied to clipboard');
   };
 
   useEffect(() => {
     if (selected === 0) {
       !isEmpty(smsData)
-        ? (setResponseData(smsData), formRef.current?.resetForm({ values: { ...smsData, templateId, serviceTypeId } }))
+        ? (setResponseData(smsData), formRef.current?.resetForm({ values: { ...smsData, templateId: template?.templateId, serviceTypeId } }))
         : setResponseData({ ...initialSmsTemplate });
     } else {
       !isEmpty(emailData)
-        ? (setResponseData(emailData), formRef.current?.resetForm({ values: { ...emailData, templateId, serviceTypeId } }))
+        ? (setResponseData(emailData), formRef.current?.resetForm({ values: { ...emailData, templateId: template?.templateId, serviceTypeId } }))
         : setResponseData({ ...initialEmailTemplate });
     }
-  }, [emailData, smsData, selected, templateId, serviceTypeId, formRef]);
+  }, [emailData, smsData, selected, template?.templateId, serviceTypeId, formRef]);
 
   return (
     <Container>
@@ -69,16 +70,24 @@ const MailBody = ({ templateId, serviceTypeId, emailData, smsData, formRef, hand
 
         <CopyDetails>
           <CopyParagraphTitle>Template ID: </CopyParagraphTitle>
-          <CopyParagraphValue> {templateId}</CopyParagraphValue>
+          <CopyParagraphValue> {template.templateId}</CopyParagraphValue>
           <Copy size={16} onClick={handleCopy} />
         </CopyDetails>
+        <IconBox>
+          <EditIcon onClick={() => handleFormData()}>
+            <Edit size={20} />
+          </EditIcon>
+          {/* <DeleteIcon>
+            <TrashCan size={20} />
+          </DeleteIcon> */}
+        </IconBox>
         <ActionContainer>
           <Button renderIcon={null} handleClick={() => discardChanges()} buttonLabel="Discard changes" />
           <Button renderIcon={null} handleClick={() => handleSubmit()} buttonLabel="Save Changes" />
         </ActionContainer>
       </MailNav>
-      {selected === 0 && responseData && <SmsForm formdata={{ ...(responseData as ITemplateConfigSms), templateId, serviceTypeId }} formRef={formRef} />}
-      {selected === 1 && responseData && <EmailForm formdata={{ ...(responseData as ITemplateConfigEmail), templateId, serviceTypeId }} formRef={formRef} />}
+      {selected === 0 && responseData && <SmsForm formdata={{ ...(responseData as ITemplateConfigSms), templateId: template?.templateId, serviceTypeId }} formRef={formRef} />}
+      {selected === 1 && responseData && <EmailForm formdata={{ ...(responseData as ITemplateConfigEmail), templateId: template?.templateId, serviceTypeId }} formRef={formRef} />}
     </Container>
   );
 };
@@ -141,6 +150,25 @@ const ActionContainer = styled.div`
       background-color: ${({ theme }) => theme.colors.bgHover};
       color: ${({ theme }) => theme.colors.white} !important;
     }
+  }
+`;
+
+const IconBox = styled.div`
+  display: flex;
+  width: ${px(48)};
+  justify-content: space-between;
+`;
+
+const EditIcon = styled.div`
+  svg {
+    cursor: pointer;
+    fill: ${({ theme }) => theme.colors.white};
+  }
+`;
+const DeleteIcon = styled.div`
+  svg {
+    cursor: pointer;
+    fill: ${({ theme }) => theme.colors.danger};
   }
 `;
 

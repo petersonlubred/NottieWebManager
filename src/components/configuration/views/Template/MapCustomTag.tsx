@@ -34,6 +34,7 @@ const MapCustomTags = ({ open, toggleModal, templateId }: IProps) => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const changed = customDataArray
       .filter((tag) => tag.mappedName)
       .map((tag) => {
@@ -44,7 +45,6 @@ const MapCustomTags = ({ open, toggleModal, templateId }: IProps) => {
         };
       });
     try {
-      setLoading(true);
       await mapCustomTags({
         templateId,
         data: changed,
@@ -67,13 +67,10 @@ const MapCustomTags = ({ open, toggleModal, templateId }: IProps) => {
     }
   }, [data?.data, isSuccess]);
 
-  if (loading) {
-    return <Loader />;
-  }
-
   return (
     <InputModalContainer>
       <Modal buttonLabel="Save Changes" heading="Map custom tags" open={open} toggleModal={toggleModal} secondaryButtonText="Cancel" extent="sm" onRequestSubmit={callHandleSubmit}>
+        {loading && <Loader />}
         {customDataArray.map((item: ITemplateNonTransactionCustomTag) => (
           <InputFieldContainer key={item.tagId}>
             <TagBox>{item.tagName}</TagBox>
@@ -126,7 +123,6 @@ const IconBox = styled.div<{ isMapped: boolean }>`
 
 const InputBox = styled.div`
   width: 256px;
-
   flex: none;
   order: 1;
   align-self: stretch;

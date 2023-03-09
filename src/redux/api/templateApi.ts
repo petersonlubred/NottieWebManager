@@ -35,6 +35,16 @@ export const templateApi = createApi({
       },
       invalidatesTags: ['templateConfig'],
     }),
+    updateTemplateConfig: builder.mutation({
+      query: ({ templateId, ...data }) => {
+        return {
+          url: `TemplateConfig/${templateId}`,
+          method: 'PUT',
+          body: data,
+        };
+      },
+      invalidatesTags: ['templateConfig'],
+    }),
     getTemplateConfigSms: builder.query<{ data: ITemplateConfigSms; status: boolean }, { templateId: string; serviceTypeId: string }>({
       query: ({ templateId, serviceTypeId }) => createRequest(`TemplateConfig/${templateId}/Sms/${serviceTypeId}`),
       providesTags: ['templateConfigSms'],
@@ -93,6 +103,7 @@ export const {
   useLookupServiceTypeQuery,
   useGetTemplateConfigQuery,
   useCreateTemplateConfigMutation,
+  useUpdateTemplateConfigMutation,
   useGetTemplateConfigEmailQuery,
   useGetTemplateConfigSmsQuery,
   useUpdateTemplateConfigEmailMutation,
