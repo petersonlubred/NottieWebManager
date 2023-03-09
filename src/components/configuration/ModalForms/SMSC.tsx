@@ -78,7 +78,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
     <ModalContentContainer>
       {(isLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik initialValues={formdata?.smscId ? formdata : initialSMSCValue} validationSchema={SMSCSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik initialValues={formdata?.smscId ? formdata : initialSMSCValue} validationSchema={SMSCSchema} onSubmit={handleSubmit} innerRef={formRef} enableReinitialize>
           {({ values, errors, touched, setFieldValue, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">

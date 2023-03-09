@@ -3,7 +3,6 @@ import { Field, Form, Formik } from 'formik';
 import styled from 'styled-components';
 
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
-import RichTextExample from '@/components/shared/RichText';
 import { useToast } from '@/context/ToastContext';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { ITemplateConfigEmail } from '@/interfaces/template';
@@ -44,17 +43,40 @@ const EmailForm = ({ formdata, formRef }: Iprops) => {
               </FormContainer>
               <ErrorMessage invalid={Boolean(touched.subject && errors.subject)} invalidText={errors.subject} />
             </FormField>
+
             <FormField>
               <FormContainer>
                 <Field name="emailBodyContainer">
-                  {({ field }: any) => <TextArea {...field} enableCounter id="text-area-1" labelText="Email container" maxCount={500} placeholder="input text" />}
+                  {({ field }: any) => (
+                    <TextArea
+                      {...field}
+                      enableCounter
+                      id="text-area-1"
+                      labelText="Email container"
+                      maxCount={500}
+                      placeholder="input text"
+                      helperText="You can type HTML code into this text area."
+                    />
+                  )}
                 </Field>
               </FormContainer>
               <ErrorMessage invalid={Boolean(touched.emailBodyContainer && errors.emailBodyContainer)} invalidText={errors.emailBodyContainer} />
             </FormField>
             <FormField>
               <FormContainer>
-                <Field name="emailBodyContent">{() => <RichTextExample />}</Field>
+                <Field name="emailBodyContent">
+                  {({ field }: any) => (
+                    <TextArea
+                      {...field}
+                      enableCounter
+                      id="text-area-1"
+                      labelText="Email content"
+                      maxCount={500}
+                      placeholder="input text"
+                      helperText="You can type HTML code into this text area."
+                    />
+                  )}
+                </Field>
               </FormContainer>
               <ErrorMessage invalid={Boolean(touched.emailBodyContent && errors.emailBodyContent)} invalidText={errors.emailBodyContent} />
             </FormField>

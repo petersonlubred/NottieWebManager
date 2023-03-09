@@ -111,7 +111,13 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
     <ModalContentContainer>
       {(isLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik initialValues={{ ...initialSMSRouteConfigValue, ...formdata }} validationSchema={SMSRouteConfigSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik
+          initialValues={{ ...initialSMSRouteConfigValue, ...formdata }}
+          validationSchema={SMSRouteConfigSchema}
+          onSubmit={handleSubmit}
+          innerRef={formRef}
+          enableReinitialize
+        >
           {({ errors, touched, setFieldTouched, values, setFieldValue }) => (
             <Form>
               <FormGroup legendText="">
