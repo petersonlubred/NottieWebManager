@@ -98,6 +98,9 @@ const Container = styled.div`
   overflow-y: scroll;
   background-color: ${({ theme }) => theme.colors.tagBackground};
   border-left: 1px solid ${({ theme }) => theme.colors.borderLight};
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TagHeader = styled.div`
