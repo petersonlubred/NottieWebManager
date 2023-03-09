@@ -5,14 +5,21 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { ConfigurationTable, DataSource, ServiceMapping, SystemSettings, Template } from '@/components/configuration';
+import ActionIconsSmsc, { StatusIcon } from '@/components/configuration/ActionIcons/Smsc';
+import ActionIconsSmscRoute from '@/components/configuration/ActionIcons/SmscRoute';
+import ActionIconsSmscConfig from '@/components/configuration/ActionIcons/SmscRouteConfig';
 import ActionIcons from '@/components/configuration/ActionIcons/Smtp';
+import ActionIconsSmtpRoute from '@/components/configuration/ActionIcons/SmtpRoute';
 import Modal from '@/components/shared/Modal';
 import Layout from '@/HOC/Layout';
 import useHeaders from '@/hooks/useHeaders';
-import { Ismtp } from '@/interfaces/configuration';
+import { Ismtp, Smsc, SmscRoute, SmscRouteConfig, SmtpRoute } from '@/interfaces/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { IHeader } from '@/interfaces/role';
-import { useGetSmtpserversQuery } from '@/redux/api';
+import { useGetSmtpRouteServersQuery, useGetSmtpserversQuery } from '@/redux/api';
+import { useGetSmscRouteQuery } from '@/redux/api';
+import { useGetSmscRouteConfigQuery } from '@/redux/api';
+import { useGetSmscQuery } from '@/redux/api/smscApi';
 import { px } from '@/utils';
 import { protectedRouteProps } from '@/utils/withSession';
 
@@ -20,11 +27,10 @@ import ModalContent from '../../components/configuration/ModalContent';
 
 const SystemConfiguration = () => {
   const [Headers, setHeaders] = useState<IHeader[]>([]);
-  const [responseData, setResponseData] = useState<Ismtp[]>([]);
+  const [responseData, setResponseData] = useState<Ismtp[] | Smsc[] | SmscRoute[] | SmscRouteConfig[] | SmtpRoute[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const formRef = useRef<FormikRefType<any>>(null);
-  const { data, isFetching: isLoading } = useGetSmtpserversQuery();
 
   const [tabIndex, setTabIndex] = useState<number>(0);
   const router = useRouter();
@@ -45,9 +51,16 @@ const SystemConfiguration = () => {
 
   const currentTab = navItems.some((item) => item.tabName === tab) ? tab : 'template';
 
+  const { data, isFetching: isLoading } = useGetSmtpserversQuery(undefined, { skip: currentTab !== 'smtp' });
+  const { data: smscData, isFetching: isRetrieving } = useGetSmscQuery(undefined, { skip: currentTab !== 'smsc' });
+  const { data: smscRouteData, isFetching: isLoadingRoute } = useGetSmscRouteQuery(undefined, { skip: currentTab !== 'sms-route' });
+  const { data: smscConfigData, isFetching: isLoadingConfig } = useGetSmscRouteConfigQuery(undefined, { skip: currentTab !== 'sms-route-config' });
+  const { data: smtpRouteData, isFetching: isLoadingSmtpRoute } = useGetSmtpRouteServersQuery(undefined, { skip: currentTab !== 'smtp-route' });
+
   const { datasourceheader, smscheader, smsrouteheader, smsrouteconfigheader, smtpheader, smtprouteconfigheader } = useHeaders();
 
   const handleSetIndex = (index: number) => {
+    setResponseData([]);
     setTabIndex(index);
     router.push({
       pathname: '/configuration',
@@ -89,6 +102,19 @@ const SystemConfiguration = () => {
             row.id = item['smtpId'];
             row['others'] = <ActionIcons data={item} />;
             row['useSslTls'] = item['useSslTls'] ? 'Yes' : 'No';
+          } else if (currentTab === 'smsc') {
+            row.id = item['smscId'];
+            row['others'] = <ActionIconsSmsc data={item} />;
+            row['status'] = item['status'] ? <StatusIcon status="Active" /> : <StatusIcon status="Inactive" />;
+          } else if (currentTab === 'sms-route') {
+            row.id = item['smscRouteId'];
+            row['others'] = <ActionIconsSmscRoute data={item} />;
+          } else if (currentTab === 'sms-route-config') {
+            row.id = item['smscRouteConfigId'];
+            row['others'] = <ActionIconsSmscConfig data={item} />;
+          } else if (currentTab === 'smtp-route') {
+            row.id = item['smtpRouteId'];
+            row['others'] = <ActionIconsSmtpRoute data={item} />;
           }
         });
         return row;
@@ -100,10 +126,18 @@ const SystemConfiguration = () => {
   useEffect(() => {
     if (currentTab === 'smtp') {
       !isEmpty(data?.data) && setResponseData(data?.data as Ismtp[]);
+    } else if (currentTab === 'smsc') {
+      !isEmpty(smscData?.data) && setResponseData(smscData?.data as Smsc[]);
+    } else if (currentTab === 'sms-route') {
+      !isEmpty(smscRouteData?.data) && setResponseData(smscRouteData?.data as SmscRoute[]);
+    } else if (currentTab === 'sms-route-config') {
+      !isEmpty(smscConfigData?.data) && setResponseData(smscConfigData?.data as SmscRouteConfig[]);
+    } else if (currentTab === 'smtp-route') {
+      !isEmpty(smtpRouteData?.data) && setResponseData(smtpRouteData?.data as SmtpRoute[]);
     } else {
       setResponseData([]);
     }
-  }, [data?.data, currentTab]);
+  }, [data?.data, currentTab, smscData?.data, smscRouteData?.data, smscConfigData?.data, smtpRouteData?.data]);
 
   return (
     <Layout
@@ -126,7 +160,14 @@ const SystemConfiguration = () => {
         <ModalContent tab={tabIndex} formRef={formRef} toggleModal={toggleModal} />
       </Modal>
       {currentTab !== 'template' && currentTab !== 'data-source' && currentTab !== 'service-mapping' && currentTab !== 'system-settings' && (
-        <ConfigurationTable navItems={navItems} Rows={Rows} Headers={Headers} tab={tabIndex} toggleModal={toggleModal} isLoading={isLoading} />
+        <ConfigurationTable
+          navItems={navItems}
+          Rows={Rows}
+          Headers={Headers}
+          tab={tabIndex}
+          toggleModal={toggleModal}
+          isLoading={isLoading || isRetrieving || isLoadingRoute || isLoadingConfig || isLoadingSmtpRoute}
+        />
       )}
       {currentTab === 'template' && <Template />}
       {currentTab === 'data-source' && <DataSource />}

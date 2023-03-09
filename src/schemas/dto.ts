@@ -90,32 +90,37 @@ export const initialDataSource: IinitialDataSourceType = {
 };
 
 export const initialSMSCValue: IinitialSMSCForm = {
-  smsc_name: '',
-  server: '',
-  TXPort: '',
-  noOfSessions: '',
+  smscName: '',
+  hostAddress: '',
   dataEncoding: '',
-  npi: '',
-  onpi: '',
-  ton: '',
-  otin: '',
-  dnpi: '',
-  dton: '',
-  activate: '',
+  connectionMode: 1,
+  port: 0,
+  sessions: 0,
+  username: '',
+  password: '',
+  useSsl: false,
+  systemType: '',
+  npi: 0,
+  ton: 0,
+  oNpi: 0,
+  oTon: 0,
+  dNpi: 0,
+  dTon: 0,
+  status: true,
 };
 
 export const initialSMSRouteValue: IinitialSMSRouteForm = {
-  route_name: '',
-  aggregator: '',
-  serviceType: '',
+  smscRouteName: '',
+  smscId: '',
+  serviceTypeId: '',
 };
 
 export const initialSMSRouteConfigValue: IinitialSMSRouteConfigForm = {
-  route: '',
-  aggregator: '',
-  routeType: '',
-  country: '',
-  network: '',
+  smscRouteId: '',
+  smscId: '',
+  routeTypeId: '',
+  countryId: '',
+  networkId: '',
   accountType: '',
   productCode: '',
   transactionType: '',
@@ -132,9 +137,9 @@ export const initialSMTPValue: IinitialSMTPForm = {
 };
 
 export const initialSMTPRouteValue: IinitialSMTPRouteForm = {
-  route_name: '',
-  smtp_name: '',
-  serviceType: '',
+  routeName: '',
+  smtpId: '',
+  serviceTypeId: '',
 };
 
 export const initialUserValue: IinitialUserForm = {
