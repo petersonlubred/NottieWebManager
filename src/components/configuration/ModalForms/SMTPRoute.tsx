@@ -77,7 +77,7 @@ const SMTPRoute = ({ formRef, formdata, toggleModal }: Props) => {
     <ModalContentContainer>
       {(isLoading || editLoading) && <Loader />}
       <ModalItem>
-        <Formik initialValues={{ ...initialSMTPRouteValue, ...formdata }} validationSchema={SMTPRouteSchema} onSubmit={handleSubmit} innerRef={formRef}>
+        <Formik initialValues={{ ...initialSMTPRouteValue, ...formdata }} validationSchema={SMTPRouteSchema} onSubmit={handleSubmit} innerRef={formRef} enableReinitialize>
           {({ errors, touched, setFieldTouched }) => (
             <Form>
               <FormGroup legendText="">

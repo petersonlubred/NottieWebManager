@@ -10,7 +10,7 @@ import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import { useToast } from '@/context/ToastContext';
 import { IDatabaseType, IDataSourceType } from '@/interfaces/configuration';
 import { ISetState } from '@/interfaces/formik.type';
-import { useCreateDatasourceMutation, useEditDatasourceMutation } from '@/redux/api';
+import { useCreateDatasourceMutation, useEditDatasourceMutation, useUpdateStatusMutation } from '@/redux/api';
 import { initialDataSource } from '@/schemas/dto';
 import { DataSourceSchema } from '@/schemas/schema';
 import { px } from '@/utils';
@@ -23,6 +23,7 @@ type Iprops = {
 const DataSourceForm = ({ databaseType, setLoading, data }: Iprops) => {
   const [create] = useCreateDatasourceMutation();
   const [edit] = useEditDatasourceMutation();
+  const [updateStatus] = useUpdateStatusMutation();
   const { toast } = useToast();
 
   const handleSubmit = async (
@@ -37,7 +38,18 @@ const DataSourceForm = ({ databaseType, setLoading, data }: Iprops) => {
       setLoading(true);
       data?.dataSourceId ? await edit(values).unwrap() : (await create(values).unwrap(), resetForm());
       setLoading(false);
-      toast('success', 'Data Source created successfully');
+      data?.dataSourceId ? toast('success', 'Data Source created successfully') : toast('success', 'Data Source updated successfully');
+    } catch (error: any) {
+      setLoading(false);
+      toast('error', error?.data?.message || 'Something went wrong');
+    }
+  };
+  const handleUpdateStatus = async () => {
+    try {
+      setLoading(true);
+      await updateStatus({ dataSourceId: data?.dataSourceId, status: data?.status ? false : true }).unwrap();
+      setLoading(false);
+      toast('success', 'Status updated successfully');
     } catch (error: any) {
       setLoading(false);
       toast('error', error?.data?.message || 'Something went wrong');
@@ -50,6 +62,9 @@ const DataSourceForm = ({ databaseType, setLoading, data }: Iprops) => {
         {({ errors, touched, setFieldTouched, handleSubmit, setFieldValue, values }) => (
           <>
             <MailNav>
+              <ActionContainer>
+                <Button renderIcon={null} handleClick={handleUpdateStatus} buttonLabel={data?.status ? 'Disable' : 'Enable'} />
+              </ActionContainer>
               <ActionContainer>
                 <Button renderIcon={null} handleClick={handleSubmit} buttonLabel={data?.dataSourceId ? 'Edit source' : 'Create source'} />
               </ActionContainer>
@@ -280,6 +295,7 @@ const MailNav = styled.div`
   align-items: center;
   margin-bottom: ${px(24)};
   justify-content: flex-end;
+  gap: ${px(8)};
 `;
 
 const ActionContainer = styled.div`

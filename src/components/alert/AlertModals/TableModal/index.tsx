@@ -9,6 +9,8 @@ import useHeaders from '@/hooks/useHeaders';
 import { EmailData, SmsData, TransactionData } from '@/interfaces/notification';
 import { px } from '@/utils';
 
+import AccessStatus from '../../AccessStatus';
+
 type IProps = {
   transactionData?: Partial<TransactionData>;
   data?: EmailData[] | SmsData[];
@@ -38,6 +40,7 @@ const AlertTableModal = ({ data, isLoading, action, transactionData }: IProps) =
         tabHeaders.forEach((item2: { key: string; header: string }) => {
           row[item2.key] = item[item2.key];
           row.id = item.messageId;
+          row['deliveryStatus'] = <AccessStatus active={item['deliveryStatus']} />;
         });
         return row;
       });
@@ -92,28 +95,6 @@ const AlertTableModal = ({ data, isLoading, action, transactionData }: IProps) =
         </DataTable>{' '}
         {isLoading ? <Loader /> : isEmpty(Rows) && <Empty title={action === 'mail' ? 'No Email found' : 'No SMS found'} />}{' '}
       </ModalContainer>
-      {/* {!isEmpty(Rows) && (
-        <PaginationContainer>
-          <Pagination
-            backwardText="Previous page"
-            forwardText="Next page"
-            itemsPerPageText="Items per page:"
-            className="pagination"
-            page={pageNumber}
-            pageNumberText="Page Number"
-            pageSize={pageSize}
-            pageSizes={[10, 20, 30, 40, 50]}
-            totalItems={totalCount}
-            onChange={({ page, pageSize }: { page: number; pageSize: number }) => {
-              setQuery &&
-                setQuery({
-                  pageNumber: page,
-                  pageSize,
-                });
-            }}
-          />{' '}
-        </PaginationContainer>
-      )} */}
     </InputModalContainer>
   );
 };
@@ -171,122 +152,3 @@ const SubHeader = styled.div`
   margin-bottom: 2rem;
 `;
 const Header = styled.div``;
-
-// const PaginationContainer = styled.div`
-//   bottom: 0;
-//   width: 100%;
-
-//   .pagination {
-//     background-color: ${({ theme }) => theme.colors.bgPrimary};
-//     border-top: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
-//     color: ${({ theme }) => theme.colors.white};
-
-//     & > div {
-//       border: none;
-
-//       span:nth-child(3) {
-//         color: ${({ theme }) => theme.colors.lightText};
-//       }
-
-//       span:nth-child(2) {
-//         color: ${({ theme }) => theme.colors.white};
-//       }
-
-//       select {
-//         color: ${({ theme }) => theme.colors.white} !important;
-//         background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
-//         border: none !important;
-//         &:focus,
-//         &:active,
-//         &:hover {
-//           outline: none;
-//           background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-//         }
-//       }
-
-//       #cds-pagination-select-id-10-right {
-//         border-left: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
-//       }
-//       #cds-pagination-select-id-10 {
-//         border-right: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
-//       }
-
-//       .cds--select-input:focus {
-//         outline: none;
-//         background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-//       }
-
-//       svg {
-//         fill: ${({ theme }) => theme.colors.white};
-//       }
-
-//       button {
-//         border-left: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
-//         &:focus,
-//         &:hover {
-//           outline: none;
-//           border: none;
-//           background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-//         }
-//       }
-//     }
-//   }
-//   .pagination {
-//     background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-//     border-top: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
-//     color: ${({ theme }) => theme.colors.white};
-
-//     & > div {
-//       border: none;
-
-//       span:nth-child(3) {
-//         color: ${({ theme }) => theme.colors.lightText};
-//       }
-
-//       span:nth-child(2) {
-//         color: ${({ theme }) => theme.colors.white};
-//       }
-
-//       select {
-//         color: ${({ theme }) => theme.colors.white} !important;
-//         background-color: ${({ theme }) => theme.colors.bgPrimaryLight} !important;
-//         border: none !important;
-//         &:focus,
-//         &:active,
-//         &:hover {
-//           outline: none;
-//           background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-//         }
-//       }
-
-//       #cds-pagination-select-id-10-right {
-//         border-left: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
-//       }
-//       #cds-pagination-select-id-10 {
-//         border-right: 1px solid ${({ theme }) => theme.colors.darkPrimary50} !important;
-//       }
-
-//       .cds--select-input:focus {
-//         outline: none;
-//         background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-//       }
-
-//       svg {
-//         fill: ${({ theme }) => theme.colors.white};
-//       }
-
-//       button {
-//         border-left: 1px solid ${({ theme }) => theme.colors.darkPrimary50};
-//         &:focus,
-//         &:hover {
-//           outline: none;
-//           border: none;
-//           background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-//         }
-//       }
-//     }
-//   }
-//   .cds--pagination__control-buttons {
-//     background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
-//   }
-// `;
