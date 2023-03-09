@@ -5,28 +5,20 @@ import styled from 'styled-components';
 import AccordionBox from '@/components/shared/AccordionBox';
 import Button from '@/components/shared/Button';
 import Loader from '@/components/shared/Loader';
-import { FormikRefType } from '@/interfaces/formik.type';
 import { ITemplateConfig, ITemplates } from '@/interfaces/template';
 import { useGetTemplateConfigQuery } from '@/redux/api';
 import { px } from '@/utils';
 
-import CreateTemplateAlertModal from './CreateTemplateModal';
-
 interface ITemplateContent {
   // eslint-disable-next-line no-unused-vars
-  onSelectTemplate: (props: { serviceId: string; templateId: string; shouldGetNonTransactionalTag: boolean }) => void;
-  formRef: React.RefObject<FormikRefType<any>>;
-  handleSubmit: () => void;
+  onSelectTemplate: (props: { serviceId: string; template: { templateId: string; templateName: string }; shouldGetNonTransactionalTag: boolean }) => void;
+  template: { templateId: string; templateName: string };
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TemplateContent = ({ onSelectTemplate, formRef, handleSubmit }: ITemplateContent) => {
+const TemplateContent = ({ onSelectTemplate, template: parentTemplate, setOpenModal }: ITemplateContent) => {
   const { data, isFetching } = useGetTemplateConfigQuery({});
   const [opened, setOpened] = useState<number[]>([]);
-  const [openModal, setOpenModal] = useState<boolean>(false);
-
-  const toggleModal = () => {
-    setOpenModal(false);
-  };
 
   const toggleDropdown = (index: number) => {
     if (opened.includes(index)) {
@@ -53,18 +45,22 @@ const TemplateContent = ({ onSelectTemplate, formRef, handleSubmit }: ITemplateC
               opened={opened.includes(index)}
               itemsOnExpand={
                 <AccordionList>
-                  {item.templates?.map((templates: ITemplates) => (
+                  {item.templates?.map((template: ITemplates) => (
                     <AccordionListItem
-                      key={templates.templateId}
+                      key={template.templateId}
+                      clicked={template.templateId === parentTemplate?.templateId}
                       onClick={() =>
                         onSelectTemplate({
                           serviceId: item.serviceTypeId,
-                          templateId: templates.templateId,
+                          template: {
+                            templateId: template.templateId,
+                            templateName: template.templateName,
+                          },
                           shouldGetNonTransactionalTag: item.serviceTypeName === 'None-Transaction',
                         })
                       }
                     >
-                      {templates.templateName}
+                      {template.templateName}
                     </AccordionListItem>
                   ))}
                 </AccordionList>
@@ -73,7 +69,6 @@ const TemplateContent = ({ onSelectTemplate, formRef, handleSubmit }: ITemplateC
           ))}
         </>
       )}
-      <CreateTemplateAlertModal open={openModal} toggleModal={toggleModal} formRef={formRef} handleSubmit={handleSubmit} />
     </TemplateContainer>
   );
 };
@@ -113,10 +108,12 @@ const AccordionList = styled.ul`
   gap: ${px(7)};
 `;
 
-const AccordionListItem = styled.li`
+const AccordionListItem = styled.li<{ clicked: boolean }>`
   padding: ${px(7)} ${px(16)} ${px(7)} ${px(49)};
   font-size: ${px(14)};
   line-height: ${px(18)};
   font-weight: 400;
   cursor: pointer;
+  background-color: ${({ clicked, theme }) => (clicked ? theme.colors.bgPrimaryLight : 'transparent')};
+  border-left: ${({ clicked, theme }) => (clicked ? `2px solid ${theme.colors.normalText}` : 'none')};
 `;
