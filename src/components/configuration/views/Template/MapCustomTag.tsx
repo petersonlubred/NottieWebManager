@@ -70,7 +70,7 @@ const MapCustomTags = ({ open, toggleModal, templateId }: IProps) => {
 
   return (
     <InputModalContainer>
-      <Modal buttonLabel="Save Changes" heading="Map custom tags" open={open} toggleModal={toggleModal} secondaryButtonText="Cancel" extent="sm" onRequestSubmit={callHandleSubmit}>
+      <Modal buttonLabel="Save Changes" heading="Map custom tags" open={open} toggleModal={toggleModal} extent="sm" onRequestSubmit={callHandleSubmit}>
         {loading && <Loader />}
         {customDataArray.map((item: ITemplateNonTransactionCustomTag) => (
           <InputFieldContainer key={item.tagId}>
