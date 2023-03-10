@@ -79,7 +79,12 @@ const TemplateContainer = styled.div`
   width: 20% !important;
   color: ${({ theme }) => theme.colors.white};
   border-right: 1px solid ${({ theme }) => theme.colors.borderLight};
-  min-height: calc(100vh - 300px);
+  min-height: calc(100vh - 200px);
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TemplateHeader = styled.div`
