@@ -77,8 +77,8 @@ export const templateApi = createApi({
       query: () => createRequest('TemplateConfig/Tags'),
       providesTags: ['templateConfigTags'],
     }),
-    getNonTransactionTemplateConfigTags: builder.query({
-      query: () => createRequest('TemplateConfig/Tags/NoneTransaction'),
+    getNonTransactionTemplateConfigTags: builder.query<any, { templateId: string }>({
+      query: ({ templateId }) => createRequest(`TemplateConfig/Tags/NoneTransaction/${templateId}`),
       providesTags: ['templateConfigTags'],
     }),
     getNonTransactionTemplateConfigCustomTags: builder.query<TemplateNonTransactionCustomTagsResponse, { templateId: string }>({
@@ -93,7 +93,7 @@ export const templateApi = createApi({
           body: data,
         };
       },
-      invalidatesTags: ['templateConfigEmail'],
+      invalidatesTags: ['customTags'],
     }),
   }),
 });

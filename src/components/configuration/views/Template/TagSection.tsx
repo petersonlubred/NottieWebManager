@@ -1,9 +1,10 @@
-import { TextInput } from '@carbon/react';
-import { Close, Hashtag, Link, Search } from '@carbon/react/icons';
+import { TextInput, Tooltip } from '@carbon/react';
+import { Close, Copy, Hashtag, Link, Search } from '@carbon/react/icons';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '@/components/shared/Button';
+import { useToast } from '@/context/ToastContext';
 import { ITemplateConfigTags } from '@/interfaces/template';
 import { useGetNonTransactionTemplateConfigTagsQuery, useGetTemplateConfigTagsQuery } from '@/redux/api';
 import { px } from '@/utils';
@@ -12,12 +13,16 @@ import MapCustomTags from './MapCustomTag';
 
 const TagSection = ({ getNonTransactionalTag, templateId }: { getNonTransactionalTag: boolean; templateId: string }) => {
   const { data: templateTags, isSuccess: templateTagSuccess } = useGetTemplateConfigTagsQuery({}, { skip: getNonTransactionalTag });
-  const { data: nonTransactionalTemplateTags, isSuccess: nonTransactionalTemplateSuccess } = useGetNonTransactionTemplateConfigTagsQuery({}, { skip: !getNonTransactionalTag });
+  const { data: nonTransactionalTemplateTags, isSuccess: nonTransactionalTemplateSuccess } = useGetNonTransactionTemplateConfigTagsQuery(
+    { templateId },
+    { skip: !getNonTransactionalTag }
+  );
   const [filteredData, setFilteredData] = useState<ITemplateConfigTags[]>([]);
   const [unfilteredData, setUnFilteredData] = useState<ITemplateConfigTags[]>([]);
   const [search, setSearch] = useState(false);
   const [searchFilter, setSearchFilter] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const { toast } = useToast();
 
   const onToggleModal = () => {
     setOpenModal(false);
@@ -35,6 +40,11 @@ const TagSection = ({ getNonTransactionalTag, templateId }: { getNonTransactiona
       setFilteredData(unfilteredData.filter((tag: ITemplateConfigTags) => tag.tagName.toLowerCase().includes(searchFilter.toLowerCase())));
     }
   }, [searchFilter, unfilteredData]);
+
+  const handleCopy = ({ id }: { id: string }) => {
+    navigator.clipboard.writeText(`[${id}]`);
+    toast('info', 'Tag ID copied to clipboard');
+  };
 
   return (
     <Container>
@@ -78,8 +88,13 @@ const TagSection = ({ getNonTransactionalTag, templateId }: { getNonTransactiona
 
       {filteredData.map((tag: ITemplateConfigTags) => (
         <TagContent key={tag.tagId}>
-          <TagContentParagraph>{tag.tagName}</TagContentParagraph>
-          <TagContentParagraph>{tag.description}</TagContentParagraph>
+          <Tooltip align="bottom" label={tag.tagName}>
+            <button className="tooltip-trigger" type="button" onClick={() => handleCopy({ id: tag.tagId })}>
+              <TagContentParagraph>
+                {tag.description} <Copy size={16} />
+              </TagContentParagraph>
+            </button>
+          </Tooltip>
         </TagContent>
       ))}
 
@@ -91,11 +106,12 @@ const TagSection = ({ getNonTransactionalTag, templateId }: { getNonTransactiona
 export default TagSection;
 
 const Container = styled.div`
-  width: 20% !important;
+  width: 22% !important;
   color: ${({ theme }) => theme.colors.white};
-  min-height: calc(100vh - 300px);
-  max-height: calc(100vh - 300px);
+  min-height: calc(100vh - 200px);
+  max-height: calc(100vh - 200px);
   overflow-y: scroll;
+  overflow-x: hidden;
   background-color: ${({ theme }) => theme.colors.tagBackground};
   border-left: 1px solid ${({ theme }) => theme.colors.borderLight};
   &::-webkit-scrollbar {
@@ -127,7 +143,7 @@ const ButtonContainer = styled.div`
 `;
 
 const TagParagraph = styled.p`
-  font-size: ${px(16)};
+  font-size: ${px(12)};
   font-weight: 400;
   line-height: ${px(28)};
   display: flex;
@@ -144,6 +160,10 @@ const TagContent = styled.div`
   padding: ${px(16)} 0;
   &:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
+  }
+  button {
+    color: ${({ theme }) => theme.colors.white} !important;
+    text-align: left;
   }
 `;
 
