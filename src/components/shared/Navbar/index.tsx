@@ -35,7 +35,8 @@ const Navbar = () => {
         },
         data,
       });
-      dispatch(logout);
+      await dispatch(logout);
+      router.push('/');
     } catch (error) {
       // console.log(error);
     }

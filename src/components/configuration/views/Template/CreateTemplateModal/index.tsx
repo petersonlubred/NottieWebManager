@@ -59,7 +59,6 @@ const CreateTemplateAlertModal = ({ open, toggleModal, formRef, formdata, handle
         heading={`${formdata?.templateId ? 'Edit' : 'Create'} template`}
         open={open}
         toggleModal={toggleModal}
-        secondaryButtonText="Cancel"
         extent="sm"
         onRequestSubmit={handleSubmit}
       >

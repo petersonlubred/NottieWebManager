@@ -118,7 +118,15 @@ const ActionIcons = ({ data, start, currentTab, end, tabNames }: Props) => {
         </IconBox>
       )}
 
-      <Modal heading={`Mobile No: ${data?.mobile}`} buttonLabel={'Close'} open={action?.endsWith('sms')} toggleModal={toggleModal} extent="sm" onRequestSubmit={toggleModal}>
+      <Modal
+        heading={`Mobile No: ${data?.mobile}`}
+        secondaryButtonText
+        buttonLabel={'Close'}
+        open={action?.endsWith('sms')}
+        toggleModal={toggleModal}
+        extent="sm"
+        onRequestSubmit={toggleModal}
+      >
         <SimpleModalcontent
           content={
             action === 'previewtxnsms' ? singleSms?.data?.sms : action === 'previewnontxnsms' ? singleNSms?.data?.sms : action === 'previewotpsms' ? singleOtpSms?.data?.sms : ''
@@ -127,7 +135,15 @@ const ActionIcons = ({ data, start, currentTab, end, tabNames }: Props) => {
         />
       </Modal>
 
-      <Modal heading={`Email address: ${data?.email}`} buttonLabel={'Close'} open={action?.endsWith('email')} toggleModal={toggleModal} extent="md" onRequestSubmit={toggleModal}>
+      <Modal
+        secondaryButtonText
+        heading={`Email address: ${data?.email}`}
+        buttonLabel={'Close'}
+        open={action?.endsWith('email')}
+        toggleModal={toggleModal}
+        extent="md"
+        onRequestSubmit={toggleModal}
+      >
         <EmailContent
           content={
             action === 'previewtxnemail'
@@ -144,6 +160,7 @@ const ActionIcons = ({ data, start, currentTab, end, tabNames }: Props) => {
       </Modal>
       <Modal
         buttonLabel="Close"
+        secondaryButtonText
         heading={`Account no: ${data?.accountNo}`}
         extent="md"
         open={action === `${currentTab?.split('-').join('')}sms` || action === `${currentTab?.split('-').join('')}email`}

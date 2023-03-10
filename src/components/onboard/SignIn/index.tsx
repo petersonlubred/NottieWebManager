@@ -2,7 +2,7 @@ import { FormGroup, Loading, PasswordInput, TextInput } from '@carbon/react';
 import { ArrowRight } from '@carbon/react/icons';
 import axios from 'axios';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -15,7 +15,7 @@ import { px } from '@/utils';
 const Signin = () => {
   const [loading, setIsLoading] = React.useState(false);
   const dispatch = useDispatch();
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   const handleSubmit = async (values: any) => {
     try {
@@ -29,9 +29,9 @@ const Signin = () => {
           },
         }
       );
-      dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
-      router.push('/dashboard');
+      await dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
       setIsLoading(false);
+      router.push('/dashboard');
     } catch (error) {
       setIsLoading(false);
     }

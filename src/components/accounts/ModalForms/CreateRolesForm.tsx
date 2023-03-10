@@ -178,6 +178,7 @@ const Text = styled(TextInput)`
 const CheckBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 `;
 
 const Label = styled.p`
@@ -194,7 +195,8 @@ const CheckBoxContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 290px;
+  max-height: 300px;
+  overflow-y: auto;
   padding: 1rem;
   background-color: ${({ theme }) => theme.colors.bgPrimaryLight};
   box-shadow: inset 0px 0px 0px 1px ${({ theme }) => theme.colors.bgHover};

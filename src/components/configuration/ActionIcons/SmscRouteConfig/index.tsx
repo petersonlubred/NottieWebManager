@@ -58,7 +58,6 @@ const ActionIconsSmscConfig = ({ data }: Props) => {
       <Modal
         heading="Confirm delete"
         buttonLabel="Delete"
-        secondaryButtonText="Cancel"
         danger={true}
         open={opendeleteModal}
         toggleModal={() => setOpenDeleteModal(!opendeleteModal)}

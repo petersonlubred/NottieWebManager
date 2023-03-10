@@ -36,7 +36,6 @@ const ActionModal = ({ isLoading, action, toggleModal, context, handleAction }: 
       <Modal
         heading={'Confirm delete'}
         buttonLabel={'Delete'}
-        secondaryButtonText="Cancel"
         danger={action === 'delete'}
         open={action === 'delete'}
         toggleModal={toggleModal}
