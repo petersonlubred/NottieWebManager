@@ -135,7 +135,7 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
             <Table {...getTableProps()}>
               <TableHead>
                 <TableRow>
-                  <TableSelectAll {...getSelectionProps()} />
+                  {tab === 0 && <TableSelectAll {...getSelectionProps()} />}{' '}
                   {headers.map((header: IHeader, index: number) => (
                     <TableHeader {...getHeaderProps({ ...header })} key={index}>
                       {header.header}
@@ -147,7 +147,7 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
                 <TableBody>
                   {rows.map((row: any) => (
                     <TableRow key={row.id} {...getRowProps({ row })}>
-                      <TableSelectRow {...getSelectionProps({ row })} />
+                      {tab === 0 && <TableSelectRow {...getSelectionProps({ row })} />}{' '}
                       {row.cells.map((cell: any) => (
                         <TableCell key={cell.id}>{cell.value}</TableCell>
                       ))}

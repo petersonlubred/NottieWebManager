@@ -95,6 +95,10 @@ const useHeaders = () => {
   const smsheader = useMemo(() => {
     return [
       {
+        key: 'entryDate',
+        header: 'Entry Time',
+      },
+      {
         key: 'customerId',
         header: 'Customer ID',
       },
@@ -114,11 +118,6 @@ const useHeaders = () => {
         key: 'deliveryDate',
         header: 'Delivery Time',
       },
-      {
-        key: 'entryDate',
-        header: 'Entry Time',
-      },
-
       {
         key: 'deliveryStatus',
         header: 'Delivery Status',

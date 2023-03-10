@@ -37,7 +37,6 @@ const ActionModal = ({ isLoading, action, toggleModal, context, handleAction }: 
       <Modal
         heading={'Confirm delete'}
         buttonLabel={'Delete'}
-        secondaryButtonText="Cancel"
         danger={action === 'delete'}
         open={action === 'delete'}
         toggleModal={toggleModal}
@@ -48,28 +47,12 @@ const ActionModal = ({ isLoading, action, toggleModal, context, handleAction }: 
       </Modal>
 
       {/* Activate Account */}
-      <Modal
-        heading="Confirm activation"
-        buttonLabel={'Activate'}
-        secondaryButtonText="Cancel"
-        open={action === 'activate'}
-        toggleModal={toggleModal}
-        extent="sm"
-        onRequestSubmit={handleAction}
-      >
+      <Modal heading="Confirm activation" buttonLabel={'Activate'} open={action === 'activate'} toggleModal={toggleModal} extent="sm" onRequestSubmit={handleAction}>
         <SimpleModalcontent content={message} isLoading={isLoading} />
       </Modal>
 
       {/* Reset Password */}
-      <Modal
-        heading="Confirm password reset"
-        buttonLabel="Reset Password"
-        secondaryButtonText="Cancel"
-        extent="sm"
-        open={action === 'reset'}
-        toggleModal={toggleModal}
-        onRequestSubmit={handleAction}
-      >
+      <Modal heading="Confirm password reset" buttonLabel="Reset Password" extent="sm" open={action === 'reset'} toggleModal={toggleModal} onRequestSubmit={handleAction}>
         <SimpleModalcontent content={message} isLoading={isLoading} />
       </Modal>
     </>

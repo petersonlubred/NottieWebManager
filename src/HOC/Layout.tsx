@@ -37,7 +37,7 @@ const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle,
     <LayoutContainer>
       <Seo title={routename} />
       <Navbar /> <NavbarRoute routename={routename} isDashboard={isDashboard} />{' '}
-      <PageHeader navItem={navItem} handleSetIndex={handleSetIndex} title={title} subtitle={subtitle} isDashboard={isDashboard} />{' '}
+      {isDashboard && <PageHeader navItem={navItem} handleSetIndex={handleSetIndex} title={title} subtitle={subtitle} isDashboard={isDashboard} />}
       <HeaderNav>
         {navItem?.map((item, index) => (
           <HeaderNavItem
