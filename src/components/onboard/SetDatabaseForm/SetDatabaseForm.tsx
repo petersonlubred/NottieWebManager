@@ -5,6 +5,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
+import Loader from '@/components/shared/Loader';
+import { IDatabaseType } from '@/interfaces/configuration';
+import { useLookupDatabaseTypeQuery } from '@/redux/api';
 import { initialDatabaseValue } from '@/schemas/dto';
 import { databaseSchema } from '@/schemas/schema';
 import { px } from '@/utils';
@@ -16,6 +19,8 @@ type IProps = {
 };
 
 const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
+  const { data, isFetching } = useLookupDatabaseTypeQuery();
+
   const handleSubmit = (values: any) => {
     registerDb(values);
     handleSetStep();
@@ -23,6 +28,7 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
 
   return (
     <SignInContainer>
+      {isFetching && <Loader />}
       <HeaderTitle>Setup Application Database</HeaderTitle>
       <Formik initialValues={initialDatabaseValue} validationSchema={databaseSchema} onSubmit={handleSubmit}>
         {({ errors, touched, isValid, values, setFieldTouched, handleSubmit }) => (
@@ -49,10 +55,11 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                 <FormContainer>
                   <Field name="databaseType">
                     {({ field }: any) => (
-                      <Select id="select-1" labelText="Database type" {...field} onKeyUp={() => setFieldTouched('databaseType', true)}>
+                      <Select id="select-1" labelText="Database Type" {...field} onKeyUp={() => setFieldTouched('databaseType', true)}>
                         <SelectItem text="Choose option" />
-                        <SelectItem text="Option 1" value="option-1" />
-                        <SelectItem text="Option 2" value="option-2" />
+                        {data?.data?.map((item: IDatabaseType) => (
+                          <SelectItem key={item?.id} text={item?.name} value={item?.name} />
+                        ))}
                       </Select>
                     )}
                   </Field>

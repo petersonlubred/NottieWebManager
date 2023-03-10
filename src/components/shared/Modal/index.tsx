@@ -6,7 +6,7 @@ interface Iprops {
   buttonLabel: string;
   heading: string;
   children: ReactNode;
-  secondaryButtonText?: string;
+  secondaryButtonText?: string | boolean;
   open?: boolean;
   danger?: boolean;
   extent?: string;
@@ -14,13 +14,13 @@ interface Iprops {
   onRequestSubmit?: () => void;
 }
 
-const Modal = ({ buttonLabel, heading, children, secondaryButtonText = 'Cancel', open, danger, extent = 'md', toggleModal, onRequestSubmit }: Iprops) => {
+const Modal = ({ buttonLabel, heading, children, secondaryButtonText, open, danger, extent = 'md', toggleModal, onRequestSubmit }: Iprops) => {
   return (
     <ModalContainer
       modalHeading={heading}
       size={extent}
       primaryButtonText={buttonLabel}
-      secondaryButtonText={secondaryButtonText}
+      secondaryButtonText={!secondaryButtonText ? 'Cancel' : ''}
       open={open}
       danger={danger}
       onRequestClose={toggleModal}

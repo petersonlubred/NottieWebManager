@@ -91,7 +91,7 @@ const ActionIcons = ({ data, roleData, isUpdatedMultiselect, setIsUpdatedMultise
       <Modal
         heading={data?.id ? 'Edit User' : 'Edit Role'}
         buttonLabel="Save changes"
-        extent="sm"
+        extent={roleData?.roleId ? 'md' : 'sm'}
         open={action === 'edit'}
         toggleModal={toggleModal}
         onRequestSubmit={handleSubmit}

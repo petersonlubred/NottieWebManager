@@ -25,7 +25,7 @@ interface IMailBody {
   handleFormData: () => void;
 }
 
-const MailBody = ({ template, serviceTypeId, emailData, smsData, formRef, handleSubmit, handleFormData }: IMailBody) => {
+const MailBody = ({ template, serviceTypeId, emailData, smsData, formRef, handleSubmit }: IMailBody) => {
   const [selected, setSelected] = React.useState<number>(0);
   const [responseData, setResponseData] = useState<ITemplateConfigEmail | ITemplateConfigSms>();
 
@@ -75,7 +75,7 @@ const MailBody = ({ template, serviceTypeId, emailData, smsData, formRef, handle
           <Copy size={16} onClick={handleCopy} />
         </CopyDetails>
         <ActionContainer>
-          <Button renderIcon={null} handleClick={() => handleFormData()} buttonLabel="Edit Template" />
+          {/* <Button renderIcon={null} handleClick={() => handleFormData()} buttonLabel="Edit Template" /> */}
           <Button renderIcon={null} handleClick={() => discardChanges()} buttonLabel="Discard changes" />
           <Button renderIcon={null} handleClick={() => handleSubmit()} buttonLabel="Save Changes" />{' '}
         </ActionContainer>
