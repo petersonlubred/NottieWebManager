@@ -39,10 +39,12 @@ const PageHeader = ({ title, subtitle, isDashboard }: Iprops) => {
   };
   return (
     <HeaderContainer>
-      <HeaderDashboardTitleBox>
-        <HeaderTitle>{title}</HeaderTitle>
-        <HeaderDescription>{subtitle}.</HeaderDescription>
-      </HeaderDashboardTitleBox>
+      {isDashboard && (
+        <HeaderDashboardTitleBox>
+          <HeaderTitle>{title}</HeaderTitle>
+          <HeaderDescription>{subtitle}.</HeaderDescription>
+        </HeaderDashboardTitleBox>
+      )}
       {isDashboard && isFetching && <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={3} columnCount={6} />}
       {isDashboard && !isFetching && (
         <HeaderStatisticsSection>
