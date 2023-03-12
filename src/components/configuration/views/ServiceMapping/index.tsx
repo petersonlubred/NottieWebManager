@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import styled from 'styled-components';
 
 import AccordionBox from '@/components/shared/AccordionBox';
@@ -6,12 +8,16 @@ import Icon from '@/components/shared/Icons';
 import Loader from '@/components/shared/Loader';
 import { IServiceMapping } from '@/interfaces/serviceMapping';
 import { ConfigurationContainer } from '@/pages/configuration';
+import { useGetDatasourcesQuery } from '@/redux/api';
 import { useGetServiceMappingsQuery } from '@/redux/api/serviceMappingApi';
 import { px } from '@/utils';
 
+import Boards from '../../Boards';
+
 const ServiceMapping = () => {
   const [opened, setOpened] = useState<number[]>([]);
-  const { data, isFetching } = useGetServiceMappingsQuery();
+  const { data, isFetching } = useGetServiceMappingsQuery(undefined, { skip: true });
+  const { data: dataSource, isFetching: isLoading } = useGetDatasourcesQuery(undefined, { skip: true });
 
   const toggleDropdown = (index: number) => {
     if (opened.includes(index)) {
@@ -21,7 +27,7 @@ const ServiceMapping = () => {
     }
   };
 
-  if (isFetching) {
+  if (isFetching || isLoading) {
     return <Loader />;
   }
 
@@ -29,6 +35,9 @@ const ServiceMapping = () => {
     <ConfigurationContainer>
       <Container>
         <Heading>Map each service to different data source by dragging or right clicking on them.</Heading>
+        <DndProvider backend={HTML5Backend}>
+          <Boards />
+        </DndProvider>
         <CardBox>
           <MappingCard>
             <MappingTitleBox>
@@ -58,6 +67,35 @@ const ServiceMapping = () => {
               />
             ))}
           </MappingCard>
+          {dataSource?.data?.map((item, index) => (
+            <MappingCard key={index}>
+              <MappingTitleBox>
+                <MappingTitle>{item?.databaseName}</MappingTitle>
+              </MappingTitleBox>
+              {/* {data?.data?.map((item: IServiceMapping, index: number) => (
+              <AccordionBox
+                title={item.serviceType}
+                key={item.serviceType}
+                index={index}
+                toggleDropdown={toggleDropdown}
+                opened={opened.includes(index)}
+                itemsOnExpand={
+                  <>
+                    {item.serviceMapModels.map((_, index) => (
+                      <AccordionItemListBox key={index}>
+                        <AccordionListTitle>
+                          <Icon id="dotted-cube-icon" width={18} height={19} />
+                          <TitleParagraph>Unmapped Services</TitleParagraph>
+                        </AccordionListTitle>{' '}
+                        <Icon id="dotted-rectangle-icon" width={6} height={9} />
+                      </AccordionItemListBox>
+                    ))}
+                  </>
+                }
+              />
+            ))} */}
+            </MappingCard>
+          ))}
         </CardBox>
       </Container>
     </ConfigurationContainer>
@@ -115,6 +153,7 @@ const AccordionItemListBox = styled.div`
   background-color: ${({ theme }) => theme.colors.borderLight};
   margin-left: ${px(44)};
   margin-right: ${px(33)};
+  margin-bottom: ${px(3)};
 `;
 
 const AccordionListTitle = styled.div`

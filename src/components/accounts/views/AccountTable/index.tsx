@@ -23,10 +23,11 @@ import {
 } from '@carbon/react';
 import { Add, Password, TrashCan } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import Button from '@/components/shared/Button';
 import useNetworkRequest from '@/hooks/useNetworkRequest';
+import { IPageQuery } from '@/interfaces/notification';
 import { IHeader } from '@/interfaces/role';
 import { BulkResetPassword } from '@/interfaces/user';
 
@@ -38,9 +39,11 @@ type Props = {
   tab: number;
   toggleModal: () => void;
   isLoading: boolean;
+  setQuery: React.Dispatch<React.SetStateAction<IPageQuery>>;
+  query: IPageQuery;
 };
 
-const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => {
+const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading, query, setQuery }: Props) => {
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [action, setAction] = useState<string>('');
   const [context, setContext] = useState<any>('');
@@ -50,9 +53,7 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
   };
 
   const { handleRequest, loading } = useNetworkRequest(toggleActionModal);
-  return isLoading ? (
-    <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
-  ) : (
+  return (
     <>
       <DataTable rows={Rows} headers={Headers}>
         {({
@@ -128,37 +129,48 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading }: Props) => 
                 </TableBatchAction>
               </TableBatchActions>
               <TableToolbarContent>
-                <TableToolbarSearch onChange={() => null} />
+                <TableToolbarSearch
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    setQuery({
+                      ...query,
+                      search: e.target.value,
+                    });
+                  }}
+                />
                 <Button renderIcon={(props: any) => <Add size={20} {...props} />} handleClick={toggleModal} buttonLabel={tab === 0 ? 'Create new user' : 'Create new role'} />
               </TableToolbarContent>
-            </TableToolbar>
-            <Table {...getTableProps()}>
-              <TableHead>
-                <TableRow>
-                  {tab === 0 && <TableSelectAll {...getSelectionProps()} />}{' '}
-                  {headers.map((header: IHeader, index: number) => (
-                    <TableHeader {...getHeaderProps({ ...header })} key={index}>
-                      {header.header}
-                    </TableHeader>
-                  ))}
-                </TableRow>
-              </TableHead>
-              {!isEmpty(Rows) && !isLoading && (
-                <TableBody>
-                  {rows.map((row: any) => (
-                    <TableRow key={row.id} {...getRowProps({ row })}>
-                      {tab === 0 && <TableSelectRow {...getSelectionProps({ row })} />}{' '}
-                      {row.cells.map((cell: any) => (
-                        <TableCell key={cell.id}>{cell.value}</TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )}
-            </Table>
+            </TableToolbar>{' '}
+            {isLoading ? (
+              <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
+            ) : (
+              <Table {...getTableProps()}>
+                <TableHead>
+                  <TableRow>
+                    {tab === 0 && <TableSelectAll {...getSelectionProps()} />}
+                    {headers.map((header: IHeader, index: number) => (
+                      <TableHeader {...getHeaderProps({ ...header })} key={index}>
+                        {header.header}
+                      </TableHeader>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                {!isEmpty(Rows) && !isLoading && (
+                  <TableBody>
+                    {rows.map((row: any) => (
+                      <TableRow key={row.id} {...getRowProps({ row })}>
+                        {tab === 0 && <TableSelectRow {...getSelectionProps({ row })} />}
+                        {row.cells.map((cell: any) => (
+                          <TableCell key={cell.id}>{cell.value}</TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                )}
+              </Table>
+            )}
           </>
         )}
-      </DataTable>
+      </DataTable>{' '}
       <ActionModal
         action={action}
         isLoading={loading}

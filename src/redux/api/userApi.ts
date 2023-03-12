@@ -1,12 +1,13 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 import { isEmpty } from 'lodash';
 
+import { IPageQuery } from '@/interfaces/notification';
 import { UserData, UserResponse, UsersResponse } from '@/interfaces/user';
 
 import { APIResponse } from './../../interfaces/auth';
 import { BulkResetPassword } from './../../interfaces/user';
 import { IinitialResetPassword, IinitialUserLogin } from './../../schemas/interface';
-import { baseQueryWithReauth, createRequest, CustomError } from './shared';
+import { baseQueryWithReauth, createRequest, createRequestWithParams, CustomError } from './shared';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -57,8 +58,8 @@ export const userApi = createApi({
       invalidatesTags: ['user'],
     }),
 
-    getUsers: builder.query<UsersResponse, void>({
-      query: () => createRequest('UserAccount'),
+    getUsers: builder.query<UsersResponse, IPageQuery>({
+      query: (data) => createRequestWithParams('UserAccount', { ...data }),
       providesTags: (result, _error, _arg) => (result?.data && !isEmpty(result?.data) ? [...result.data.map(({ id }: any) => ({ type: 'user' as const, id })), 'user'] : ['user']),
     }),
 
