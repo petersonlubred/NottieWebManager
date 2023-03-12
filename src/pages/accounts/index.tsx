@@ -9,11 +9,14 @@ import Empty from '@/components/shared/Empty';
 import Loader from '@/components/shared/Loader';
 import Modal from '@/components/shared/Modal';
 import Layout from '@/HOC/Layout';
+import { useDebounce } from '@/hooks/useDebounce';
 import useHeaders from '@/hooks/useHeaders';
 import { FormikRefType } from '@/interfaces/formik.type';
+import { initialPageQuery, IPageQuery } from '@/interfaces/notification';
 import { IHeader, IRole } from '@/interfaces/role';
 import { UserData } from '@/interfaces/user';
 import { useGetRolesQuery, useGetUsersQuery } from '@/redux/api';
+import { pickValues } from '@/utils/helpers/helpers';
 import { protectedRouteProps } from '@/utils/withSession';
 
 import AccountTable from '../../components/accounts/views/AccountTable';
@@ -26,15 +29,24 @@ const Accounts = () => {
   const formRef = useRef<FormikRefType<any>>(null);
   const [isUpdatedMultiselect, setIsUpdatedMultiselect] = useState(false);
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [query, setQuery] = useState<IPageQuery>(initialPageQuery);
+  const debounceFilter = useDebounce(pickValues(query), 500);
+
   const router = useRouter();
   const { tab } = router.query;
   const currentTab = ['user', 'role'].includes(tab as string) ? tab : 'user';
-  const { data: users, isFetching: isLoadingUser } = useGetUsersQuery(undefined, {
-    skip: currentTab !== 'user',
-  });
-  const { data, isFetching: isLoading } = useGetRolesQuery(undefined, {
-    skip: currentTab !== 'role',
-  });
+  const { data: users, isFetching: isLoadingUser } = useGetUsersQuery(
+    { ...debounceFilter },
+    {
+      skip: currentTab !== 'user',
+    }
+  );
+  const { data, isFetching: isLoading } = useGetRolesQuery(
+    { ...debounceFilter },
+    {
+      skip: currentTab !== 'role',
+    }
+  );
 
   const navItems = useMemo(() => {
     return [
@@ -64,6 +76,10 @@ const Accounts = () => {
     }
     setOpen(!open);
   };
+
+  useEffect(() => {
+    setQuery(initialPageQuery);
+  }, [currentTab]);
 
   useEffect(() => {
     const headers = [
@@ -124,7 +140,7 @@ const Accounts = () => {
         <ModalContent tab={tabIndex} formRef={formRef} toggleModal={toggleModal} isUpdatedMultiselect={isUpdatedMultiselect} setIsUpdatedMultiselect={setIsUpdatedMultiselect} />
       </Modal>
       <PageSubHeader navItem={navItems[tabIndex]?.title} />
-      <AccountTable Rows={Rows} Headers={Headers} tab={tabIndex} toggleModal={toggleModal} isLoading={isLoading || isLoadingUser} />
+      <AccountTable Rows={Rows} Headers={Headers} tab={tabIndex} toggleModal={toggleModal} isLoading={isLoading || isLoadingUser} query={query} setQuery={setQuery} />
       {isLoading || isLoadingUser ? (
         <Loader />
       ) : (

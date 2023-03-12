@@ -100,6 +100,7 @@ export type IPageQuery = {
   email?: string;
   mobile?: string;
   notArchive?: boolean | string;
+  search?: string;
 };
 
 export const initialPageQuery: IPageQuery = {
