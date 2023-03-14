@@ -1,4 +1,4 @@
-import { CaretRight } from '@carbon/react/icons';
+import { CaretRight } from '@carbon/icons-react';
 import React from 'react';
 import styled from 'styled-components';
 

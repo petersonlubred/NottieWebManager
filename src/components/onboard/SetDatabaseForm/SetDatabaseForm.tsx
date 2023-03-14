@@ -1,5 +1,5 @@
+import { ArrowRight } from '@carbon/icons-react';
 import { Button, FormGroup, Loading, PasswordInput, Select, SelectItem, TextInput } from '@carbon/react';
-import { ArrowRight } from '@carbon/react/icons';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';

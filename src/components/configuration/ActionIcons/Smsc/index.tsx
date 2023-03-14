@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxChecked, Edit } from '@carbon/react/icons';
+import { Checkbox, CheckboxChecked, Edit } from '@carbon/icons-react';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 

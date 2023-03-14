@@ -1,3 +1,4 @@
+import { Add, TrashCan, Upload } from '@carbon/icons-react';
 import {
   DataTable,
   DataTableSkeleton,
@@ -20,7 +21,6 @@ import {
   TableToolbarContent,
   TableToolbarProps,
 } from '@carbon/react';
-import { Add, TrashCan, Upload } from '@carbon/react/icons';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 

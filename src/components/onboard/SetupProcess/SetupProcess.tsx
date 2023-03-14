@@ -1,4 +1,4 @@
-import { CheckmarkOutline, CircleDash } from '@carbon/react/icons';
+import { CheckmarkOutline, CircleDash } from '@carbon/icons-react';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
