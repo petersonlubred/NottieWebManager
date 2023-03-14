@@ -114,7 +114,7 @@ const ItemContainer = styled.div`
   display: flex;
   justify-content: center;
   input[title='type here'] {
-    width: 100px !important;
+    width: 200px !important;
   }
   #date-picker-default-id {
     width: 150px !important;
