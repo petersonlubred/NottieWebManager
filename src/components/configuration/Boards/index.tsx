@@ -2,18 +2,43 @@ import React, { useState } from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
-import { boardType, IDataSourceType, ServiceModelType, ServiceType } from '@/interfaces/configuration';
-import { IServiceMapping } from '@/interfaces/serviceMapping';
+import Loader from '@/components/shared/Loader';
+import { useToast } from '@/context/ToastContext';
+import { boardType, ServiceModelType, ServiceType } from '@/interfaces/configuration';
+import { IServiceMapping, MappedType } from '@/interfaces/serviceMapping';
+import { useDeleteMappingMutation, useUpdateMappingMutation } from '@/redux/api';
 import { px } from '@/utils';
 
 import Board from './Board';
 interface Iprops {
   data: IServiceMapping[];
-  opened: number[];
-  toggleDropdown: (_index: number) => void;
-  dataSource?: IDataSourceType[];
+  opened: string[];
+  toggleDropdown: (_index: string) => void;
+  mapped?: any;
 }
-const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
+const Boards = ({ data, opened, toggleDropdown, mapped }: Iprops) => {
+  const { toast } = useToast();
+  const [updateMapping, { isLoading }] = useUpdateMappingMutation();
+  const [deleteMapping, { isLoading: Loading }] = useDeleteMappingMutation();
+
+  const handleUpdateOnDrag = async (values: any) => {
+    try {
+      await updateMapping(values).unwrap();
+      toast('success', 'Service mapped successfully');
+    } catch (error: any) {
+      toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
+    }
+  };
+
+  const handleDeleteMapping = async (id: string) => {
+    try {
+      await deleteMapping({ id: id }).unwrap();
+      toast('success', 'Service unmapped successfully');
+    } catch (error: any) {
+      toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
+    }
+  };
+
   let Index = 0;
   const boards: boardType[] = [
     {
@@ -29,14 +54,22 @@ const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
         })),
       })),
     },
-    ...(dataSource?.map((item: IDataSourceType, index) => ({
-      id: index === 0 ? 'B' : 'C', // TODO: change this to dynamic
+    ...(mapped?.map((item: MappedType) => ({
+      id: item?.dataSourceId,
       title: item.databaseName,
-      items: [],
+      items: item?.serviceMapModels.map((service: IServiceMapping, index: number) => ({
+        id: index,
+        title: service.serviceType,
+        serviceMapModels: service.serviceMapModels.map((service: { serviceName: string; serviceId: string; id: string }) => ({
+          serviceName: service.serviceName,
+          serviceId: service.id,
+          id: Index++,
+        })),
+      })),
     })) || []),
   ];
-  const [boardsData, setBoardsData] = useState<typeof boards>(boards);
 
+  const [boardsData, setBoardsData] = useState<typeof boards>(boards);
   const getSourceData = (source: { droppableId: string; index: number }, draggableId: string) => {
     const board = boardsData.find((b: boardType) => b.id === source.droppableId);
     const sourceItem = board?.items.find((i: ServiceType) => i.title === draggableId.split(':')[0]);
@@ -52,8 +85,8 @@ const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
     const updatedSourceItems = [...serviceMapModels];
     const index = updatedSourceItems?.findIndex((item) => item.id === source.index);
 
-    const handleRemoveItem = (isDest?: boolean, isCopy?: true) => {
-      if (index !== -1 && !isCopy) {
+    const handleMoveItem = async (isDest?: boolean) => {
+      if (index !== -1) {
         updatedSourceItems?.splice(index, 1);
       }
       if (updatedSourceItems?.length === 0) {
@@ -86,13 +119,21 @@ const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
           })
         );
       }
+      if (!isDest) {
+        await handleDeleteMapping(draggableId.split(':')[1]);
+      } else {
+        await handleUpdateOnDrag({
+          dataSourceId: destination?.droppableId,
+          serviceId: draggableId.split(':')[1],
+        });
+      }
     };
 
     // if dropped outside the list or dropped into the same list or dropped into the first list, do nothing
     if ((!destination && source.droppableId === 'A') || destination?.droppableId === 'A' || source.droppableId === destination?.droppableId) {
       return;
     } else if (!destination) {
-      handleRemoveItem();
+      handleMoveItem();
       return;
     }
     if (source.droppableId !== destination?.droppableId) {
@@ -103,7 +144,6 @@ const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
       }
     }
 
-    // TODO: Reorder the items in the destination board
     const updatedDestinationItems = destinationBoard?.items.find((i: ServiceType) => i.title === draggableId.split(':')[0])
       ? destinationBoard?.items.map((item: ServiceType) => {
           if (item.title === draggableId.split(':')[0] && sourceItem) {
@@ -120,17 +160,12 @@ const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
           },
         ] as ServiceType[]);
 
-    // If the source is not the first board, remove the item from the source board
-    if (source.droppableId !== 'A') {
-      handleRemoveItem(true);
-      return;
-    } else {
-      handleRemoveItem(true, true);
-    }
+    handleMoveItem(true);
   };
 
   return (
     <div>
+      {(isLoading || Loading) && <Loader />}
       <DragDropContext onDragEnd={onDragEnd}>
         <CardBox>
           {boardsData?.map((board: boardType) => (

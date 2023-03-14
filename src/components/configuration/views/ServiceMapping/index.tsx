@@ -3,18 +3,17 @@ import styled from 'styled-components';
 
 import Loader from '@/components/shared/Loader';
 import { ConfigurationContainer } from '@/pages/configuration';
-import { useGetDatasourcesQuery } from '@/redux/api';
-import { useGetServiceMappingsQuery } from '@/redux/api/serviceMappingApi';
+import { useGetMappedQuery, useGetServiceMappingsQuery } from '@/redux/api/serviceMappingApi';
 import { px } from '@/utils';
 
 import Boards from '../../Boards';
 
 const ServiceMapping = () => {
-  const [opened, setOpened] = useState<number[]>([]);
+  const [opened, setOpened] = useState<string[]>([]);
   const { data, isFetching } = useGetServiceMappingsQuery();
-  const { data: dataSource, isFetching: isLoading } = useGetDatasourcesQuery();
+  const { data: mapped, isFetching: Loading } = useGetMappedQuery();
 
-  const toggleDropdown = (index: number) => {
+  const toggleDropdown = (index: string) => {
     if (opened.includes(index)) {
       setOpened(opened.filter((item) => item !== index));
     } else {
@@ -22,7 +21,7 @@ const ServiceMapping = () => {
     }
   };
 
-  if (isFetching || isLoading) {
+  if (isFetching || Loading) {
     return <Loader />;
   }
 
@@ -30,7 +29,7 @@ const ServiceMapping = () => {
     <ConfigurationContainer>
       <Container>
         <Heading>Map each service to different data source by dragging or right clicking on them.</Heading>
-        <Boards data={data?.data} toggleDropdown={toggleDropdown} opened={opened} dataSource={dataSource?.data} />
+        <Boards data={data?.data} toggleDropdown={toggleDropdown} opened={opened} mapped={mapped?.data} />
       </Container>
     </ConfigurationContainer>
   );
