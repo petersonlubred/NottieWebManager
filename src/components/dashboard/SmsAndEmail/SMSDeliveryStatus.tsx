@@ -5,30 +5,22 @@ import styled from 'styled-components';
 
 import { px } from '@/utils';
 
-const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
-  const data = [
-    {
-      group: 'MTN',
-      value: 65000,
-    },
-    {
-      group: 'Airtel',
-      value: 29123,
-    },
-    {
-      group: '9Mobile',
-      value: 35213,
-    },
-    {
-      group: 'Glo',
-      value: 32432,
-    },
-    {
-      group: 'Others',
-      value: 21312,
-    },
-  ];
-
+const SmsDeliveryStatus = ({
+  data,
+  heading,
+}: {
+  data?: {
+    network: string;
+    count: number;
+  }[];
+  heading?: string;
+}) => {
+  const mappedData = data?.map((unmapped) => {
+    return {
+      group: unmapped.network,
+      value: unmapped.count,
+    };
+  });
   const options: DonutChartOptions = {
     toolbar: {
       enabled: false,
@@ -43,10 +35,12 @@ const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
       scale: {
         MTN: '#F9444C',
         Airtel: '#00726E',
-        '9Mobile': '#2DA8FF',
+        '9mobile': '#2DA8FF',
         Glo: '#D4BBFF',
-        Others: '#FF73AD',
       },
+    },
+    data: {
+      loading: data ? false : true,
     },
     height: '280px',
   };
@@ -54,12 +48,12 @@ const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
   return (
     <EmailDeliveryContainerBox>
       <EmailDeliveryHeader>
-        <EmailDeliveryHeaderParagraph>{heading} </EmailDeliveryHeaderParagraph>
+        <EmailDeliveryHeaderParagraph>{heading}</EmailDeliveryHeaderParagraph>
       </EmailDeliveryHeader>
       <StatusContainer>
         <ChartContainer>
           {' '}
-          <DonutChart data={data} options={options}></DonutChart>
+          <DonutChart data={mappedData ?? []} options={options}></DonutChart>
         </ChartContainer>
         <BoxContainerSection>
           <BoxContainer>
@@ -78,10 +72,6 @@ const SmsDeliveryStatus = ({ heading }: { heading: string }) => {
             <Box value="#D4BBFF" />
             Glo
           </BoxContainer>
-          <div>
-            <Box value="#FF73AD" />
-            Others
-          </div>
         </BoxContainerSection>
       </StatusContainer>
     </EmailDeliveryContainerBox>

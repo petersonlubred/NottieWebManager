@@ -6,7 +6,16 @@ import { px } from '@/utils';
 
 import { TextIcon } from './MicroService';
 
-const MicroServiceheader = () => {
+const MicroServiceheader = ({
+  totalHeartbeatCount,
+}: {
+  totalHeartbeatCount?: {
+    ok: number;
+    check: number;
+    critical: number;
+    idle: number;
+  };
+}) => {
   return (
     <Header>
       <MicroServiceHeader>
@@ -19,21 +28,28 @@ const MicroServiceheader = () => {
               <Box color="#157532" />
               Ok
             </TextIcon>
-            <Statusparagraph>23</Statusparagraph>
+            <Statusparagraph>{totalHeartbeatCount?.ok ?? 0}</Statusparagraph>
           </StatusBox>
           <StatusBox>
             <TextIcon>
               <Box color="#F2B301" />
               Check
             </TextIcon>
-            <Statusparagraph>12</Statusparagraph>
+            <Statusparagraph>{totalHeartbeatCount?.check ?? 0}</Statusparagraph>
+          </StatusBox>
+          <StatusBox>
+            <TextIcon>
+              <Box color="#4C4C4C" />
+              Idle
+            </TextIcon>
+            <Statusparagraph>{totalHeartbeatCount?.idle ?? 0}</Statusparagraph>
           </StatusBox>
           <StatusBox>
             <TextIcon>
               <Box color="#C51C24" />
               Critical
             </TextIcon>
-            <Statusparagraph>09</Statusparagraph>
+            <Statusparagraph>{totalHeartbeatCount?.critical ?? 0}</Statusparagraph>
           </StatusBox>
         </MicroServiceStatus>
         <MicroServiceStatus>
@@ -54,6 +70,7 @@ export default MicroServiceheader;
 
 const Header = styled.div`
   grid-column: 1/4;
+  padding: ${px(10)} ${px(20)};
   margin-bottom: ${px(20)};
 `;
 const MicroServiceHeader = styled.div`

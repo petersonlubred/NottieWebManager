@@ -1,16 +1,13 @@
+import { DataTableSkeleton } from '@carbon/react';
 import React from 'react';
 import styled from 'styled-components';
 
-import { px } from '@/utils';
-
-const tableItem = [
-  { name: 'MTN', value: 287 },
-  { name: 'Airtel', value: 123 },
-  { name: 'Glo', value: 29 },
-  { name: '9mobile', value: 162 },
-];
+import { useGetDashboardSmsEmailOutboundSmcQuery } from '@/redux/api';
+import { getPollingInterval, px } from '@/utils';
 
 const OutBoundSmcStatus = () => {
+  const { data, isFetching } = useGetDashboardSmsEmailOutboundSmcQuery(undefined, { pollingInterval: getPollingInterval() });
+
   return (
     <MonitorContainerBox>
       <MonitorHeader>
@@ -23,24 +20,26 @@ const OutBoundSmcStatus = () => {
         <MonitorSubHeader>TXRX</MonitorSubHeader>
         <MonitorSubHeader style={{ textAlign: 'right' }}>TPS</MonitorSubHeader>
         <Divider></Divider>
-        {tableItem?.map((item, index) => (
-          <React.Fragment key={index}>
-            <MonitorSubHeaderTitle>{item?.name}</MonitorSubHeaderTitle>
-            <MonitorSubHeaderParagraph>
-              <MonitorSubHeaderValue>50</MonitorSubHeaderValue>
-            </MonitorSubHeaderParagraph>{' '}
-            <MonitorSubHeaderParagraph>
-              <MonitorSubHeaderValue> 50 </MonitorSubHeaderValue>
-            </MonitorSubHeaderParagraph>{' '}
-            <MonitorSubHeaderParagraph>
-              <MonitorSubHeaderValue> 50 </MonitorSubHeaderValue>
-            </MonitorSubHeaderParagraph>{' '}
-            <MonitorSubHeaderTPSParagraph value={item?.value}>
-              <MonitorSubHeaderTPSValue>{item?.value} </MonitorSubHeaderTPSValue>
-            </MonitorSubHeaderTPSParagraph>
-          </React.Fragment>
-        ))}
-        <Divider></Divider>{' '}
+        {!isFetching &&
+          data?.data.map((item, index) => (
+            <React.Fragment key={index}>
+              <MonitorSubHeaderTitle>{item?.smscName}</MonitorSubHeaderTitle>
+              <MonitorSubHeaderParagraph>
+                <MonitorSubHeaderValue>{item?.tx}</MonitorSubHeaderValue>
+              </MonitorSubHeaderParagraph>{' '}
+              <MonitorSubHeaderParagraph>
+                <MonitorSubHeaderValue>{item?.rx}</MonitorSubHeaderValue>
+              </MonitorSubHeaderParagraph>{' '}
+              <MonitorSubHeaderParagraph>
+                <MonitorSubHeaderValue>{item?.txRx}</MonitorSubHeaderValue>
+              </MonitorSubHeaderParagraph>{' '}
+              <MonitorSubHeaderTPSParagraph value={Number(item?.tps)}>
+                <MonitorSubHeaderTPSValue>{item?.tps} </MonitorSubHeaderTPSValue>
+              </MonitorSubHeaderTPSParagraph>
+            </React.Fragment>
+          ))}
+        {isFetching && <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={4} columnCount={8} />}
+        <Divider></Divider>
       </MonitorContentBox>
     </MonitorContainerBox>
   );
