@@ -89,9 +89,12 @@ const TagSection = ({ getNonTransactionalTag, templateId }: { getNonTransactiona
       {filteredData.map((tag: ITemplateConfigTags) => (
         <TagContent key={tag.tagId}>
           <Tooltip align="bottom" label={tag.tagName}>
-            <button className="tooltip-trigger" type="button" onClick={() => handleCopy({ id: tag.tagId })}>
+            <button className="tooltip-trigger" type="button">
               <TagContentParagraph>
-                {tag.description} <Copy size={16} />
+                {tag.description}
+                <span onClick={() => handleCopy({ id: tag.tagId })}>
+                  <Copy size={16} />
+                </span>
               </TagContentParagraph>
             </button>
           </Tooltip>
@@ -170,4 +173,12 @@ const TagContent = styled.div`
 const TagContentParagraph = styled.p`
   font-size: ${px(16)};
   font-weight: 400;
+  display: flex;
+  gap: ${px(8)};
+
+  & > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
