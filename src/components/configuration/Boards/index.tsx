@@ -15,7 +15,7 @@ interface Iprops {
 }
 const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
   let Index = 0;
-  const boards = [
+  const boards: boardType[] = [
     {
       id: 'A',
       title: 'Unmapped Services',
@@ -57,8 +57,8 @@ const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
         updatedSourceItems?.splice(index, 1);
       }
       if (updatedSourceItems?.length === 0) {
-        setBoardsData((prevBoardsData: any) =>
-          prevBoardsData.map((b: any) => {
+        setBoardsData((prevBoardsData: typeof boards) =>
+          prevBoardsData.map((b: boardType) => {
             if (b.id === source.droppableId) {
               b.items = b.items.filter((i: ServiceType) => i.title !== draggableId.split(':')[0]);
             }
@@ -69,8 +69,8 @@ const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
           })
         );
       } else {
-        setBoardsData((prevBoardsData: any) =>
-          prevBoardsData.map((b: any) => {
+        setBoardsData((prevBoardsData: typeof boards) =>
+          prevBoardsData.map((b: boardType) => {
             if (b.id === source.droppableId) {
               b.items = b.items.map((item: ServiceType) => {
                 if (item.title === draggableId.split(':')[0]) {
@@ -112,13 +112,13 @@ const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
           }
           return item;
         })
-      : [
+      : ([
           ...(destinationBoard?.items || []),
           {
             title: draggableId.split(':')[0],
             serviceMapModels: [sourceItem?.serviceMapModels[index]],
           },
-        ];
+        ] as ServiceType[]);
 
     // If the source is not the first board, remove the item from the source board
     if (source.droppableId !== 'A') {
