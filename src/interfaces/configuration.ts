@@ -45,6 +45,23 @@ export interface IDataSourceType {
   commandTimeout: number;
 }
 
+export type boardType = {
+  id: string;
+  title: string;
+  items: ServiceType[];
+};
+
+export type ServiceModelType = {
+  serviceName?: string;
+  serviceId?: string;
+  id?: number;
+};
+
+export type ServiceType = {
+  title: string;
+  serviceMapModels: ServiceModelType[];
+};
+
 export interface SingleDataSourceResponse extends APIResponse<IDataSourceType> {}
 export interface DataSourceResponse extends APIResponse<IDataSourceType[]> {}
 export interface DatabaseTypeResponse extends APIResponse<IDatabaseType[]> {}

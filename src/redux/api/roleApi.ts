@@ -1,10 +1,11 @@
 import { BaseQueryFn, createApi, FetchArgs } from '@reduxjs/toolkit/query/react';
 import { isEmpty } from 'lodash';
 
+import { IPageQuery } from '@/interfaces/notification';
 import { IPrivilege, IRole, PrivilegesResponse, RoleResponse, RolesResponse } from '@/interfaces/role';
 
 import { APIResponse } from './../../interfaces/auth';
-import { baseQueryWithReauth, createRequest, CustomError } from './shared';
+import { baseQueryWithReauth, createRequest, createRequestWithParams, CustomError } from './shared';
 
 export const roleApi = createApi({
   reducerPath: 'roleApi',
@@ -43,8 +44,8 @@ export const roleApi = createApi({
       invalidatesTags: (_result, _error, { roleId }) => [{ type: 'role', roleId }],
     }),
 
-    getRoles: builder.query<RolesResponse, void>({
-      query: () => createRequest('Roles'),
+    getRoles: builder.query<RolesResponse, IPageQuery>({
+      query: (query) => createRequestWithParams('Roles', { ...query }),
       providesTags: (result, _error, _arg) =>
         result?.data && !isEmpty(result?.data) ? [...result.data.map(({ roleId }: any) => ({ type: 'role' as const, roleId })), 'role'] : ['role'],
     }),
