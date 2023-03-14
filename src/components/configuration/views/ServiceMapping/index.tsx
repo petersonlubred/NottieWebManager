@@ -30,7 +30,7 @@ const ServiceMapping = () => {
     <ConfigurationContainer>
       <Container>
         <Heading>Map each service to different data source by dragging or right clicking on them.</Heading>
-        <Boards data={data?.data} toggleDropdown={toggleDropdown} opened={opened} dataSource={dataSource.data} />
+        <Boards data={data?.data} toggleDropdown={toggleDropdown} opened={opened} dataSource={dataSource?.data} />
       </Container>
     </ConfigurationContainer>
   );
