@@ -10,6 +10,7 @@ import Empty from '@/components/shared/Empty';
 import Icon from '@/components/shared/Icons';
 import Loader from '@/components/shared/Loader';
 import RadioButton from '@/components/shared/RadioButton';
+import { useToast } from '@/context/ToastContext';
 import { ConfigurationContainer, NoDataContainer, NoDataTitle } from '@/pages/configuration';
 import { useGetSystemConfigsMenuQuery, useGetSystemConfigsQuery, useUpdateConfigMutation } from '@/redux/api';
 import { px } from '@/utils';
@@ -21,6 +22,7 @@ const SystemSettings = () => {
   const [menuCode, setMenuCode] = React.useState<string>('');
   const { data: configMenu, isFetching: isLoadingMenu } = useGetSystemConfigsMenuQuery({ id: menuCode }, { skip: !menuCode });
   const [saveChanges, { isLoading }] = useUpdateConfigMutation();
+  const { toast } = useToast();
 
   const initialValues = useMemo(
     () =>
@@ -31,7 +33,7 @@ const SystemSettings = () => {
     [configMenu]
   );
 
-  const handleSubmit = (values: typeof initialValues) => {
+  const handleSubmit = async (values: typeof initialValues) => {
     const newValues = Object.keys(values).reduce((acc: { [key: string]: string | boolean }, key) => {
       if (typeof values[key] === 'boolean') {
         acc[key] = values[key] ? 'true' : 'false';
@@ -58,7 +60,12 @@ const SystemSettings = () => {
       },
       []
     );
-    saveChanges(updatedValues);
+    try {
+      await saveChanges(updatedValues);
+      toast('success', 'Data  saved successfully');
+    } catch (error: any) {
+      toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
+    }
   };
 
   return (
