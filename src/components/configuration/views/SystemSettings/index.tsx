@@ -34,7 +34,7 @@ const SystemSettings = () => {
   const handleSubmit = (values: typeof initialValues) => {
     const newValues = Object.keys(values).reduce((acc: { [key: string]: string | boolean }, key) => {
       if (typeof values[key] === 'boolean') {
-        acc[key] = values[key] ? 'YES' : 'NO';
+        acc[key] = values[key] ? 'true' : 'false';
       } else {
         acc[key] = values[key];
       }
