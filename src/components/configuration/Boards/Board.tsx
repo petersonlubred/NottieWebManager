@@ -7,7 +7,7 @@ import Icon from '@/components/shared/Icons';
 import { boardType, ServiceType } from '@/interfaces/configuration';
 import { px } from '@/utils';
 
-const Board = ({ board, toggleDropdown, opened }: { board: boardType; toggleDropdown: (_index: number) => void; opened: number[] }) => {
+const Board = ({ board, toggleDropdown, opened }: { board: boardType; toggleDropdown: (_index: string) => void; opened: string[] }) => {
   const [enabled, setEnabled] = useState(false);
   const { title, items, id } = board;
 
@@ -37,9 +37,9 @@ const Board = ({ board, toggleDropdown, opened }: { board: boardType; toggleDrop
               <AccordionBox
                 title={item?.title}
                 key={index}
-                index={index}
+                index={index + id}
                 toggleDropdown={toggleDropdown}
-                opened={opened.includes(index)}
+                opened={opened.includes(index + id)}
                 itemsOnExpand={
                   <>
                     {item.serviceMapModels.map((model) => (
