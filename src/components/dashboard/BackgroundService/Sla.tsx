@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { IDashboardBackgroundServiceSla } from '@/interfaces/dashboard';
 import { px } from '@/utils';
 
-const tableItem = ['Transaction Count', 'Non-transaction Count', 'OTP count'];
-
-const ProgressStatusTable = ({ heading }: { heading: string }) => {
+const Sla = ({ heading, data }: { heading: string; data?: IDashboardBackgroundServiceSla[] }) => {
+  const getSlaStatus = ({ data, timeBound }: { data: IDashboardBackgroundServiceSla; timeBound: string }) => {
+    return data.slaProgressStatuses.find((d) => d.timeBound.includes(timeBound));
+  };
   return (
     <MonitorContainerBox>
       <MonitorHeader>
@@ -13,29 +15,29 @@ const ProgressStatusTable = ({ heading }: { heading: string }) => {
       </MonitorHeader>
       <MonitorContentBox>
         <MonitorSubHeader></MonitorSubHeader>
-        <MonitorSubHeader>00-10 sec</MonitorSubHeader>
-        <MonitorSubHeader>11-30 sec</MonitorSubHeader>
-        <MonitorSubHeader>30-60 sec</MonitorSubHeader>
-        <MonitorSubHeader> &#62; 60 sec</MonitorSubHeader>
+        <MonitorSubHeader>0-30 sec</MonitorSubHeader>
+        <MonitorSubHeader>31-60 sec</MonitorSubHeader>
+        <MonitorSubHeader>1-2 min</MonitorSubHeader>
+        <MonitorSubHeader> &#62; 2 min</MonitorSubHeader>
         <Divider></Divider>
-        {tableItem?.map((item, index) => (
+        {data?.map((item, index) => (
           <React.Fragment key={index}>
-            <MonitorSubHeaderTitle>{item}</MonitorSubHeaderTitle>
+            <MonitorSubHeaderTitle>{item.serviceType}</MonitorSubHeaderTitle>
             <MonitorSubHeaderParagraph>
-              <MonitorSubHeaderValue>34,023</MonitorSubHeaderValue>
-              <MonitorSubHeaderPercentage color={'secondaryLight'}>34%</MonitorSubHeaderPercentage>
+              <MonitorSubHeaderValue>{getSlaStatus({ data: item, timeBound: '0-30' })?.count ?? 0} </MonitorSubHeaderValue>
+              <MonitorSubHeaderPercentage color={'secondaryLight'}>{getSlaStatus({ data: item, timeBound: '0-30' })?.percentage ?? 0}%</MonitorSubHeaderPercentage>
             </MonitorSubHeaderParagraph>{' '}
             <MonitorSubHeaderParagraph>
-              <MonitorSubHeaderValue> 50,232 </MonitorSubHeaderValue>
-              <MonitorSubHeaderPercentage color={'dangerLight'}>34%</MonitorSubHeaderPercentage>
+              <MonitorSubHeaderValue> {getSlaStatus({ data: item, timeBound: '31-60' })?.count ?? 0} </MonitorSubHeaderValue>
+              <MonitorSubHeaderPercentage color={'dangerLight'}>{getSlaStatus({ data: item, timeBound: '31-60' })?.percentage ?? 0}%</MonitorSubHeaderPercentage>
             </MonitorSubHeaderParagraph>{' '}
             <MonitorSubHeaderParagraph>
-              <MonitorSubHeaderValue> 50,232 </MonitorSubHeaderValue>
-              <MonitorSubHeaderPercentage color={'successLight'}>34%</MonitorSubHeaderPercentage>
+              <MonitorSubHeaderValue> {getSlaStatus({ data: item, timeBound: '1-2' })?.count ?? 0}</MonitorSubHeaderValue>
+              <MonitorSubHeaderPercentage color={'successLight'}>{getSlaStatus({ data: item, timeBound: '1-2' })?.percentage ?? 0}%</MonitorSubHeaderPercentage>
             </MonitorSubHeaderParagraph>{' '}
             <MonitorSubHeaderParagraph>
-              <MonitorSubHeaderValue> 50,232 </MonitorSubHeaderValue>
-              <MonitorSubHeaderPercentage color={'primaryLight'}>34%</MonitorSubHeaderPercentage>
+              <MonitorSubHeaderValue> {getSlaStatus({ data: item, timeBound: '2 min' })?.count ?? 0}</MonitorSubHeaderValue>
+              <MonitorSubHeaderPercentage color={'primaryLight'}>{getSlaStatus({ data: item, timeBound: '2 min' })?.percentage ?? 0}%</MonitorSubHeaderPercentage>
             </MonitorSubHeaderParagraph>
           </React.Fragment>
         ))}
@@ -45,9 +47,16 @@ const ProgressStatusTable = ({ heading }: { heading: string }) => {
   );
 };
 
-export default ProgressStatusTable;
+export default Sla;
 
-const MonitorContainerBox = styled.div``;
+const MonitorContainerBox = styled.div`
+  min-height: ${px(370)};
+  max-height: ${px(370)};
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 const MonitorHeader = styled.div`
   padding: ${px(16)};

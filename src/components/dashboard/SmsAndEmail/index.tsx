@@ -1,22 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { px } from '@/utils';
+import { IDashboardSmsEmailSmsSmsNetworkCountDonutChart } from '@/interfaces/dashboard';
+import { useGetDashboardSmsEmailSmsNetworkCountDonutChartQuery } from '@/redux/api';
+import { getPollingInterval, px } from '@/utils';
 
 import SmsDeliveryContainer from '../smsDeliveryStatus';
 import EmailDeliveryStatus from './EmailDeliveryStatus';
 import OutBoundSmcStatus from './OutBoundSmcStatus';
 import SmsDeliveryStatus from './SMSDeliveryStatus';
 
-const deliveryItems = ['Transaction SMS Delivery', 'Non-Transaction SMS Delivery', 'OTP SMS Delivery'];
 const SmsandEmail = () => {
+  const { data: smsDeliveryData, isFetching: smsDeliveryFetching } = useGetDashboardSmsEmailSmsNetworkCountDonutChartQuery(undefined, { pollingInterval: getPollingInterval() });
   return (
     <>
       <SmsDeliveryContainer />
       <DeliveryContainer>
-        {deliveryItems?.map((item, index) => (
-          <SmsDeliveryStatus key={index} heading={item} />
-        ))}{' '}
+        {!smsDeliveryFetching &&
+          smsDeliveryData?.data?.map((item: IDashboardSmsEmailSmsSmsNetworkCountDonutChart, index: number) => (
+            <SmsDeliveryStatus key={index} heading={item.serviceType} data={item.smsDelivery} />
+          ))}{' '}
+        {smsDeliveryFetching && (
+          <>
+            <SmsDeliveryStatus />
+            <SmsDeliveryStatus />
+            <SmsDeliveryStatus />
+          </>
+        )}
       </DeliveryContainer>
       <ProgressStatusContainer>
         <OutBoundSmcStatus />

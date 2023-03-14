@@ -1,111 +1,91 @@
 import { GroupedBarChartOptions } from '@carbon/charts/interfaces';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { GroupedBarChart } from '@carbon/charts-react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { px } from '@/utils';
+import { IDashboardSmsEmailEmailDeliveryStatusColumnChart } from '@/interfaces/dashboard';
+import { useGetDashboardSmsEmailEmailDeliveryStatusColumnChartQuery } from '@/redux/api';
+import { getPollingInterval, px } from '@/utils';
+
+interface IMappedData {
+  group: string;
+  key: string;
+  value: number;
+}
 
 const EmailDeliveryStatus = () => {
-  const chartRef = useRef<any>();
-  const [isMounted, setIsMounted] = useState(false);
+  const { data: emailDeliveryData, isFetching: emailDeliveryDataFetching } = useGetDashboardSmsEmailEmailDeliveryStatusColumnChartQuery(
+    {},
+    { pollingInterval: getPollingInterval() }
+  );
+  const [data, setData] = useState<any[]>([]);
+
+  const getMembers = (members: IDashboardSmsEmailEmailDeliveryStatusColumnChart[]) => {
+    let deliveryStatuses: IMappedData[] = [];
+    members.map((m) => {
+      if (m.deliveryStatuses && m.deliveryStatuses.length) {
+        deliveryStatuses = [
+          ...deliveryStatuses,
+          m.deliveryStatuses.map((delivery) => {
+            return {
+              group: delivery.status,
+              key: m.serviceType,
+              value: delivery.totalCount,
+            };
+          }) as unknown as IMappedData,
+        ];
+      }
+      return m;
+    });
+
+    return deliveryStatuses.flat();
+  };
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  const { GroupedBarChart } = chartRef.current || {};
+    if (emailDeliveryData?.data) setData(getMembers(emailDeliveryData?.data));
+  }, [emailDeliveryData?.data]);
 
-  useEffect(() => {
-    chartRef.current = {
-      GroupedBarChart: require('@carbon/charts-react').GroupedBarChart,
-    };
-  }, []);
-
-  const [data, setData] = React.useState<any>([]);
-  const [options, setOptions] = React.useState<any>({});
-
-  const Data = useMemo(() => {
-    return [
-      {
-        group: 'Successfully sent',
-        key: 'Transaction',
-        value: 65000,
-      },
-      {
-        group: 'Successfully sent',
-        key: 'Non-transaction',
-        value: 29123,
-      },
-      {
-        group: 'Successfully sent',
-        key: 'OTP',
-        value: 35213,
-      },
-      {
-        group: 'Rejected/Error',
-        key: 'Transaction',
-        value: 32432,
-      },
-      {
-        group: 'Rejected/Error',
-        key: 'Non-transaction',
-        value: 21312,
-      },
-      {
-        group: 'Rejected/Error',
-        key: 'OTP',
-        value: 56456,
-      },
-    ];
-  }, []);
-
-  const Options: GroupedBarChartOptions = useMemo(() => {
-    return {
-      grid: {
-        x: {
-          enabled: false,
-          stroke: '#E0E0E0',
-        },
-      },
-      toolbar: {
+  const options: GroupedBarChartOptions = {
+    grid: {
+      x: {
         enabled: false,
+        stroke: '#E0E0E0',
       },
-      axes: {
-        left: {
-          mapsTo: 'value',
-        },
-        bottom: {
-          scaleType: 'labels',
-          mapsTo: 'key',
-        },
-        data: {
-          loading: true,
-        },
+    },
+    toolbar: {
+      enabled: false,
+    },
+    axes: {
+      left: {
+        mapsTo: 'value',
       },
-      color: {
-        scale: {
-          'Successfully sent': '#157532',
-          'Rejected/Error': '#C51C24',
-        },
+      bottom: {
+        scaleType: 'labels',
+        mapsTo: 'key',
       },
-
-      height: '100%',
-      width: '100%',
-      legend: {
-        enabled: false,
-        position: 'top',
-        truncation: {
-          numCharacter: 150,
-        },
+    },
+    color: {
+      scale: {
+        Queue: '#DEA504',
+        Sent: '#0258F0',
       },
-      bars: {
-        maxWidth: 32,
+    },
+    data: {
+      loading: emailDeliveryDataFetching,
+    },
+    height: '100%',
+    width: '100%',
+    legend: {
+      enabled: false,
+      position: 'top',
+      truncation: {
+        numCharacter: 150,
       },
-    };
-  }, []);
-
-  useEffect(() => {
-    setData(Data);
-    setOptions(Options);
-  }, [Data, Options]);
+    },
+    bars: {
+      maxWidth: 32,
+    },
+  };
 
   return (
     <EmailDeliveryContainerBox>
@@ -114,13 +94,15 @@ const EmailDeliveryStatus = () => {
       </EmailDeliveryHeader>
       <StatusContainer>
         <BoxContainer>
-          <Box value={'#157532'}></Box> Successfully sent
+          <Box value={'#DEA504'}></Box> Queue
         </BoxContainer>{' '}
         <BoxContainer>
-          <Box value={'#C51C24'}></Box> Rejected/Error
+          <Box value={'#0258F0'}></Box> Sent
         </BoxContainer>{' '}
       </StatusContainer>{' '}
-      <ChartContainer>{isMounted && <GroupedBarChart data={data} options={options}></GroupedBarChart>}</ChartContainer>
+      <ChartContainer>
+        <GroupedBarChart data={data ?? []} options={options}></GroupedBarChart>
+      </ChartContainer>
     </EmailDeliveryContainerBox>
   );
 };
@@ -168,7 +150,7 @@ const Box = styled.div<{ value: string }>`
 
 const ChartContainer = styled.div`
   padding: ${px(16)};
-  height: ${px(200)};
+  height: ${px(250)};
   overflow: hidden;
 
   .cds--cc--grid rect.chart-grid-backdrop {
