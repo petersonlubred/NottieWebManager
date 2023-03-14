@@ -1,156 +1,142 @@
-import React, { useEffect, useState } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import React, { useState } from 'react';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
-const boards = [
-  {
-    id: 'A',
-    title: 'Board A',
-    items: [
-      { id: '1', title: 'Test-1' },
-      { id: '2', title: 'Test-2' },
-      { id: '3', title: 'Test-3' },
-    ],
-  },
-  { id: 'B', title: 'Board B', items: [] },
-  { id: 'C', title: 'Board C', items: [] },
-];
+import { boardType, IDataSourceType, ServiceModelType, ServiceType } from '@/interfaces/configuration';
+import { IServiceMapping } from '@/interfaces/serviceMapping';
+import { px } from '@/utils';
 
-const Board = ({ board }: any) => {
-  const [enabled, setEnabled] = useState(false);
-  const { id, title, items } = board;
+import Board from './Board';
+interface Iprops {
+  data: IServiceMapping[];
+  opened: number[];
+  toggleDropdown: (_index: number) => void;
+  dataSource?: IDataSourceType[];
+}
+const Boards = ({ data, opened, toggleDropdown, dataSource }: Iprops) => {
+  let Index = 0;
+  const boards = [
+    {
+      id: 'A',
+      title: 'Unmapped Services',
+      items: data?.map((item: IServiceMapping, index: number) => ({
+        id: index,
+        title: item.serviceType,
+        serviceMapModels: item.serviceMapModels.map((service: { serviceName: string; serviceId: string; id: string }) => ({
+          serviceName: service.serviceName,
+          serviceId: service.serviceId,
+          id: Index++,
+        })),
+      })),
+    },
+    ...(dataSource?.map((item: IDataSourceType, index) => ({
+      id: index === 0 ? 'B' : 'C', // TODO: change this to dynamic
+      title: item.databaseName,
+      items: [],
+    })) || []),
+  ];
+  const [boardsData, setBoardsData] = useState<typeof boards>(boards);
 
-  useEffect(() => {
-    const animation = requestAnimationFrame(() => setEnabled(true));
+  const getSourceData = (source: { droppableId: string; index: number }, draggableId: string) => {
+    const board = boardsData.find((b: boardType) => b.id === source.droppableId);
+    const sourceItem = board?.items.find((i: ServiceType) => i.title === draggableId.split(':')[0]);
+    return { sourceItem, board };
+  };
 
-    return () => {
-      cancelAnimationFrame(animation);
-      setEnabled(false);
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination, draggableId } = result;
+    const { sourceItem } = getSourceData(source, draggableId);
+    const destinationBoard = destination && getSourceData(destination, draggableId)?.board;
+
+    const serviceMapModels = sourceItem?.serviceMapModels || [];
+    const updatedSourceItems = [...serviceMapModels];
+    const index = updatedSourceItems?.findIndex((item) => item.id === source.index);
+
+    const handleRemoveItem = (isDest?: boolean, isCopy?: true) => {
+      if (index !== -1 && !isCopy) {
+        updatedSourceItems?.splice(index, 1);
+      }
+      if (updatedSourceItems?.length === 0) {
+        setBoardsData((prevBoardsData: any) =>
+          prevBoardsData.map((b: any) => {
+            if (b.id === source.droppableId) {
+              b.items = b.items.filter((i: ServiceType) => i.title !== draggableId.split(':')[0]);
+            }
+            if (b.id === destination?.droppableId && isDest) {
+              b.items = updatedDestinationItems;
+            }
+            return b;
+          })
+        );
+      } else {
+        setBoardsData((prevBoardsData: any) =>
+          prevBoardsData.map((b: any) => {
+            if (b.id === source.droppableId) {
+              b.items = b.items.map((item: ServiceType) => {
+                if (item.title === draggableId.split(':')[0]) {
+                  item.serviceMapModels = updatedSourceItems;
+                }
+                return item;
+              });
+            }
+            if (b.id === destination?.droppableId && isDest) {
+              b.items = updatedDestinationItems;
+            }
+            return b;
+          })
+        );
+      }
     };
-  }, []);
 
-  if (!enabled) {
-    return null;
-  }
-
-  return (
-    <div className="board">
-      <h2>{title}</h2>
-      <Droppable droppableId={id}>
-        {(provided: any) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            {items.map((item: any, index: any) => (
-              <Draggable key={item?.id} draggableId={item?.id} index={index}>
-                {(provided: any) => (
-                  <div className="item" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                    {item?.title}
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </div>
-  );
-};
-
-const Boards = () => {
-  const [boardsData, setBoardsData] = useState<any>(boards);
-
-  const onDragEnd = (result: any) => {
-    const { source, destination } = result;
-    const sourceBoard = boardsData.find((b: any) => b.id === source.droppableId);
-    const destinationBoard = boardsData.find((b: any) => b.id === destination?.droppableId);
-
-    if ((!destination && source.droppableId === 'A') || destination?.droppableId === 'A') {
+    // if dropped outside the list or dropped into the same list or dropped into the first list, do nothing
+    if ((!destination && source.droppableId === 'A') || destination?.droppableId === 'A' || source.droppableId === destination?.droppableId) {
       return;
     } else if (!destination) {
-      // If the destination is null and the source is not the first board, remove the item from the source board
-      const updatedSourceItems = [...sourceBoard.items];
-      updatedSourceItems.splice(source.index, 1);
-      setBoardsData((prevBoardsData: any) =>
-        prevBoardsData.map((b: any) => {
-          if (b.id === source.droppableId) {
-            return {
-              ...b,
-              items: updatedSourceItems,
-            };
-          }
-          return b;
-        })
-      );
+      handleRemoveItem();
       return;
     }
-
-    // If dropped back into the same droppable area and at the different index, update the index
-    if (source.droppableId === destination.droppableId && source.index !== destination.index) {
-      const board = boardsData.find((b: any) => b.id === source.droppableId);
-      const updatedItems = [...board.items];
-      const [removed] = updatedItems.splice(source.index, 1);
-      updatedItems.splice(destination.index, 0, removed);
-      setBoardsData((prevBoardsData: any) =>
-        prevBoardsData.map((b: any) => {
-          if (b.id === source.droppableId) {
-            return {
-              ...b,
-              items: updatedItems,
-            };
-          }
-          return b;
-        })
-      );
-    }
-
-    // If dropped into a different droppable area, update the data
-    if (source.droppableId !== destination.droppableId) {
-      //check if the item already exists in the destination
-      const itemExists = destinationBoard?.items.find(
-        (i: any) => i.id.slice(0, -1) === sourceBoard.items[source.index].id.slice(0, -1) || i.id.slice(0, -1) === sourceBoard.items[source.index].id
-      );
-
+    if (source.droppableId !== destination?.droppableId) {
+      const destItem = destinationBoard?.items.find((i: ServiceType) => i.title === draggableId.split(':')[0]);
+      const itemExists = destItem?.serviceMapModels.find((s: ServiceModelType) => s.id === source.index);
       if (itemExists) {
         return;
       }
-      let updatedSourceItems: any, updatedDestinationItems: any;
-      if (source.droppableId === 'A') {
-        updatedSourceItems = [...sourceBoard.items];
-        updatedDestinationItems = [...destinationBoard.items, { ...sourceBoard.items[source.index], id: `${sourceBoard.items[source.index].id}${destination.droppableId}` }];
-      } else {
-        updatedSourceItems = [...sourceBoard.items];
-        updatedDestinationItems = [...destinationBoard.items];
-        const [removed] = updatedSourceItems.splice(source.index, 1);
-        updatedDestinationItems.splice(destination.index, 0, removed);
-      }
-      setBoardsData((prevBoardsData: any) =>
-        prevBoardsData.map((b: any) => {
-          if (b.id === source.droppableId) {
-            return {
-              ...b,
-              items: updatedSourceItems,
-            };
+    }
+
+    // TODO: Reorder the items in the destination board
+    const updatedDestinationItems = destinationBoard?.items.find((i: ServiceType) => i.title === draggableId.split(':')[0])
+      ? destinationBoard?.items.map((item: ServiceType) => {
+          if (item.title === draggableId.split(':')[0] && sourceItem) {
+            item.serviceMapModels = [...item.serviceMapModels, sourceItem.serviceMapModels[index]];
+            return item;
           }
-          if (b.id === destination.droppableId) {
-            return {
-              ...b,
-              items: updatedDestinationItems,
-            };
-          }
-          return b;
+          return item;
         })
-      );
+      : [
+          ...(destinationBoard?.items || []),
+          {
+            title: draggableId.split(':')[0],
+            serviceMapModels: [sourceItem?.serviceMapModels[index]],
+          },
+        ];
+
+    // If the source is not the first board, remove the item from the source board
+    if (source.droppableId !== 'A') {
+      handleRemoveItem(true);
+      return;
+    } else {
+      handleRemoveItem(true, true);
     }
   };
 
   return (
-    <div className="App">
+    <div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <BoardContainer className="boards">
-          {boardsData.map((board: any) => (
-            <Board key={board.id} board={board} />
+        <CardBox>
+          {boardsData?.map((board: boardType) => (
+            <Board key={board.id} board={board} opened={opened} toggleDropdown={toggleDropdown} />
           ))}
-        </BoardContainer>
+        </CardBox>
       </DragDropContext>
     </div>
   );
@@ -158,13 +144,8 @@ const Boards = () => {
 
 export default Boards;
 
-const BoardContainer = styled.div`
+const CardBox = styled.div`
   display: flex;
-  gap: 1rem;
-  margin: 1rem;
-
-  .board {
-    border: 1px solid #ccc;
-    padding: 1rem;
-  }
+  width: 100%;
+  gap: ${px(12)};
 `;
