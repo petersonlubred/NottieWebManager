@@ -1,4 +1,4 @@
-import { Close } from '@carbon/react/icons';
+import { Close } from '@carbon/icons-react';
 import React from 'react';
 import styled from 'styled-components';
 

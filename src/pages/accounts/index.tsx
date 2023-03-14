@@ -30,19 +30,19 @@ const Accounts = () => {
   const [isUpdatedMultiselect, setIsUpdatedMultiselect] = useState(false);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [query, setQuery] = useState<IPageQuery>(initialPageQuery);
-  const debounceFilter = useDebounce(pickValues(query), 500);
+  const debounceFilter = useDebounce(query, 500);
 
   const router = useRouter();
   const { tab } = router.query;
   const currentTab = ['user', 'role'].includes(tab as string) ? tab : 'user';
   const { data: users, isFetching: isLoadingUser } = useGetUsersQuery(
-    { ...debounceFilter },
+    { ...pickValues(debounceFilter) },
     {
       skip: currentTab !== 'user',
     }
   );
   const { data, isFetching: isLoading } = useGetRolesQuery(
-    { ...debounceFilter },
+    { ...pickValues(debounceFilter) },
     {
       skip: currentTab !== 'role',
     }
@@ -110,7 +110,7 @@ const Accounts = () => {
       });
       !rows.some((row) => row.id === undefined) && setRows(rows);
     });
-  }, [rolesheader, navItems, usersheader, responseData, isUpdatedMultiselect, tabIndex, currentTab]);
+  }, [rolesheader, usersheader, responseData, isUpdatedMultiselect, tabIndex, currentTab]);
 
   useEffect(() => {
     if (currentTab === 'role') {

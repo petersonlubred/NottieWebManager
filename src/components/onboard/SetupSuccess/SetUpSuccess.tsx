@@ -1,5 +1,5 @@
+import { ArrowRight, CheckmarkFilled, Copy } from '@carbon/icons-react';
 import { Button } from '@carbon/react';
-import { ArrowRight, CheckmarkFilled, Copy } from '@carbon/react/icons';
 import React from 'react';
 import styled from 'styled-components';
 

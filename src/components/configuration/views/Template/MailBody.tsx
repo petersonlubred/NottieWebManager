@@ -1,4 +1,4 @@
-import { Copy } from '@carbon/react/icons';
+import { Copy } from '@carbon/icons-react';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';

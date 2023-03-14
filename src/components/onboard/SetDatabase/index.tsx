@@ -1,4 +1,4 @@
-import { IbmCloudDedicatedHost } from '@carbon/react/icons';
+import { IbmCloudDedicatedHost } from '@carbon/icons-react';
 import React from 'react';
 import styled from 'styled-components';
 
