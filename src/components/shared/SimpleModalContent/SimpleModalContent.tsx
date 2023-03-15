@@ -15,7 +15,7 @@ const SimpleModalcontent = ({ content, isLoading }: Iprops) => {
 
 export default SimpleModalcontent;
 
-const Paragraph = styled.p`
+const Paragraph = styled.div`
   display: flex;
   font-weight: 400;
   font-size: ${px(14)};

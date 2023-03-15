@@ -1,30 +1,28 @@
 import {
   DataTable,
+  DataTableCustomRenderProps,
+  DataTableHeader,
   DataTableSkeleton,
+  DataTableSkeletonHeader,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableHeaderProps,
-  TableProps,
   TableRow,
-  TableRowProps,
   TableToolbar,
   TableToolbarContent,
-  TableToolbarProps,
-} from '@carbon/react';
+} from 'carbon-components-react';
 import { isEmpty } from 'lodash';
 import React from 'react';
 
 import { IPageQuery } from '@/interfaces/notification';
-import { IHeader } from '@/interfaces/role';
 
 import TableNavItem from '../../TableNavItems';
 
 type Props = {
   Rows: any[];
-  Headers: IHeader[];
+  Headers: DataTableHeader[] & DataTableSkeletonHeader[];
   tab: number;
   isLoading: boolean;
   setStart: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -47,22 +45,10 @@ type Props = {
 const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, start, end, setQuery, query, renderDate, notArchive, setNotArchive, displayToday }: Props) => {
   return (
     <>
-      <DataTable rows={Rows} headers={Headers}>
-        {({
-          rows,
-          headers,
-          getHeaderProps,
-          getRowProps,
-          getTableProps,
-          getToolbarProps,
-        }: {
-          rows: any[];
-          headers: IHeader[];
-          getHeaderProps: (_props: IHeader) => TableHeaderProps;
-          getRowProps: (_props: any) => TableRowProps;
-          getTableProps: () => TableProps;
-          getToolbarProps: () => TableToolbarProps;
-        }) => (
+      <DataTable
+        rows={Rows}
+        headers={Headers}
+        render={({ rows, headers, getTableProps, getToolbarProps }: DataTableCustomRenderProps) => (
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableToolbarContent>
@@ -82,22 +68,20 @@ const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, s
               </TableToolbarContent>
             </TableToolbar>
             {isLoading ? (
-              <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
+              <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
             ) : (
               <Table {...getTableProps()}>
                 <TableHead>
                   <TableRow>
-                    {headers.map((header: IHeader, index: number) => (
-                      <TableHeader {...getHeaderProps({ ...header })} key={index}>
-                        {header.header}
-                      </TableHeader>
+                    {headers.map((header: DataTableHeader, index: number) => (
+                      <TableHeader key={index}>{header.header}</TableHeader>
                     ))}
                   </TableRow>
                 </TableHead>
                 {!isEmpty(Rows) && !isLoading && (
                   <TableBody>
                     {rows.map((row: any) => (
-                      <TableRow key={row.id} {...getRowProps({ row })}>
+                      <TableRow key={row.id}>
                         {row.cells.map((cell: any) => (
                           <TableCell key={cell.id}>{cell.value}</TableCell>
                         ))}
@@ -109,7 +93,7 @@ const AlertTable = ({ Rows, Headers, isLoading, filterItems, setEnd, setStart, s
             )}
           </>
         )}
-      </DataTable>
+      />
     </>
   );
 };

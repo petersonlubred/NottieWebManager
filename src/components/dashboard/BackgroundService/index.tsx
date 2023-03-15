@@ -1,4 +1,4 @@
-import { Select, SelectItem } from '@carbon/react';
+import { Select, SelectItem } from 'carbon-components-react';
 import React from 'react';
 import styled from 'styled-components';
 

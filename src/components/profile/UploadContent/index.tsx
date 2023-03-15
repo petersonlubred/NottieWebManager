@@ -27,7 +27,7 @@ const Container = styled.div`
   }
 `;
 
-const Label = styled.p`
+const Label = styled.div`
   font-size: ${px(14)};
   font-weight: 600;
   line-height: ${px(18)};
@@ -35,7 +35,7 @@ const Label = styled.p`
   margin-bottom: ${px(8)};
 `;
 
-const Description = styled.p`
+const Description = styled.div`
   font-size: ${px(14)};
   font-weight: 400;
   line-height: ${px(18)};
@@ -43,7 +43,7 @@ const Description = styled.p`
   margin-bottom: ${px(16)};
 `;
 
-const PreviewName = styled.p`
+const PreviewName = styled.div`
   font-size: ${px(14)};
   font-weight: 400;
   line-height: ${px(18)};
@@ -55,4 +55,4 @@ const PreviewName = styled.p`
   justify-content: space-between;
 `;
 
-const Paragraph = styled.p``;
+const Paragraph = styled.div``;

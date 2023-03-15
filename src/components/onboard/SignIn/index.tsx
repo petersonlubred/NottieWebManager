@@ -1,6 +1,6 @@
 import { ArrowRight } from '@carbon/icons-react';
-import { FormGroup, Loading, PasswordInput, TextInput } from '@carbon/react';
 import axios from 'axios';
+import { FormGroup, Loading, PasswordInput, TextInput } from 'carbon-components-react';
 import { Field, Form, Formik } from 'formik';
 import { NextRouter, useRouter } from 'next/router';
 import React from 'react';

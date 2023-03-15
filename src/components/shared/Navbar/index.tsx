@@ -1,6 +1,6 @@
 import { Light, LightFilled, Logout, Notification, User } from '@carbon/icons-react';
-import { Dropdown } from '@carbon/react';
 import axios from 'axios';
+import { Dropdown } from 'carbon-components-react';
 import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';

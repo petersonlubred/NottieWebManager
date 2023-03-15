@@ -1,4 +1,4 @@
-import { FormGroup, NumberInput, PasswordInput, Select, SelectItem, TextInput } from '@carbon/react';
+import { FormGroup, NumberInput, PasswordInput, Select, SelectItem, TextInput } from 'carbon-components-react';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
