@@ -64,11 +64,11 @@ const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, e
         <NavItem>
           <NavItemTitle>Date Range:</NavItemTitle>
           <DatePicker
-            key={renderDate}
+            key={renderDate?.toString()}
             dateFormat="d/m/Y"
             datePickerType="range"
             className="date_picker"
-            value={[startDate && dayjs(startDate).toString(), endDate && dayjs(endDate).toString()]}
+            value={[startDate ? dayjs(startDate).toString() : '', endDate ? dayjs(endDate).toString() : '']}
             onChange={(value: Date[]) => {
               setStart && setStart(dayjs(value[0]).format('YYYY-MM-DD'));
               setEnd && setEnd(value[1] ? dayjs(value[1]).format('YYYY-MM-DD') : undefined);
@@ -88,7 +88,7 @@ const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, e
             id={item?.key}
             labelText=""
             placeholder="type here"
-            value={query ? query[item.key as keyof IPageQuery] : ''}
+            value={query ? query[item.key as keyof Partial<IPageQuery>] : ''}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setQuery &&
                 setQuery({
