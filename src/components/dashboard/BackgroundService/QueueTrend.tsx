@@ -1,4 +1,5 @@
-import { ChartTheme, ScaleTypes } from '@carbon/charts/interfaces';
+// To do: Replace deleted imports
+// import { ChartTheme , ScaleTypes} from '@carbon/charts/interfaces';
 import { LineChart } from '@carbon/charts-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -86,7 +87,7 @@ const QueueTrend = ({
         FaceBook: '#F2B301',
       },
     },
-    theme: ChartTheme.G100,
+    theme: 'g100',
     grid: {
       x: {
         enabled: false,
@@ -98,11 +99,11 @@ const QueueTrend = ({
     axes: {
       bottom: {
         mapsTo: 'date',
-        scaleType: ScaleTypes.TIME,
+        scaleType: 'time',
       },
       left: {
         mapsTo: 'value',
-        scaleType: ScaleTypes.LINEAR,
+        scaleType: 'linear',
       },
     },
     timeScale: {
