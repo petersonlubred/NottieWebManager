@@ -88,7 +88,7 @@ const TableNavItem = ({ filterItems, noDateRange, setStart, setEnd, startDate, e
             id={item?.key}
             labelText=""
             placeholder="type here"
-            value={query ? query[item.key as keyof Partial<IPageQuery>] : ''}
+            value={query ? query[item.key as keyof Omit<IPageQuery, 'notArchive'>] : ''}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setQuery &&
                 setQuery({
