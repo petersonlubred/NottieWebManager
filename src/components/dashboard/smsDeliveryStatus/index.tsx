@@ -1,19 +1,23 @@
+import { SkeletonText } from '@carbon/react';
 import React from 'react';
 import styled from 'styled-components';
 
-import { px } from '@/utils';
+import { useGetDashboardSmsEmailSmsDeliveryStatusBarChartQuery } from '@/redux/api';
+import { getPollingInterval, px } from '@/utils';
 
 import PercentageBar from '../percentageBar';
 
 const indicatorData: any[] = [
   { title: 'Delivered', color: '#0E6027' },
-  { title: 'Pending', color: '#0258F0' },
-  { title: 'Undelivered', color: '#DEA504' },
+  { title: 'Sent', color: '#0258F0' },
+  { title: 'Queue', color: '#DEA504' },
   { title: 'Rejected', color: '#BA1B23' },
-  { title: 'Expired', color: '#4C4C4C' },
+  { title: 'Pending', color: '#4C4C4C' },
 ];
 
 const SmsDeliveryContainer = () => {
+  const { data, isFetching } = useGetDashboardSmsEmailSmsDeliveryStatusBarChartQuery({}, { pollingInterval: getPollingInterval() });
+
   return (
     <Container>
       <Header>SMS delivery status</Header>
@@ -26,18 +30,14 @@ const SmsDeliveryContainer = () => {
         ))}
       </IndicatorContainer>
       <PercentageBarContainer>
-        <PercentageBox>
-          <PercentageHeader>Transaction</PercentageHeader>
-          <PercentageBar />
-        </PercentageBox>
-        <PercentageBox>
-          <PercentageHeader>Non-transaction</PercentageHeader>
-          <PercentageBar />
-        </PercentageBox>
-        <PercentageBox>
-          <PercentageHeader>OTP</PercentageHeader>
-          <PercentageBar />
-        </PercentageBox>
+        {isFetching && <SkeletonText />}
+        {!isFetching &&
+          data?.data.map((status) => (
+            <PercentageBox key={status.serviceType}>
+              <PercentageHeader>{status.serviceType}</PercentageHeader>
+              <PercentageBar data={status.deliveryStatuses} />
+            </PercentageBox>
+          ))}
       </PercentageBarContainer>
     </Container>
   );

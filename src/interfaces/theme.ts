@@ -40,6 +40,7 @@ export interface ITheme {
     black: string;
     button: string;
     danger: string;
+    grey: string;
     tagBackground: string;
     secondary: string;
     secondaryLight: string;

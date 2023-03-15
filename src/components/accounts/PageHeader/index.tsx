@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import Icon from '@/components/shared/Icons';
-import { IDashboardSmsEmailMessageCount } from '@/interfaces/dashboard';
+import { DashboardSmsEmailMessageCountsResponse } from '@/interfaces/dashboard';
 import { useGetDashboardSmsEmailMessageCountQuery } from '@/redux/api/dashboardApi';
 import { setLastSync } from '@/redux/slices/dashboard';
 import { getPollingInterval, px } from '@/utils';
@@ -19,7 +19,7 @@ interface Iprops {
 }
 
 interface Ifigures {
-  data: IDashboardSmsEmailMessageCount;
+  data: DashboardSmsEmailMessageCountsResponse;
   key: string;
   index: number;
 }
@@ -46,7 +46,7 @@ const PageHeader = ({ title, subtitle, isDashboard }: Iprops) => {
         </HeaderDashboardTitleBox>
       )}
       {isDashboard && isFetching && <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={3} columnCount={6} />}
-      {isDashboard && !isFetching && (
+      {isDashboard && !isFetching && data && (
         <HeaderStatisticsSection>
           <HeaderStatisticsBox>
             <HeaderStatisticsTitle style={{ visibility: 'hidden' }}>Header</HeaderStatisticsTitle>
@@ -59,45 +59,45 @@ const PageHeader = ({ title, subtitle, isDashboard }: Iprops) => {
               <Icon id="sms-icon" width={14} height={13} />
               SMS
             </HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'SMS', index: 0 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'SMS', index: 1 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'SMS', index: 2 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'SMS', index: 0 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'SMS', index: 1 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'SMS', index: 2 })}</HeaderStatisticsValue>
           </HeaderStatisticsBox>
           <HeaderStatisticsBox>
             <HeaderStatisticsValue>
               <Icon id="mail-icon" width={14} height={10} />
               Email
             </HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Email', index: 0 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Email', index: 1 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Email', index: 2 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Email', index: 0 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Email', index: 1 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Email', index: 2 })}</HeaderStatisticsValue>
           </HeaderStatisticsBox>
           <HeaderStatisticsBox>
             <HeaderStatisticsValue>
               <Icon id="facebook-icon" width={12} height={12} />
               Facebook
             </HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Facebook', index: 0 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Facebook', index: 1 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Facebook', index: 2 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Facebook', index: 0 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Facebook', index: 1 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Facebook', index: 2 })}</HeaderStatisticsValue>
           </HeaderStatisticsBox>
           <HeaderStatisticsBox>
             <HeaderStatisticsValue>
               <Icon id="facebook-icon" width={12} height={10} />
               Twitter
             </HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Twitter', index: 0 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Twitter', index: 1 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'Twitter', index: 2 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Twitter', index: 0 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Twitter', index: 1 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'Twitter', index: 2 })}</HeaderStatisticsValue>
           </HeaderStatisticsBox>
           <HeaderStatisticsBox>
             <HeaderStatisticsValue>
               <Icon id="whatsapp-icon" width={13} height={13} />
               Whatsapp
             </HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'WhatsApp', index: 0 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'WhatsApp', index: 1 })}</HeaderStatisticsValue>
-            <HeaderStatisticsValue>{getFigure({ data: data as IDashboardSmsEmailMessageCount, key: 'WhatsApp', index: 2 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'WhatsApp', index: 0 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'WhatsApp', index: 1 })}</HeaderStatisticsValue>
+            <HeaderStatisticsValue>{getFigure({ data: data, key: 'WhatsApp', index: 2 })}</HeaderStatisticsValue>
           </HeaderStatisticsBox>
         </HeaderStatisticsSection>
       )}
