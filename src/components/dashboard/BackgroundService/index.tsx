@@ -1,65 +1,137 @@
-import { Select, SelectItem } from 'carbon-components-react';
-import React from 'react';
+import { Select, SelectItem, SelectSkeleton } from 'carbon-components-react';
+import React, { useEffect, useState } from 'react';
+import { useInView } from 'react-cool-inview';
 import styled from 'styled-components';
 
-import { useGetDatasourcesQuery } from '@/redux/api';
-import { px } from '@/utils';
+import { IDashboardBackgroundServiceMicroserviceHeartBeat } from '@/interfaces/dashboard';
+import {
+  useGetDashboardServiceMicroservicesHeartbeatQuery,
+  useGetDashboardServiceQueueMonitorQuery,
+  useGetDashboardServiceSlaMessageQuery,
+  useGetDashboardServiceSlaSourceDataQuery,
+  useGetDatasourcesQuery,
+} from '@/redux/api';
+import { getPollingInterval, px } from '@/utils';
 
 import MicroService from './MicroService';
 import MicroServiceheader from './MicroServiceHeader';
-import ProgressStatusTable from './ProgressStatusTable';
+import MicroServiceLoader from './MicroserviceLoader';
 import QueueMonitor from './QueueMonitor';
 import QueueTrend from './QueueTrend';
+import Sla from './Sla';
 
-const queueMonitors = ['OTP Queue monitor', 'Transaction Queue monitor', 'Non-transaction Queue monitor'];
-const queueTrends = ['OTP Queue & TPS trend', 'Transaction Queue & TPS trend', 'Non-transaction Queue & TPS trend'];
-
-const microservices = ['Transaction', 'Transaction SMS', 'Transaction Email', 'Non-Transaction', 'Non-Transaction SMS', 'Non-Transaction Email', 'OTP', 'OTP-SMS', 'OTP-Email'];
-const progressStatus = ['SLA progress status', 'SLA progress status'];
 const BackgroundService = () => {
-  const { data } = useGetDatasourcesQuery();
+  const [microService, setMicroService] = useState<IDashboardBackgroundServiceMicroserviceHeartBeat[]>([]);
+  const [microServiceTotalHeartbeat, setMicroServiceTotalHeartbeat] = useState<{
+    ok: number;
+    check: number;
+    critical: number;
+    idle: number;
+  }>();
+  const [dataSourceId, setDataSourceId] = useState<string>('');
+  const { data: dataSource, isFetching: fetchingDataSource } = useGetDatasourcesQuery(undefined, { pollingInterval: getPollingInterval() });
+  const { data: queueData, isFetching: fetchingQueueDataSource } = useGetDashboardServiceQueueMonitorQuery(
+    { dataSourceId: dataSourceId },
+    { pollingInterval: getPollingInterval(), skip: !dataSourceId }
+  );
+  const {
+    data: microServiceHeartBeat,
+    isFetching: fetchingMicroService,
+    refetch,
+  } = useGetDashboardServiceMicroservicesHeartbeatQuery(undefined, {
+    pollingInterval: getPollingInterval(),
+  });
+  const { data: SlaMessage } = useGetDashboardServiceSlaMessageQuery(undefined, { pollingInterval: getPollingInterval() });
+  const { data: SlaSource } = useGetDashboardServiceSlaSourceDataQuery(undefined, { pollingInterval: getPollingInterval() });
+  const threeArray = new Array(3).fill(0);
+  const { observe } = useInView({
+    // For better UX, we can grow the root margin so the data will be loaded earlier
+    rootMargin: '50px 0px',
+    // When the last item comes to the viewport
+    onEnter: ({ unobserve }) => {
+      // Pause observe when loading data
+      unobserve();
+      // Trigger api call again
+      refetch();
+    },
+  });
+
+  useEffect(() => {
+    if (!fetchingDataSource && dataSource?.data) {
+      setDataSourceId(dataSource?.data[0].dataSourceId);
+    }
+  }, [dataSource?.data, fetchingDataSource]);
+
+  useEffect(() => {
+    if (!fetchingMicroService && microServiceHeartBeat?.data) {
+      setMicroService([...microService, microServiceHeartBeat.data]);
+      setMicroServiceTotalHeartbeat(microServiceHeartBeat.data.totalHeartbeatCount);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchingMicroService, microServiceHeartBeat]);
 
   return (
     <>
       <DataSourceBox>
         <DataBoxParagraph>Data source:</DataBoxParagraph>
         <SelectContainer>
-          <Select id="select-1" labelText="">
-            <SelectItem text="Choose option" />
-            {data?.data.map((item, index) => (
-              <SelectItem key={index} text={item?.databaseName} value={item} />
-            ))}
-          </Select>
+          {!dataSourceId ? (
+            <SelectSkeleton />
+          ) : (
+            <Select
+              id="select-1"
+              labelText=""
+              defaultValue={dataSourceId}
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                setDataSourceId(event.target.value);
+              }}
+            >
+              <SelectItem text="Choose option" value={''} />
+              {dataSource?.data.map((item, index) => (
+                <SelectItem key={index} text={item?.databaseName} value={item.dataSourceId} />
+              ))}
+            </Select>
+          )}
         </SelectContainer>
       </DataSourceBox>
       <MonitorContainer>
-        {queueMonitors?.map((item, index) => (
-          <QueueMonitor heading={item} key={index} />
+        {queueData?.data?.map((item, index) => (
+          <QueueMonitor heading={item.serviceType} key={index} data={item.queueMonitor} />
         ))}
       </MonitorContainer>
       <MonitorContainer>
-        {queueTrends?.map((item, index) => (
-          <QueueTrend heading={item} key={index} />
+        {queueData?.data?.map((item, index) => (
+          <QueueTrend heading={item.serviceType} key={index} data={item.queueMonitor} isFetching={fetchingQueueDataSource} />
         ))}
       </MonitorContainer>
       <MicroServiceContainer>
-        <MicroServiceheader />
-        {microservices.slice(0, 3)?.map((item, index) => (
-          <MicroService heading={item} key={index} />
-        ))}
-        <Divider></Divider>
-        {microservices.slice(3, 6)?.map((item, index) => (
-          <MicroService heading={item} key={index} />
-        ))}{' '}
-        <Divider></Divider>{' '}
-        {microservices.slice(6, 9)?.map((item, index) => (
-          <MicroService heading={item} key={index} />
-        ))}{' '}
+        <MicroServiceheader totalHeartbeatCount={microServiceTotalHeartbeat} />{' '}
+        <MicroserviceFlex>
+          {microService.map((micro, microIndex) => (
+            <div key={microIndex}>
+              {micro.microservices.map((microservice, index: number) => (
+                <ServiceContainer key={microservice.serviceType}>
+                  <MicroService
+                    data={microservice}
+                    showDivider={index !== micro.microservices.length - 1}
+                    innerRef={microService.length - 1 === microIndex && index === micro.microservices.length - 1 ? observe : null}
+                  />
+                </ServiceContainer>
+              ))}
+            </div>
+          ))}
+          {fetchingMicroService && (
+            <div>
+              {threeArray.map((_, index) => (
+                <MicroServiceLoader key={index} showDivider={index !== threeArray.length - 1} />
+              ))}
+            </div>
+          )}
+        </MicroserviceFlex>
       </MicroServiceContainer>
       <ProgressStatusContainer>
-        {progressStatus?.map((item, index) => (
-          <ProgressStatusTable heading={item} key={index} />
-        ))}
+        <Sla heading="Sla Message Progress Status" data={SlaMessage?.data} />
+        <Sla heading="Sla Source Progress Status" data={SlaSource?.data} />
       </ProgressStatusContainer>
     </>
   );
@@ -78,6 +150,7 @@ const DataSourceBox = styled.div`
 `;
 
 const SelectContainer = styled.div`
+  min-width: ${px(150)} !important;
   select {
     height: ${px(32)} !important;
   }
@@ -89,6 +162,7 @@ const SelectContainer = styled.div`
 const DataBoxParagraph = styled.p`
   font-size: ${px(14)};
   line-height: ${px(18)};
+  margin-right: ${px(12)};
 `;
 
 const MonitorContainer = styled.div`
@@ -107,17 +181,20 @@ const ProgressStatusContainer = styled.div`
 `;
 
 const MicroServiceContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   color: ${({ theme }) => theme.colors.white};
-  column-gap: ${px(16)};
   padding: ${px(16)};
   margin-bottom: ${px(16)};
   background-color: ${({ theme }) => theme.colors.bgPrimary};
 `;
 
-const Divider = styled.div`
-  grid-column: 1 / 4;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
-  margin-bottom: ${px(16)};
+const ServiceContainer = styled.div`
+  max-width: fit-content;
+`;
+
+const MicroserviceFlex = styled.div`
+  display: flex;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

@@ -3,7 +3,19 @@ import styled from 'styled-components';
 
 import { px } from '@/utils';
 
-const QueueMonitor = ({ heading }: { heading: string }) => {
+const QueueMonitor = ({
+  heading,
+  data,
+}: {
+  heading: string;
+  data?: {
+    description: string;
+    tpsformance: number;
+    queueCountPerformance: number;
+    queueCount: number;
+    tps: number;
+  }[];
+}) => {
   return (
     <MonitorContainerBox>
       <MonitorHeader>
@@ -14,52 +26,19 @@ const QueueMonitor = ({ heading }: { heading: string }) => {
         <MonitorSubHeader>Queue</MonitorSubHeader>
         <MonitorSubHeader>TPS</MonitorSubHeader>
         <Divider></Divider>
-        <MonitorSubHeaderTitle>
-          <BoxContainer>
-            <Box value={2870232}></Box>
-            <Box value={287}></Box>
-          </BoxContainer>
-          SMS
-        </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={2870232}>2,870,232</MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={287}>287</MonitorSubHeaderParagraph> <Divider></Divider>{' '}
-        <MonitorSubHeaderTitle>
-          <BoxContainer>
-            <Box value={129030}></Box>
-            <Box value={123}></Box>
-          </BoxContainer>
-          Email
-        </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={129030}>129,030 </MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={123}>123</MonitorSubHeaderParagraph> <Divider></Divider>{' '}
-        <MonitorSubHeaderTitle>
-          <BoxContainer>
-            <Box value={1287029}></Box>
-            <Box value={29}></Box>
-          </BoxContainer>
-          Facebook
-        </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={1287029}>1,287,029 </MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={29}>29</MonitorSubHeaderParagraph> <Divider></Divider>{' '}
-        <MonitorSubHeaderTitle>
-          <BoxContainer>
-            <Box value={10123}></Box>
-            <Box value={6}></Box>
-          </BoxContainer>
-          Twitter
-        </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={10123}>10,123 </MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={6}>6</MonitorSubHeaderParagraph> <Divider></Divider>{' '}
-        <MonitorSubHeaderTitle>
-          {' '}
-          <BoxContainer>
-            <Box value={28914}></Box>
-            <Box value={876}></Box>
-          </BoxContainer>
-          Whatsapp
-        </MonitorSubHeaderTitle>
-        <MonitorSubHeaderParagraph value={28914}>28,914 </MonitorSubHeaderParagraph>
-        <MonitorSubHeaderParagraph value={876}>876</MonitorSubHeaderParagraph>{' '}
+        {data?.map((queueData, index) => (
+          <React.Fragment key={index}>
+            <MonitorSubHeaderTitle>
+              <BoxContainer>
+                <Box value={queueData.queueCount}></Box>
+                <Box value={queueData.tps}></Box>
+              </BoxContainer>
+              {queueData.description}
+            </MonitorSubHeaderTitle>
+            <MonitorSubHeaderParagraph value={queueData.queueCount}>{queueData.queueCount}</MonitorSubHeaderParagraph>
+            <MonitorSubHeaderParagraph value={queueData.tps}>{queueData.tps}</MonitorSubHeaderParagraph> <Divider></Divider>
+          </React.Fragment>
+        ))}
       </MonitorContentBox>
     </MonitorContainerBox>
   );

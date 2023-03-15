@@ -44,6 +44,7 @@ const theme: ITheme = {
     black: '#000',
     button: '#F4B400',
     danger: '#DA1E28',
+    grey: '#4C4C4C',
     tagBackground: '#201F1F',
     secondary: 'rgba(241, 194, 27, 0.5)',
     secondaryLight: '#F1C21B',
