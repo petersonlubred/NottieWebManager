@@ -1,41 +1,38 @@
 import { Add, Password, TrashCan } from '@carbon/icons-react';
 import {
   DataTable,
+  DataTableCustomRenderProps,
+  DataTableHeader,
   DataTableSkeleton,
+  DataTableSkeletonHeader,
   Table,
   TableBatchAction,
-  TableBatchActionProps,
   TableBatchActions,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableHeader,
-  TableHeaderProps,
-  TableProps,
   TableRow,
-  TableRowProps,
   TableSelectAll,
   TableSelectRow,
-  TableSelectRowProps,
   TableToolbar,
   TableToolbarContent,
-  TableToolbarProps,
   TableToolbarSearch,
-} from '@carbon/react';
+} from 'carbon-components-react';
 import { isEmpty } from 'lodash';
 import React, { ChangeEvent, useState } from 'react';
 
 import Button from '@/components/shared/Button';
 import useNetworkRequest from '@/hooks/useNetworkRequest';
 import { IPageQuery } from '@/interfaces/notification';
-import { IHeader } from '@/interfaces/role';
 import { BulkResetPassword } from '@/interfaces/user';
 
 import ActionModal from '../../ActionModals';
 
 type Props = {
   Rows: any[];
-  Headers: IHeader[];
+  Headers: DataTableHeader[] & DataTableSkeletonHeader[];
   tab: number;
   toggleModal: () => void;
   isLoading: boolean;
@@ -55,28 +52,10 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading, query, setQu
   const { handleRequest, loading } = useNetworkRequest(toggleActionModal);
   return (
     <>
-      <DataTable rows={Rows} headers={Headers}>
-        {({
-          rows,
-          headers,
-          getHeaderProps,
-          getRowProps,
-          getTableProps,
-          getSelectionProps,
-          getToolbarProps,
-          getBatchActionProps,
-          selectedRows,
-        }: {
-          rows: any[];
-          headers: IHeader[];
-          getHeaderProps: (_props: IHeader) => TableHeaderProps;
-          getRowProps: (_props: any) => TableRowProps;
-          getTableProps: () => TableProps;
-          getSelectionProps: (_props?: { row: string }) => TableSelectRowProps;
-          getToolbarProps: () => TableToolbarProps;
-          getBatchActionProps: () => TableBatchActionProps;
-          selectedRows: { id: string; value: string; cells: any[] }[];
-        }) => (
+      <DataTable
+        rows={Rows}
+        headers={Headers}
+        render={({ rows, headers, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps, selectedRows }: DataTableCustomRenderProps) => (
           <>
             <TableToolbar {...getToolbarProps()}>
               <TableBatchActions {...getBatchActionProps()}>
@@ -87,7 +66,7 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading, query, setQu
                       iconDescription="Reset password for the selected rows"
                       onClick={() => {
                         const result: BulkResetPassword = [];
-                        selectedRows.forEach((obj: { id: string; value: string; cells: any }) => {
+                        selectedRows.forEach((obj: { id: string; value?: string; cells: any }) => {
                           const emailCell = obj?.cells.find((cell: any) => cell.id.endsWith(':emailAddress'));
                           if (emailCell) {
                             result.push({
@@ -139,38 +118,39 @@ const AccountTable = ({ Rows, Headers, tab, toggleModal, isLoading, query, setQu
                 />
                 <Button renderIcon={(props: any) => <Add size={20} {...props} />} handleClick={toggleModal} buttonLabel={tab === 0 ? 'Create new user' : 'Create new role'} />
               </TableToolbarContent>
-            </TableToolbar>{' '}
-            {isLoading ? (
-              <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
-            ) : (
-              <Table {...getTableProps()}>
-                <TableHead>
-                  <TableRow>
-                    {tab === 0 && <TableSelectAll {...getSelectionProps()} />}
-                    {headers.map((header: IHeader, index: number) => (
-                      <TableHeader {...getHeaderProps({ ...header })} key={index}>
-                        {header.header}
-                      </TableHeader>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                {!isEmpty(Rows) && !isLoading && (
-                  <TableBody>
-                    {rows.map((row: any) => (
-                      <TableRow key={row.id} {...getRowProps({ row })}>
-                        {tab === 0 && <TableSelectRow {...getSelectionProps({ row })} />}
-                        {row.cells.map((cell: any) => (
-                          <TableCell key={cell.id}>{cell.value}</TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                )}
-              </Table>
-            )}
+            </TableToolbar>
+
+            <TableContainer>
+              {isLoading ? (
+                <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
+              ) : (
+                <Table {...getTableProps()}>
+                  <TableHead>
+                    <TableRow>
+                      {tab === 0 && <TableSelectAll {...getSelectionProps()} />}
+                      {headers.map((header: DataTableHeader, index: number) => (
+                        <TableHeader key={index}>{header.header}</TableHeader>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  {!isEmpty(Rows) && !isLoading && (
+                    <TableBody>
+                      {rows.map((row: any) => (
+                        <TableRow key={row.id}>
+                          {tab === 0 && <TableSelectRow {...getSelectionProps({ row })} />}
+                          {row.cells.map((cell: any) => (
+                            <TableCell key={cell.id}>{cell.value}</TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  )}
+                </Table>
+              )}
+            </TableContainer>
           </>
         )}
-      </DataTable>{' '}
+      />
       <ActionModal
         action={action}
         isLoading={loading}

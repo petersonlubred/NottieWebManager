@@ -1,3 +1,4 @@
+import { DataTableHeader, DataTableSkeletonHeader } from 'carbon-components-react';
 import { isEmpty } from 'lodash';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -15,7 +16,6 @@ import Layout from '@/HOC/Layout';
 import useHeaders from '@/hooks/useHeaders';
 import { Ismtp, Smsc, SmscRoute, SmscRouteConfig, SmtpRoute } from '@/interfaces/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
-import { IHeader } from '@/interfaces/role';
 import { useGetSmtpRouteServersQuery, useGetSmtpserversQuery } from '@/redux/api';
 import { useGetSmscRouteQuery } from '@/redux/api';
 import { useGetSmscRouteConfigQuery } from '@/redux/api';
@@ -26,7 +26,7 @@ import { protectedRouteProps } from '@/utils/withSession';
 import ModalContent from '../../components/configuration/ModalContent';
 
 const SystemConfiguration = () => {
-  const [Headers, setHeaders] = useState<IHeader[]>([]);
+  const [Headers, setHeaders] = useState<DataTableHeader[] & DataTableSkeletonHeader[]>([]);
   const [responseData, setResponseData] = useState<Ismtp[] | Smsc[] | SmscRoute[] | SmscRouteConfig[] | SmtpRoute[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);

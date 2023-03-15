@@ -1,4 +1,4 @@
-import { Loading } from '@carbon/react';
+import { Loading } from 'carbon-components-react';
 import React from 'react';
 import styled from 'styled-components';
 

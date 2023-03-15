@@ -1,4 +1,4 @@
-import { Modal as M } from '@carbon/react';
+import { Modal as M } from 'carbon-components-react';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ interface Iprops {
   secondaryButtonText?: string | boolean;
   open?: boolean;
   danger?: boolean;
-  extent?: string;
+  extent?: 'xs' | 'sm' | 'md' | 'lg' | undefined;
   toggleModal?: () => void;
   onRequestSubmit?: () => void;
 }

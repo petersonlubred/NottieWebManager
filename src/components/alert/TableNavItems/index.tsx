@@ -1,5 +1,5 @@
 import { Filter } from '@carbon/icons-react';
-import { DatePicker, DatePickerInput, TextInput } from '@carbon/react';
+import { DatePicker, DatePickerInput, TextInput } from 'carbon-components-react';
 import dayjs from 'dayjs';
 import React from 'react';
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs';
