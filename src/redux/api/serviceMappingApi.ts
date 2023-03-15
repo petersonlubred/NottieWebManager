@@ -13,18 +13,18 @@ export const serviceMappingApi = createApi({
     getServiceMappings: builder.query<any, void>({
       query: () => createRequest('ServiceMapping'),
       providesTags: (result, _error, _arg) =>
-        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ dataSourceId }: any) => ({ type: 'mapping' as const, dataSourceId })), 'mapping'] : ['mapping'],
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ id }: any) => ({ type: 'mapping' as const, id })), 'mapping'] : ['mapping'],
     }),
     getMapped: builder.query<MappedResponse, void>({
       query: () => createRequest('ServiceMapping/Mapped'),
       providesTags: (result, _error, _arg) =>
-        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ dataSourceId }: any) => ({ type: 'mapping' as const, dataSourceId })), 'mapping'] : ['mapping'],
+        result?.data && !isEmpty(result?.data) ? [...result.data.map(({ id }: any) => ({ type: 'mapping' as const, id })), 'mapping'] : ['mapping'],
     }),
     getMappedDetails: builder.query<any, { dataSourceId: string }>({
       query: ({ dataSourceId }) => createRequest(`ServiceMapping/Mapped/${dataSourceId}`),
     }),
 
-    updateMapping: builder.mutation({
+    createMapping: builder.mutation({
       query: (data) => {
         return {
           url: `ServiceMapping`,
@@ -32,7 +32,15 @@ export const serviceMappingApi = createApi({
           body: data,
         };
       },
-      invalidatesTags: ['mapping'],
+    }),
+    updateMapping: builder.mutation({
+      query: (data) => {
+        return {
+          url: `ServiceMapping`,
+          method: 'PUT',
+          body: data,
+        };
+      },
     }),
 
     deleteMapping: builder.mutation({
@@ -42,9 +50,10 @@ export const serviceMappingApi = createApi({
           method: 'delete',
         };
       },
-      invalidatesTags: (_result, _error, { id }) => [{ type: 'mapping', id }],
+      invalidatesTags: ['mapping'],
     }),
   }),
 });
 
-export const { useDeleteMappingMutation, useGetMappedDetailsQuery, useGetMappedQuery, useGetServiceMappingsQuery, useUpdateMappingMutation } = serviceMappingApi;
+export const { useDeleteMappingMutation, useGetMappedDetailsQuery, useGetMappedQuery, useGetServiceMappingsQuery, useUpdateMappingMutation, useCreateMappingMutation } =
+  serviceMappingApi;

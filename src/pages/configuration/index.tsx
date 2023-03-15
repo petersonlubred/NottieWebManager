@@ -60,7 +60,7 @@ const SystemConfiguration = () => {
   const { datasourceheader, smscheader, smsrouteheader, smsrouteconfigheader, smtpheader, smtprouteconfigheader } = useHeaders();
 
   const handleSetIndex = (index: number) => {
-    setResponseData([]);
+    if (index !== tabIndex) setResponseData([]);
     setTabIndex(index);
     router.push({
       pathname: '/configuration',

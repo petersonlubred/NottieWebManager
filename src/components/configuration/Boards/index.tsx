@@ -6,7 +6,7 @@ import Loader from '@/components/shared/Loader';
 import { useToast } from '@/context/ToastContext';
 import { boardType, ServiceModelType, ServiceType } from '@/interfaces/configuration';
 import { IServiceMapping, MappedType } from '@/interfaces/serviceMapping';
-import { useDeleteMappingMutation, useUpdateMappingMutation } from '@/redux/api';
+import { useCreateMappingMutation, useDeleteMappingMutation, useUpdateMappingMutation } from '@/redux/api';
 import { px } from '@/utils';
 
 import Board from './Board';
@@ -18,12 +18,13 @@ interface Iprops {
 }
 const Boards = ({ data, opened, toggleDropdown, mapped }: Iprops) => {
   const { toast } = useToast();
+  const [createMapping, { isLoading: isCeating }] = useCreateMappingMutation();
   const [updateMapping, { isLoading }] = useUpdateMappingMutation();
   const [deleteMapping, { isLoading: Loading }] = useDeleteMappingMutation();
 
-  const handleUpdateOnDrag = async (values: any) => {
+  const handleUpdateOnDrag = async (values: any, isUpdate?: any) => {
     try {
-      await updateMapping(values).unwrap();
+      isUpdate ? await updateMapping(values).unwrap() : await createMapping(values).unwrap();
       toast('success', 'Service mapped successfully');
     } catch (error: any) {
       toast('error', error?.data?.message || error?.data?.title || 'Something went wrong');
@@ -44,15 +45,19 @@ const Boards = ({ data, opened, toggleDropdown, mapped }: Iprops) => {
     {
       id: 'A',
       title: 'Unmapped Services',
-      items: data?.map((item: IServiceMapping, index: number) => ({
-        id: index,
-        title: item.serviceType,
-        serviceMapModels: item.serviceMapModels.map((service: { serviceName: string; serviceId: string; id: string }) => ({
-          serviceName: service.serviceName,
-          serviceId: service.serviceId,
-          id: Index++,
-        })),
-      })),
+      items: data
+        ?.filter((item: IServiceMapping) => item.serviceMapModels.length > 0)
+        .map((item: IServiceMapping, index: number) => {
+          return {
+            id: index,
+            title: item.serviceType,
+            serviceMapModels: item.serviceMapModels.map((service: { serviceName: string; serviceId: string; id: string }) => ({
+              serviceName: service.serviceName,
+              serviceId: service.serviceId,
+              id: Index++,
+            })),
+          };
+        }),
     },
     ...(mapped?.map((item: MappedType) => ({
       id: item?.dataSourceId,
@@ -85,7 +90,7 @@ const Boards = ({ data, opened, toggleDropdown, mapped }: Iprops) => {
     const updatedSourceItems = [...serviceMapModels];
     const index = updatedSourceItems?.findIndex((item) => item.id === source.index);
 
-    const handleMoveItem = async (isDest?: boolean) => {
+    const handleMoveItem = async (isDest?: boolean, isUpdate?: boolean) => {
       if (index !== -1) {
         updatedSourceItems?.splice(index, 1);
       }
@@ -122,10 +127,20 @@ const Boards = ({ data, opened, toggleDropdown, mapped }: Iprops) => {
       if (!isDest) {
         await handleDeleteMapping(draggableId.split(':')[1]);
       } else {
-        await handleUpdateOnDrag({
-          dataSourceId: destination?.droppableId,
-          serviceId: draggableId.split(':')[1],
-        });
+        if (isUpdate) {
+          await handleUpdateOnDrag({
+            dataSourceId: destination?.droppableId,
+            serviceId: draggableId.split(':')[1],
+          });
+        } else {
+          await handleUpdateOnDrag(
+            {
+              dataSourceId: destination?.droppableId,
+              serviceId: draggableId.split(':')[1],
+            },
+            true
+          );
+        }
       }
     };
 
@@ -159,13 +174,16 @@ const Boards = ({ data, opened, toggleDropdown, mapped }: Iprops) => {
             serviceMapModels: [sourceItem?.serviceMapModels[index]],
           },
         ] as ServiceType[]);
-
-    handleMoveItem(true);
+    if (destination?.droppableId !== 'A') {
+      handleMoveItem(true, true);
+    } else {
+      handleMoveItem(true);
+    }
   };
 
   return (
     <div>
-      {(isLoading || Loading) && <Loader />}
+      {(isLoading || Loading || isCeating) && <Loader />}
       <DragDropContext onDragEnd={onDragEnd}>
         <CardBox>
           {boardsData?.map((board: boardType) => (
