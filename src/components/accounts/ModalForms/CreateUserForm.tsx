@@ -1,4 +1,5 @@
-import { FormGroup, MultiSelect, TextInput } from '@carbon/react';
+import { FormGroup, MultiSelect, TextInput } from 'carbon-components-react';
+import { ListBoxBaseItemType } from 'carbon-components-react/typings/shared';
 import { Field, FieldInputProps, Form, Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -82,21 +83,15 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                     itemToString={(item: { text: string }) => (item ? item.text : '')}
                     id="roles"
                     items={
-                      !isEmpty(data?.data)
+                      (!isEmpty(data?.data)
                         ? data?.data?.map((item: IRole) => ({
                             id: item.roleId,
                             text: item.roleName,
                           }))
-                        : []
+                        : []) || []
                     }
                     label="Choose roles"
                     size="md"
-                    onChange={(e: { selectedItems?: { id: string; text?: string }[] }) => {
-                      setFieldValue(
-                        'roles',
-                        e.selectedItems?.map((item?: { id: string; text?: string }) => item?.id)
-                      );
-                    }}
                     key={isUpdatedMultiselect?.toString()}
                     initialSelectedItems={
                       formdata?.roles
@@ -108,6 +103,12 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                             }))
                         : []
                     }
+                    onChange={(e: { selectedItems?: ListBoxBaseItemType[] }) => {
+                      setFieldValue(
+                        'roles',
+                        e.selectedItems?.map((item?: ListBoxBaseItemType) => item?.valueOf('id'))
+                      );
+                    }}
                   />
                   <ErrorMessage invalid={Boolean(touched.roles && errors.roles)} invalidText={errors?.roles} />
                 </ModalItem>

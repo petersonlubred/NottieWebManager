@@ -1,5 +1,5 @@
-import { TextInput } from '@carbon/react';
-import { Link } from '@carbon/react/icons';
+import { Link } from '@carbon/icons-react';
+import { TextInput } from 'carbon-components-react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 

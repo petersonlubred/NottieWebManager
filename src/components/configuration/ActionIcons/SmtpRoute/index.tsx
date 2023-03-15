@@ -1,4 +1,4 @@
-import { Edit, TrashCan } from '@carbon/react/icons';
+import { Edit, TrashCan } from '@carbon/icons-react';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 

@@ -1,4 +1,4 @@
-import { User } from '@carbon/react/icons';
+import { User } from '@carbon/icons-react';
 import React from 'react';
 import styled from 'styled-components';
 

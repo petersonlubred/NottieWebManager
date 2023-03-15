@@ -1,4 +1,4 @@
-import { Button as Btn } from '@carbon/react';
+import { Button as Btn } from 'carbon-components-react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -13,8 +13,10 @@ interface IProps {
 }
 const Button = ({ renderIcon, disabled, handleClick, buttonLabel, fullWidth, validateButton, className }: IProps) => {
   return (
-    <ButtonStyle renderIcon={renderIcon} disabled={disabled} onClick={handleClick} width={fullWidth ? '100%' : 'auto'} valid={validateButton?.toString()} className={className}>
-      {buttonLabel}
+    <ButtonStyle width={fullWidth ? '100%' : 'auto'} valid={validateButton} disabled={disabled}>
+      <Btn renderIcon={renderIcon} disabled={disabled} onClick={handleClick} className={className}>
+        {buttonLabel}
+      </Btn>
     </ButtonStyle>
   );
 };
@@ -23,18 +25,20 @@ export default Button;
 
 type ButtonProps = {
   width: string;
-  disabled: boolean;
+  disabled?: boolean;
   valid?: boolean;
 };
 
-const ButtonStyle = styled(Btn)<ButtonProps>`
-  max-width: 30rem;
-  width: ${({ width }) => (width === '100%' ? '100%' : 'auto')};
-  color: ${({ disabled, valid }) => (valid === 'true' && disabled ? 'white !important' : disabled ? '#6f6f6f !important' : '#161616 !important')};
-  background-color: ${({ theme, disabled }) => (disabled ? '#525252 !important' : theme.colors.button)};
-
-  &:hover {
-    color: ${({ disabled, valid }) => (valid === 'true' && disabled ? 'white !important' : disabled ? '#6f6f6f !important' : '#161616 !important')};
+const ButtonStyle = styled.div<ButtonProps>`
+  button {
+    max-width: 30rem;
+    width: ${({ width }) => (width === '100%' ? '100%' : 'auto')};
+    color: ${({ disabled, valid }) => (valid === true && disabled ? 'white !important' : disabled ? '#6f6f6f !important' : '#161616 !important')};
     background-color: ${({ theme, disabled }) => (disabled ? '#525252 !important' : theme.colors.button)};
+
+    &:hover {
+      color: ${({ disabled, valid }) => (valid === true && disabled ? 'white !important' : disabled ? '#6f6f6f !important' : '#161616 !important')};
+      background-color: ${({ theme, disabled }) => (disabled ? '#525252 !important' : theme.colors.button)};
+    }
   }
 `;

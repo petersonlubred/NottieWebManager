@@ -1,3 +1,4 @@
+import { DataTableHeader, DataTableSkeletonHeader } from 'carbon-components-react';
 import { isEmpty } from 'lodash';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -13,7 +14,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import useHeaders from '@/hooks/useHeaders';
 import { FormikRefType } from '@/interfaces/formik.type';
 import { initialPageQuery, IPageQuery } from '@/interfaces/notification';
-import { IHeader, IRole } from '@/interfaces/role';
+import { IRole } from '@/interfaces/role';
 import { UserData } from '@/interfaces/user';
 import { useGetRolesQuery, useGetUsersQuery } from '@/redux/api';
 import { pickValues } from '@/utils/helpers/helpers';
@@ -22,7 +23,7 @@ import { protectedRouteProps } from '@/utils/withSession';
 import AccountTable from '../../components/accounts/views/AccountTable';
 
 const Accounts = () => {
-  const [Headers, setHeaders] = useState<IHeader[]>([]);
+  const [Headers, setHeaders] = useState<DataTableHeader[] & DataTableSkeletonHeader[]>([]);
   const [Rows, setRows] = useState<any[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [responseData, setResponseData] = useState<UserData[] | IRole[]>([]);
@@ -30,19 +31,19 @@ const Accounts = () => {
   const [isUpdatedMultiselect, setIsUpdatedMultiselect] = useState(false);
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [query, setQuery] = useState<IPageQuery>(initialPageQuery);
-  const debounceFilter = useDebounce(pickValues(query), 500);
+  const debounceFilter = useDebounce(query, 500);
 
   const router = useRouter();
   const { tab } = router.query;
   const currentTab = ['user', 'role'].includes(tab as string) ? tab : 'user';
   const { data: users, isFetching: isLoadingUser } = useGetUsersQuery(
-    { ...debounceFilter },
+    { ...pickValues(debounceFilter) },
     {
       skip: currentTab !== 'user',
     }
   );
   const { data, isFetching: isLoading } = useGetRolesQuery(
-    { ...debounceFilter },
+    { ...pickValues(debounceFilter) },
     {
       skip: currentTab !== 'role',
     }
@@ -93,7 +94,7 @@ const Accounts = () => {
       const rows = responseData?.map((item: any) => {
         const row: any = {};
         const tabHeaders = headers.find((header) => header.tabName === currentTab)?.data || [];
-        tabHeaders.forEach((item2: IHeader) => {
+        tabHeaders.forEach((item2: DataTableHeader) => {
           row[item2.key] = item[item2.key];
           if (currentTab === 'user') {
             row['others'] = <ActionIcons data={item} isUpdatedMultiselect={isUpdatedMultiselect} setIsUpdatedMultiselect={setIsUpdatedMultiselect} />;
@@ -110,7 +111,7 @@ const Accounts = () => {
       });
       !rows.some((row) => row.id === undefined) && setRows(rows);
     });
-  }, [rolesheader, navItems, usersheader, responseData, isUpdatedMultiselect, tabIndex, currentTab]);
+  }, [rolesheader, usersheader, responseData, isUpdatedMultiselect, tabIndex, currentTab]);
 
   useEffect(() => {
     if (currentTab === 'role') {

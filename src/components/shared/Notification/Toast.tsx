@@ -1,4 +1,4 @@
-import { ToastNotification } from '@carbon/react';
+import { ToastNotification } from 'carbon-components-react';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';

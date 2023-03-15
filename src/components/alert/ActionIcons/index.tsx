@@ -1,4 +1,4 @@
-import { At, Email, View } from '@carbon/react/icons';
+import { At, Email, View } from '@carbon/icons-react';
 import { useState } from 'react';
 import styled from 'styled-components';
 

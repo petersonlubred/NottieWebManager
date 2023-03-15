@@ -1,4 +1,4 @@
-import { Edit, Password, TrashCan, UserAdmin } from '@carbon/react/icons';
+import { Edit, Password, TrashCan, UserAdmin } from '@carbon/icons-react';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 

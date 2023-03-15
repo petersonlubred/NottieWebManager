@@ -1,5 +1,5 @@
-import { FormGroup, Select, SelectItem, TextInput } from '@carbon/react';
 import axios from 'axios';
+import { FormGroup, Select, SelectItem, TextInput } from 'carbon-components-react';
 import { Field, Form, Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';

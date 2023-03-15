@@ -1,4 +1,4 @@
-import { FormGroup, NumberInput, TextInput } from '@carbon/react';
+import { FormGroup, NumberInput, TextInput } from 'carbon-components-react';
 import { Field, Form, Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import React, { useMemo } from 'react';

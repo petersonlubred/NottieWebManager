@@ -1,4 +1,4 @@
-import { Pagination } from '@carbon/react';
+import { Pagination } from 'carbon-components-react';
 import React from 'react';
 import styled from 'styled-components';
 
