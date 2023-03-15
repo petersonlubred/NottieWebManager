@@ -6,8 +6,8 @@ import { px } from '@/utils';
 
 type Iprops = {
   title: string;
-  index: string;
-  toggleDropdown: (_index: string) => void;
+  index: string | number;
+  toggleDropdown: (_index: string | number) => void;
   opened: boolean;
   itemsOnExpand?: JSX.Element;
 };

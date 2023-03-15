@@ -18,9 +18,9 @@ interface ITemplateContent {
 
 const TemplateContent = ({ onSelectTemplate, template: parentTemplate, setOpenModal }: ITemplateContent) => {
   const { data, isFetching } = useGetTemplateConfigQuery({});
-  const [opened, setOpened] = useState<number[]>([]);
+  const [opened, setOpened] = useState<(string | number)[]>([]);
 
-  const toggleDropdown = (index: number) => {
+  const toggleDropdown = (index: string | number) => {
     if (opened.includes(index)) {
       setOpened(opened.filter((item) => item !== index));
     } else {

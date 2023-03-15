@@ -190,7 +190,7 @@ const SMSCForm = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="dataEncoding">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('dataEncoding', true)}>
-                          <SelectItem text="Choose Data coding" />
+                          <SelectItem text="Choose Data coding" value={''} />
                           {dataCodingLookup.map((item: any) => (
                             <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}

@@ -1,4 +1,4 @@
-import { SkeletonText } from '@carbon/react';
+import { SkeletonText } from 'carbon-components-react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const indicatorData: any[] = [
 ];
 
 const SmsDeliveryContainer = () => {
-  const { data, isFetching } = useGetDashboardSmsEmailSmsDeliveryStatusBarChartQuery({}, { pollingInterval: getPollingInterval() });
+  const { data, isFetching } = useGetDashboardSmsEmailSmsDeliveryStatusBarChartQuery(undefined, { pollingInterval: getPollingInterval() });
 
   return (
     <Container>

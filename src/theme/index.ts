@@ -84,6 +84,7 @@ export const lightTheme: ITheme = {
     primaryLight: '#4589FF',
     success: 'rgba(36, 161, 72, 0.5)',
     slabackground: '#f7f7f7',
+    grey: '#4C4C4C',
   },
   media,
   fontFamilies,

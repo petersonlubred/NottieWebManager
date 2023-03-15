@@ -98,7 +98,7 @@ const SMTPRoute = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="smtpId">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="Smtp Name" {...field} onKeyUp={() => setFieldTouched('smtpId', true)}>
-                          <SelectItem text="Choose smtp name" />
+                          <SelectItem value="" text="Choose smtp name" />
                           {smtpLookup.map((item: any) => (
                             <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}
@@ -115,7 +115,7 @@ const SMTPRoute = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="serviceTypeId">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('serviceTypeId', true)}>
-                          <SelectItem text="Choose service type" />
+                          <SelectItem value="" text="Choose service type" />
                           {serviceTypeLookup.map((item: any) => (
                             <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}
