@@ -44,7 +44,7 @@ export const roleApi = createApi({
       invalidatesTags: (_result, _error, { roleId }) => [{ type: 'role', roleId }],
     }),
 
-    getRoles: builder.query<RolesResponse, IPageQuery>({
+    getRoles: builder.query<RolesResponse, IPageQuery | void>({
       query: (query) => createRequestWithParams('Roles', { ...query }),
       providesTags: (result, _error, _arg) =>
         result?.data && !isEmpty(result?.data) ? [...result.data.map(({ roleId }: any) => ({ type: 'role' as const, roleId })), 'role'] : ['role'],

@@ -1,5 +1,4 @@
 import { FormGroup, MultiSelect, TextInput } from 'carbon-components-react';
-import { ListBoxBaseItemType } from 'carbon-components-react/typings/shared';
 import { Field, FieldInputProps, Form, Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -103,10 +102,10 @@ const CreateUserForm = ({ formRef, formdata, toggleModal, isUpdatedMultiselect, 
                             }))
                         : []
                     }
-                    onChange={(e: { selectedItems?: ListBoxBaseItemType[] }) => {
+                    onChange={(e: { selectedItems?: any[] }) => {
                       setFieldValue(
                         'roles',
-                        e.selectedItems?.map((item?: ListBoxBaseItemType) => item?.valueOf('id'))
+                        e.selectedItems?.map(({ id }: { id: string }) => id)
                       );
                     }}
                   />
