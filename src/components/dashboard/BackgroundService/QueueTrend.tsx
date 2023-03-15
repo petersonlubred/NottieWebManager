@@ -1,4 +1,4 @@
-import { LineChartOptions } from '@carbon/charts/interfaces';
+import { ChartTheme, LineChartOptions, ScaleTypes } from '@carbon/charts/interfaces';
 import { LineChart } from '@carbon/charts-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -86,7 +86,7 @@ const QueueTrend = ({
         FaceBook: '#F2B301',
       },
     },
-    theme: 'g100',
+    theme: ChartTheme.G100,
     grid: {
       x: {
         enabled: false,
@@ -98,11 +98,11 @@ const QueueTrend = ({
     axes: {
       bottom: {
         mapsTo: 'date',
-        scaleType: 'time',
+        scaleType: ScaleTypes.TIME,
       },
       left: {
         mapsTo: 'value',
-        scaleType: 'linear',
+        scaleType: ScaleTypes.LINEAR,
       },
     },
     timeScale: {

@@ -23,33 +23,35 @@ export interface IFontFamilies {
   heading: string;
   default: string;
 }
+
+export interface IColors {
+  deepBlack: string;
+  bgPrimary: string;
+  bgPrimaryLight: string;
+  borderLight: string;
+  lightBackground: string;
+  lightBackgroundtext: string;
+  darkPrimary20: string;
+  bgHover: string;
+  darkPrimary50: string;
+  normalText: string;
+  lightText: string;
+  white: string;
+  black: string;
+  button: string;
+  danger: string;
+  grey: string;
+  tagBackground: string;
+  secondary: string;
+  secondaryLight: string;
+  dangerLight: string;
+  successLight: string;
+  primaryLight: string;
+  success: string;
+  slabackground: string;
+}
 export interface ITheme {
-  colors: {
-    deepBlack: string;
-    bgPrimary: string;
-    bgPrimaryLight: string;
-    borderLight: string;
-    lightBackground: string;
-    lightBackgroundtext: string;
-    darkPrimary20: string;
-    bgHover: string;
-    darkPrimary50: string;
-    normalText: string;
-    lightText: string;
-    white: string;
-    black: string;
-    button: string;
-    danger: string;
-    grey: string;
-    tagBackground: string;
-    secondary: string;
-    secondaryLight: string;
-    dangerLight: string;
-    successLight: string;
-    primaryLight: string;
-    success: string;
-    slabackground: string;
-  };
+  colors: IColors;
   media: Media;
   fontFamilies: IFontFamilies;
   fontSizes: IFontSizes;

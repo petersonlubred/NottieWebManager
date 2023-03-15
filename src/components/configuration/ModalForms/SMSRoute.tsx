@@ -98,7 +98,7 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="smscId">
                       {({ field }: any) => (
                         <Select id="smscId-input" labelText="Aggregator/SMSC" {...field} onKeyUp={() => setFieldTouched('smscId', true)}>
-                          <SelectItem text="Choose service type" />
+                          <SelectItem text="Choose service type" value="" />
                           {smscLookup.map((item: any) => (
                             <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}
@@ -115,7 +115,7 @@ const SMSRoute = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="serviceTypeId">
                       {({ field }: any) => (
                         <Select id="serviceTypeId-input" labelText="" {...field} onKeyUp={() => setFieldTouched('serviceType', true)}>
-                          <SelectItem text="Choose service type" />
+                          <SelectItem text="Choose service type" value="" />
                           {serviceTypeLookup.map((item: any) => (
                             <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}

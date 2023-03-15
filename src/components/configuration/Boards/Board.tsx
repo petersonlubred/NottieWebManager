@@ -7,7 +7,7 @@ import Icon from '@/components/shared/Icons';
 import { boardType, ServiceType } from '@/interfaces/configuration';
 import { px } from '@/utils';
 
-const Board = ({ board, toggleDropdown, opened }: { board: boardType; toggleDropdown: (_index: string) => void; opened: string[] }) => {
+const Board = ({ board, toggleDropdown, opened }: { board: boardType; toggleDropdown: (_index: string | number) => void; opened: (string | number)[] }) => {
   const [enabled, setEnabled] = useState(false);
   const { title, items, id } = board;
 

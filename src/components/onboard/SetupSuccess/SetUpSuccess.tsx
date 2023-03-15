@@ -26,7 +26,7 @@ const SetUpSuccess = ({ toggleLogin, loginDetails }: IProps) => {
   return (
     <SuccessContain>
       <div>
-        <CheckmarkFilled size={90} style={{ color: '#25AE88' }} />
+        <CheckmarkFilled fontSize={'90px'} style={{ color: '#25AE88' }} />
       </div>
       <div style={{ padding: '1rem' }}>
         <h2>The Setup Was Successful</h2>

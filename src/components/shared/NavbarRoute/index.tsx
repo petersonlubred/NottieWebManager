@@ -30,7 +30,7 @@ const NavbarRoute = ({ routename, isDashboard = false }: IProps) => {
               dispatch(setIntervals(event.target.value));
             }}
           >
-            <SelectItem text="Choose Interval" />
+            <SelectItem value="" text="Choose Interval" />
             {intervals.map((interval) => (
               <SelectItem key={interval} text={interval} value={interval} />
             ))}
@@ -44,7 +44,7 @@ const NavbarRoute = ({ routename, isDashboard = false }: IProps) => {
               dispatch(setNumber(event.target.value));
             }}
           >
-            <SelectItem text="Choose number" />
+            <SelectItem value="" text="Choose number" />
             {number.map((numb) => (
               <SelectItem key={numb} text={numb} value={numb} />
             ))}

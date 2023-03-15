@@ -67,7 +67,7 @@ const ModalContent = ({ formRef, formdata, toggleModal }: Iprops) => {
                     <Field name="templateId">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="Template" {...field} onKeyUp={() => setFieldTouched('templateId', true)}>
-                          <SelectItem text="Choose option" />
+                          <SelectItem value="" text="Choose option" />
                           {templates?.data.map((template: ITemplate) => (
                             <SelectItem key={template.id} text={template.description} value={template.id} />
                           ))}
