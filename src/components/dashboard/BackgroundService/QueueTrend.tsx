@@ -1,4 +1,4 @@
-import { ChartTheme, LineChartOptions, ScaleTypes } from '@carbon/charts/interfaces';
+import { ChartTheme, ScaleTypes } from '@carbon/charts/interfaces';
 import { LineChart } from '@carbon/charts-react';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -66,7 +66,7 @@ const QueueTrend = ({
     }[]
   >([]);
 
-  const options: LineChartOptions = {
+  const options: any = {
     toolbar: {
       enabled: false,
     },
