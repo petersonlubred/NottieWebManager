@@ -1,26 +1,23 @@
+import { Add, TrashCan } from '@carbon/icons-react';
 import {
   DataTable,
+  DataTableCustomRenderProps,
+  DataTableHeader,
   DataTableSkeleton,
+  DataTableSkeletonHeader,
   Table,
   TableBatchAction,
-  TableBatchActionProps,
   TableBatchActions,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableHeaderProps,
-  TableProps,
   TableRow,
-  TableRowProps,
   TableSelectAll,
   TableSelectRow,
-  TableSelectRowProps,
   TableToolbar,
   TableToolbarContent,
-  TableToolbarProps,
-} from '@carbon/react';
-import { Add, TrashCan } from '@carbon/react/icons';
+} from 'carbon-components-react';
 import { isEmpty } from 'lodash';
 import React from 'react';
 
@@ -28,11 +25,10 @@ import PageSubHeader from '@/components/accounts/PageSubHeader';
 import Button from '@/components/shared/Button';
 import Empty from '@/components/shared/Empty';
 import Loader from '@/components/shared/Loader';
-import { IHeader } from '@/interfaces/role';
 
 type Props = {
   Rows: any[];
-  Headers: IHeader[];
+  Headers: DataTableHeader[] & DataTableSkeletonHeader[];
   tab: number;
   toggleModal: () => void;
   isLoading: boolean;
@@ -44,29 +40,12 @@ const ConfigurationTable = ({ Rows, Headers, tab, toggleModal, isLoading, navIte
     <>
       <PageSubHeader navItem={navItems[tab]?.title} />
       {isLoading ? (
-        <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
+        <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
       ) : (
-        <DataTable rows={Rows} headers={Headers}>
-          {({
-            rows,
-            headers,
-            getHeaderProps,
-            getRowProps,
-            getTableProps,
-            getSelectionProps,
-            getToolbarProps,
-            getBatchActionProps,
-          }: {
-            rows: any[];
-            headers: IHeader[];
-            getHeaderProps: (_props: IHeader) => TableHeaderProps;
-            getRowProps: (_props: any) => TableRowProps;
-            getTableProps: () => TableProps;
-            getSelectionProps: (_props?: { row: string }) => TableSelectRowProps;
-            getToolbarProps: () => TableToolbarProps;
-            getBatchActionProps: () => TableBatchActionProps;
-            selectedRows: { id: string }[];
-          }) => (
+        <DataTable
+          rows={Rows}
+          headers={Headers}
+          render={({ rows, headers, getTableProps, getSelectionProps, getToolbarProps, getBatchActionProps }: DataTableCustomRenderProps) => (
             <>
               <TableToolbar {...getToolbarProps()}>
                 <TableBatchActions {...getBatchActionProps()}>
@@ -90,17 +69,15 @@ const ConfigurationTable = ({ Rows, Headers, tab, toggleModal, isLoading, navIte
                 <TableHead>
                   <TableRow>
                     <TableSelectAll {...getSelectionProps()} />
-                    {headers.map((header: IHeader, index: number) => (
-                      <TableHeader {...getHeaderProps({ ...header })} key={index}>
-                        {header.header}
-                      </TableHeader>
+                    {headers.map((header: DataTableHeader, index: number) => (
+                      <TableHeader key={index}>{header.header}</TableHeader>
                     ))}
                   </TableRow>
                 </TableHead>
                 {!isEmpty(Rows) && !isLoading && (
                   <TableBody>
                     {rows?.map((row: any) => (
-                      <TableRow key={row.id} {...getRowProps({ row })}>
+                      <TableRow key={row.id}>
                         <TableSelectRow {...getSelectionProps({ row })} />
                         {row.cells.map((cell: any) => (
                           <TableCell key={cell.id}>{cell.value}</TableCell>
@@ -112,8 +89,9 @@ const ConfigurationTable = ({ Rows, Headers, tab, toggleModal, isLoading, navIte
               </Table>
             </>
           )}
-        </DataTable>
+        />
       )}
+
       {isLoading ? <Loader /> : isEmpty(Rows) && <Empty title={'No ' + navItems[tab]?.title + ' found'} />}
     </>
   );

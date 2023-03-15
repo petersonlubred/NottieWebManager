@@ -1,5 +1,5 @@
-import { TextInput, Tooltip } from '@carbon/react';
-import { Close, Copy, Hashtag, Link, Search } from '@carbon/react/icons';
+import { Close, Copy, Hashtag, Link, Search } from '@carbon/icons-react';
+import { TextInput, Tooltip } from 'carbon-components-react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 

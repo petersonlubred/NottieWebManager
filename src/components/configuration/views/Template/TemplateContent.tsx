@@ -1,4 +1,4 @@
-import { Add } from '@carbon/react/icons';
+import { Add } from '@carbon/icons-react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 

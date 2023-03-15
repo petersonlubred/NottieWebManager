@@ -1,4 +1,4 @@
-import { CaretRight } from '@carbon/react/icons';
+import { CaretRight } from '@carbon/icons-react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -6,8 +6,8 @@ import { px } from '@/utils';
 
 type Iprops = {
   title: string;
-  index: number;
-  toggleDropdown: (_index: number) => void;
+  index: string;
+  toggleDropdown: (_index: string) => void;
   opened: boolean;
   itemsOnExpand?: JSX.Element;
 };

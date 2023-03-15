@@ -1,4 +1,4 @@
-import { Search } from '@carbon/react';
+import { Search } from 'carbon-components-react';
 import React, { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 

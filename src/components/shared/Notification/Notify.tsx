@@ -1,4 +1,4 @@
-import { InlineNotification } from '@carbon/react';
+import { InlineNotification } from 'carbon-components-react';
 import React from 'react';
 
 interface IProp {

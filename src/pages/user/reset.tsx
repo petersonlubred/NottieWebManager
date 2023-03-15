@@ -1,5 +1,5 @@
-import { FormGroup, Loading, PasswordInput } from '@carbon/react';
-import { ArrowRight } from '@carbon/react/icons';
+import { ArrowRight } from '@carbon/icons-react';
+import { FormGroup, Loading, PasswordInput } from 'carbon-components-react';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';

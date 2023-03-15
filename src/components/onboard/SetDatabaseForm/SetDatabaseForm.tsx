@@ -1,5 +1,5 @@
-import { Button, FormGroup, Loading, PasswordInput, Select, SelectItem, TextInput } from '@carbon/react';
-import { ArrowRight } from '@carbon/react/icons';
+import { ArrowRight } from '@carbon/icons-react';
+import { Button, FormGroup, Loading, PasswordInput, Select, SelectItem, TextInput } from 'carbon-components-react';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
@@ -9,6 +9,7 @@ import Loader from '@/components/shared/Loader';
 import { IDatabaseType } from '@/interfaces/configuration';
 import { useLookupDatabaseTypeQuery } from '@/redux/api';
 import { initialDatabaseValue } from '@/schemas/dto';
+import { IinitialDatabase } from '@/schemas/interface';
 import { databaseSchema } from '@/schemas/schema';
 import { px } from '@/utils';
 
@@ -21,7 +22,7 @@ type IProps = {
 const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
   const { data, isFetching } = useLookupDatabaseTypeQuery();
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: IinitialDatabase) => {
     registerDb(values);
     handleSetStep();
   };
@@ -56,7 +57,7 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                   <Field name="databaseType">
                     {({ field }: any) => (
                       <Select id="select-1" labelText="Database Type" {...field} onKeyUp={() => setFieldTouched('databaseType', true)}>
-                        <SelectItem text="Choose option" />
+                        <SelectItem text="Choose option" value={''} />
                         {data?.data?.map((item: IDatabaseType) => (
                           <SelectItem key={item?.id} text={item?.name} value={item?.name} />
                         ))}
@@ -155,10 +156,10 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
                 renderIcon={(props: any) =>
                   isLoading ? <Loading size={24} {...props} small description="Active loading indicator" withOverlay={false} /> : <ArrowRight {...props} size={24} />
                 }
-                iconDescription="Arrow-right"
                 disabled={!isValid || !values?.databaseType || !values?.password || isLoading}
-                onClick={handleSubmit}
                 style={{ position: 'relative' }}
+                type="submit"
+                onClick={() => handleSubmit()}
               >
                 Connect to database
               </Button>
