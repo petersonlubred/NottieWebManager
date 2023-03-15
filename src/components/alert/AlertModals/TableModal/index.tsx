@@ -1,4 +1,16 @@
-import { DataTable, DataTableSkeleton, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from 'carbon-components-react';
+import {
+  DataTable,
+  DataTableCustomRenderProps,
+  DataTableHeader,
+  DataTableSkeleton,
+  DataTableSkeletonHeader,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from 'carbon-components-react';
 import { isEmpty } from 'lodash';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
@@ -22,7 +34,7 @@ const AlertTableModal = ({ data, isLoading, action, transactionData }: IProps) =
   const [responseData, setResponseData] = React.useState<EmailData[] | SmsData[]>([]);
   const [Rows, setRows] = React.useState<any>([]);
   const { emailmodalheader, smsheader } = useHeaders();
-  const [Headers, setHeaders] = React.useState<any>([]);
+  const [Headers, setHeaders] = React.useState<DataTableHeader[] & DataTableSkeletonHeader[]>([]);
 
   useEffect(() => {
     const headers = [emailmodalheader, smsheader];
@@ -65,10 +77,12 @@ const AlertTableModal = ({ data, isLoading, action, transactionData }: IProps) =
           <Header>Customer ID: {transactionData?.customerId}</Header>
           <Header>Narration: {transactionData?.narration}</Header>
         </SubHeader>
-        <DataTable rows={Rows} headers={Headers}>
-          {({ rows, headers, getHeaderProps, getTableProps }: any) =>
+        <DataTable
+          rows={Rows}
+          headers={Headers}
+          render={({ rows, headers, getHeaderProps, getTableProps }: DataTableCustomRenderProps) =>
             isLoading ? (
-              <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
+              <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={7} columnCount={Headers?.length - 1} headers={Headers} />
             ) : (
               <Table {...getTableProps()}>
                 <TableHead>
@@ -92,7 +106,7 @@ const AlertTableModal = ({ data, isLoading, action, transactionData }: IProps) =
               </Table>
             )
           }
-        </DataTable>{' '}
+        />
         {isLoading ? <Loader /> : isEmpty(Rows) && <Empty title={action === 'mail' ? 'No Email found' : 'No SMS found'} />}{' '}
       </ModalContainer>
     </InputModalContainer>
