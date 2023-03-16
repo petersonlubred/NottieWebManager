@@ -9,9 +9,13 @@ export type AuthState = {
   token: string | null;
 };
 
-const initialState: AuthState = {
+export const initialLoginResponse = {
   user: null,
   token: null,
+};
+
+const initialState: AuthState = {
+  ...initialLoginResponse,
 };
 
 export const persistConfig = {
@@ -34,13 +38,9 @@ const authSlice = createSlice({
       state.user = payload?.user;
       state.token = payload?.token;
     },
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-    },
   },
 });
 
-export const { setAuth, logout } = authSlice.actions;
+export const { setAuth } = authSlice.actions;
 const { reducer } = authSlice;
 export default reducer;
