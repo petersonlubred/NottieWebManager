@@ -30,7 +30,9 @@ const Signin = () => {
           },
         }
       );
-      await dispatch(setAuth(res?.data?.data));
+      dispatch(setAuth(res?.data?.data));
+      //TODO: Remove this line after fixing the persist state bug
+      localStorage.setItem('persist:userAuth', JSON.stringify(res?.data?.data));
       setIsLoading(false);
       router.push('/dashboard');
     } catch (error) {

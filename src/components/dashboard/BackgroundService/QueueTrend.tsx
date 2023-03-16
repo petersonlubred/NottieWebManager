@@ -1,4 +1,4 @@
-// To do: Replace deleted imports
+// TODO: Replace deleted imports
 // import { ChartTheme , ScaleTypes} from '@carbon/charts/interfaces';
 import { LineChart } from '@carbon/charts-react';
 import moment from 'moment';

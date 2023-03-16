@@ -1,12 +1,10 @@
 import { Light, LightFilled, Logout, Notification, User } from '@carbon/icons-react';
-import axios from 'axios';
 import { Dropdown } from 'carbon-components-react';
 import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { logout } from '@/redux/slices/auth';
 import { setMode } from '@/redux/slices/util';
 import { RootState } from '@/redux/store';
 import { px } from '@/utils';
@@ -27,19 +25,11 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const currentRoute = router.pathname.split('/')[1];
 
-  const handleLogout = async (data?: any) => {
-    try {
-      await axios.post('/api/logout', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data,
-      });
-      await dispatch(logout);
-      router.push('/');
-    } catch (error) {
-      // console.log(error);
-    }
+  const handleLogout = async () => {
+    await dispatch({
+      type: 'logout',
+    });
+    // router.push('/');
   };
 
   return (
@@ -92,7 +82,7 @@ const Navbar = () => {
         <NavIconItem>
           <User size={20} />
         </NavIconItem>
-        <NavIconItem onClick={() => handleLogout({})}>
+        <NavIconItem onClick={() => handleLogout()}>
           <Logout size={20} />
         </NavIconItem>
       </NavSectionTwo>
