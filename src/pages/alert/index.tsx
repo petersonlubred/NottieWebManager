@@ -1,5 +1,4 @@
 import { isEmpty } from 'lodash';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -24,7 +23,6 @@ import {
   useGetTransactionSMSQuery,
 } from '@/redux/api';
 import { getPath, pickValues } from '@/utils/helpers/helpers';
-import { protectedRouteProps } from '@/utils/withSession';
 
 const Alert = () => {
   const [Headers, setHeaders] = useState<any[]>([]);
@@ -353,4 +351,3 @@ const Alert = () => {
 };
 
 export default Alert;
-export const getServerSideProps: GetServerSideProps = protectedRouteProps();

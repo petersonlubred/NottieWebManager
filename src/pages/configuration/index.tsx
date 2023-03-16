@@ -1,6 +1,5 @@
 import { DataTableHeader, DataTableSkeletonHeader } from 'carbon-components-react';
 import { isEmpty } from 'lodash';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -21,7 +20,6 @@ import { useGetSmscRouteQuery } from '@/redux/api';
 import { useGetSmscRouteConfigQuery } from '@/redux/api';
 import { useGetSmscQuery } from '@/redux/api/smscApi';
 import { px } from '@/utils';
-import { protectedRouteProps } from '@/utils/withSession';
 
 import ModalContent from '../../components/configuration/ModalContent';
 
@@ -178,7 +176,6 @@ const SystemConfiguration = () => {
 };
 
 export default SystemConfiguration;
-export const getServerSideProps: GetServerSideProps = protectedRouteProps();
 
 export const ConfigurationContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.bgPrimary};

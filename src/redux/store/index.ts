@@ -25,7 +25,6 @@ import {
   userApi,
 } from '../api';
 import { rootReducer } from '../root-reducer';
-import rootSaga from '../sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -69,5 +68,3 @@ export const useAppThunkDispatch = () => useDispatch<ThunkAppDispatch>();
 const makeStore = () => store;
 
 export const wrapper = createWrapper(makeStore);
-
-sagaMiddleware.run(rootSaga);
