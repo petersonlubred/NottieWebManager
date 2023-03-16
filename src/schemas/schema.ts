@@ -34,7 +34,7 @@ export const databaseSchema = Yup.object({
   connectionTimeout: Yup.number().typeError('only digit(s) is allowed').required('connection timeout is required'),
   commandTimeout: Yup.number().typeError('only digit(s) is allowed').required('command timeout is required'),
   userId: Yup.string().required('username is required'),
-  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+  password: Yup.string().required('Password is required'),
 });
 
 export const userLoginSchema = Yup.object({
