@@ -1,3 +1,4 @@
+import { HYDRATE } from 'next-redux-wrapper';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 
@@ -18,12 +19,12 @@ import {
   userApi,
 } from './api';
 import { databaseApi } from './api/databaseApi';
-import authReducer, { persistConfig } from './slices/auth';
+import authReducer, { persistAuthConfig, persistConfig } from './slices/auth';
 import dashboardReducer, { dashboardPersistConfig } from './slices/dashboard';
 import sharedReducer from './slices/util';
 
 export const reducers = combineReducers({
-  auth: authReducer,
+  auth: persistReducer(persistAuthConfig, authReducer),
   [databaseApi.reducerPath]: databaseApi.reducer,
   [smtpApi.reducerPath]: smtpApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
@@ -44,5 +45,14 @@ export const reducers = combineReducers({
 });
 
 export const rootReducer = (state: any, action: any) => {
-  return reducers(state, action);
+  if (action.type === HYDRATE) {
+    const nextState = {
+      ...state, // use previous state
+      ...action.payload, // apply delta from hydration
+    };
+    if (state.count) nextState.count = state.count; // preserve count value on client side navigation
+    return nextState;
+  } else {
+    return reducers(state, action);
+  }
 };

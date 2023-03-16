@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "jest.setup.js", "src/context/combine.tsx", "src/components/accounts/index.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "jest.setup.js", "src/context/combine.tsx", "src/components/accounts/index.tsx", "env.js"],
   "exclude": ["node_modules"]
 }

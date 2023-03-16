@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
+import storage from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
 
 import { UserData } from '@/interfaces/user';
@@ -20,6 +20,12 @@ export const persistConfig = {
   blacklist: ['notifications'],
 };
 
+export const persistAuthConfig = {
+  storage: storage,
+  key: 'userAuth',
+  blacklist: ['notifications'],
+};
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -32,15 +38,6 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
     },
-  },
-
-  extraReducers: (builder) => {
-    builder.addCase(HYDRATE, (state, action: any) => {
-      return {
-        ...state,
-        ...action.payload.auth,
-      };
-    });
   },
 });
 

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Button from '@/components/shared/Button';
 import Logo from '@/components/shared/Logo';
 import { useToast } from '@/context/ToastContext';
+import AuthRoute from '@/HOC/AuthRoute';
 import Seo from '@/providers/seo';
 import { useChangePasswordMutation, useLazyGetAUserQuery } from '@/redux/api';
 import { initialResetValue } from '@/schemas/dto';
@@ -45,93 +46,95 @@ const ResetPassword = () => {
   }, [trigger, userid]);
 
   return (
-    <Body>
-      <Seo title="Home" />
-      <Main>
-        <NavbarSection>
-          <LogoContainer>
-            <Logo />
-          </LogoContainer>
-        </NavbarSection>
-        <SignInContainer>
-          <HeaderTitle>Reset Password.</HeaderTitle>
-          <Formik initialValues={initialResetValue} validationSchema={resetPassworSchema} onSubmit={handleSubmit}>
-            {({ errors, touched, isValid, values, setFieldTouched, handleSubmit }) => (
-              <Form>
-                <FormGroup legendText="">
-                  <FormContainer>
-                    <PasswordContainer>
-                      <Field name="tempPassword">
-                        {({ field }: any) => (
-                          <PasswordInput
-                            {...field}
-                            type="password"
-                            id="tempPassword-input"
-                            labelText="Temp Password"
-                            placeholder="Password"
-                            onKeyUp={() => setFieldTouched('tempPassword', true)}
-                            invalid={Boolean(touched.tempPassword && errors.tempPassword)}
-                            invalidText={errors.tempPassword}
-                          />
-                        )}
-                      </Field>
-                    </PasswordContainer>
-                  </FormContainer>
-                  <FormContainer>
-                    <PasswordContainer>
-                      <Field name="password">
-                        {({ field }: any) => (
-                          <PasswordInput
-                            {...field}
-                            type="password"
-                            id="newPassword-input"
-                            labelText="New Password"
-                            placeholder="Password"
-                            onKeyUp={() => setFieldTouched('newPassword', true)}
-                            invalid={Boolean(touched.newPassword && errors.newPassword)}
-                            invalidText={errors.newPassword}
-                          />
-                        )}
-                      </Field>
-                    </PasswordContainer>
-                  </FormContainer>
-                  <FormContainer>
-                    <PasswordContainer>
-                      <Field name="confirmPassword">
-                        {({ field }: any) => (
-                          <PasswordInput
-                            {...field}
-                            type="password"
-                            id="confirmPassword-input"
-                            labelText="Confirm Password"
-                            placeholder="Password"
-                            onKeyUp={() => setFieldTouched('confirmPassword', true)}
-                            invalid={Boolean(touched.confirmPassword && errors.confirmPassword)}
-                            invalidText={errors.confirmPassword}
-                          />
-                        )}
-                      </Field>
-                    </PasswordContainer>
-                  </FormContainer>
-                  <Button
-                    buttonLabel="Continue"
-                    fullWidth
-                    renderIcon={(props: any) =>
-                      loading ? <Loading size={24} {...props} small description="Active loading indicator" withOverlay={false} /> : <ArrowRight {...props} size={24} />
-                    }
-                    disabled={!isValid || !values?.tempPassword || loading}
-                    handleClick={handleSubmit}
-                  />
-                </FormGroup>
-              </Form>
-            )}
-          </Formik>
-          <Paragraph>
-            Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
-          </Paragraph>
-        </SignInContainer>{' '}
-      </Main>
-    </Body>
+    <AuthRoute isPublic>
+      <Body>
+        <Seo title="Home" />
+        <Main>
+          <NavbarSection>
+            <LogoContainer>
+              <Logo />
+            </LogoContainer>
+          </NavbarSection>
+          <SignInContainer>
+            <HeaderTitle>Reset Password.</HeaderTitle>
+            <Formik initialValues={initialResetValue} validationSchema={resetPassworSchema} onSubmit={handleSubmit}>
+              {({ errors, touched, isValid, values, setFieldTouched, handleSubmit }) => (
+                <Form>
+                  <FormGroup legendText="">
+                    <FormContainer>
+                      <PasswordContainer>
+                        <Field name="tempPassword">
+                          {({ field }: any) => (
+                            <PasswordInput
+                              {...field}
+                              type="password"
+                              id="tempPassword-input"
+                              labelText="Temp Password"
+                              placeholder="Password"
+                              onKeyUp={() => setFieldTouched('tempPassword', true)}
+                              invalid={Boolean(touched.tempPassword && errors.tempPassword)}
+                              invalidText={errors.tempPassword}
+                            />
+                          )}
+                        </Field>
+                      </PasswordContainer>
+                    </FormContainer>
+                    <FormContainer>
+                      <PasswordContainer>
+                        <Field name="password">
+                          {({ field }: any) => (
+                            <PasswordInput
+                              {...field}
+                              type="password"
+                              id="newPassword-input"
+                              labelText="New Password"
+                              placeholder="Password"
+                              onKeyUp={() => setFieldTouched('newPassword', true)}
+                              invalid={Boolean(touched.newPassword && errors.newPassword)}
+                              invalidText={errors.newPassword}
+                            />
+                          )}
+                        </Field>
+                      </PasswordContainer>
+                    </FormContainer>
+                    <FormContainer>
+                      <PasswordContainer>
+                        <Field name="confirmPassword">
+                          {({ field }: any) => (
+                            <PasswordInput
+                              {...field}
+                              type="password"
+                              id="confirmPassword-input"
+                              labelText="Confirm Password"
+                              placeholder="Password"
+                              onKeyUp={() => setFieldTouched('confirmPassword', true)}
+                              invalid={Boolean(touched.confirmPassword && errors.confirmPassword)}
+                              invalidText={errors.confirmPassword}
+                            />
+                          )}
+                        </Field>
+                      </PasswordContainer>
+                    </FormContainer>
+                    <Button
+                      buttonLabel="Continue"
+                      fullWidth
+                      renderIcon={(props: any) =>
+                        loading ? <Loading size={24} {...props} small description="Active loading indicator" withOverlay={false} /> : <ArrowRight {...props} size={24} />
+                      }
+                      disabled={!isValid || !values?.tempPassword || loading}
+                      handleClick={handleSubmit}
+                    />
+                  </FormGroup>
+                </Form>
+              )}
+            </Formik>
+            <Paragraph>
+              Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
+            </Paragraph>
+          </SignInContainer>{' '}
+        </Main>
+      </Body>
+    </AuthRoute>
   );
 };
 

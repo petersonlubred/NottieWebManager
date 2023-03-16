@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import Button from '@/components/shared/Button';
+import { setAuth } from '@/redux/slices/auth';
 import { initialSigninValue } from '@/schemas/dto';
 import { signinSchema } from '@/schemas/schema';
 import { px } from '@/utils';
@@ -29,7 +30,7 @@ const Signin = () => {
           },
         }
       );
-      await dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
+      await dispatch(setAuth(res?.data?.data));
       setIsLoading(false);
       router.push('/dashboard');
     } catch (error) {
