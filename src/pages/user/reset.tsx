@@ -129,7 +129,7 @@ const ResetPassword = () => {
               )}
             </Formik>
             <Paragraph>
-              Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
+              Need help? Reach out at <ContactValue>support@nottie.net</ContactValue>
             </Paragraph>
           </SignInContainer>{' '}
         </Main>

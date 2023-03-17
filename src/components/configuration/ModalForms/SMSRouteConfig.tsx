@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Loader from '@/components/shared/Loader';
+import config from '@/config/config';
 import { useToast } from '@/context/ToastContext';
 import { SmscRoute, SmscRouteConfig } from '@/interfaces/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
@@ -58,7 +59,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
       return;
     }
     const getNetwork = async () => {
-      const networkData = await axios.get(`https://api-test.nottie.net/api/Lookup/Network/${countryId}`);
+      const networkData = await axios.get(`${config.api_url}/api/Lookup/Network/${countryId}`);
       if (networkData) {
         const { data } = networkData;
         setNetworkLookup(data.data ? data.data : []);
