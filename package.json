@@ -1,7 +1,6 @@
 {
   "name": "nottie",
   "version": "0.1.0",
-  "proxy": "https://api-test.nottie.net",
   "private": true,
   "scripts": {
     "dev": "next dev",

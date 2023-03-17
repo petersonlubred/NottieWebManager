@@ -165,7 +165,7 @@ const SetDatabaseForm = ({ handleSetStep, registerDb, isLoading }: IProps) => {
               </Button>
             </FormGroup>
             <Paragraph>
-              Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
+              Need help? Reach out at <ContactValue>support@nottie.net</ContactValue>
             </Paragraph>
           </Form>
         )}
