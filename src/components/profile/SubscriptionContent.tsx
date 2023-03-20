@@ -114,7 +114,7 @@ const SubscriptionModalContent = ({ formRef, formdata, toggleModal }: Iprops) =>
                     <Field name="alertProfileId">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="" {...field} onKeyUp={() => setFieldTouched('alertProfileId', true)}>
-                          <SelectItem text="Choose option" />
+                          <SelectItem value="" text="Choose option" />
                           {profiles?.data.map((template: ILookupAlertProfile) => (
                             <SelectItem key={template.id} text={template.name} value={template.id} />
                           ))}

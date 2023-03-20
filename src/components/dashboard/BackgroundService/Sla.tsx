@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IDashboardBackgroundServiceSla } from '@/interfaces/dashboard';
+import { IColors } from '@/interfaces/theme';
 import { px } from '@/utils';
 
 const Sla = ({ heading, data }: { heading: string; data?: IDashboardBackgroundServiceSla[] }) => {
@@ -108,7 +109,7 @@ const MonitorSubHeaderParagraph = styled.div`
 const MonitorSubHeaderValue = styled.div`
   margin-bottom: ${px(14.5)};
 `;
-const MonitorSubHeaderPercentage = styled.p<{ color: string }>`
+const MonitorSubHeaderPercentage = styled.p<{ color: keyof IColors }>`
   font-size: ${px(14)};
   color: ${({ color, theme }) => theme.colors[color]};
 `;

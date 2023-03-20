@@ -61,6 +61,7 @@ const TagSection = ({ getNonTransactionalTag, templateId }: { getNonTransactiona
         ) : (
           <>
             <TextInput
+              id="search"
               type="text"
               labelText=""
               placeholder="type here"
@@ -88,7 +89,7 @@ const TagSection = ({ getNonTransactionalTag, templateId }: { getNonTransactiona
 
       {filteredData.map((tag: ITemplateConfigTags) => (
         <TagContent key={tag.tagId}>
-          <Tooltip align="bottom" label={tag.tagName}>
+          <Tooltip align="center" triggerText={tag.tagName} direction="bottom">
             <button className="tooltip-trigger" type="button">
               <TagContentParagraph>
                 {tag.description}

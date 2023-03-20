@@ -1,4 +1,3 @@
-import { GroupedBarChartOptions } from '@carbon/charts/interfaces';
 import { GroupedBarChart } from '@carbon/charts-react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -14,10 +13,9 @@ interface IMappedData {
 }
 
 const EmailDeliveryStatus = () => {
-  const { data: emailDeliveryData, isFetching: emailDeliveryDataFetching } = useGetDashboardSmsEmailEmailDeliveryStatusColumnChartQuery(
-    {},
-    { pollingInterval: getPollingInterval() }
-  );
+  const { data: emailDeliveryData, isFetching: emailDeliveryDataFetching } = useGetDashboardSmsEmailEmailDeliveryStatusColumnChartQuery(undefined, {
+    pollingInterval: getPollingInterval(),
+  });
   const [data, setData] = useState<any[]>([]);
 
   const getMembers = (members: IDashboardSmsEmailEmailDeliveryStatusColumnChart[]) => {
@@ -45,7 +43,7 @@ const EmailDeliveryStatus = () => {
     if (emailDeliveryData?.data) setData(getMembers(emailDeliveryData?.data));
   }, [emailDeliveryData?.data]);
 
-  const options: GroupedBarChartOptions = {
+  const options: any = {
     grid: {
       x: {
         enabled: false,

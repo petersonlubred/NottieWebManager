@@ -61,7 +61,7 @@ const ExcludeModalContent = ({ formRef, formdata, toggleModal }: Iprops) => {
                     <Field name="excludeType">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="Exclude Type" {...field} onKeyUp={() => setFieldTouched('excludeType', true)}>
-                          <SelectItem text="Choose option" />
+                          <SelectItem value="" text="Choose option" />
                           {excludeType?.data.map((template: ILookupAlertExcludeType) => (
                             <SelectItem key={template.id} text={template.name} value={template.id} />
                           ))}
@@ -71,7 +71,7 @@ const ExcludeModalContent = ({ formRef, formdata, toggleModal }: Iprops) => {
                     <Field name="excludeOperator">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="Exclude Operator" {...field} onKeyUp={() => setFieldTouched('excludeOperator', true)}>
-                          <SelectItem text="Choose option" />
+                          <SelectItem value="" text="Choose option" />
                           {excludeOperator?.data.map((template: ILookupAlertExcludeOperator) => (
                             <SelectItem key={template.id} text={template.name} value={template.id} />
                           ))}

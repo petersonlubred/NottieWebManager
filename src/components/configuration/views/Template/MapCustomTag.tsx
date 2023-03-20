@@ -80,6 +80,7 @@ const MapCustomTags = ({ open, toggleModal, templateId }: IProps) => {
             </IconBox>
             <InputBox>
               <TextInput
+                labelText=""
                 type="text"
                 id={item.tagId}
                 value={item.mappedName}

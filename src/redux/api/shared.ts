@@ -15,7 +15,7 @@ export interface CustomError {
   };
   status: number;
 }
-const baseUrl = `${config.api_url}`;
+const baseUrl = `${config.api_url}/api`;
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,

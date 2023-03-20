@@ -138,9 +138,9 @@ const SystemSettings = () => {
                       {/* <Field name="template">
                     {({ field }: any) => (
                       <Select id="select-1" labelText="Template" {...field} onKeyUp={() => setFieldTouched('template', true)}>
-                        <SelectItem text="Choose option" />
-                        <SelectItem text="Option 1" value="option-1" />
-                        <SelectItem text="Option 2" value="option-2" />
+                        <SelectItem value="" text="Choose option" />
+                        <SelectItem value="" text="Option 1" value="option-1" />
+                        <SelectItem value="" text="Option 2" value="option-2" />
                       </Select>
                     )}
                   </Field> */}

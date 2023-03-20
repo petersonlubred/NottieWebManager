@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { HYDRATE } from 'next-redux-wrapper';
+import storage from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
 
 import { UserData } from '@/interfaces/user';
@@ -9,14 +9,24 @@ export type AuthState = {
   token: string | null;
 };
 
-const initialState: AuthState = {
+export const initialLoginResponse = {
   user: null,
   token: null,
+};
+
+const initialState: AuthState = {
+  ...initialLoginResponse,
 };
 
 export const persistConfig = {
   storage: storageSession,
   key: 'theme',
+  blacklist: ['notifications'],
+};
+
+export const persistAuthConfig = {
+  storage: storage,
+  key: 'userAuth',
   blacklist: ['notifications'],
 };
 
@@ -28,22 +38,9 @@ const authSlice = createSlice({
       state.user = payload?.user;
       state.token = payload?.token;
     },
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-    },
-  },
-
-  extraReducers: (builder) => {
-    builder.addCase(HYDRATE, (state, action: any) => {
-      return {
-        ...state,
-        ...action.payload.auth,
-      };
-    });
   },
 });
 
-export const { setAuth, logout } = authSlice.actions;
+export const { setAuth } = authSlice.actions;
 const { reducer } = authSlice;
 export default reducer;

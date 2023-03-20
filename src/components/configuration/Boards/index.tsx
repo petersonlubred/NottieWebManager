@@ -12,8 +12,8 @@ import { px } from '@/utils';
 import Board from './Board';
 interface Iprops {
   data: IServiceMapping[];
-  opened: string[];
-  toggleDropdown: (_index: string) => void;
+  opened: (string | number)[];
+  toggleDropdown: (_index: string | number) => void;
   mapped?: any;
 }
 const Boards = ({ data, opened, toggleDropdown, mapped }: Iprops) => {

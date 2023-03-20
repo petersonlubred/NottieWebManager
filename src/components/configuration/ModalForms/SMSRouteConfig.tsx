@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { FormContainer } from '@/components/onboard/NewUserLoginForm';
 import ErrorMessage from '@/components/shared/ErrorMessage/ErrorMessage';
 import Loader from '@/components/shared/Loader';
+import config from '@/config/config';
 import { useToast } from '@/context/ToastContext';
 import { SmscRoute, SmscRouteConfig } from '@/interfaces/configuration';
 import { FormikRefType } from '@/interfaces/formik.type';
@@ -58,7 +59,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
       return;
     }
     const getNetwork = async () => {
-      const networkData = await axios.get(`https://api-test.nottie.net/api/Lookup/Network/${countryId}`);
+      const networkData = await axios.get(`${config.api_url}/api/Lookup/Network/${countryId}`);
       if (networkData) {
         const { data } = networkData;
         setNetworkLookup(data.data ? data.data : []);
@@ -127,7 +128,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="smscRouteId">
                       {({ field }: any) => (
                         <Select {...field} id="smscRouteId-1" labelText="" onKeyUp={() => setFieldTouched('smscRoute', true)}>
-                          <SelectItem text="Choose smsc route" />
+                          <SelectItem value="" text="Choose smsc route" />
                           {smscRouteLookup.map((item: any) => (
                             <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}
@@ -142,7 +143,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="smscId">
                       {({ field }: any) => (
                         <Select id="smscId-1" labelText="Aggregator/SMSC" {...field} onKeyUp={() => setFieldTouched('smscId', true)}>
-                          <SelectItem text="Choose aggregator" />
+                          <SelectItem value="" text="Choose aggregator" />
                           {smscLookup.map((item: any) => (
                             <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}
@@ -152,7 +153,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                     <Field name="routeTypeId">
                       {({ field }: any) => (
                         <Select id="routeTypeId-1" labelText="Route Type" {...field} onKeyUp={() => setFieldTouched('routeTypeId', true)}>
-                          <SelectItem text="Choose route type" />
+                          <SelectItem value="" text="Choose route type" />
                           {routeTypeLookup.map((item: any) => (
                             <SelectItem key={item.id} text={item.name} value={item.id} />
                           ))}
@@ -178,7 +179,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                               setFieldValue('countryId', e.target.value);
                             }}
                           >
-                            <SelectItem text="Choose country" />
+                            <SelectItem value="" text="Choose country" />
                             {countryLookup.map((item: any) => (
                               <SelectItem key={item.id} text={item.name} value={item.id} />
                             ))}
@@ -188,7 +189,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                       <Field name="networkId">
                         {({ field }: any) => (
                           <Select id="networkId-1" labelText="Network" {...field} disabled={networkLookup.length === 0} onKeyUp={() => setFieldTouched('networkId', true)}>
-                            <SelectItem text="Choose network service" />
+                            <SelectItem value="" text="Choose network service" />
                             {networkLookup.map((item: any) => (
                               <SelectItem key={item.id} text={item.name} value={item.id} />
                             ))}
@@ -223,7 +224,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                       <Field name="accountType">
                         {({ field }: any) => (
                           <Select id="accountType-1" labelText="Account Type" {...field} onKeyUp={() => setFieldTouched('accountType', true)}>
-                            <SelectItem text="Choose service type" />
+                            <SelectItem value="" text="Choose service type" />
                             {accountTypeLookup.map((item: any) => (
                               <SelectItem key={item.id} text={item.name} value={item.id} />
                             ))}
@@ -240,7 +241,7 @@ const SMSRouteConfig = ({ formRef, formdata, toggleModal }: Props) => {
                         <Field name="transactionType">
                           {({ field }: any) => (
                             <Select id="transactionType-1" labelText="Transaction Type" {...field} onKeyUp={() => setFieldTouched('accountType', true)}>
-                              <SelectItem text="Choose transaction type" />
+                              <SelectItem value="" text="Choose transaction type" />
                               {transactionTypeLookup.map((item: any) => (
                                 <SelectItem key={item.id} text={item.name} value={item.id} />
                               ))}

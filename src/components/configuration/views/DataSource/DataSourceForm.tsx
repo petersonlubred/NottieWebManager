@@ -89,7 +89,7 @@ const DataSourceForm = ({ databaseType, setLoading, data }: Iprops) => {
                     <Field name="databaseType">
                       {({ field }: any) => (
                         <Select id="select-1" labelText="Database Type" {...field} onKeyUp={() => setFieldTouched('databaseType', true)}>
-                          <SelectItem text="Choose option" />
+                          <SelectItem value="" text="Choose option" />
                           {databaseType?.map((item: IDatabaseType) => (
                             <SelectItem key={item?.id} text={item?.name} value={item?.name} />
                           ))}

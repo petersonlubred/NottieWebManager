@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -8,8 +8,8 @@ import SetupProcess from '@/components/onboard/SetupProcess/SetupProcess';
 import SetUpSuccess from '@/components/onboard/SetupSuccess/SetUpSuccess';
 import Signin from '@/components/onboard/SignIn';
 import Logo from '@/components/shared/Logo';
+import AuthRoute from '@/HOC/AuthRoute';
 import { useRegisterDbMutation } from '@/redux/api';
-import { protectedRouteProps } from '@/utils/withSession';
 
 import Seo from '../providers/seo';
 import { px } from '../utils/px/px';
@@ -17,6 +17,7 @@ import { px } from '../utils/px/px';
 const Home: NextPage = () => {
   const [registerDb, { isLoading, isSuccess }] = useRegisterDbMutation();
   const [isLogin, setIsLogin] = useState<boolean>(true);
+
   const [loginDetails, setLoginDetails] = useState<{
     username: string;
     password: string;
@@ -35,30 +36,30 @@ const Home: NextPage = () => {
   };
 
   return (
-    <Body>
-      <Seo title="Home" />
-      <Main>
-        <NavbarSection>
-          <LogoContainer>
-            <Logo />
-          </LogoContainer>
-          {isLogin && <SetDatabase toggleLogin={toggleLogin} />}
-        </NavbarSection>
-        {isLogin ? (
-          <Signin />
-        ) : step == 1 ? (
-          <SetDatabaseForm handleSetStep={handleSetStep} registerDb={registerDb} isLoading={isLoading} />
-        ) : step === 2 ? (
-          <SetupProcess handleSetStep={handleSetStep} isLoading={isLoading} isSuccess={isSuccess} setLoginDetails={setLoginDetails} />
-        ) : (
-          step === 3 && <SetUpSuccess toggleLogin={setIsLogin} loginDetails={loginDetails} />
-        )}
-      </Main>
-    </Body>
+    <AuthRoute isPublic>
+      <Body>
+        <Seo title="Home" />
+        <Main>
+          <NavbarSection>
+            <LogoContainer>
+              <Logo />
+            </LogoContainer>
+            {isLogin && <SetDatabase toggleLogin={toggleLogin} />}
+          </NavbarSection>
+          {isLogin ? (
+            <Signin />
+          ) : step == 1 ? (
+            <SetDatabaseForm handleSetStep={handleSetStep} registerDb={registerDb} isLoading={isLoading} />
+          ) : step === 2 ? (
+            <SetupProcess handleSetStep={handleSetStep} isLoading={isLoading} isSuccess={isSuccess} setLoginDetails={setLoginDetails} />
+          ) : (
+            step === 3 && <SetUpSuccess toggleLogin={setIsLogin} loginDetails={loginDetails} />
+          )}
+        </Main>
+      </Body>
+    </AuthRoute>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = protectedRouteProps(true);
 
 //TODO: sticky doesn't work with overflow
 export const Body = styled.div``;
