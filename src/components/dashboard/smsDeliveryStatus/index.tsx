@@ -1,5 +1,5 @@
 import { SkeletonText } from 'carbon-components-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useGetDashboardSmsEmailSmsDeliveryStatusBarChartQuery } from '@/redux/api';
@@ -16,7 +16,14 @@ const indicatorData: any[] = [
 ];
 
 const SmsDeliveryContainer = () => {
+  const [loading, setLoading] = useState(true);
   const { data, isFetching } = useGetDashboardSmsEmailSmsDeliveryStatusBarChartQuery(undefined, { pollingInterval: getPollingInterval() });
+
+  useEffect(() => {
+    if (!isFetching) {
+      setLoading(false);
+    }
+  }, [isFetching]);
 
   return (
     <Container>
@@ -30,8 +37,8 @@ const SmsDeliveryContainer = () => {
         ))}
       </IndicatorContainer>
       <PercentageBarContainer>
-        {isFetching && <SkeletonText />}
-        {!isFetching &&
+        {(loading || !data?.data) && <SkeletonText />}
+        {!loading &&
           data?.data.map((status) => (
             <PercentageBox key={status.serviceType}>
               <PercentageHeader>{status.serviceType}</PercentageHeader>
