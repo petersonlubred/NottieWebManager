@@ -9,11 +9,11 @@ import { px } from '@/utils';
 import Boards from '../../Boards';
 
 const ServiceMapping = () => {
-  const [opened, setOpened] = useState<string[]>([]);
+  const [opened, setOpened] = useState<(string | number)[]>([]);
   const { data, isFetching } = useGetServiceMappingsQuery();
   const { data: mapped, isFetching: Loading } = useGetMappedQuery();
 
-  const toggleDropdown = (index: string) => {
+  const toggleDropdown = (index: string | number) => {
     if (opened.includes(index)) {
       setOpened(opened.filter((item) => item !== index));
     } else {

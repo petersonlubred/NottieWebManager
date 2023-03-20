@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,7 +8,6 @@ import SmsandEmail from '@/components/dashboard/SmsAndEmail';
 import Layout from '@/HOC/Layout';
 import { RootState } from '@/redux/store';
 import { px } from '@/utils';
-import { protectedRouteProps } from '@/utils/withSession';
 
 const Dashboard = () => {
   const router = useRouter();
@@ -51,7 +49,6 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-export const getServerSideProps: GetServerSideProps = protectedRouteProps();
 
 export const TextIcon = styled.div`
   display: flex;

@@ -1,6 +1,5 @@
 import { DataTableHeader, DataTableSkeletonHeader } from 'carbon-components-react';
 import { isEmpty } from 'lodash';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -18,7 +17,6 @@ import { IRole } from '@/interfaces/role';
 import { UserData } from '@/interfaces/user';
 import { useGetRolesQuery, useGetUsersQuery } from '@/redux/api';
 import { pickValues } from '@/utils/helpers/helpers';
-import { protectedRouteProps } from '@/utils/withSession';
 
 import AccountTable from '../../components/accounts/views/AccountTable';
 
@@ -152,4 +150,3 @@ const Accounts = () => {
 };
 
 export default Accounts;
-export const getServerSideProps: GetServerSideProps = protectedRouteProps();

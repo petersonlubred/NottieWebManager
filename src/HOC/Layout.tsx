@@ -10,6 +10,8 @@ import { IPageQuery } from '@/interfaces/notification';
 import Seo from '@/providers/seo';
 import { px } from '@/utils';
 
+import AuthRoute from './AuthRoute';
+
 interface Iprops {
   routename: string;
   children: React.ReactNode;
@@ -34,26 +36,28 @@ const Layout = ({ children, routename, navItem, handleSetIndex, title, subtitle,
   }, [currentTab]);
 
   return (
-    <LayoutContainer>
-      <Seo title={routename} />
-      <Navbar /> <NavbarRoute routename={routename} isDashboard={isDashboard} />{' '}
-      {isDashboard && <PageHeader navItem={navItem} handleSetIndex={handleSetIndex} title={title} subtitle={subtitle} isDashboard={isDashboard} />}
-      <HeaderNav>
-        {navItem?.map((item, index) => (
-          <HeaderNavItem
-            key={index}
-            selected={currentTab === item?.tabName}
-            onClick={() => {
-              handleSetIndex(index);
-            }}
-          >
-            {item?.title}
-          </HeaderNavItem>
-        ))}
-      </HeaderNav>
-      <LayoutChildren>{children}</LayoutChildren>
-      {!noPagination && <PageFooter paginationData={paginationData} setQuery={setQuery} />}{' '}
-    </LayoutContainer>
+    <AuthRoute>
+      <LayoutContainer>
+        <Seo title={routename} />
+        <Navbar /> <NavbarRoute routename={routename} isDashboard={isDashboard} />{' '}
+        {isDashboard && <PageHeader navItem={navItem} handleSetIndex={handleSetIndex} title={title} subtitle={subtitle} isDashboard={isDashboard} />}
+        <HeaderNav>
+          {navItem?.map((item, index) => (
+            <HeaderNavItem
+              key={index}
+              selected={currentTab === item?.tabName}
+              onClick={() => {
+                handleSetIndex(index);
+              }}
+            >
+              {item?.title}
+            </HeaderNavItem>
+          ))}
+        </HeaderNav>
+        <LayoutChildren>{children}</LayoutChildren>
+        {!noPagination && <PageFooter paginationData={paginationData} setQuery={setQuery} />}{' '}
+      </LayoutContainer>
+    </AuthRoute>
   );
 };
 

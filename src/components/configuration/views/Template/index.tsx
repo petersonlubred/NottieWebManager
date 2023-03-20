@@ -19,7 +19,7 @@ const Template = () => {
   const [serviceTypeId, setServiceTypeId] = useState<string>('');
   const [getNonTransactionalTag, setGetNonTransactionalTag] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const formRef = useRef<FormikRefType<any>>();
+  const formRef = useRef<FormikRefType<any>>(null);
   const { data: emailConfig, isFetching: isFetchingEmailConfig } = useGetTemplateConfigEmailQuery(
     { serviceTypeId, templateId: template?.templateId },
     { skip: !(serviceTypeId && template?.templateId) }

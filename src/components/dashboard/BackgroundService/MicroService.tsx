@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IDashboardBackgroundServiceMicroServices } from '@/interfaces/dashboard';
+import { IColors } from '@/interfaces/theme';
 import { px } from '@/utils';
 
 import Icon from '../../shared/Icons';
@@ -129,7 +130,7 @@ const CircleBox = styled.div`
   justify-content: center;
 `;
 
-const CardBox = styled.div<{ tone: string }>`
+const CardBox = styled.div<{ tone: keyof IColors }>`
   background-color: ${({ theme, tone }) => theme.colors[tone]};
   height: 45px;
   max-width: ${px(114)};

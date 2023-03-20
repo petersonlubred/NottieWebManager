@@ -18,12 +18,12 @@ import {
   userApi,
 } from './api';
 import { databaseApi } from './api/databaseApi';
-import authReducer, { persistConfig } from './slices/auth';
+import authReducer, { persistAuthConfig, persistConfig } from './slices/auth';
 import dashboardReducer, { dashboardPersistConfig } from './slices/dashboard';
 import sharedReducer from './slices/util';
 
 export const reducers = combineReducers({
-  auth: authReducer,
+  auth: persistReducer(persistAuthConfig, authReducer),
   [databaseApi.reducerPath]: databaseApi.reducer,
   [smtpApi.reducerPath]: smtpApi.reducer,
   [roleApi.reducerPath]: roleApi.reducer,
@@ -44,5 +44,10 @@ export const reducers = combineReducers({
 });
 
 export const rootReducer = (state: any, action: any) => {
+  if (action.type === 'logout') {
+    localStorage.removeItem('persist:userAuth');
+    const { authStore } = state;
+    state = { authStore };
+  }
   return reducers(state, action);
 };

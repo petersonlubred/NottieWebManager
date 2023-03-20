@@ -1,4 +1,4 @@
-import { DataTableSkeleton } from '@carbon/react';
+import { DataTableSkeleton } from 'carbon-components-react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -38,7 +38,7 @@ const OutBoundSmcStatus = () => {
               </MonitorSubHeaderTPSParagraph>
             </React.Fragment>
           ))}
-        {isFetching && <DataTableSkeleton showHeader={false} showToolbar={false} size="compact" rowCount={4} columnCount={8} />}
+        {isFetching && <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={4} columnCount={8} />}
         <Divider></Divider>
       </MonitorContentBox>
     </MonitorContainerBox>

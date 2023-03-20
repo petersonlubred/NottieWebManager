@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import Button from '@/components/shared/Button';
+import config from '@/config/config';
+import { setAuth } from '@/redux/slices/auth';
 import { initialSigninValue } from '@/schemas/dto';
 import { signinSchema } from '@/schemas/schema';
 import { px } from '@/utils';
@@ -21,7 +23,7 @@ const Signin = () => {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        'https://api-test.nottie.net/api/Authentication/Login',
+        `${config.api_url}/api/Authentication/Login`,
         { username: values?.email, password: values?.password },
         {
           headers: {
@@ -29,7 +31,9 @@ const Signin = () => {
           },
         }
       );
-      await dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data });
+      dispatch(setAuth(res?.data?.data));
+      //TODO: Remove this line after fixing the persist state bug
+      localStorage.setItem('persist:userAuth', JSON.stringify(res?.data?.data));
       setIsLoading(false);
       router.push('/dashboard');
     } catch (error) {
@@ -86,7 +90,7 @@ const Signin = () => {
               />
             </FormGroup>
             <Paragraph>
-              Need help? Reach out at <ContactValue>support@nottie.co</ContactValue>
+              Need help? Reach out at <ContactValue>support@nottie.net</ContactValue>
             </Paragraph>
           </Form>
         )}

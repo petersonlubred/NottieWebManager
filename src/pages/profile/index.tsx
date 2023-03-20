@@ -1,5 +1,4 @@
 import { isEmpty } from 'lodash';
-import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -24,7 +23,6 @@ import { FormikRefType } from '@/interfaces/formik.type';
 import { initialPageQuery, IPageQuery } from '@/interfaces/notification';
 import { useGetExceptionQuery, useGetExclusionQuery, useGetProfileQuery, useGetSubscriptionQuery } from '@/redux/api';
 import { initialAlertException, initialAlertExclude, initialAlertProfileValue, initialSubscription } from '@/schemas/dto';
-import { protectedRouteProps } from '@/utils/withSession';
 
 const Profile = () => {
   const [Headers, setHeaders] = useState<any[]>([]);
@@ -279,4 +277,3 @@ const Profile = () => {
 };
 
 export default Profile;
-export const getServerSideProps: GetServerSideProps = protectedRouteProps();
