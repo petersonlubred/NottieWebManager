@@ -13,10 +13,17 @@ interface IMappedData {
 }
 
 const EmailDeliveryStatus = () => {
+  const [loading, setLoading] = useState(true);
   const { data: emailDeliveryData, isFetching: emailDeliveryDataFetching } = useGetDashboardSmsEmailEmailDeliveryStatusColumnChartQuery(undefined, {
     pollingInterval: getPollingInterval(),
   });
   const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!emailDeliveryDataFetching) {
+      setLoading(false);
+    }
+  }, [emailDeliveryDataFetching]);
 
   const getMembers = (members: IDashboardSmsEmailEmailDeliveryStatusColumnChart[]) => {
     let deliveryStatuses: IMappedData[] = [];
@@ -69,7 +76,7 @@ const EmailDeliveryStatus = () => {
       },
     },
     data: {
-      loading: emailDeliveryDataFetching,
+      loading: loading || !emailDeliveryData?.data,
     },
     height: '100%',
     width: '100%',
