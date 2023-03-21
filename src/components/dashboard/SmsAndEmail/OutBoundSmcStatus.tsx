@@ -1,12 +1,20 @@
 import { DataTableSkeleton } from 'carbon-components-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useGetDashboardSmsEmailOutboundSmcQuery } from '@/redux/api';
 import { getPollingInterval, px } from '@/utils';
+import { mapPerformance } from '@/utils/helpers/helpers';
 
 const OutBoundSmcStatus = () => {
+  const [loading, setLoading] = useState(true);
   const { data, isFetching } = useGetDashboardSmsEmailOutboundSmcQuery(undefined, { pollingInterval: getPollingInterval() });
+
+  useEffect(() => {
+    if (!isFetching) {
+      setLoading(false);
+    }
+  }, [isFetching]);
 
   return (
     <MonitorContainerBox>
@@ -20,7 +28,7 @@ const OutBoundSmcStatus = () => {
         <MonitorSubHeader>TXRX</MonitorSubHeader>
         <MonitorSubHeader style={{ textAlign: 'right' }}>TPS</MonitorSubHeader>
         <Divider></Divider>
-        {!isFetching &&
+        {!loading &&
           data?.data.map((item, index) => (
             <React.Fragment key={index}>
               <MonitorSubHeaderTitle>{item?.smscName}</MonitorSubHeaderTitle>
@@ -33,14 +41,14 @@ const OutBoundSmcStatus = () => {
               <MonitorSubHeaderParagraph>
                 <MonitorSubHeaderValue>{item?.txRx}</MonitorSubHeaderValue>
               </MonitorSubHeaderParagraph>{' '}
-              <MonitorSubHeaderTPSParagraph value={Number(item?.tps)}>
+              <MonitorSubHeaderTPSParagraph value={Number(item?.tpsPerformance)}>
                 <MonitorSubHeaderTPSValue>{item?.tps} </MonitorSubHeaderTPSValue>
               </MonitorSubHeaderTPSParagraph>
             </React.Fragment>
           ))}
-        {isFetching && <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={4} columnCount={8} />}
         <Divider></Divider>
       </MonitorContentBox>
+      {(loading || !data?.data) && <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={4} columnCount={5} />}
     </MonitorContainerBox>
   );
 };
@@ -105,9 +113,8 @@ const MonitorSubHeaderTPSParagraph = styled.div<{ value: number }>`
   line-height: ${px(18)};
   font-weight: 400;
   padding: ${px(16)};
-  background-color: ${({ value }) =>
-    value < 100 ? '#3B1A1A' : value < 200 ? '#232016' : value < 10000 ? '#171e19' : value < 100000 ? '#232016' : value < 1000000 ? '#3B1A1A' : '#171e19'};
-  color: ${({ value }) => (value < 100 ? '#F39698' : value < 200 ? '#F1C21B' : value < 10000 ? '#37D263' : value < 100000 ? '#F1C21B' : value < 1000000 ? '#F39698' : '#37D263')};
+  background-color: ${({ value }) => mapPerformance(value).background};
+  color: ${({ value }) => mapPerformance(value).text};
 `;
 
 const MonitorSubHeaderValue = styled.div``;

@@ -1,9 +1,8 @@
-import { Select, SelectItem, SelectSkeleton } from 'carbon-components-react';
+import { Select, SelectItem, SelectSkeleton, SkeletonPlaceholder } from 'carbon-components-react';
 import React, { useEffect, useState } from 'react';
-import { useInView } from 'react-cool-inview';
+// import { useInView } from 'react-cool-inview';
 import styled from 'styled-components';
 
-import { IDashboardBackgroundServiceMicroserviceHeartBeat } from '@/interfaces/dashboard';
 import {
   useGetDashboardServiceMicroservicesHeartbeatQuery,
   useGetDashboardServiceQueueMonitorQuery,
@@ -21,7 +20,9 @@ import QueueTrend from './QueueTrend';
 import Sla from './Sla';
 
 const BackgroundService = () => {
-  const [microService, setMicroService] = useState<IDashboardBackgroundServiceMicroserviceHeartBeat[]>([]);
+  const [queueDataLoading, setQueueDataLoading] = useState(true);
+  const [slaLoading, setSlaLoading] = useState(true);
+  const [heartBeatLoading, setHeartBeatLoading] = useState(true);
   const [microServiceTotalHeartbeat, setMicroServiceTotalHeartbeat] = useState<{
     ok: number;
     check: number;
@@ -34,27 +35,12 @@ const BackgroundService = () => {
     { dataSourceId: dataSourceId },
     { pollingInterval: getPollingInterval(), skip: !dataSourceId }
   );
-  const {
-    data: microServiceHeartBeat,
-    isFetching: fetchingMicroService,
-    refetch,
-  } = useGetDashboardServiceMicroservicesHeartbeatQuery(undefined, {
+  const { data: microServiceHeartBeat, isFetching: fetchingMicroService } = useGetDashboardServiceMicroservicesHeartbeatQuery(undefined, {
     pollingInterval: getPollingInterval(),
   });
-  const { data: SlaMessage } = useGetDashboardServiceSlaMessageQuery(undefined, { pollingInterval: getPollingInterval() });
-  const { data: SlaSource } = useGetDashboardServiceSlaSourceDataQuery(undefined, { pollingInterval: getPollingInterval() });
+  const { data: SlaMessage, isFetching: slaMessageFetching } = useGetDashboardServiceSlaMessageQuery(undefined, { pollingInterval: getPollingInterval() });
+  const { data: SlaSource, isFetching: slaSourceFetching } = useGetDashboardServiceSlaSourceDataQuery(undefined, { pollingInterval: getPollingInterval() });
   const threeArray = new Array(3).fill(0);
-  const { observe } = useInView({
-    // For better UX, we can grow the root margin so the data will be loaded earlier
-    rootMargin: '50px 0px',
-    // When the last item comes to the viewport
-    onEnter: ({ unobserve }) => {
-      // Pause observe when loading data
-      unobserve();
-      // Trigger api call again
-      refetch();
-    },
-  });
 
   useEffect(() => {
     if (!fetchingDataSource && dataSource?.data) {
@@ -64,11 +50,28 @@ const BackgroundService = () => {
 
   useEffect(() => {
     if (!fetchingMicroService && microServiceHeartBeat?.data) {
-      setMicroService([...microService, microServiceHeartBeat.data]);
       setMicroServiceTotalHeartbeat(microServiceHeartBeat.data.totalHeartbeatCount);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchingMicroService, microServiceHeartBeat]);
+
+  useEffect(() => {
+    if (!fetchingQueueDataSource) {
+      setQueueDataLoading(false);
+    }
+  }, [fetchingQueueDataSource]);
+
+  useEffect(() => {
+    if (!slaMessageFetching && !slaSourceFetching) {
+      setSlaLoading(false);
+    }
+  }, [slaMessageFetching, slaSourceFetching]);
+
+  useEffect(() => {
+    if (!fetchingMicroService) {
+      setHeartBeatLoading(false);
+    }
+  }, [fetchingMicroService]);
 
   return (
     <>
@@ -94,44 +97,82 @@ const BackgroundService = () => {
           )}
         </SelectContainer>
       </DataSourceBox>
+      {(queueDataLoading || !queueData?.data) && (
+        <SkeletonContainer>
+          <SkeletonPlaceholder />
+          <SkeletonPlaceholder />
+          <SkeletonPlaceholder />
+          <SkeletonPlaceholder />
+          <SkeletonPlaceholder />
+          <SkeletonPlaceholder />
+        </SkeletonContainer>
+      )}
       <MonitorContainer>
-        {queueData?.data?.map((item, index) => (
-          <QueueMonitor heading={item.serviceType} key={index} data={item.queueMonitor} />
-        ))}
+        {!queueDataLoading && queueData?.data?.map((item, index) => <QueueMonitor heading={item.serviceType} key={index} data={item.queueMonitor} />)}
       </MonitorContainer>
       <MonitorContainer>
-        {queueData?.data?.map((item, index) => (
-          <QueueTrend heading={item.serviceType} key={index} data={item.queueMonitor} isFetching={fetchingQueueDataSource} />
-        ))}
+        {!queueDataLoading &&
+          queueData?.data?.map((item, index) => <QueueTrend heading={item.serviceType} key={index} data={item.queueMonitor} isFetching={fetchingQueueDataSource} />)}
       </MonitorContainer>
       <MicroServiceContainer>
         <MicroServiceheader totalHeartbeatCount={microServiceTotalHeartbeat} />{' '}
         <MicroserviceFlex>
-          {microService.map((micro, microIndex) => (
-            <div key={microIndex}>
-              {micro.microservices.map((microservice, index: number) => (
-                <ServiceContainer key={microservice.serviceType}>
-                  <MicroService
-                    data={microservice}
-                    showDivider={index !== micro.microservices.length - 1}
-                    innerRef={microService.length - 1 === microIndex && index === micro.microservices.length - 1 ? observe : null}
-                  />
-                </ServiceContainer>
-              ))}
-            </div>
-          ))}
-          {fetchingMicroService && (
-            <div>
-              {threeArray.map((_, index) => (
-                <MicroServiceLoader key={index} showDivider={index !== threeArray.length - 1} />
-              ))}
-            </div>
+          <div>
+            {microServiceHeartBeat?.data?.microservices.map((microservice, index: number) => (
+              <ServiceContainer key={microservice.serviceType}>
+                <MicroService
+                  data={microservice}
+                  showDivider={index !== microServiceHeartBeat?.data?.microservices.length - 1}
+                  // innerRef={microService.length - 1 === microIndex && index === micro.microservices.length - 1 ? observe : null}
+                />
+              </ServiceContainer>
+            ))}
+          </div>
+          {(heartBeatLoading || !microServiceHeartBeat?.data) && (
+            <>
+              <div>
+                {threeArray.map((_, index) => (
+                  <MicroServiceLoader key={index} showDivider={index !== threeArray.length - 1} />
+                ))}
+              </div>
+              <div>
+                {threeArray.map((_, index) => (
+                  <MicroServiceLoader key={index} showDivider={index !== threeArray.length - 1} />
+                ))}
+              </div>
+              <div>
+                {threeArray.map((_, index) => (
+                  <MicroServiceLoader key={index} showDivider={index !== threeArray.length - 1} />
+                ))}
+              </div>
+              <div>
+                {threeArray.map((_, index) => (
+                  <MicroServiceLoader key={index} showDivider={index !== threeArray.length - 1} />
+                ))}
+              </div>
+              <div>
+                {threeArray.map((_, index) => (
+                  <MicroServiceLoader key={index} showDivider={index !== threeArray.length - 1} />
+                ))}
+              </div>
+            </>
           )}
         </MicroserviceFlex>
       </MicroServiceContainer>
       <ProgressStatusContainer>
-        <Sla heading="Sla Message Progress Status" data={SlaMessage?.data} />
-        <Sla heading="Sla Source Progress Status" data={SlaSource?.data} />
+        {!slaLoading && (SlaMessage?.data || SlaSource?.data) ? (
+          <>
+            {' '}
+            <Sla heading="Sla Message Progress Status" data={SlaMessage?.data} />
+            <Sla heading="Sla Source Progress Status" data={SlaSource?.data} />
+          </>
+        ) : (
+          <>
+            {' '}
+            <SkeletonPlaceholder />
+            <SkeletonPlaceholder />
+          </>
+        )}
       </ProgressStatusContainer>
     </>
   );
@@ -178,6 +219,11 @@ const ProgressStatusContainer = styled.div`
   color: ${({ theme }) => theme.colors.white};
   gap: ${px(16)};
   margin-bottom: ${px(16)};
+
+  .cds--skeleton__placeholder {
+    width: 100% !important;
+    height: 25rem !important;
+  }
 `;
 
 const MicroServiceContainer = styled.div`
@@ -196,5 +242,16 @@ const MicroserviceFlex = styled.div`
   overflow-x: scroll;
   &::-webkit-scrollbar {
     display: none;
+  }
+`;
+
+const SkeletonContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-gap: 1rem;
+
+  .cds--skeleton__placeholder {
+    width: 100% !important;
+    height: 20rem !important;
   }
 `;
