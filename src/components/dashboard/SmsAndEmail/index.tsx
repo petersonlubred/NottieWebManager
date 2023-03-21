@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { IDashboardSmsEmailSmsSmsNetworkCountDonutChart } from '@/interfaces/dashboard';
@@ -11,16 +11,23 @@ import OutBoundSmcStatus from './OutBoundSmcStatus';
 import SmsDeliveryStatus from './SMSDeliveryStatus';
 
 const SmsandEmail = () => {
+  const [loading, setLoading] = useState(true);
   const { data: smsDeliveryData, isFetching: smsDeliveryFetching } = useGetDashboardSmsEmailSmsNetworkCountDonutChartQuery(undefined, { pollingInterval: getPollingInterval() });
+
+  useEffect(() => {
+    if (!smsDeliveryFetching) {
+      setLoading(false);
+    }
+  }, [smsDeliveryFetching]);
   return (
     <>
       <SmsDeliveryContainer />
       <DeliveryContainer>
-        {!smsDeliveryFetching &&
+        {!loading &&
           smsDeliveryData?.data?.map((item: IDashboardSmsEmailSmsSmsNetworkCountDonutChart, index: number) => (
             <SmsDeliveryStatus key={index} heading={item.serviceType} data={item.smsDelivery} />
           ))}{' '}
-        {smsDeliveryFetching && (
+        {(loading || !smsDeliveryData?.data) && (
           <>
             <SmsDeliveryStatus />
             <SmsDeliveryStatus />

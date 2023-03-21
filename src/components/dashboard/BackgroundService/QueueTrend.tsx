@@ -99,18 +99,23 @@ const QueueTrend = ({
     axes: {
       bottom: {
         mapsTo: 'date',
-        scaleType: 'time',
+        scaleType: 'labels',
       },
       left: {
         mapsTo: 'value',
         scaleType: 'linear',
+        visible: false,
       },
     },
+
     timeScale: {
       showDayName: false,
     },
+    legend: {
+      enabled: false,
+    },
     curve: 'curveMonotoneX',
-    height: '150px',
+    height: '181px',
   };
 
   useEffect(() => {
@@ -121,7 +126,7 @@ const QueueTrend = ({
           return {
             group: lineData.description,
             value: lineData.queueCount,
-            date: moment(),
+            date: moment().format('LTS'),
           };
         }),
       ];

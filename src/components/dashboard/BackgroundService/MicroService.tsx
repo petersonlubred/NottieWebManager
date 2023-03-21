@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { IDashboardBackgroundServiceMicroServices } from '@/interfaces/dashboard';
 import { IColors } from '@/interfaces/theme';
 import { px } from '@/utils';
+import { mapMicroServiceStatus } from '@/utils/helpers/helpers';
 
 import Icon from '../../shared/Icons';
 
@@ -15,22 +16,11 @@ const MicroService = ({
   data: IDashboardBackgroundServiceMicroServices;
   showDivider: boolean;
   // eslint-disable-next-line no-unused-vars
-  innerRef: ((element?: HTMLElement | null | undefined) => void) | null;
+  innerRef?: ((element?: HTMLElement | null | undefined) => void) | null;
 }) => {
-  const mapStatus = (value: number) => {
-    switch (value) {
-      case 0:
-        return 'success';
-      case 1:
-        return 'secondary';
-      case 2:
-        return 'danger';
-      case 3:
-        return 'grey';
-      default:
-        return 'grey';
-    }
-  };
+  const sourceEmpty = new Array(6 - data.sourceMicroservices.length).fill(0);
+  const smsEmpty = new Array(6 - data.smsMicroservices.length).fill(0);
+  const emailEmpty = new Array(6 - data.emailMicroservices.length).fill(0);
   return (
     <MonitorContainerBox>
       <MonitorFlex>
@@ -38,12 +28,15 @@ const MicroService = ({
           <MicroserviceCardTitle>{data?.serviceType}</MicroserviceCardTitle>
           <MonitorContentBox>
             {data?.sourceMicroservices.map((microService) => (
-              <CardBox key={microService.microserviceId} tone={mapStatus(microService.performanceStatus)}>
+              <CardBox key={microService.microserviceId} tone={mapMicroServiceStatus(microService.performanceStatus)}>
                 <CircleBox>
                   <Icon id="dotted-cube-icon" h={20} w={20} />
                 </CircleBox>
                 <Icon id="clock-icon" width={12} height={11} /> {microService.lapse}
               </CardBox>
+            ))}
+            {sourceEmpty.map((_, index: number) => (
+              <EmptyCardBox key={index} />
             ))}
           </MonitorContentBox>
         </MonitorSpacing>
@@ -51,12 +44,15 @@ const MicroService = ({
           <MicroserviceCardTitle>{data?.serviceType} SMS</MicroserviceCardTitle>
           <MonitorContentBox>
             {data?.smsMicroservices.map((microService) => (
-              <CardBox key={microService.microserviceId} tone={mapStatus(microService.performanceStatus)}>
+              <CardBox key={microService.microserviceId} tone={mapMicroServiceStatus(microService.performanceStatus)}>
                 <CircleBox>
                   <Icon id="dotted-cube-icon" h={20} w={20} />
                 </CircleBox>
                 <Icon id="clock-icon" width={12} height={11} /> {microService.lapse}
               </CardBox>
+            ))}
+            {smsEmpty.map((_, index: number) => (
+              <EmptyCardBox key={index} />
             ))}
           </MonitorContentBox>
         </MonitorSpacing>
@@ -64,12 +60,15 @@ const MicroService = ({
           <MicroserviceCardTitle>{data?.serviceType} Email</MicroserviceCardTitle>
           <MonitorContentBox>
             {data?.emailMicroservices.map((microService) => (
-              <CardBox key={microService.microserviceId} tone={mapStatus(microService.performanceStatus)}>
+              <CardBox key={microService.microserviceId} tone={mapMicroServiceStatus(microService.performanceStatus)}>
                 <CircleBox>
                   <Icon id="dotted-cube-icon" h={20} w={20} />
                 </CircleBox>
                 <Icon id="clock-icon" width={12} height={11} /> {microService.lapse}
               </CardBox>
+            ))}
+            {emailEmpty.map((_, index: number) => (
+              <EmptyCardBox key={index} />
             ))}
           </MonitorContentBox>
         </MonitorSpacing>
@@ -132,6 +131,17 @@ const CircleBox = styled.div`
 
 const CardBox = styled.div<{ tone: keyof IColors }>`
   background-color: ${({ theme, tone }) => theme.colors[tone]};
+  height: 45px;
+  max-width: ${px(114)};
+  display: flex;
+  align-items: center;
+  padding: ${px(5.5)} ${px(10)};
+  gap: ${px(6)};
+  font-weight: 500;
+`;
+
+const EmptyCardBox = styled.div`
+  background-color: #525252;
   height: 45px;
   max-width: ${px(114)};
   display: flex;

@@ -1,6 +1,6 @@
 import { DataTableSkeleton } from 'carbon-components-react';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -25,12 +25,15 @@ interface Ifigures {
 }
 
 const PageHeader = ({ title, subtitle, isDashboard }: Iprops) => {
+  const [loading, setLoading] = useState(true);
   const { data, isFetching } = useGetDashboardSmsEmailMessageCountQuery(undefined, { skip: !isDashboard, pollingInterval: getPollingInterval() });
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isFetching) {
       dispatch(setLastSync(moment(new Date()).calendar().toString()));
+    } else {
+      setLoading(false);
     }
   }, [isFetching, dispatch]);
 
@@ -45,8 +48,8 @@ const PageHeader = ({ title, subtitle, isDashboard }: Iprops) => {
           <HeaderDescription>{subtitle}.</HeaderDescription>
         </HeaderDashboardTitleBox>
       )}
-      {isDashboard && isFetching && <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={3} columnCount={6} />}
-      {isDashboard && !isFetching && data && (
+      {isDashboard && (loading || !data?.data) && <DataTableSkeleton showHeader={false} showToolbar={false} compact rowCount={3} columnCount={6} />}
+      {isDashboard && !loading && data && (
         <HeaderStatisticsSection>
           <HeaderStatisticsBox>
             <HeaderStatisticsTitle style={{ visibility: 'hidden' }}>Header</HeaderStatisticsTitle>
