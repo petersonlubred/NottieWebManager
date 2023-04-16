@@ -1,7 +1,0 @@
-@use '@carbon/react/scss/spacing' as *;
-@use '@carbon/react/scss/theme' as *;
-
-@mixin background() {
-  background-color: $background;
-  position: relative;
-}

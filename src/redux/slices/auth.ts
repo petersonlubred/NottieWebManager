@@ -1,30 +1,46 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import storageSession from 'redux-persist/lib/storage/session';
+import storage from 'redux-persist/lib/storage';
+import storageSession from 'redux-persist/lib/storage/session';
 
-const initialState = {
-  user: {
-    full_name: '',
-    email: '',
-    profile_picture: '',
-  },
-  authorization: { access_token: '' },
+import { UserData } from '@/interfaces/user';
+
+export type AuthState = {
+  user: UserData | null;
+  token: string | null;
+};
+
+export const initialLoginResponse = {
+  user: null,
+  token: null,
+};
+
+const initialState: AuthState = {
+  ...initialLoginResponse,
 };
 
 export const persistConfig = {
-  // storage: storageSession,
-  key: 'root',
+  storage: storageSession,
+  key: 'theme',
+  blacklist: ['notifications'],
 };
+
+export const persistAuthConfig = {
+  storage: storage,
+  key: 'userAuth',
+  blacklist: ['notifications'],
+};
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setLoginUser: (state, { payload }) => {
-      state.user = payload?.data?.loginUser;
-      state.authorization.access_token = payload?.data.accesstoken;
+    setAuth: (state, { payload }) => {
+      state.user = payload?.user;
+      state.token = payload?.token;
     },
   },
 });
 
-export const { setLoginUser } = authSlice.actions;
+export const { setAuth } = authSlice.actions;
 const { reducer } = authSlice;
 export default reducer;

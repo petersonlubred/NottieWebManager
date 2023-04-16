@@ -1,22 +1,34 @@
 import type { NextPage } from 'next';
-import styled from 'styled-components';
-import Seo from '../components/seo';
-import { px } from '../utils/px/px';
-import Logo from '@/components/Logo';
-import SetDatabase from '@/components/SetDatabase';
-import Signin from '@/components/SignIn';
 import { useState } from 'react';
-import SetDatabaseForm from '@/components/SetDatabaseForm/SetDatabaseForm';
-import SetupProcess from '@/components/SetupProcess/SetupProcess';
-import SetUpSuccess from '@/components/SetupSuccess/SetUpSuccess';
+import styled from 'styled-components';
+
+import SetDatabase from '@/components/onboard/SetDatabase';
+import SetDatabaseForm from '@/components/onboard/SetDatabaseForm/SetDatabaseForm';
+import SetupProcess from '@/components/onboard/SetupProcess/SetupProcess';
+import SetUpSuccess from '@/components/onboard/SetupSuccess/SetUpSuccess';
+import Signin from '@/components/onboard/SignIn';
+import Logo from '@/components/shared/Logo';
+import AuthRoute from '@/HOC/AuthRoute';
+import { useRegisterDbMutation } from '@/redux/api';
+
+import Seo from '../providers/seo';
+import { px } from '../utils/px/px';
 
 const Home: NextPage = () => {
+  const [registerDb, { isLoading, isSuccess }] = useRegisterDbMutation();
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [step, setStep] = useState(3);
+
+  const [loginDetails, setLoginDetails] = useState<{
+    username: string;
+    password: string;
+  }>({
+    username: '',
+    password: '',
+  });
+  const [step, setStep] = useState(1);
 
   const toggleLogin = () => {
     setIsLogin(false);
-    setStep(step + 1);
   };
 
   const handleSetStep = () => {
@@ -24,32 +36,36 @@ const Home: NextPage = () => {
   };
 
   return (
-    <Body>
-      <Seo title="Home" />
-      <Main>
-        <NavbarSection>
-          <Logo />
-          {isLogin && <SetDatabase toggleLogin={toggleLogin} />}
-        </NavbarSection>
-        {step === 0 ? (
-          <Signin handleSetStep={handleSetStep} />
-        ) : step == 1 ? (
-          <SetDatabaseForm handleSetStep={handleSetStep} />
-        ) : step === 2 ? (
-          <SetupProcess handleSetStep={handleSetStep} />
-        ) : (
-          step === 3 && <SetUpSuccess handleSetStep={handleSetStep} />
-        )}
-      </Main>
-    </Body>
+    <AuthRoute isPublic>
+      <Body>
+        <Seo title="Home" />
+        <Main>
+          <NavbarSection>
+            <LogoContainer>
+              <Logo />
+            </LogoContainer>
+            {isLogin && <SetDatabase toggleLogin={toggleLogin} />}
+          </NavbarSection>
+          {isLogin ? (
+            <Signin />
+          ) : step == 1 ? (
+            <SetDatabaseForm handleSetStep={handleSetStep} registerDb={registerDb} isLoading={isLoading} />
+          ) : step === 2 ? (
+            <SetupProcess handleSetStep={handleSetStep} isLoading={isLoading} isSuccess={isSuccess} setLoginDetails={setLoginDetails} />
+          ) : (
+            step === 3 && <SetUpSuccess toggleLogin={setIsLogin} loginDetails={loginDetails} />
+          )}
+        </Main>
+      </Body>
+    </AuthRoute>
   );
 };
 
 //TODO: sticky doesn't work with overflow
-const Body = styled.div``;
-const Main = styled.main`
+export const Body = styled.div``;
+export const Main = styled.main`
   /* overflow: hidden; */
-  background-color: ${({ theme }) => theme.colors.darkPrimary};
+  background-color: ${({ theme }) => theme.colors.bgPrimary};
   min-height: 100vh;
   ${({ theme }) => theme.media.md} {
     min-height: ${px(650)};
@@ -59,7 +75,12 @@ const Main = styled.main`
   }
 `;
 
-const NavbarSection = styled.div`
+export const LogoContainer = styled.div`
+  margin-top: ${px(34)};
+  cursor: pointer;
+`;
+
+export const NavbarSection = styled.div`
   margin-left: ${px(62.2)};
   display: flex;
   align-items: flex-start;
